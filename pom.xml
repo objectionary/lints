@@ -106,7 +106,7 @@ SOFTWARE.
     <dependency>
       <groupId>org.eolang</groupId>
       <artifactId>eo-parser</artifactId>
-      <version>0.43.1</version>
+      <version>0.43.2</version>
       <scope>test</scope>
     </dependency>
     <dependency>
