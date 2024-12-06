@@ -109,6 +109,11 @@ SOFTWARE.
       <!-- version from the parent pom -->
     </dependency>
     <dependency>
+      <groupId>org.apache.opennlp</groupId>
+      <artifactId>opennlp-tools</artifactId>
+      <version>2.2.0</version>
+    </dependency>
+    <dependency>
       <groupId>org.yaml</groupId>
       <artifactId>snakeyaml</artifactId>
       <version>2.3</version>
