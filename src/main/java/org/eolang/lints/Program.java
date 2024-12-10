@@ -27,6 +27,7 @@ import com.jcabi.xml.XML;
 import com.jcabi.xml.XMLDocument;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Collection;
@@ -34,6 +35,7 @@ import java.util.LinkedList;
 import org.cactoos.iterable.Joined;
 import org.cactoos.iterable.Sticky;
 import org.eolang.lints.comments.AsciiOnly;
+import org.eolang.lints.misc.TestObjectIsVerbInSingular;
 
 /**
  * A single XMIR program to analyze.
@@ -46,14 +48,31 @@ public final class Program {
     /**
      * Lints to use.
      */
-    private static final Iterable<Lint<XML>> LINTS = new Sticky<>(
-        new Joined<Lint<XML>>(
-            new XslLints(),
-            Arrays.asList(
-                new AsciiOnly()
-            )
-        )
-    );
+    private static Iterable<Lint<XML>> lints;
+
+    static {
+        try {
+            Program.lints = new Sticky<>(
+                new Joined<Lint<XML>>(
+                    new XslLints(),
+                    Arrays.asList(
+                        new AsciiOnly(),
+                        new TestObjectIsVerbInSingular()
+                    )
+                )
+            );
+        } catch (final IOException exception) {
+            throw new IllegalStateException(
+                "Failed to allocate lints",
+                exception
+            );
+        } catch (final URISyntaxException exception) {
+            throw new IllegalStateException(
+                "URI syntax is broken",
+                exception
+            );
+        }
+    }
 
     /**
      * The XMIR program to analyze.
@@ -83,7 +102,7 @@ public final class Program {
      */
     public Collection<Defect> defects() throws IOException {
         final Collection<Defect> messages = new LinkedList<>();
-        for (final Lint<XML> lint : Program.LINTS) {
+        for (final Lint<XML> lint : Program.lints) {
             messages.addAll(lint.defects(this.xmir));
         }
         return messages;

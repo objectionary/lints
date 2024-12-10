@@ -1,0 +1,175 @@
+# The MIT License (MIT)
+#
+# Copyright (c) 2016-2024 Objectionary.com
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included
+# in all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
++tests
+
+# Test.
+[] > itIsTrue
+  42 > @
+
+# Test.
+[] > testing
+  42 > @
+
+# Test.
+[] > this-is-test
+  42 > @
+
+# Test.
+[] > it-works
+  42 > @
+
+# Test.
+[] > nothing-happened
+  42 > @
+
+# Test.
+[] > something-is-wrong
+  42 > @
+
+# Test.
+[] > will-fail-eventually
+  42 > @
+
+# Test.
+[] > always-returns-true
+  42 > @
+
+# Test.
+[] > was-lost-forever
+  42 > @
+
+# Test.
+[] > nobody-knows-why
+  42 > @
+
+# Test.
+[] > should-not-pass
+  42 > @
+
+# Test.
+[] > once-upon-a-time
+  42 > @
+
+# Test.
+[] > must-do-better
+  42 > @
+
+# Test.
+[] > was-a-trap
+  42 > @
+
+# Test.
+[] > dont-look-here
+  42 > @
+
+# Test.
+[] > never-saw-it-coming
+  42 > @
+
+# Test.
+[] > this-time-for-sure
+  42 > @
+
+# Test.
+[] > there-it-goes
+  42 > @
+
+# Test.
+[] > it-is-fine-probably
+  42 > @
+
+# Test.
+[] > maybe-next-time
+  42 > @
+
+# Test.
+[] > well-this-is-awkward
+  42 > @
+
+# Test.
+[] > why-this-again
+  42 > @
+
+# Test.
+[] > here-we-go-again
+  42 > @
+
+# Test.
+[] > it-was-working-before
+  42 > @
+
+# Test.
+[] > expected-the-unexpected
+  42 > @
+
+# Test.
+[] > it-seems-fine
+  42 > @
+
+# Test.
+[] > suddenly-works
+  42 > @
+
+# Test.
+[] > too-late-now
+  42 > @
+
+# Test.
+[] > could-not-care-less
+  42 > @
+
+# Test.
+[] > it-just-works
+  42 > @
+
+# Test.
+[] > dont-push-that-button
+  42 > @
+
+# Test.
+[] > error-404-not-found
+  42 > @
+
+# Test.
+[] > who-did-this
+  42 > @
+
+# Test
+[] > it-has-a-plan
+  42 > @
+
+# Test
+[] > will-never-finish
+  42 > @
+
+# Test
+[] > accidentally-passed
+  42 > @
+
+# Test
+[] > i-think-its-ok
+  42 > @
+
+# Test.
+[] > chicken-as-expected
+  42 > @
