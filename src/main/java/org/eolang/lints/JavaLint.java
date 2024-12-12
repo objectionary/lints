@@ -23,35 +23,37 @@
  */
 package org.eolang.lints;
 
-import com.jcabi.xml.XML;
-import org.cactoos.Scalar;
-import org.cactoos.iterable.IterableOf;
-import org.cactoos.iterable.Joined;
-import org.cactoos.iterable.Mapped;
-import org.cactoos.iterable.Sticky;
-import org.eolang.lints.comments.AsciiOnly;
-import org.eolang.lints.misc.UnitTestIsNotVerb;
+import java.io.IOException;
+import java.util.Collection;
 
-/**
- * Lints for the program.
- *
- * @since 0.0.22
- */
-final class ProgramLints implements Scalar<Iterable<Lint<XML>>> {
+import com.jcabi.xml.XML;
+import io.github.secretx33.resourceresolver.ClassPathResource;
+import org.cactoos.text.FormattedText;
+
+public class JavaLint implements Lint<XML> {
+    private final Lint<XML> lint;
+
+    public JavaLint(Lint<XML> lint) {
+        this.lint = lint;
+    }
 
     @Override
-    public Iterable<Lint<XML>> value() {
-        return new Sticky<>(
-            new Joined<Lint<XML>>(
-                new XslLints(),
-                    new Mapped<Lint<XML>>(
-                            JavaLint::new,
-                            new IterableOf<>(
-                                    new AsciiOnly(),
-                                    new UnitTestIsNotVerb()
-                            )
-                    )
-            )
-        );
+    public Collection<Defect> defects(XML entity) throws IOException {
+        return lint.defects(entity);
     }
+
+    @Override
+    public String motive() throws Exception {
+        String className = lint.getClass()
+                .getSimpleName()
+                .replaceAll("([a-z0-9])([A-Z])", "$1-$2")
+                .toLowerCase();
+        String packageName = lint.getClass().getPackage().getName();
+        packageName = packageName.substring(packageName.lastIndexOf(".") + 1);
+        return new ClassPathResource(
+                new FormattedText("org/eolang/motives/%s/%s.md",
+                        packageName,
+                        className).asString()).getURL().toString();
+    }
+
 }

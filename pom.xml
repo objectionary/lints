@@ -135,7 +135,6 @@ SOFTWARE.
       <groupId>com.jcabi</groupId>
       <artifactId>jcabi-log</artifactId>
       <version>0.24.3</version>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.eolang</groupId>
@@ -178,6 +177,11 @@ SOFTWARE.
       <artifactId>slf4j-reload4j</artifactId>
       <version>2.0.16</version>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
+      <version>2.0.16</version>
     </dependency>
   </dependencies>
   <profiles>
@@ -231,6 +235,40 @@ SOFTWARE.
             </manifestEntries>
           </archive>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>8</source>
+          <target>8</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+            <configuration>
+              <finalName>printAll</finalName>
+              <archive>
+                <manifest>
+                  <mainClass>
+                    org.eolang.lints.PrintAllLints
+                  </mainClass>
+                </manifest>
+              </archive>
+              <descriptorRefs>
+                <descriptorRef>jar-with-dependencies</descriptorRef>
+              </descriptorRefs>
+              <appendAssemblyId>false</appendAssemblyId>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>

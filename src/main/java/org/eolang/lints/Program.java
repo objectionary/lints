@@ -42,7 +42,7 @@ public final class Program {
     /**
      * Lints to use.
      */
-    private static final Iterable<Lint<XML>> LINTS = new ProgramLints().value();
+    public static final Iterable<Lint<XML>> LINTS = new ProgramLints().value();
 
     /**
      * The XMIR program to analyze.

@@ -23,35 +23,15 @@
  */
 package org.eolang.lints;
 
-import com.jcabi.xml.XML;
-import org.cactoos.Scalar;
-import org.cactoos.iterable.IterableOf;
-import org.cactoos.iterable.Joined;
-import org.cactoos.iterable.Mapped;
-import org.cactoos.iterable.Sticky;
-import org.eolang.lints.comments.AsciiOnly;
-import org.eolang.lints.misc.UnitTestIsNotVerb;
-
-/**
- * Lints for the program.
- *
- * @since 0.0.22
- */
-final class ProgramLints implements Scalar<Iterable<Lint<XML>>> {
-
-    @Override
-    public Iterable<Lint<XML>> value() {
-        return new Sticky<>(
-            new Joined<Lint<XML>>(
-                new XslLints(),
-                    new Mapped<Lint<XML>>(
-                            JavaLint::new,
-                            new IterableOf<>(
-                                    new AsciiOnly(),
-                                    new UnitTestIsNotVerb()
-                            )
-                    )
-            )
-        );
+public class PrintAllLints {
+    public static void main(String[] args) {
+        Program.LINTS.forEach(lint -> {
+            try {
+                System.out.println(lint.motive());
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
+
 }
