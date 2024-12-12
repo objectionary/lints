@@ -140,7 +140,7 @@ SOFTWARE.
     <dependency>
       <groupId>org.eolang</groupId>
       <artifactId>eo-parser</artifactId>
-      <version>0.47.0</version>
+      <version>0.48.1</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
