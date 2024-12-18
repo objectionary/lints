@@ -134,12 +134,12 @@ Here is the result of linting XMIRs:
 Input: com/sun/jna/Pointer.class
 Size of .class: 22Kb (22Kb bytes)
 Size of .xmir after disassemble: 1Mb (1Mb bytes, 29630 lines)
-Lint time: 6s (5807 ms)
+Lint time: 6s (6265 ms)
 
 ```
 
 The results were calculated in [this GHA job][benchmark-gha]
-on 2024-12-16 at 08:39,
+on 2024-12-18 at 08:48,
 on Linux with 4 CPUs.
 <!-- benchmark_end -->
 
@@ -160,4 +160,4 @@ You will need [Maven 3.3+](https://maven.apache.org) and Java 11+ installed.
 [XMIR]: https://news.eolang.org/2022-11-25-xmir-guide.html
 [EO]: https://www.eolang.org
 [aspell]: http://aspell.net/
-[benchmark-gha]: https://github.com
+[benchmark-gha]: https://github.com/objectionary/lints/actions/runs/12389419631
