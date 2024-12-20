@@ -75,6 +75,7 @@ final class ProgramTest {
             "no defects found since the code is clean",
             new Program(
                 new EoSyntax(
+                    "foo",
                     new InputOf(
                         String.join(
                             "\n",

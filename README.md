@@ -91,7 +91,7 @@ be exposed to a user of the library:
 * `Defect` - a single defect discovered
 * `Severity` - a severity of a defect
 
-There are also a few classes that implement `Iterable<Lint>`: 
+There are also a few classes that implement `Iterable<Lint>`:
 `PkMono`, `PkWpa`, and `PkByXsl`.
 They are supposed to be used only by the `Program` and `Programs`,
 and are not supposed to be exposed to the user of the library.
@@ -132,5 +132,4 @@ You will need [Maven 3.3+](https://maven.apache.org) and Java 11+ installed.
 
 [XMIR]: https://news.eolang.org/2022-11-25-xmir-guide.html
 [EO]: https://www.eolang.org
-[aspell]: http://aspell.net/
 [benchmark-gha]: https://github.com
