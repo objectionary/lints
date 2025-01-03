@@ -25,34 +25,39 @@ SOFTWARE.
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:eo="https://www.eolang.org" id="pos-bigger-than-line" version="2.0">
   <xsl:import href="/org/eolang/funcs/lineno.xsl"/>
   <xsl:output encoding="UTF-8" method="xml"/>
+  <xsl:variable name="lines" select="tokenize(/program/listing, '&#10;')"/>
   <xsl:template match="/">
     <defects>
-      <xsl:for-each select="//o[(@pos and @line) and (number(@pos)&gt;number(@line))]">
-        <xsl:element name="defect">
-          <xsl:attribute name="line">
-            <xsl:value-of select="eo:lineno(@line)"/>
-          </xsl:attribute>
-          <xsl:attribute name="severity">
-            <xsl:text>critical</xsl:text>
-          </xsl:attribute>
-          <xsl:text>The </xsl:text>
-          <xsl:choose>
-            <xsl:when test="@name">
-              <xsl:text>object </xsl:text>
-              <xsl:text>"</xsl:text>
-              <xsl:value-of select="@name"/>
-              <xsl:text>"</xsl:text>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:text>anonymous object</xsl:text>
-            </xsl:otherwise>
-          </xsl:choose>
-          <xsl:text> has '@pos' (</xsl:text>
-          <xsl:value-of select="@pos"/>
-          <xsl:text>), that is bigger than its '@line' (</xsl:text>
-          <xsl:value-of select="@line"/>
-          <xsl:text>)</xsl:text>
-        </xsl:element>
+      <xsl:for-each select="//o">
+        <xsl:variable name="line" select="number(@line)"/>
+        <xsl:variable name="length" select="string-length(normalize-space($lines[$line]))"/>
+        <xsl:if test="@line and @pos&gt;$length">
+          <xsl:element name="defect">
+            <xsl:attribute name="line">
+              <xsl:value-of select="eo:lineno(@line)"/>
+            </xsl:attribute>
+            <xsl:attribute name="severity">
+              <xsl:text>critical</xsl:text>
+            </xsl:attribute>
+            <xsl:text>The </xsl:text>
+            <xsl:choose>
+              <xsl:when test="@name">
+                <xsl:text>object </xsl:text>
+                <xsl:text>"</xsl:text>
+                <xsl:value-of select="@name"/>
+                <xsl:text>"</xsl:text>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:text>anonymous object</xsl:text>
+              </xsl:otherwise>
+            </xsl:choose>
+            <xsl:text> has '@pos' (</xsl:text>
+            <xsl:value-of select="@pos"/>
+            <xsl:text>), that is bigger than its line length (</xsl:text>
+            <xsl:value-of select="$length"/>
+            <xsl:text>)</xsl:text>
+          </xsl:element>
+        </xsl:if>
       </xsl:for-each>
     </defects>
   </xsl:template>

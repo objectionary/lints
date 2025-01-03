@@ -1,24 +1,30 @@
 # `@pos` Bigger Than `@line`
 
 In [XMIR], each `<o/>` must have the value of it's `@pos` attribute not bigger
-than the value of it's `@line` attribute.
+than the length of the `@line` it belongs to.
 
 Incorrect:
 
 ```xml
 <program>
+  <listing># No comments.
+    [] &gt;foo</listing>
   <objects>
-    <o line="3" pos="4" name="foo"/>
+    <o line="2" pos="10" name="foo"/>
   </objects>
 </program>
 ```
+
+Since, line with `foo` object has length 7, while `@pos=10`.
 
 Correct:
 
 ```xml
 <program>
+  <listing># No comments.
+    [] &gt;foo</listing>
   <objects>
-    <o line="3" pos="3" name="foo"/>
+    <o line="2" pos="3" name="foo"/>
   </objects>
 </program>
 ```

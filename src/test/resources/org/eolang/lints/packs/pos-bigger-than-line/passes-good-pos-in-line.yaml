@@ -26,7 +26,9 @@ asserts:
   - /defects[count(defect[@severity='critical'])=0]
 document: |
   <program>
+    <listing># No comments.
+  [] &gt;foo</listing>
     <objects>
-      <o line="3" pos="3" name="foo"/>
+      <o line="2" pos="4" name="foo"/>
     </objects>
   </program>
