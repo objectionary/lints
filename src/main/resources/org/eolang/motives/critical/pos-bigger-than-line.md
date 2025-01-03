@@ -7,25 +7,28 @@ Incorrect:
 
 ```xml
 <program>
-  <listing># No comments.
-    [] &gt;foo</listing>
   <objects>
-    <o line="2" pos="10" name="foo"/>
+    <o line="2" pos="5" name="foo">
+      <o line="2" name="xyz">
+        <o line="2">data</o>
+      </o>
+    </o>
   </objects>
 </program>
 ```
 
-Since, line with `foo` object has length `7` (according to the `<listing/>`),
-while `@pos` points to the `10`.
+Since, line with `foo` object has length `4`, while `@pos` points to the `5`.
 
 Correct:
 
 ```xml
 <program>
-  <listing># No comments.
-    [] &gt;foo</listing>
   <objects>
-    <o line="2" pos="3" name="foo"/>
+    <o line="2" pos="2" name="foo">
+      <o line="2" name="xyz">
+        <o line="2">data</o>
+      </o>
+    </o>
   </objects>
 </program>
 ```
