@@ -15,7 +15,8 @@ Incorrect:
 </program>
 ```
 
-Since, line with `foo` object has length 7, while `@pos=10`.
+Since, line with `foo` object has length `7` (according to the `<listing/>`),
+while `@pos` points to the `10`.
 
 Correct:
 
