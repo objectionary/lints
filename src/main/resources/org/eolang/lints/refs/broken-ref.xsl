@@ -32,7 +32,7 @@ SOFTWARE.
         <xsl:if test="not(//o[@name=$o/@base and @line=$o/@ref])">
           <xsl:element name="defect">
             <xsl:attribute name="severity">
-              <xsl:text>error</xsl:text>
+              <xsl:text>warning</xsl:text>
             </xsl:attribute>
             <xsl:attribute name="line">
               <xsl:value-of select="eo:lineno(@line)"/>
