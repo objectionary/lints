@@ -28,7 +28,7 @@ SOFTWARE.
   <xsl:output encoding="UTF-8" method="xml"/>
   <xsl:template match="/">
     <defects>
-      <xsl:for-each select="//o[@base and @base!='∅' and @base!='@' and @base!='&amp;' and @base!='Q' and @base!='^' and @base!='$' and @base!='&lt;' and not(@ref) and not(contains(@base, '.')) and not(@base = //meta[head='alias']/part[1])]">
+      <xsl:for-each select="//o[@base and @base!='∅' and @base!='@' and @base!='&amp;' and @base!='Q' and @base!='^' and @base!='$' and @base!='&lt;' and not(contains(@base, '.')) and not(@base = //meta[head='alias']/part[1])]">
         <xsl:element name="defect">
           <xsl:attribute name="line">
             <xsl:value-of select="eo:lineno(@line)"/>
