@@ -12,7 +12,7 @@ Incorrect:
 
 [] > bytes
   [x] > eq /bool
-    
+
   [y] > not /bool
 ```
 
@@ -27,6 +27,6 @@ Correct:
 
 [] > bytes
   [x] > eq /bool
-    
+
   [y] > not /bool
 ```

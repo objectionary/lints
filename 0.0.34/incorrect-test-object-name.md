@@ -52,15 +52,15 @@ Correct:
 # Test.
 [] > runs
   42 > foo
-  
+
 # Test.
 [] > runs-something
   42 > fooB
-  
+
 # Test.
 [] > good-one
   42 > foo
-  
+
 # Test.
 [] > ok
   42 > foo
