@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2016-2024 Objectionary.com
+ * Copyright (c) 2016-2025 Objectionary.com
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,6 +25,7 @@ package org.eolang.lints.units;
 
 import com.jcabi.xml.XML;
 import com.jcabi.xml.XMLDocument;
+import matchers.DefectMatcher;
 import org.cactoos.map.MapEntry;
 import org.cactoos.map.MapOf;
 import org.hamcrest.MatcherAssert;
@@ -44,11 +45,25 @@ final class LtUnitTestWithoutLiveFileTest {
             "Defects are empty, but they should not",
             new LtUnitTestWithoutLiveFile().defects(
                 new MapOf<String, XML>(
-                    new MapEntry<>("foo-test", new XMLDocument("<program/>")),
-                    new MapEntry<>("bar", new XMLDocument("<program/>"))
+                    new MapEntry<>("abc-test", new XMLDocument("<program/>")),
+                    new MapEntry<>("cde", new XMLDocument("<program/>"))
                 )
             ),
             Matchers.hasSize(Matchers.greaterThan(0))
+        );
+    }
+
+    @Test
+    void reportsProperly() {
+        MatcherAssert.assertThat(
+            "Defects are empty, but they should not",
+            new LtUnitTestWithoutLiveFile().defects(
+                new MapOf<String, XML>(
+                    new MapEntry<>("xyz-test", new XMLDocument("<program name='xyz-test'/>")),
+                    new MapEntry<>("bar", new XMLDocument("<program name='bar'/>"))
+                )
+            ),
+            Matchers.everyItem(new DefectMatcher())
         );
     }
 
@@ -58,8 +73,8 @@ final class LtUnitTestWithoutLiveFileTest {
             "Defects are not empty, but they should",
             new LtUnitTestWithoutLiveFile().defects(
                 new MapOf<String, XML>(
-                    new MapEntry<>("foo-test", new XMLDocument("<program/>")),
-                    new MapEntry<>("foo", new XMLDocument("<program/>"))
+                    new MapEntry<>("foo-test", new XMLDocument("<program name='foo-test'/>")),
+                    new MapEntry<>("foo", new XMLDocument("<program name='foo'/>"))
                 )
             ),
             Matchers.emptyIterable()

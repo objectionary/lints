@@ -24,7 +24,7 @@ We use this package as a dependency in the
 <dependency>
   <groupId>org.eolang</groupId>
   <artifactId>lints</artifactId>
-  <version>0.0.33</version>
+  <version>0.0.34</version>
 </dependency>
 ```
 
@@ -79,7 +79,7 @@ with the help of the `+unlint` meta.
 The library is designed as a set of lints, each of which
 is a separate class implementing the `Lint` interface.
 Each lint is responsible for checking one particular aspect
-of the [XMIR] document. The `Program` class is responsible for  
+of the [XMIR] document. The `Program` class is responsible for
 running all lints and collecting defects for a single XMIR file.
 The `Programs` class is responsible for running all lints and
 collecting defects for a set of XMIR files. All in all,
@@ -142,6 +142,12 @@ before sending us your pull request please run full Maven build:
 
 ```bash
 mvn clean install -Pqulice
+```
+
+Also, run this and make sure your changes don't slow us down:
+
+```bash
+mvn jmh:benchmark
 ```
 
 You will need [Maven 3.3+](https://maven.apache.org) and Java 11+ installed.

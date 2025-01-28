@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2016-2024 Objectionary.com
+ * Copyright (c) 2016-2025 Objectionary.com
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -30,12 +30,12 @@ import com.yegor256.MayBeSlow;
 import com.yegor256.Mktmp;
 import com.yegor256.MktmpResolver;
 import com.yegor256.Together;
-import com.yegor256.farea.Farea;
 import com.yegor256.tojos.MnCsv;
 import com.yegor256.tojos.TjCached;
 import com.yegor256.tojos.TjDefault;
 import com.yegor256.tojos.Tojos;
 import com.yegor256.xsline.Xsline;
+import fixtures.LargeXmir;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -47,6 +47,7 @@ import org.cactoos.io.InputOf;
 import org.cactoos.io.ResourceOf;
 import org.cactoos.iterable.Sticky;
 import org.cactoos.iterable.Synced;
+import org.cactoos.scalar.Unchecked;
 import org.cactoos.set.SetOf;
 import org.eolang.parser.EoSyntax;
 import org.eolang.parser.TrParsing;
@@ -75,20 +76,45 @@ final class ProgramTest {
     @Test
     void returnsEmptyListOfDefects() throws IOException {
         MatcherAssert.assertThat(
-            "no defects found since the code is clean",
+            "defects found even though the code is clean",
             new Program(
                 new EoSyntax(
                     "foo",
+                    String.join(
+                        "\n",
+                        "+home https://www.eolang.org",
+                        "+package bar",
+                        "+version 0.0.0",
+                        "",
+                        "# This is just a test object with no functionality.",
+                        "[] > foo\n",
+                        "  42 > x"
+                    )
+                ).parsed()
+            ).defects(),
+            Matchers.emptyIterable()
+        );
+    }
+
+    @Test
+    void suppressesManyLints() throws IOException {
+        MatcherAssert.assertThat(
+            "defect found even though lint is suppressed",
+            new Program(
+                new EoSyntax(
+                    "foo-11",
                     new InputOf(
                         String.join(
                             "\n",
-                            "+home https://www.eolang.org",
-                            "+package bar",
-                            "+version 0.0.0",
-                            "",
-                            "# This is just a test object with no functionality.",
-                            "[] > foo\n",
-                            "  42 > x"
+                            "+unlint object-does-not-match-filename",
+                            "+unlint empty-object",
+                            "+unlint mandatory-home",
+                            "+unlint mandatory-package",
+                            "+unlint mandatory-version",
+                            "+unlint comment-too-short",
+                            "+unlint unsorted-metas",
+                            "# Test.",
+                            "[] > foo"
                         )
                     )
                 ).parsed()
@@ -103,7 +129,7 @@ final class ProgramTest {
         Files.write(
             path,
             new EoSyntax(
-                new InputOf("# first.\n[] > foo\n# second.\n[] > foo\n")
+                "# first.\n[] > foo\n# second.\n[] > foo\n"
             ).parsed().toString().getBytes(StandardCharsets.UTF_8)
         );
         MatcherAssert.assertThat(
@@ -124,7 +150,7 @@ final class ProgramTest {
         Files.write(
             path,
             new EoSyntax(
-                new InputOf("# first.\n[] > foo\n# second.\n[] > foo\n")
+                "# first.\n[] > foo\n# second.\n[] > foo\n"
             ).parsed().toString().getBytes(StandardCharsets.UTF_8)
         );
         MatcherAssert.assertThat(
@@ -204,7 +230,7 @@ final class ProgramTest {
         Assertions.assertDoesNotThrow(
             () ->
                 new Program(
-                    new XMLDocument("<program/>")
+                    new XMLDocument("<program name='correct'/>")
                 ).defects(),
             "Exception was thrown, but it should not be"
         );
@@ -215,58 +241,28 @@ final class ProgramTest {
     @ExtendWith(MktmpResolver.class)
     @ExtendWith(MayBeSlow.class)
     @Timeout(600L)
-    void lintsLargeJnaClass(@Mktmp final Path home) throws Exception {
+    void lintsLargeJnaClass() throws Exception {
         final String path = "com/sun/jna/Pointer.class";
-        final Path bin = Paths.get("target")
-            .resolve("jna-classes")
-            .resolve(path);
-        new Farea(home).together(
-            f -> {
-                f.clean();
-                f.files()
-                    .file(String.format("target/classes/%s", path))
-                    .write(Files.readAllBytes(bin));
-                f.build()
-                    .plugins()
-                    .append("org.eolang", "jeo-maven-plugin", "0.6.26")
-                    .execution("default")
-                    .phase("process-classes")
-                    .goals("disassemble");
-                f.exec("process-classes");
-                final Path pre = f.files().file(
-                    "target/generated-sources/jeo-xmir/com/sun/jna/Pointer.xmir"
-                ).path();
-                final XML xmir = new XMLDocument(pre);
-                final long start = System.currentTimeMillis();
-                final Collection<Defect> defects = new ProgramTest.BcProgram(xmir).defects();
-                final long msec = System.currentTimeMillis() - start;
-                final Path target = Paths.get("target");
-                Files.write(
-                    target.resolve("lint-summary.txt"),
-                    String.join(
-                        "\n",
-                        String.format("Input: %s", path),
-                        Logger.format(
-                            "Size of .class: %[size]s (%1$s bytes)",
-                            bin.toFile().length()
-                        ),
-                        Logger.format(
-                            "Size of .xmir after disassemble: %[size]s (%1$s bytes, %d lines)",
-                            pre.toFile().length(),
-                            Files.readString(pre, StandardCharsets.UTF_8).split("\n").length
-                        ),
-                        Logger.format(
-                            "Lint time: %[ms]s (%d ms)",
-                            msec, msec
-                        )
-                    ).getBytes(StandardCharsets.UTF_8)
-                );
-                MatcherAssert.assertThat(
-                    "Defects are empty, but they should not be",
-                    defects,
-                    Matchers.hasSize(Matchers.greaterThan(0))
-                );
-            }
+        final XML xmir = new Unchecked<>(new LargeXmir()).value();
+        final long start = System.currentTimeMillis();
+        final Collection<Defect> defects = new ProgramTest.BcProgram(xmir).defects();
+        final long msec = System.currentTimeMillis() - start;
+        final Path target = Paths.get("target");
+        Files.write(
+            target.resolve("lint-summary.txt"),
+            String.join(
+                "\n",
+                String.format("Input: %s", path),
+                Logger.format(
+                    "Lint time: %[ms]s (%d ms)",
+                    msec, msec
+                )
+            ).getBytes(StandardCharsets.UTF_8)
+        );
+        MatcherAssert.assertThat(
+            "Defects are empty, but they should not be",
+            defects,
+            Matchers.hasSize(Matchers.greaterThan(0))
         );
     }
 

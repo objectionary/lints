@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2016-2024 Objectionary.com
+ * Copyright (c) 2016-2025 Objectionary.com
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -43,10 +43,11 @@ public final class LtUnitTestMissing implements Lint<Map<String, XML>> {
     public Collection<Defect> defects(final Map<String, XML> pkg) throws IOException {
         final Collection<Defect> defects = new LinkedList<>();
         for (final String name : pkg.keySet()) {
-            if (name.endsWith("-test")) {
+            if (name.endsWith("-tests")) {
                 continue;
             }
-            if (pkg.containsKey(String.format("%s-test", name))) {
+            final String lookup = String.format("%s-tests", name);
+            if (pkg.containsKey(lookup)) {
                 continue;
             }
             defects.add(
@@ -55,7 +56,7 @@ public final class LtUnitTestMissing implements Lint<Map<String, XML>> {
                     Severity.WARNING,
                     name,
                     0,
-                    String.format("Unit test is not found for %s", name)
+                    String.format("Tests \"%s\" not found for \"%s\"", lookup, name)
                 )
             );
         }

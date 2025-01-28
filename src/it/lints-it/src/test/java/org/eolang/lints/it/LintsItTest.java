@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2016-2024 Objectionary.com
+ * Copyright (c) 2016-2025 Objectionary.com
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -34,7 +34,7 @@ final class LintsItTest {
     void lintsProgram() throws IOException {
         MatcherAssert.assertThat(
             "passes with no exceptions",
-            new Program(new XMLDocument("<program/>")).defects(),
+            new Program(new XMLDocument("<program name='it'/>")).defects(),
             Matchers.notNullValue()
         );
     }

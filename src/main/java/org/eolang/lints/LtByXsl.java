@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2016-2024 Objectionary.com
+ * Copyright (c) 2016-2025 Objectionary.com
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,23 +23,22 @@
  */
 package org.eolang.lints;
 
+import com.github.lombrozo.xnav.Filter;
+import com.github.lombrozo.xnav.Xnav;
 import com.jcabi.xml.ClasspathSources;
 import com.jcabi.xml.XML;
 import com.jcabi.xml.XMLDocument;
 import com.jcabi.xml.XSL;
 import com.jcabi.xml.XSLDocument;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 import org.cactoos.Input;
 import org.cactoos.io.ResourceOf;
 import org.cactoos.text.IoCheckedText;
 import org.cactoos.text.TextOf;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 /**
  * Lint by XSL.
@@ -167,50 +166,27 @@ final class LtByXsl implements Lint<XML> {
      * Find the name of the program.
      * @param program XML program
      * @return Name of the program.
-     * @todo #199:30min Use {@link XML#xpath(String)} Method Instead.
-     *  This method is using a custom implementation to find the name of the program.
-     *  We should replace it with the {@link XML#xpath(String)} method to make the code cleaner.
-     *  You can use `program.xpath("/program/@name").stream().findFirst().orElse("unknown")`
-     *  to find the name.
-     *  This issue is blocked by
-     *  <a href="https://github.com/jcabi/jcabi-xml/issues/289">jcabi/jcabi-xml#289</a>.
      */
     private static String findName(final XML program) {
-        return Optional.of(program.inner().getFirstChild())
-            .map(Node::getAttributes).map(attrs -> attrs.getNamedItem("name"))
-            .map(Node::getTextContent).orElse("unknown");
+        return new Xnav(program.inner())
+            .element("program")
+            .attribute("name")
+            .text()
+            .orElse("unknown");
     }
 
     /**
      * Find defects in the report.
      * @param report XML report.
      * @return Collection of defects.
-     * @todo #199:30min Use {@link XML#nodes(String)} Method Instead.
-     *  This method is using a custom implementation to find defects in the
-     *  report. We should replace it with the {@link XML#nodes(String)} method
-     *  to make the code cleaner.
-     *  You can use `report.nodes("/defects/defect")` to find the defects.
-     *  This issue is blocked by
-     *  <a href="https://github.com/jcabi/jcabi-xml/issues/288">jcabi/jcabi-xml#288</a>.
      */
     private static Collection<XML> findDefects(final XML report) {
-        final NodeList nodes = report.inner().getChildNodes();
-        final int length = nodes.getLength();
-        final List<XML> defects = new ArrayList<>(0);
-        for (int index = 0; index < length; ++index) {
-            final Node element = nodes.item(index);
-            if ("defects".equals(element.getNodeName())) {
-                final NodeList dnodes;
-                dnodes = element.getChildNodes();
-                final int all = dnodes.getLength();
-                for (int idx = 0; idx < all; ++idx) {
-                    final Node defect = dnodes.item(idx);
-                    if ("defect".equals(defect.getNodeName())) {
-                        defects.add(new XMLDocument(defect.cloneNode(true)));
-                    }
-                }
-            }
-        }
-        return defects;
+        return new Xnav(report.inner())
+            .element("defects")
+            .elements(Filter.withName("defect"))
+            .map(Xnav::copy)
+            .map(Xnav::node)
+            .map(XMLDocument::new)
+            .collect(Collectors.toList());
     }
 }

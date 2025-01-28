@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2016-2024 Objectionary.com
+ * Copyright (c) 2016-2025 Objectionary.com
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,19 +24,19 @@
 package org.eolang.lints.misc;
 
 import com.jcabi.xml.XML;
-import edu.stanford.nlp.ling.CoreAnnotations;
-import edu.stanford.nlp.pipeline.CoreDocument;
-import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Locale;
-import java.util.Properties;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import opennlp.tools.postag.POSModel;
+import opennlp.tools.postag.POSTaggerME;
 import org.cactoos.io.ResourceOf;
+import org.cactoos.list.ListOf;
 import org.cactoos.text.TextOf;
 import org.cactoos.text.UncheckedText;
 import org.eolang.lints.Defect;
@@ -45,20 +45,15 @@ import org.eolang.lints.Severity;
 
 /**
  * Lint that checks test object name is a verb in singular.
- * This lint uses <a href="https://stanfordnlp.github.io/CoreNLP/">Stanford CoreNLP model</a>
+ * This lint uses <a href="https://opennlp.apache.org/">OpenNLP models</a>
  * with POS tagging capabilities in order to determine the part of speech and
- * tense for test object name. Originally, we used <a href="https://opennlp.apache.org/">OpenNLP</a>
- * library to do that, but switched to the Stanford CoreNLP, due to merging all
- * verb tags into single `VERB` POS tag, that sacrifices important information
- * for us about verb tenses, and appeared in OpenNLP 2.4.0+. You can read more
- * about the reason of this <a href="https://github.com/objectionary/lints/issues/129">here</a>
- * and <a href="https://github.com/objectionary/lints/pull/126#issuecomment-2531121073">here</a>.
+ * tense for test object name.
  * @since 0.0.22
- * @todo #129:60min Library stanford-corenlp-4.5.7-models.jar takes too much in size.
- *  Currently, JAR takes ~452mb, which may cause some troubles to the users of
- *  the lints library. Let's think what we can do about this. We should check is
- *  it possible to get rid of this dependency and download models from the other
- *  source.
+ * @todo #257:60min Configure model download only during the build and place into the JAR.
+ *  Currently, we download model file each time when creating the lint, which may
+ *  be slow in the usage of this lint. Instead, let's configure maven to download
+ *  model file during the build, and place into JAR, so lint will be able to locate
+ *  file from resources faster.
  */
 public final class LtTestNotVerb implements Lint<XML> {
 
@@ -68,46 +63,50 @@ public final class LtTestNotVerb implements Lint<XML> {
     private static final Pattern KEBAB = Pattern.compile("-");
 
     /**
-     * Properties of NLP pipeline.
+     * Part-Of-Speech tagger.
      */
-    private final Properties properties;
-
-    /**
-     * Ctor.
-     * @param props Pipeline properties
-     */
-    public LtTestNotVerb(final Properties props) {
-        this.properties = new Properties(props);
-    }
+    private final POSTaggerME model;
 
     /**
      * Ctor.
      */
     public LtTestNotVerb() {
-        this(LtTestNotVerb.defaults());
+        this(LtTestNotVerb.defaultPosModel());
+    }
+
+    /**
+     * Ctor.
+     * @param mdl Part-Of-Speech model
+     */
+    public LtTestNotVerb(final POSModel mdl) {
+        this(new POSTaggerME(mdl));
+    }
+
+    /**
+     * Ctor.
+     * @param pos Part-Of-Speech tagger
+     */
+    public LtTestNotVerb(final POSTaggerME pos) {
+        this.model = pos;
     }
 
     @Override
     public Collection<Defect> defects(final XML xmir) throws IOException {
         final Collection<Defect> defects = new LinkedList<>();
-        final StanfordCoreNLP pipeline = new StanfordCoreNLP(this.properties);
         for (final XML object : xmir.nodes("/program[metas/meta[head='tests']]/objects/o[@name]")) {
             final String name = object.xpath("@name").get(0);
-            final CoreDocument doc = new CoreDocument(
-                Stream
-                    .concat(
-                        Stream.of("It"),
-                        Arrays.stream(LtTestNotVerb.KEBAB.split(name))
-                    )
-                    .map(s -> s.toLowerCase(Locale.ROOT))
-                    .collect(Collectors.joining(" "))
-            );
-            pipeline.annotate(doc);
-            if (
-                !"VBZ".equals(
-                    doc.tokens().get(1).get(CoreAnnotations.PartOfSpeechAnnotation.class)
+            final String first = new ListOf<>(
+                this.model.tag(
+                    Stream
+                        .concat(
+                            Stream.of("It"),
+                            Arrays.stream(LtTestNotVerb.KEBAB.split(name))
+                        )
+                        .map(s -> s.toLowerCase(Locale.ROOT))
+                        .toArray(String[]::new)
                 )
-            ) {
+            ).get(1);
+            if (!"VBZ".equals(first)) {
                 defects.add(
                     new Defect.Default(
                         "unit-test-is-not-verb",
@@ -141,13 +140,20 @@ public final class LtTestNotVerb implements Lint<XML> {
         return "unit-test-is-not-verb";
     }
 
-    /**
-     * Prestructor for default properties.
-     * @return Properties.
-     */
-    private static Properties defaults() {
-        final Properties props = new Properties();
-        props.setProperty("annotators", "tokenize,pos");
-        return props;
+    private static POSModel defaultPosModel() {
+        try {
+            return new POSModel(
+                new URI("https://opennlp.sourceforge.net/models-1.5/en-pos-perceptron.bin")
+                    .toURL()
+            );
+        } catch (final IOException exception) {
+            throw new IllegalStateException(
+                "Failed to read from I/O", exception
+            );
+        } catch (final URISyntaxException exception) {
+            throw new IllegalStateException(
+                "URI syntax is broken", exception
+            );
+        }
     }
 }

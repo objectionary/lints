@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2016-2024 Objectionary.com
+ * Copyright (c) 2016-2025 Objectionary.com
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -70,7 +70,7 @@ public final class LtAsciiOnly implements Lint<XML> {
                     xmir.xpath("/program/@name").stream().findFirst().orElse("unknown"),
                     Integer.parseInt(line),
                     String.format(
-                        "Only ASCII characters are allowed in comments, while '%s' is used at the %sth line at the %sth position",
+                        "Only ASCII characters are allowed in comments, while \"%s\" is used at the line no.%s at the position no.%s",
                         chr,
                         line,
                         comment.xpath("text()").get(0).indexOf(chr) + 1

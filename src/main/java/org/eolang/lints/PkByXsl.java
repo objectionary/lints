@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2016-2024 Objectionary.com
+ * Copyright (c) 2016-2025 Objectionary.com
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -70,7 +70,7 @@ final class PkByXsl extends IterableEnvelope<Lint<XML>> {
         try {
             return new Shuffled<Lint<XML>>(
                 new Mapped<>(
-                    res -> new LtSuppressed(
+                    res -> new LtUnlint(
                         new LtByXsl(
                             new InputOf(res.getInputStream()),
                             new InputOf(

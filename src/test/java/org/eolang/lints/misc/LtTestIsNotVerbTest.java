@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2016-2024 Objectionary.com
+ * Copyright (c) 2016-2025 Objectionary.com
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,9 +24,9 @@
 package org.eolang.lints.misc;
 
 import com.yegor256.MayBeSlow;
-import java.io.IOException;
-import org.cactoos.io.ResourceOf;
-import org.eolang.parser.EoSyntax;
+import fixtures.ParsedEo;
+import matchers.DefectMatcher;
+import org.eolang.lints.Defect;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
@@ -45,13 +45,14 @@ final class LtTestIsNotVerbTest {
         MatcherAssert.assertThat(
             "Defects size doesn't match with expected",
             new LtTestNotVerb().defects(
-                new EoSyntax(
-                    new ResourceOf(
-                        "org/eolang/lints/misc/test-object-is-not-verb-in-singular/bad-tests.eo"
-                    )
-                ).parsed()
+                new ParsedEo(
+                    "org/eolang/lints/misc/test-object-is-not-verb-in-singular/bad-tests.eo"
+                ).value()
             ),
-            Matchers.hasSize(40)
+            Matchers.allOf(
+                Matchers.<Defect>iterableWithSize(40),
+                Matchers.everyItem(new DefectMatcher())
+            )
         );
     }
 
@@ -61,11 +62,9 @@ final class LtTestIsNotVerbTest {
         MatcherAssert.assertThat(
             "Defects are not empty, but they shouldn't be",
             new LtTestNotVerb().defects(
-                new EoSyntax(
-                    new ResourceOf(
-                        "org/eolang/lints/misc/test-object-is-not-verb-in-singular/good-tests.eo"
-                    )
-                ).parsed()
+                new ParsedEo(
+                    "org/eolang/lints/misc/test-object-is-not-verb-in-singular/good-tests.eo"
+                ).value()
             ),
             Matchers.hasSize(0)
         );
@@ -73,15 +72,13 @@ final class LtTestIsNotVerbTest {
 
     @Test
     @ExtendWith(MayBeSlow.class)
-    void lintsRegexTests() throws IOException {
+    void lintsRegexTests() throws Exception {
         MatcherAssert.assertThat(
             "Defects size doesn't match with expected",
             new LtTestNotVerb().defects(
-                new EoSyntax(
-                    new ResourceOf(
-                        "org/eolang/lints/misc/test-object-is-not-verb-in-singular/regex-tests.eo"
-                    )
-                ).parsed()
+                new ParsedEo(
+                    "org/eolang/lints/misc/test-object-is-not-verb-in-singular/regex-tests.eo"
+                ).value()
             ),
             Matchers.hasSize(12)
         );

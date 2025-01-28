@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2016-2024 Objectionary.com
+ * Copyright (c) 2016-2025 Objectionary.com
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,10 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package org.eolang.lints;
+package matchers;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.eolang.lints.Defect;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -35,7 +36,7 @@ import org.hamcrest.Matchers;
  *
  * @since 0.0.34
  */
-final class DefectMatcher extends BaseMatcher<Defect> {
+public final class DefectMatcher extends BaseMatcher<Defect> {
 
     /**
      * Synthetic matcher that is built when input arrives.

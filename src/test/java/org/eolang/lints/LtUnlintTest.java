@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2016-2024 Objectionary.com
+ * Copyright (c) 2016-2025 Objectionary.com
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,54 +23,40 @@
  */
 package org.eolang.lints;
 
-import com.jcabi.xml.XML;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
+import org.eolang.parser.EoSyntax;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
+import org.junit.jupiter.api.Test;
 
 /**
- * Lint that ignores linting if {@code +unlint} meta is present.
+ * Test for {@link LtUnlint}.
  *
  * @since 0.0.1
  */
-final class LtSuppressed implements Lint<XML> {
+final class LtUnlintTest {
 
-    /**
-     * The original lint.
-     */
-    private final Lint<XML> origin;
-
-    /**
-     * Ctor.
-     * @param lint The lint to decorate
-     */
-    LtSuppressed(final Lint<XML> lint) {
-        this.origin = lint;
+    @Test
+    void lintsOneFile() throws IOException {
+        MatcherAssert.assertThat(
+            "failed to return one error",
+            new LtUnlint(new LtAlways()).defects(
+                new EoSyntax("# first\n[] > foo\n").parsed()
+            ),
+            Matchers.hasSize(1)
+        );
     }
 
-    @Override
-    public String name() {
-        return this.origin.name();
+    @Test
+    void suppressesTheDefect() throws IOException {
+        MatcherAssert.assertThat(
+            "failed to return empty list",
+            new LtUnlint(new LtAlways()).defects(
+                new EoSyntax(
+                    "+unlint always\n\n# first\n[] > foo\n"
+                ).parsed()
+            ),
+            Matchers.emptyIterable()
+        );
     }
-
-    @Override
-    public Collection<Defect> defects(final XML xmir) throws IOException {
-        final boolean suppress = !xmir.nodes(
-            String.format(
-                "/program/metas/meta[head='unlint' and tail='%s']",
-                this.origin.name()
-            )
-        ).isEmpty();
-        final Collection<Defect> defects = new ArrayList<>(0);
-        if (!suppress) {
-            defects.addAll(this.origin.defects(xmir));
-        }
-        return defects;
-    }
-
-    @Override
-    public String motive() throws IOException {
-        return this.origin.motive();
-    }
-
 }

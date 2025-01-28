@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2016-2024 Objectionary.com
+ * Copyright (c) 2016-2025 Objectionary.com
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,46 +23,59 @@
  */
 package org.eolang.lints;
 
+import com.jcabi.log.Logger;
 import com.jcabi.xml.XML;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.LinkedList;
-import org.hamcrest.BaseMatcher;
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
-import org.hamcrest.Matchers;
+import java.util.Map;
 
 /**
- * Hamcrest matcher for defects in XML.
+ * Lint that ignores linting if {@code +unlint} meta is present.
  *
- * @since 0.0.34
+ * @since 0.0.1
  */
-final class DefectsMatcher extends BaseMatcher<XML> {
+final class LtWpaUnlint implements Lint<Map<String, XML>> {
 
     /**
-     * Synthetic matcher that is built when input arrives.
+     * The original lint.
      */
-    private Matcher<Iterable<? extends Defect>> matcher;
+    private final Lint<Map<String, XML>> origin;
+
+    /**
+     * Ctor.
+     * @param lint The lint to decorate
+     */
+    LtWpaUnlint(final Lint<Map<String, XML>> lint) {
+        this.origin = lint;
+    }
 
     @Override
-    public boolean matches(final Object xml) {
+    public String name() {
+        return this.origin.name();
+    }
+
+    @Override
+    public Collection<Defect> defects(final Map<String, XML> map) throws IOException {
         final Collection<Defect> defects = new LinkedList<>();
-        for (final XML defect : ((XML) xml).nodes("/defects/defect")) {
-            defects.add(
-                new Defect.Default(
-                    "unknown",
-                    Severity.parsed(defect.xpath("@severity").get(0)),
-                    "unknown",
-                    Integer.parseInt(defect.xpath("@line").get(0)),
-                    defect.xpath("text()").get(0)
-                )
-            );
+        for (final Defect defect : this.origin.defects(map)) {
+            final XML xmir = map.get(defect.program());
+            if (xmir == null) {
+                throw new IllegalArgumentException(
+                    Logger.format(
+                        "The \"%s\" defect was found in \"%s\", but this program is not in scope (%[list]s), how come?",
+                        defect.rule(), defect.program(), map.keySet()
+                    )
+                );
+            }
+            defects.addAll(new LtUnlint(new Lint.Mono(defect)).defects(xmir));
         }
-        this.matcher = Matchers.everyItem(new DefectMatcher());
-        return this.matcher.matches(defects);
+        return defects;
     }
 
     @Override
-    public void describeTo(final Description desc) {
-        this.matcher.describeTo(desc);
+    public String motive() throws IOException {
+        return this.origin.motive();
     }
+
 }

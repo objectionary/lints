@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2016-2024 Objectionary.com
+ * Copyright (c) 2016-2025 Objectionary.com
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package org.eolang.lints;
+package matchers;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -44,7 +44,7 @@ import org.languagetool.rules.spelling.SpellingCheckRule;
  *
  * @since 0.0.34
  */
-final class GrammarMatcher extends BaseMatcher<String> {
+public final class GrammarMatcher extends BaseMatcher<String> {
 
     /**
      * The item to be matched.

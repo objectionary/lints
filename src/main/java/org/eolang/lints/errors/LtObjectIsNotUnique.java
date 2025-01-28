@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2016-2024 Objectionary.com
+ * Copyright (c) 2016-2025 Objectionary.com
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -82,7 +82,7 @@ public final class LtObjectIsNotUnique implements Lint<Map<String, XML>> {
                                     .orElse("unknown"),
                                 Integer.parseInt(object.getValue()),
                                 String.format(
-                                    "The object name '%s' is not unique, original object was found in '%s'",
+                                    "The object name \"%s\" is not unique, original object was found in \"%s\"",
                                     object.getKey(), src
                                 )
                             )
@@ -119,7 +119,9 @@ public final class LtObjectIsNotUnique implements Lint<Map<String, XML>> {
             .collect(
                 Collectors.toMap(
                     names::get,
-                    pos -> xmir.xpath("/program/objects/o/@line").get(pos),
+                    pos -> xmir.xpath(
+                        String.format("/program/objects/o[%d]/@line", pos + 1)
+                    ).stream().findFirst().orElse("0"),
                     (existing, replacement) -> replacement
                 )
             );

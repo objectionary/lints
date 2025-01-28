@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2016-2024 Objectionary.com
+ * Copyright (c) 2016-2025 Objectionary.com
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -30,7 +30,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import org.cactoos.io.InputOf;
+import matchers.DefectMatcher;
 import org.cactoos.list.ListOf;
 import org.cactoos.set.SetOf;
 import org.eolang.parser.EoSyntax;
@@ -51,35 +51,54 @@ final class ProgramsTest {
 
     @Test
     void simpleTest(@Mktmp final Path dir) throws IOException {
-        final Path path = dir.resolve("a/b/c/foo.xmir");
-        path.toFile().getParentFile().mkdirs();
-        Files.write(
-            path,
-            new EoSyntax(
-                new InputOf("# first.\n[] > foo\n# second.\n[] > foo\n")
-            ).parsed().toString().getBytes(StandardCharsets.UTF_8)
-        );
         MatcherAssert.assertThat(
             "the defect is found",
-            new Programs(path).defects().size(),
-            Matchers.greaterThan(0)
+            new Programs(
+                this.withProgram(
+                    dir,
+                    "a/b/c/foo.xmir",
+                    "# first.\n[] > foo\n# second.\n[] > foo\n"
+                )
+            ).defects(),
+            Matchers.allOf(
+                Matchers.<Defect>iterableWithSize(Matchers.greaterThan(0)),
+                Matchers.<Defect>everyItem(new DefectMatcher())
+            )
         );
     }
 
-    @RepeatedTest(2)
+    @Test
+    void skipsAllWarnings(@Mktmp final Path dir) throws IOException {
+        MatcherAssert.assertThat(
+            "the defect is found",
+            new Programs(
+                this.withProgram(
+                    dir,
+                    "bar.xmir",
+                    String.join(
+                        "\n",
+                        "+unlint unit-test-missing",
+                        "# Test.",
+                        "[] > foo"
+                    )
+                )
+            ).defects(),
+            Matchers.emptyIterable()
+        );
+    }
+
+    @RepeatedTest(5)
     void checksInParallel(@Mktmp final Path dir) throws IOException {
-        final Path path = dir.resolve("foo.xmir");
-        Files.write(
-            path,
-            new EoSyntax(
-                new InputOf("# first.\n[] > foo\n# second.\n[] > foo\n")
-            ).parsed().toString().getBytes(StandardCharsets.UTF_8)
+        final Path program = this.withProgram(
+            dir,
+            "foo.xmir",
+            "# first.\n# second.\n[] > foo\n"
         );
         MatcherAssert.assertThat(
             "",
             new SetOf<>(
                 new Together<>(
-                    thread -> new Programs(path).defects().size()
+                    thread -> new Programs(program).defects().size()
                 )
             ).size(),
             Matchers.equalTo(1)
@@ -92,6 +111,19 @@ final class ProgramsTest {
             () -> new Programs(new ListOf<>()).defects(),
             "Exception was thrown, but it should not be"
         );
+    }
+
+    private Path withProgram(final Path dir, final String name,
+        final String text) throws IOException {
+        final Path path = dir.resolve(name);
+        path.toFile().getParentFile().mkdirs();
+        Files.write(
+            path,
+            new EoSyntax(
+                text
+            ).parsed().toString().getBytes(StandardCharsets.UTF_8)
+        );
+        return dir;
     }
 
 }

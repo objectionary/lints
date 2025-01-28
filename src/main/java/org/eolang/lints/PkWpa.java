@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2016-2024 Objectionary.com
+ * Copyright (c) 2016-2025 Objectionary.com
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,9 +26,11 @@ package org.eolang.lints;
 import com.jcabi.xml.XML;
 import java.util.Map;
 import org.cactoos.iterable.IterableEnvelope;
+import org.cactoos.iterable.Mapped;
 import org.cactoos.iterable.Shuffled;
 import org.cactoos.list.ListOf;
 import org.eolang.lints.critical.LtIncorrectAlias;
+import org.eolang.lints.errors.LtAtomIsNotUnique;
 import org.eolang.lints.errors.LtObjectIsNotUnique;
 import org.eolang.lints.units.LtUnitTestMissing;
 import org.eolang.lints.units.LtUnitTestWithoutLiveFile;
@@ -49,11 +51,15 @@ public final class PkWpa extends IterableEnvelope<Lint<Map<String, XML>>> {
     public PkWpa() {
         super(
             new Shuffled<>(
-                new ListOf<>(
-                    new LtUnitTestMissing(),
-                    new LtUnitTestWithoutLiveFile(),
-                    new LtIncorrectAlias(),
-                    new LtObjectIsNotUnique()
+                new Mapped<>(
+                    lnt -> new LtWpaUnlint(lnt),
+                    new ListOf<>(
+                        new LtUnitTestMissing(),
+                        new LtUnitTestWithoutLiveFile(),
+                        new LtIncorrectAlias(),
+                        new LtObjectIsNotUnique(),
+                        new LtAtomIsNotUnique()
+                    )
                 )
             )
         );

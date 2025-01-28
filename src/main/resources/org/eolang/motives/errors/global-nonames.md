@@ -19,5 +19,5 @@ Correct:
 
 fake > app
 
-a.b > good    
+a.b > good
 ```

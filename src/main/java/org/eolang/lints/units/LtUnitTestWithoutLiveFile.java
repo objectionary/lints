@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2016-2024 Objectionary.com
+ * Copyright (c) 2016-2025 Objectionary.com
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -65,7 +65,7 @@ public final class LtUnitTestWithoutLiveFile implements Lint<Map<String, XML>> {
                     name,
                     0,
                     String.format(
-                        "Live .eo file '%s' was not found for '%s'", live, name
+                        "Live \".eo\" file \"%s\" was not found for \"%s\"", live, name
                     )
                 )
             );

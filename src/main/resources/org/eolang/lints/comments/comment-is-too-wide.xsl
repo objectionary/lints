@@ -2,7 +2,7 @@
 <!--
 The MIT License (MIT)
 
-Copyright (c) 2016-2024 Objectionary.com
+Copyright (c) 2016-2025 Objectionary.com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -26,7 +26,7 @@ SOFTWARE.
   <xsl:import href="/org/eolang/funcs/lineno.xsl"/>
   <xsl:output encoding="UTF-8" method="xml"/>
   <xsl:template match="/">
-    <xsl:variable name="max" select="80"/>
+    <xsl:variable name="max" select="100"/>
     <defects>
       <xsl:for-each select="/program/comments/comment">
         <xsl:variable name="line" select="if (@line) then @line else '0'"/>
