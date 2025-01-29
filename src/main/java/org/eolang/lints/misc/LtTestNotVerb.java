@@ -129,7 +129,7 @@ public final class LtTestNotVerb implements Lint<XML> {
         return new UncheckedText(
             new TextOf(
                 new ResourceOf(
-                    "org/eolang/motives/misc/test-object-is-not-verb-in-singular.md"
+                    "org/eolang/motives/misc/lt-test-not-verb.md"
                 )
             )
         ).asString();

@@ -43,9 +43,6 @@ import org.eolang.lints.Severity;
  *  For now we just reusing object line number (via @line), which is not correct
  *  for specifying on which line of the program comment is located. This issue
  *  can be solved after <a href="https://github.com/objectionary/eo/issues/3536">this one</a>.
- * @todo #19:45min Create Lint envelope called `JavaLint` that will fetch motive from
- *  Markdown file based on the lint's name (Java class name) and lint's dimension
- *  (Java package name, e.g. `comments`).
  * @checkstyle StringLiteralsConcatenationCheck (30 lines)
  */
 public final class LtAsciiOnly implements Lint<XML> {
@@ -90,7 +87,7 @@ public final class LtAsciiOnly implements Lint<XML> {
     public String motive() throws IOException {
         return new IoCheckedText(
             new TextOf(
-                new ResourceOf("org/eolang/motives/comments/ascii-only.md")
+                new ResourceOf("org/eolang/motives/comments/lt-ascii-only.md")
             )
         ).asString();
     }

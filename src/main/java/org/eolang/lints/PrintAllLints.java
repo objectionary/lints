@@ -24,43 +24,34 @@
 package org.eolang.lints;
 
 import com.jcabi.xml.XML;
-import javax.annotation.concurrent.ThreadSafe;
-import org.cactoos.iterable.IterableEnvelope;
-import org.cactoos.iterable.IterableOf;
-import org.cactoos.iterable.Joined;
-import org.cactoos.iterable.Mapped;
-import org.cactoos.iterable.Shuffled;
-import org.eolang.lints.comments.LtAsciiOnly;
-import org.eolang.lints.misc.LtTestNotVerb;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Collection of lints for individual XML files, provided
- * by the {@link Program} class.
+ * Print all lints.
  *
- * <p>This class is thread-safe.</p>
- *
- * @since 0.23
+ * @since 0.0.0
  */
-@ThreadSafe
-final class PkMono extends IterableEnvelope<Lint<XML>> {
-
-    /**
-     * Default ctor.
-     */
-    PkMono() {
-        super(
-            new Shuffled<>(
-                new Joined<Lint<XML>>(
-                    new PkByXsl(),
-                        new Mapped<Lint<XML>>(
-                            JavaLint::new,
-                            new IterableOf<>(
-                                new LtAsciiOnly(),
-                                new LtTestNotVerb()
-                            )
-                    )
-                )
-            )
-        );
+public final class PrintAllLints {
+    private PrintAllLints() {
     }
+
+    @SuppressWarnings({"PMD.ProhibitPublicStaticMethods", "PMD.AvoidThrowingRawExceptionTypes"})
+    public static void main(final String[] args) {
+        final List<Lint<XML>> alllints = new ArrayList<>(50);
+        new PkMono().forEach(alllints::add);
+        alllints.stream()
+            .map(
+                lint -> {
+                    try {
+                        return lint.motive();
+                    } catch (final IOException exception) {
+                        throw new RuntimeException(exception);
+                    }
+                }
+            )
+            .forEach(System.out::println);
+    }
+
 }
