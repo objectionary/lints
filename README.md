@@ -24,7 +24,7 @@ We use this package as a dependency in the
 <dependency>
   <groupId>org.eolang</groupId>
   <artifactId>lints</artifactId>
-  <version>0.0.34</version>
+  <version>0.0.35</version>
 </dependency>
 ```
 
