@@ -21,8 +21,8 @@
 # SOFTWARE.
 ---
 sheets:
-  - /org/eolang/parser/expand-aliases.xsl
-  - /org/eolang/parser/resolve-aliases.xsl
+  - /org/eolang/parser/parse/expand-aliases.xsl
+  - /org/eolang/parser/parse/resolve-aliases.xsl
   - /org/eolang/lints/aliases/unused-alias.xsl
 asserts:
   - /defects[count(defect[@severity='error'])=2]

@@ -21,7 +21,7 @@
 # SOFTWARE.
 ---
 sheets:
-  - /org/eolang/parser/expand-aliases.xsl
+  - /org/eolang/parser/parse/expand-aliases.xsl
   - /org/eolang/lints/aliases/broken-alias-first.xsl
 asserts:
   - /defects[count(defect[@severity='error'])=17]
