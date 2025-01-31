@@ -25,9 +25,11 @@
 +package canonical
 +unlint empty-object
 +unlint object-does-not-match-filename
++unlint object-has-data
 +version 0.0.0
 
 # Times table, which is a canonical example of EO program.
+# @todo #241:35min Remove `+unlint object-has-data` from canonical EO program.
 [args] > canonical
   malloc.for > @
     0

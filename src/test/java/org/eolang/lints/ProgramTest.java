@@ -34,7 +34,6 @@ import com.yegor256.tojos.MnCsv;
 import com.yegor256.tojos.TjCached;
 import com.yegor256.tojos.TjDefault;
 import com.yegor256.tojos.Tojos;
-import com.yegor256.xsline.Xsline;
 import fixtures.LargeXmir;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -50,7 +49,6 @@ import org.cactoos.iterable.Synced;
 import org.cactoos.scalar.Unchecked;
 import org.cactoos.set.SetOf;
 import org.eolang.parser.EoSyntax;
-import org.eolang.parser.TrParsing;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
@@ -211,13 +209,11 @@ final class ProgramTest {
     @Test
     @Timeout(60L)
     void acceptsCanonicalCode() throws IOException {
-        final XML xmir = new Xsline(new TrParsing()).pass(
-            new EoSyntax(
-                new ResourceOf(
-                    "org/eolang/lints/canonical.eo"
-                )
-            ).parsed()
-        );
+        final XML xmir = new EoSyntax(
+            new ResourceOf(
+                "org/eolang/lints/canonical.eo"
+            )
+        ).parsed();
         MatcherAssert.assertThat(
             String.format("no errors in canonical code in %s", xmir),
             new Program(xmir).defects(),
