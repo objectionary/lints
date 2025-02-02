@@ -1,0 +1,11 @@
+<h1 id="rt-without-atoms"><code>+rt</code> Without Atoms</h1>
+<p>Special <code>+rt</code> meta must be used only with atoms.</p>
+<p>Incorrect:</p>
+<pre class="eo"><code>+rt node eo2js-runtime:0.0.0
+
+[attr] &gt; foo</code></pre>
+<p>Correct:</p>
+<pre class="eo"><code>+rt node eo2js-runtime:0.0.0
+
+[attr] &gt; foo
+  [] &gt; test /int</code></pre>

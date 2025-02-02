@@ -1,0 +1,17 @@
+<h1 id="one-high-level-object">One High-Level Object</h1>
+<p>Every <code>.eo</code> file must have only one high-level object
+inside.</p>
+<p>Incorrect:</p>
+<p><code>app.eo</code>:</p>
+<pre class="eo"><code># Foo.
+[] &gt; foo
+  42 &gt; @
+
+# Bar.
+[] &gt; bar
+  42 &gt; @</code></pre>
+<p>Correct:</p>
+<p><code>app.eo</code>:</p>
+<pre class="eo"><code># Foo.
+[] &gt; foo
+  42 &gt; @</code></pre>

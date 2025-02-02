@@ -1,0 +1,13 @@
+<h1 id="architect-duplicate">Architect Duplicate</h1>
+<p>Each <code>.eo</code> file must have only one architect.</p>
+<p>Incorrect:</p>
+<pre class="eo"><code>+architect jeff@google.com
++architect ivan@google.com
+
+# Foo.
+[] &gt; foo</code></pre>
+<p>Correct:</p>
+<pre class="eo"><code>+architect jeff@google.com
+
+# Foo.
+[] &gt; foo</code></pre>

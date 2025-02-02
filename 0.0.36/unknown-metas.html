@@ -1,0 +1,28 @@
+<h1 id="unknown-metas">Unknown Metas</h1>
+<p>The following metas are supported:</p>
+<ul>
+<li><code>+package</code></li>
+<li><code>+alias</code></li>
+<li><code>+version</code></li>
+<li><code>+tests</code></li>
+<li><code>+rt</code></li>
+<li><code>+architect</code></li>
+<li><code>+home</code></li>
+<li><code>+unlint</code></li>
+<li><code>+probe</code></li>
+</ul>
+<p>Incorrect:</p>
+<pre class="eo"><code>+foo
++bar
+
+[] &gt; foo</code></pre>
+<p>Correct:</p>
+<pre class="eo"><code>+package com.test
++alias foo
++version 0.0.0
++architect yegor256@gmail.com
++rt jvm
++home https://earth.com
++unlint unsorted-metas
+
+[] &gt; foo</code></pre>

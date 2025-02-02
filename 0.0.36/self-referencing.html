@@ -1,0 +1,8 @@
+<h1 id="self-referencing">Self Referencing</h1>
+<p>Object must not refer to itself.</p>
+<p>Incorrect:</p>
+<pre class="eo"><code>[] &gt; foo
+  a &gt; a</code></pre>
+<p>Correct:</p>
+<pre class="eo"><code>[] &gt; foo
+  a &gt; b</code></pre>

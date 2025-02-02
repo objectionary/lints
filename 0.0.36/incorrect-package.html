@@ -1,0 +1,16 @@
+<h1 id="incorrect-package">Incorrect <code>+package</code></h1>
+<p>Special meta <code>+package</code> should follow regexp:</p>
+<pre class="regexp"><code>^[a-z][a-z0-9_]*(\.[a-z0-9_]+)+[0-9a-z_]$</code></pre>
+<p>Incorrect:</p>
+<pre class="eo"><code>+package foo
++package foo.x
++package привет, как дела?
++package привет.как
+
+[] &gt; foo</code></pre>
+<p>Correct:</p>
+<pre class="eo"><code>+package foo.bar
++package my.awesome.package
++package test.xy
+
+[] &gt; foo</code></pre>

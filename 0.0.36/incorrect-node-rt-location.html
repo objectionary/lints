@@ -1,0 +1,18 @@
+<h1 id="incorrect-rt-node-location">Incorrect <code>+rt</code> node
+location</h1>
+<p>The location of NodeJS runtime should follow the regexp:</p>
+<pre class="regexp"><code>^([a-zA-Z0-9_.-]+):(\d+\.\d+\.\d+)$</code></pre>
+<p>Incorrect:</p>
+<pre class="eo"><code>+rt node foo
++rt node hello, world!
++rt node bar-test:test:1.2.3
+
+# No comments.
+[] &gt; foo</code></pre>
+<p>Correct:</p>
+<pre class="eo"><code>+rt node eo2js-runtime:0.0.0
++rt node bar-test:1.1
++rt node foo:1.2.3
+
+# No comments.
+[] &gt; foo</code></pre>

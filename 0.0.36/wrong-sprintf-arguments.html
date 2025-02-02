@@ -1,0 +1,16 @@
+<h1 id="wrong-qq.txt.sprintf-arguments">Wrong
+<code>QQ.txt.sprintf</code> Arguments</h1>
+<p>The <code>QQ.txt.sprintf</code> object must have a match between its
+placeholder variables and passed arguments.</p>
+<p>Incorrect:</p>
+<pre class="eo"><code>[] &gt; app
+  QQ.io.stdout &gt; @
+    QQ.txt.sprintf
+      &quot;Hello, %s! Your account is %d.&quot;
+      * name</code></pre>
+<p>Correct:</p>
+<pre class="eo"><code>[] &gt; app
+  QQ.io.stdout &gt; @
+    QQ.txt.sprintf
+      &quot;Hello, %s! Your account is %d.&quot;
+      * name acc</code></pre>

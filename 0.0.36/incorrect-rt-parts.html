@@ -1,0 +1,12 @@
+<h1 id="incorrect-rt-parts">Incorrect <code>+rt</code> parts</h1>
+<p>Special <code>+rt</code> meta must have exactly two parts, which is
+the name of the runtime, and the location of the runtime.</p>
+<p>Incorrect:</p>
+<pre class="eo"><code>+rt jvm
++rt jvm eolang
+
+[] &gt; foo</code></pre>
+<p>Correct:</p>
+<pre class="eo"><code>+rt jvm org.eolang:eo-runtime:0.0.0
+
+[] &gt; foo</code></pre>

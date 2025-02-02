@@ -1,0 +1,12 @@
+<h1 id="package-contains-multiple-parts"><code>+package</code> contains
+multiple parts</h1>
+<p>Special <code>+package</code> meta must be constructed from exact one
+part.</p>
+<p>Incorrect:</p>
+<pre class="eo"><code>+package foo bar
+
+[] &gt; foo</code></pre>
+<p>Correct:</p>
+<pre class="eo"><code>+package foo.bar
+
+[] &gt; foo</code></pre>

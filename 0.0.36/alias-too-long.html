@@ -1,0 +1,14 @@
+<h1 id="alias-too-long">Alias Too Long</h1>
+<p>Object’s alias must have <strong>2 parts at max</strong>.</p>
+<p>Incorrect:</p>
+<pre class="eo"><code>+alias a b c
+
+# Foo.
+[] &gt; foo</code></pre>
+<p>Correct:</p>
+<pre class="eo"><code>+alias a
++alias a b
++alias a b.c.d.e
+
+# Foo.
+[] &gt; foo</code></pre>

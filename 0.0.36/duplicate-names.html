@@ -1,0 +1,18 @@
+<h1 id="duplicate-names">Duplicate Names</h1>
+<p>Object’s name must not be duplicated.</p>
+<p>Incorrect:</p>
+<pre class="eo"><code>foo
+  1 &gt; name
+  2 &gt; name</code></pre>
+<pre class="eo"><code>[x] &gt; first
+  second &gt; x
+
+18 &gt; first</code></pre>
+<p>Correct:</p>
+<pre class="eo"><code>foo
+  1 &gt; one
+  2 &gt; two</code></pre>
+<pre class="eo"><code>[x] &gt; first
+  second &gt; x
+
+18 &gt; age</code></pre>

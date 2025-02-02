@@ -1,0 +1,13 @@
+<h1 id="mandatory-version-meta">Mandatory <code>+version</code>
+Meta</h1>
+<p>Program should have only one <code>+version</code> special meta.</p>
+<p>Incorrect:</p>
+<pre class="eo"><code>[] &gt; foo</code></pre>
+<pre class="eo"><code>+version 0.0.1
++version 0.0.2
+
+[] &gt; foo</code></pre>
+<p>Correct:</p>
+<pre class="eo"><code>+package 0.0.1
+
+[] &gt; foo</code></pre>

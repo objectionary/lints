@@ -1,0 +1,15 @@
+<h1 id="incorrect-architect">Incorrect <code>+architect</code></h1>
+<p>Architect’s email must follow regex:</p>
+<pre class="regexp"><code>^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$</code></pre>
+<p>Incorrect:</p>
+<pre class="eo"><code>+architect hello
++architect hello@mail
++architect someone@@
++architect @gmail.com
++architect someone24@.com
+
+[] &gt; foo</code></pre>
+<p>Correct:</p>
+<pre class="eo"><code>+architect hello@gmail.com
+
+[] &gt; foo</code></pre>

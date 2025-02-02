@@ -1,0 +1,11 @@
+<h1 id="external-weak-typed-atoms">External Weak Typed Atoms</h1>
+<p>Weak typing <code>/?</code> does not allowed outside of
+<code>org.eolang</code> package.</p>
+<p>Incorrect:</p>
+<pre class="eo"><code>+package my.awesome.package
+
+[] &gt; my-awesome-object /?</code></pre>
+<p>Correct:</p>
+<pre class="eo"><code>+package my.awesome.package
+
+[] &gt; my-awesome-object /int</code></pre>
