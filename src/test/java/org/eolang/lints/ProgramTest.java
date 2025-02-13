@@ -105,6 +105,7 @@ final class ProgramTest {
                     new InputOf(
                         String.join(
                             "\n",
+                            "+unlint unlint-non-existing-defect",
                             "+unlint object-does-not-match-filename",
                             "+unlint empty-object",
                             "+unlint mandatory-home",
