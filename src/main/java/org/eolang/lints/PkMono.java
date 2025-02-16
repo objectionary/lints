@@ -51,13 +51,10 @@ final class PkMono extends IterableEnvelope<Lint<XML>> {
      * All XML-based lints.
      */
     private static final Iterable<Lint<XML>> LINTS = new Shuffled<>(
-        new Mapped<Lint<XML>>(
-            LtUnlint::new,
-            new Joined<Lint<XML>>(
-                new PkByXsl(),
-                List.of(
-                    new LtAsciiOnly()
-                )
+        new Joined<Lint<XML>>(
+            new PkByXsl(),
+            List.of(
+                new LtAsciiOnly()
             )
         )
     );
@@ -68,14 +65,21 @@ final class PkMono extends IterableEnvelope<Lint<XML>> {
     PkMono() {
         super(
             new Joined<Lint<XML>>(
-                PkMono.LINTS,
+                new Mapped<Lint<XML>>(
+                    LtUnlint::new,
+                    new Joined<Lint<XML>>(
+                        PkMono.LINTS,
+                        List.of(new LtUnlintNonExistingDefect(PkMono.LINTS))
+                    )
+                ),
                 List.of(
                     new LtIncorrectUnlint(
                         new Mapped<>(
                             Lint::name,
-                            new Joined<Lint<?>>(
+                            new Joined<>(
                                 new PkWpa(),
-                                PkMono.LINTS
+                                PkMono.LINTS,
+                                List.of(new LtUnlintNonExistingDefect(PkMono.LINTS))
                             )
                         )
                     )
