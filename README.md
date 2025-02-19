@@ -105,28 +105,28 @@ Here is the result of linting XMIRs:
 <!-- benchmark_begin -->
 ```text
 Input: com/sun/jna/Pointer.class
-Lint time: 6s (6012 ms)
+Lint time: 6s (6381 ms)
 
-application-duality (688 ms)
-incorrect-bytes-format (259 ms)
-object-has-data (244 ms)
-incorrect-package (219 ms)
-line-is-absent (152 ms)
-duplicate-names (129 ms)
-sparse-decoration (116 ms)
-name-outside-of-abstract-object (94 ms)
-atom-in-atom (79 ms)
-many-free-attributes (56 ms)
-wrong-sprintf-arguments (45 ms)
-noname-attribute (44 ms)
-pos-without-line (40 ms)
-decorated-formation (39 ms)
-object-line-out-of-listing (38 ms)
-void-attributes-not-higher-than-other (30 ms)
+application-duality (850 ms)
+object-has-data (308 ms)
+incorrect-bytes-format (265 ms)
+line-is-absent (154 ms)
+schema-is-absent (136 ms)
+duplicate-names (117 ms)
+many-free-attributes (104 ms)
+decorated-formation (90 ms)
+incorrect-package (84 ms)
+noname-attribute (55 ms)
+name-outside-of-abstract-object (49 ms)
+incorrect-architect (46 ms)
+wrong-sprintf-arguments (43 ms)
+sparse-decoration (39 ms)
+prohibited-package (37 ms)
+self-referencing (32 ms)
 ```
 
 The results were calculated in [this GHA job][benchmark-gha]
-on 2025-02-16 at 07:47,
+on 2025-02-19 at 17:53,
 on Linux with 4 CPUs.
 <!-- benchmark_end -->
 
@@ -152,4 +152,4 @@ You will need [Maven 3.3+](https://maven.apache.org) and Java 11+ installed.
 
 [XMIR]: https://news.eolang.org/2022-11-25-xmir-guide.html
 [EO]: https://www.eolang.org
-[benchmark-gha]: https://github.com/objectionary/lints/actions/runs/13352992987
+[benchmark-gha]: https://github.com/objectionary/lints/actions/runs/13419087646
