@@ -117,12 +117,15 @@ final class LtByXsl implements Lint<XML> {
                 );
             }
             defects.add(
-                new Defect.Default(
-                    this.rule,
-                    Severity.parsed(sever.get()),
-                    LtByXsl.findName(xmir),
-                    this.lineno(xml),
-                    xml.text().get()
+                new DfContext(
+                    new Defect.Default(
+                        this.rule,
+                        Severity.parsed(sever.get()),
+                        LtByXsl.findName(xmir),
+                        this.lineno(xml),
+                        xml.text().get()
+                    ),
+                    xml.attribute("context").text().orElse("")
                 )
             );
         }

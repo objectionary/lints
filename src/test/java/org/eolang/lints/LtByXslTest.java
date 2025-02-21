@@ -24,6 +24,7 @@
 package org.eolang.lints;
 
 import com.jcabi.matchers.XhtmlMatchers;
+import com.jcabi.xml.XMLDocument;
 import fixtures.LargeXmir;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -32,6 +33,7 @@ import java.nio.file.Paths;
 import java.util.Set;
 import java.util.stream.Collectors;
 import matchers.DefectsMatcher;
+import org.cactoos.io.ResourceOf;
 import org.cactoos.text.TextOf;
 import org.cactoos.text.UncheckedText;
 import org.eolang.jucs.ClasspathSource;
@@ -54,6 +56,7 @@ import org.junit.jupiter.params.ParameterizedTest;
  *
  * @since 0.0.1
  */
+@SuppressWarnings("PMD.TooManyMethods")
 final class LtByXslTest {
 
     @Test
@@ -230,6 +233,24 @@ final class LtByXslTest {
                 new LargeXmir().value()
             ),
             "Huge XMIR must pass in reasonable time. See the timeout value."
+        );
+    }
+
+    @Test
+    void cutsLargeContext() throws Exception {
+        new LtByXsl("critical/application-duality").defects(
+            new XMLDocument(
+                new ResourceOf(
+                    "org/eolang/lints/xmir-with-application-duality.xml"
+                ).stream()
+            )
+        ).forEach(
+            defect ->
+                MatcherAssert.assertThat(
+                    "Defect context size is too big",
+                    defect.context().length(),
+                    Matchers.lessThanOrEqualTo(300)
+                )
         );
     }
 }
