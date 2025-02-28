@@ -9,9 +9,9 @@
   <xsl:output encoding="UTF-8" method="xml"/>
   <xsl:template match="/">
     <defects>
-      <xsl:for-each select="/program/metas/meta">
+      <xsl:for-each select="/program/metas/meta[not(head='spdx')]">
         <xsl:variable name="meta-text" select="concat(head, ' ', tail)"/>
-        <xsl:variable name="previous" select="(preceding-sibling::meta)[1]"/>
+        <xsl:variable name="previous" select="(preceding-sibling::meta[not(head = 'spdx')])[1]"/>
         <xsl:variable name="sibling-text" select="concat($previous/head/text(), ' ', $previous/tail/text())"/>
         <xsl:if test="$meta-text &lt; $sibling-text">
           <xsl:element name="defect">
