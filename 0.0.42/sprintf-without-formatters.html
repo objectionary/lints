@@ -1,0 +1,17 @@
+<h1
+id="q.org.eolang.txt.sprintf-without-formatters"><code>Q.org.eolang.txt.sprintf</code>
+Without Formatters</h1>
+<p>The use of <code>Q.org.eolang.txt.sprintf</code> object makes no
+sense if there is no formatters in template string.</p>
+<p>Incorrect:</p>
+<pre class="eo"><code>[] &gt; app
+QQ.io.stdout &gt; @
+  QQ.txt.sprintf
+    &quot;Hello Jeff!&quot;
+    *</code></pre>
+<p>Correct:</p>
+<pre class="eo"><code>[] &gt; app
+QQ.io.stdout &gt; @
+  QQ.txt.sprintf
+    &quot;Hello %s!&quot;
+    * &quot;Jeff&quot;</code></pre>
