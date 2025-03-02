@@ -10,6 +10,7 @@ import org.cactoos.list.ListOf;
 import org.eolang.parser.EoSyntax;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -98,6 +99,37 @@ final class LtUnlintNonExistingDefectTest {
                         "\n",
                         "# тук-тук",
                         "[] > bar"
+                    )
+                ).parsed()
+            ),
+            Matchers.emptyIterable()
+        );
+    }
+
+    /**
+     * Ignores WPA unlint.
+     * @throws IOException if something went wrong.
+     * @todo #368:45min Configure `unlint-non-existing-defect` lint to ignore unlints from other
+     *  scope (WPA/Single program). On WPA side of this lint
+     *  ({@link LtUnlintNonExistingDefectWpaTest}) we should ignore single program lints. Also,
+     *  don't forget to enable
+     *  {@link LtUnlintNonExistingDefectWpaTest#ignoresSingleProgramUnlint()}.
+     */
+    @Disabled
+    @Test
+    void ignoresWpaUnlint() throws IOException {
+        MatcherAssert.assertThat(
+            "WPA unlints should be ignored",
+            new LtUnlintNonExistingDefect(
+                new ListOf<>(new LtAsciiOnly())
+            ).defects(
+                new EoSyntax(
+                    String.join(
+                        "\n",
+                        "+unlint unit-test-missing",
+                        "",
+                        "# Buzz",
+                        "[] > buzz"
                     )
                 ).parsed()
             ),
