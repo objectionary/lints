@@ -1,3 +1,7 @@
+/*
+ * SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+ * SPDX-License-Identifier: MIT
+ */
 package org.eolang.lints;
 
 import java.io.IOException;
@@ -11,7 +15,7 @@ import org.cactoos.func.UncheckedFunc;
  * @param <T> The type of entity to analyze
  * @since 0.0.42
  */
-public class LtDfSticky<T> implements Lint<T> {
+final class LtDfSticky<T> implements Lint<T> {
 
     private final Lint<T> origin;
 

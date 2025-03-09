@@ -1,3 +1,7 @@
+/*
+ * SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+ * SPDX-License-Identifier: MIT
+ */
 package org.eolang.lints;
 
 import fixtures.LtFake;
@@ -13,7 +17,7 @@ import org.junit.jupiter.api.Test;
  *
  * @since 0.0.42
  */
-public class LtDfStickyTest {
+final class LtDfStickyTest {
 
     @Test
     void loadsDefectsOnlyOnce() throws IOException {
@@ -30,6 +34,21 @@ public class LtDfStickyTest {
         MatcherAssert.assertThat(
                 count.get(),
                 Matchers.equalTo(1)
+        );
+    }
+
+    @Test
+    void preventDefectsLoadingBeforeMethodCall() throws IOException {
+        AtomicInteger count = new AtomicInteger();
+        Lint<Integer> lint = new LtDfSticky<>(
+                new LtFake<>(entity -> {
+                    count.set(count.get() + 1);
+                    return Collections.emptyList();
+                })
+        );
+        MatcherAssert.assertThat(
+                count.get(),
+                Matchers.equalTo(0)
         );
     }
 }
