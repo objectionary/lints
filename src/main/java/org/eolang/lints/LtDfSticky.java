@@ -6,8 +6,10 @@ package org.eolang.lints;
 
 import java.io.IOException;
 import java.util.Collection;
+import org.cactoos.Func;
+import org.cactoos.func.IoCheckedFunc;
 import org.cactoos.func.StickyFunc;
-import org.cactoos.func.UncheckedFunc;
+import org.cactoos.func.SyncFunc;
 
 /**
  * Lint caching decorator that calls defects method only once. Uses in memory storage for caching.
@@ -25,15 +27,27 @@ final class LtDfSticky<T> implements Lint<T> {
     /**
      * Function that caches result of origin.defects().
      */
-    private final UncheckedFunc<T, Collection<Defect>> defectssup;
+    private final Func<T, Collection<Defect>> cache;
+
+    /**
+     * Ctor.
+     * @param origin Object wrapped by a decorator.
+     * @param cache Defects cache.
+     */
+    LtDfSticky(final Lint<T> origin, final Func<T, Collection<Defect>> cache) {
+        this.origin = origin;
+        this.cache = cache;
+    }
 
     /**
      * Ctor.
      * @param origin Object wrapped by a decorator.
      */
     LtDfSticky(final Lint<T> origin) {
-        this.origin = origin;
-        this.defectssup = new UncheckedFunc<>(new StickyFunc<>(origin::defects));
+        this(
+            origin,
+            new SyncFunc<>(new StickyFunc<>(origin::defects))
+        );
     }
 
     @Override
@@ -43,7 +57,7 @@ final class LtDfSticky<T> implements Lint<T> {
 
     @Override
     public Collection<Defect> defects(final T entity) throws IOException {
-        return this.defectssup.apply(entity);
+        return new IoCheckedFunc<>(this.cache).apply(entity);
     }
 
     @Override

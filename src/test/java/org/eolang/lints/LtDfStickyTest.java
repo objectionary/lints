@@ -13,7 +13,7 @@ import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 
 /**
- * Tests for {@link PkWpa}.
+ * Tests for {@link LtDfSticky}.
  *
  * @since 0.0.42
  */
@@ -34,28 +34,45 @@ final class LtDfStickyTest {
         lint.defects(0);
         lint.defects(0);
         MatcherAssert.assertThat(
-            "Lint.defects() was not called",
-            count.get(),
-            Matchers.not(
-                Matchers.equalTo(0)
-            )
-        );
-        MatcherAssert.assertThat(
-            "Lint.defects() was called more than once",
+            "Lint.defects() calls amount differs from 1",
             count.get(),
             Matchers.equalTo(1)
         );
     }
 
     @Test
-    void preventDefectsLoadingBeforeMethodCall() throws IOException {
+    void loadsDefectsOnlyOnceForEachEntity() throws IOException {
+        final AtomicInteger count = new AtomicInteger();
+        final Lint<Integer> lint = new LtDfSticky<>(
+            new LtFake<>(
+                entity -> {
+                    count.set(count.get() + 1);
+                    return Collections.emptyList();
+                }
+            )
+        );
+        lint.defects(0);
+        lint.defects(0);
+        lint.defects(1);
+        lint.defects(2);
+        lint.defects(2);
+        MatcherAssert.assertThat(
+            "Lint.defects() calls amount differs from 3",
+            count.get(),
+            Matchers.equalTo(3)
+        );
+    }
+
+    @Test
+    void preventDefectsLoadingBeforeMethodCall() {
         final AtomicInteger count = new AtomicInteger();
         new LtDfSticky<>(
             new LtFake<>(
                 entity -> {
                     count.set(count.get() + 1);
                     return Collections.emptyList();
-                })
+                }
+            )
         );
         MatcherAssert.assertThat(
             "Lt.defects() was called",
