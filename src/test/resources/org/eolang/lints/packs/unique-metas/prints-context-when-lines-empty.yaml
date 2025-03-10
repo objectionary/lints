@@ -1,0 +1,25 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/metas/unique-metas.xsl
+asserts:
+  - /defects[count(defect[@context and @severity='error'])=1]
+document: |
+  <program>
+    <metas>
+      <meta>
+        <head>architect</head>
+        <tail>jeff</tail>
+        <part>jeff</part>
+      </meta>
+      <meta>
+        <head>architect</head>
+        <tail>aliaksei</tail>
+        <part>aliaksei</part>
+      </meta>
+     </metas>
+     <objects>
+       <o name="foo"/>
+     </objects>
+  </program>

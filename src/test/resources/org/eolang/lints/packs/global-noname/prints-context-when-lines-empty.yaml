@@ -1,0 +1,13 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/errors/global-noname.xsl
+asserts:
+  - /defects[count(defect[@context and @severity='error'])=1]
+document: |
+  <program>
+    <objects>
+      <o base="Q.org.eolang.fake"/>
+    </objects>
+  </program>

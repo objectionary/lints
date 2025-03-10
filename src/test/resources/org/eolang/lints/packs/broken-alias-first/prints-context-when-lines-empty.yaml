@@ -1,0 +1,21 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/aliases/broken-alias-first.xsl
+asserts:
+  - /defects[count(defect[@context and @severity='error'])=1]
+document: |
+  <program>
+    <metas>
+      <meta>
+         <head>alias</head>
+         <tail>FirstLetter Q.Capital.Letters.Prohibited.Here</tail>
+         <part>FirstLetter</part>
+         <part>Q.Capital.Letters.Prohibited.Here</part>
+      </meta>
+    </metas>
+     <objects>
+        <o name="foo"/>
+     </objects>
+  </program>

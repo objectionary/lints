@@ -1,0 +1,21 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/metas/incorrect-jvm-rt-location.xsl
+asserts:
+  - /defects[count(defect[@context and @severity='warning'])=1]
+document: |
+  <program>
+    <metas>
+      <meta>
+        <head>rt</head>
+        <tail>jvm boom</tail>
+        <part>jvm</part>
+        <part>boom</part>
+      </meta>
+     </metas>
+     <objects>
+       <o name="foo"/>
+     </objects>
+  </program>

@@ -5,6 +5,7 @@
 -->
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:eo="https://www.eolang.org" version="2.0" id="wrong-sprintf-arguments">
   <xsl:import href="/org/eolang/funcs/lineno.xsl"/>
+  <xsl:import href="/org/eolang/funcs/defect-context.xsl"/>
   <xsl:output encoding="UTF-8" method="xml"/>
   <!-- Find arguments in tuple -->
   <xsl:template match="o" mode="arguments" as="xs:integer">
@@ -40,9 +41,15 @@
         <xsl:choose>
           <xsl:when test="count(o)&gt;2">
             <defect>
+              <xsl:variable name="line" select="eo:lineno(@line)"/>
               <xsl:attribute name="line">
-                <xsl:value-of select="eo:lineno(@line)"/>
+                <xsl:value-of select="$line"/>
               </xsl:attribute>
+              <xsl:if test="$line = '0'">
+                <xsl:attribute name="context">
+                  <xsl:value-of select="eo:defect-context(.)"/>
+                </xsl:attribute>
+              </xsl:if>
               <xsl:attribute name="severity">
                 <xsl:text>warning</xsl:text>
               </xsl:attribute>
@@ -53,9 +60,15 @@
           </xsl:when>
           <xsl:when test="not($text)">
             <defect>
+              <xsl:variable name="line" select="eo:lineno(@line)"/>
               <xsl:attribute name="line">
-                <xsl:value-of select="eo:lineno(@line)"/>
+                <xsl:value-of select="$line"/>
               </xsl:attribute>
+              <xsl:if test="$line = '0'">
+                <xsl:attribute name="context">
+                  <xsl:value-of select="eo:defect-context(.)"/>
+                </xsl:attribute>
+              </xsl:if>
               <xsl:attribute name="severity">
                 <xsl:text>warning</xsl:text>
               </xsl:attribute>
@@ -87,9 +100,15 @@
             <xsl:choose>
               <xsl:when test="$used=-1">
                 <defect>
+                  <xsl:variable name="line" select="eo:lineno(@line)"/>
                   <xsl:attribute name="line">
-                    <xsl:value-of select="eo:lineno(@line)"/>
+                    <xsl:value-of select="$line"/>
                   </xsl:attribute>
+                  <xsl:if test="$line = '0'">
+                    <xsl:attribute name="context">
+                      <xsl:value-of select="eo:defect-context(.)"/>
+                    </xsl:attribute>
+                  </xsl:if>
                   <xsl:attribute name="severity">
                     <xsl:text>warning</xsl:text>
                   </xsl:attribute>
@@ -99,9 +118,15 @@
               <xsl:otherwise>
                 <xsl:if test="$declared!=$used">
                   <defect>
+                    <xsl:variable name="line" select="eo:lineno(@line)"/>
                     <xsl:attribute name="line">
-                      <xsl:value-of select="eo:lineno(@line)"/>
+                      <xsl:value-of select="$line"/>
                     </xsl:attribute>
+                    <xsl:if test="$line = '0'">
+                      <xsl:attribute name="context">
+                        <xsl:value-of select="eo:defect-context(.)"/>
+                      </xsl:attribute>
+                    </xsl:if>
                     <xsl:attribute name="severity">
                       <xsl:text>warning</xsl:text>
                     </xsl:attribute>

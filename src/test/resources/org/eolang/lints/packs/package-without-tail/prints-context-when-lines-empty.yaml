@@ -1,0 +1,19 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/critical/package-without-tail.xsl
+asserts:
+  - /defects[count(defect[@context and @severity='critical'])=1]
+document: |
+  <program>
+    <metas>
+      <meta>
+        <head>package</head>
+        <tail/>
+      </meta>
+    </metas>
+    <objects>
+      <o name="foo" pos="0"/>
+    </objects>
+  </program>

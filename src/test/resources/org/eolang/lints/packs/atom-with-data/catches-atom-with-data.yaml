@@ -5,10 +5,11 @@ sheets:
   - /org/eolang/lints/critical/atom-with-data.xsl
 asserts:
   - /defects[count(defect[@severity='critical'])=1]
+  - /defects/defect[@line='1']
 document: |
   <program>
     <objects>
-      <o atom="Foo">
+      <o atom="Foo" line='1'>
        A1-B2-C3-D4-E5
       </o>
     </objects>

@@ -1,0 +1,16 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/atoms/not-empty-atom.xsl
+asserts:
+  - /defects[count(defect[@severity='error'])=1]
+  - /defects/defect[@line='1']
+document: |
+  <program>
+    <objects>
+      <o line="1" atom="org.eolang.number">
+        <o line="2" base="foo"/>
+      </o>
+    </objects>
+  </program>
