@@ -45,22 +45,25 @@ final class PkMono extends IterableEnvelope<Lint<XML>> {
      */
     PkMono() {
         super(
-            new Joined<Lint<XML>>(
-                new Mapped<Lint<XML>>(
-                    LtUnlint::new,
-                    new Joined<Lint<XML>>(
-                        PkMono.LINTS,
-                        List.of(new LtUnlintNonExistingDefect(PkMono.LINTS))
-                    )
-                ),
-                List.of(
-                    new LtIncorrectUnlint(
-                        new Mapped<>(
-                            Lint::name,
-                            new Joined<>(
-                                new PkWpa(),
-                                PkMono.LINTS,
-                                List.of(new LtUnlintNonExistingDefect(PkMono.LINTS))
+            new Mapped<>(
+                LtDfSticky::new,
+                new Joined<Lint<XML>>(
+                    new Mapped<Lint<XML>>(
+                        LtUnlint::new,
+                        new Joined<Lint<XML>>(
+                            PkMono.LINTS,
+                            List.of(new LtUnlintNonExistingDefect(PkMono.LINTS))
+                        )
+                    ),
+                    List.of(
+                        new LtIncorrectUnlint(
+                            new Mapped<>(
+                                Lint::name,
+                                new Joined<>(
+                                    new PkWpa(),
+                                    PkMono.LINTS,
+                                    List.of(new LtUnlintNonExistingDefect(PkMono.LINTS))
+                                )
                             )
                         )
                     )

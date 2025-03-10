@@ -14,6 +14,8 @@ import org.cactoos.func.SyncFunc;
 /**
  * Lint caching decorator that calls defects method only once. Uses in memory storage for caching.
  *
+ * <p>This class is thread-safe.</p>
+ *
  * @param <T> The type of entity to analyze
  * @since 0.0.42
  */
