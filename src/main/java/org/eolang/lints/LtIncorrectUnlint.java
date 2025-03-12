@@ -4,13 +4,12 @@
  */
 package org.eolang.lints;
 
+import com.github.lombrozo.xnav.Xnav;
 import com.jcabi.xml.XML;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.LinkedList;
 import org.cactoos.io.ResourceOf;
-import org.cactoos.iterable.Filtered;
-import org.cactoos.iterable.Mapped;
-import org.cactoos.list.ListOf;
 import org.cactoos.set.SetOf;
 import org.cactoos.text.TextOf;
 import org.cactoos.text.UncheckedText;
@@ -41,22 +40,26 @@ final class LtIncorrectUnlint implements Lint<XML> {
     }
 
     @Override
-    public Collection<Defect> defects(final XML entity) throws IOException {
-        return new ListOf<>(
-            new Mapped<Defect>(
-                xml -> new Defect.Default(
-                    this.name(),
-                    Severity.ERROR,
-                    entity.xpath("/program/@name").stream().findFirst().orElse("unknown"),
-                    Integer.parseInt(xml.xpath("@line").get(0)),
-                    "Uselessly \"unlint\", because a lint with that name does not exist"
-                ),
-                new Filtered<>(
-                    xml -> !this.names.contains(xml.xpath("tail/text()").get(0)),
-                    entity.nodes("/program/metas/meta[head='unlint']")
+    public Collection<Defect> defects(final XML xmir) throws IOException {
+        final Collection<Defect> defects = new LinkedList<>();
+        final Xnav xml = new Xnav(xmir.inner());
+        xml.path("/program/metas/meta[head='unlint']")
+            .filter(u -> !this.names.contains(u.element("tail").text().orElse("unknown")))
+            .forEach(
+                u -> defects.add(
+                    new Defect.Default(
+                        this.name(),
+                        Severity.ERROR,
+                        xml.element("program").attribute("name").text().orElse("unknown"),
+                        Integer.parseInt(u.attribute("line").text().orElse("0")),
+                        String.format(
+                            "Suppressing \"%s\" does not make sense, because there is no lint with that name",
+                            u.element("tail").text().orElse("unknown")
+                        )
+                    )
                 )
-            )
-        );
+            );
+        return defects;
     }
 
     @Override

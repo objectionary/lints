@@ -4,8 +4,10 @@
  */
 package org.eolang.lints;
 
+import java.io.IOException;
 import java.util.List;
 import matchers.DefectMatcher;
+import org.cactoos.list.ListOf;
 import org.eolang.parser.EoSyntax;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -23,7 +25,7 @@ final class LtIncorrectUnlintTest {
             "unlint must point to existing lint",
             new LtIncorrectUnlint(List.of("hello")).defects(
                 new EoSyntax(
-                    "+unlint abracadabra\n+unlint vingardium-leviosa"
+                    "+unlint foo\n+unlint bar"
                 ).parsed()
             ),
             Matchers.allOf(
@@ -43,6 +45,21 @@ final class LtIncorrectUnlintTest {
                 ).parsed()
             ),
             Matchers.emptyIterable()
+        );
+    }
+
+    @Test
+    void providesClearMessage() throws IOException {
+        MatcherAssert.assertThat(
+            "Lint text doesn't contain clear message to the reader",
+            new ListOf<>(
+                new LtIncorrectUnlint(List.of("hello")).defects(
+                    new EoSyntax(
+                        "+unlint boom"
+                    ).parsed()
+                )
+            ).get(0).text(),
+            Matchers.containsString("Suppressing \"boom\" does not make sense")
         );
     }
 }
