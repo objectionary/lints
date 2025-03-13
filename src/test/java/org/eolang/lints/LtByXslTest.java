@@ -53,6 +53,7 @@ final class LtByXslTest {
         );
     }
 
+    @SuppressWarnings("JTCOP.RuleNotContainsTestWord")
     @ParameterizedTest
     @ClasspathSource(value = "org/eolang/lints/packs/", glob = "**.yaml")
     void testsAllLintsByEo(final String yaml) {
@@ -78,7 +79,7 @@ final class LtByXslTest {
     }
 
     @Test
-    void testLocationsOfYamlPacks() throws IOException {
+    void checksLocationsOfYamlPacks() throws IOException {
         final Set<String> groups = Files.walk(Paths.get("src/main/resources/org/eolang/lints"))
             .filter(Files::isRegularFile)
             .filter(path -> path.toString().endsWith(".xsl"))

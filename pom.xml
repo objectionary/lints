@@ -235,7 +235,6 @@
             <artifactId>qulice-maven-plugin</artifactId>
             <version>0.24.0</version>
             <configuration>
-              <license>file:${basedir}/LICENSE.txt</license>
               <excludes>
                 <exclude>pmd:/src/it/.*</exclude>
                 <exclude>checkstyle:/src/it/.*</exclude>
@@ -243,6 +242,18 @@
                 <exclude>dependencies:.*</exclude>
               </excludes>
             </configuration>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>check</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>com.github.volodya-lombrozo</groupId>
+            <artifactId>jtcop-maven-plugin</artifactId>
+            <version>1.3.5</version>
             <executions>
               <execution>
                 <goals>

@@ -17,6 +17,7 @@ import org.junit.jupiter.api.Test;
 final class LintTest {
 
     @Test
+    @SuppressWarnings("JTCOP.RuleAssertionMessage")
     void ensuresEveryLintHasProperPrefix() {
         ArchRuleDefinition.classes()
             .that().haveSimpleNameStartingWith("Lt")
@@ -28,6 +29,7 @@ final class LintTest {
     }
 
     @Test
+    @SuppressWarnings("JTCOP.RuleAssertionMessage")
     void ensuresLintsStayInTheirPackages() {
         ArchRuleDefinition.classes()
             .that().implement(Lint.class)

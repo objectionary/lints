@@ -36,6 +36,7 @@ final class PkWpaTest {
     }
 
     @Test
+    @SuppressWarnings("JTCOP.RuleAssertionMessage")
     void staysInsideThePackage() {
         ArchRuleDefinition.classes()
             .that().haveSimpleName("PkWpa")

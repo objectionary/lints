@@ -78,6 +78,7 @@ final class PkMonoTest {
     }
 
     @Test
+    @SuppressWarnings("JTCOP.RuleAssertionMessage")
     void staysInsideThePackage() {
         ArchRuleDefinition.classes()
             .that().haveSimpleName("PkMono")
