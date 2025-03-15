@@ -1,0 +1,23 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/critical/application-duality.xsl
+asserts:
+  - /defects[count(defect[@severity='critical'])=1]
+  - /defects/defect[@line='7']
+  - /defects/defect[1][contains(normalize-space(), '3 children, 1 with, 2 without')]
+document: |
+  <program>
+    <objects>
+      <o base="Q.org.eolang.tuple" line="7">
+        <o base="Q.org.eolang.tuple.empty"/>
+        <o as="α1" base="Q.org.eolang.number" line="10" pos="8">
+          <o base="Q.org.eolang.bytes">3F-F0-00-00-00-00-00-00</o>
+        </o>
+        <o base="Q.org.eolang.number">
+          <o base="Q.org.eolang.bytes">3F-F0-00-00-00-00-00-00</o>
+        </o>
+      </o>
+    </objects>
+  </program>

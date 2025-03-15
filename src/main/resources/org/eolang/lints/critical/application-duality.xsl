@@ -21,7 +21,10 @@
             </xsl:otherwise>
           </xsl:choose>
         </xsl:variable>
-        <xsl:if test="count($args/*) != count($args/*[@as]) and count($args/*) != count($args/*[not(@as)])">
+        <xsl:variable name="total" select="count($args/*)"/>
+        <xsl:variable name="bindings" select="count($args/*[@as])"/>
+        <xsl:variable name="without" select="count($args/*[not(@as)])"/>
+        <xsl:if test="$total != $bindings and $total != $without">
           <defect>
             <xsl:variable name="line" select="eo:lineno(@line)"/>
             <xsl:attribute name="line">
@@ -45,7 +48,13 @@
                 <xsl:text>anonymous object</xsl:text>
               </xsl:otherwise>
             </xsl:choose>
-            <xsl:text> cannot have both @name and @as attributes as this is prohibited due to duality in the application, please use only one</xsl:text>
+            <xsl:text> cannot mix child elements with and without the @as attribute: </xsl:text>
+            <xsl:value-of select="$total"/>
+            <xsl:text> children, </xsl:text>
+            <xsl:value-of select="$bindings"/>
+            <xsl:text> with, </xsl:text>
+            <xsl:value-of select="$without"/>
+            <xsl:text> without; please ensure that all child elements either have the @as attribute or none of them do</xsl:text>
           </defect>
         </xsl:if>
       </xsl:for-each>
