@@ -293,12 +293,15 @@
                   <goal>mutationCoverage</goal>
                 </goals>
                 <configuration>
-                  <threads>4</threads>
+                  <threads>6</threads>
                   <mutationThreshold>60</mutationThreshold>
                   <excludedTestClasses>
                     <class>org.eolang.lints.ProgramTest</class>
                     <class>org.eolang.lints.PkMonoTest</class>
                     <class>org.eolang.lints.LtByXslTest</class>
+                    <class>org.eolang.lints.PkWpaTest</class>
+                    <class>org.eolang.lints.ProgramsTest</class>
+                    <class>org.eolang.lints.LtUnlintNonExistingDefectWpaTest</class>
                   </excludedTestClasses>
                 </configuration>
               </execution>
