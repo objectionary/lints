@@ -6,10 +6,10 @@ package org.eolang.lints;
 
 import com.jcabi.xml.XML;
 import com.jcabi.xml.XMLDocument;
-import fixtures.ParsedEo;
 import matchers.DefectMatcher;
 import org.cactoos.map.MapEntry;
 import org.cactoos.map.MapOf;
+import org.eolang.parser.EoSyntax;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
@@ -30,15 +30,15 @@ final class LtObjectIsNotUniqueTest {
                 new MapOf<String, XML>(
                     new MapEntry<>(
                         "foo",
-                        new ParsedEo(
-                            "org/eolang/lints/errors/object-is-not-unique/foo.eo"
-                        ).value()
+                        new EoSyntax(
+                            "# Foo\n[] > foo"
+                        ).parsed()
                     ),
                     new MapEntry<>(
                         "bar-with-foo",
-                        new ParsedEo(
-                            "org/eolang/lints/errors/object-is-not-unique/bar-with-foo.eo"
-                        ).value()
+                        new EoSyntax(
+                            "# Bar\n[] > foo"
+                        ).parsed()
                     )
                 )
             ),
@@ -57,15 +57,33 @@ final class LtObjectIsNotUniqueTest {
                 new MapOf<String, XML>(
                     new MapEntry<>(
                         "test-1",
-                        new ParsedEo(
-                            "org/eolang/lints/errors/object-is-not-unique/test-1.eo"
-                        ).value()
+                        new EoSyntax(
+                            String.join(
+                                "\n",
+                                "# foo",
+                                "[] > foo",
+                                "  52 > spb",
+                                "",
+                                "# bar",
+                                "[] > bar",
+                                "  0 > spb"
+                            )
+                        ).parsed()
                     ),
                     new MapEntry<>(
                         "test-2",
-                        new ParsedEo(
-                            "org/eolang/lints/errors/object-is-not-unique/test-2.eo"
-                        ).value()
+                        new EoSyntax(
+                            String.join(
+                                "\n",
+                                "# bar",
+                                "[] > bar",
+                                "  52 > spb",
+                                "",
+                                "# foo",
+                                "[] > foo",
+                                "  0 > spb"
+                            )
+                        ).parsed()
                     )
                 )
             ),
@@ -81,15 +99,25 @@ final class LtObjectIsNotUniqueTest {
                 new MapOf<String, XML>(
                     new MapEntry<>(
                         "c",
-                        new ParsedEo(
-                            "org/eolang/lints/errors/object-is-not-unique/c.eo"
-                        ).value()
+                        new EoSyntax(
+                            String.join(
+                                "\n",
+                                "# 42",
+                                "[] > c",
+                                "  42 > @"
+                            )
+                        ).parsed()
                     ),
                     new MapEntry<>(
                         "e",
-                        new ParsedEo(
-                            "org/eolang/lints/errors/object-is-not-unique/e.eo"
-                        ).value()
+                        new EoSyntax(
+                            String.join(
+                                "\n",
+                                "# 52",
+                                "[] > e",
+                                "  52 > @"
+                            )
+                        ).parsed()
                     )
                 )
             ),
@@ -105,15 +133,25 @@ final class LtObjectIsNotUniqueTest {
                 new MapOf<String, XML>(
                     new MapEntry<>(
                         "baz",
-                        new ParsedEo(
-                            "org/eolang/lints/errors/object-is-not-unique/baz.eo"
-                        ).value()
+                        new EoSyntax(
+                            String.join(
+                                "\n",
+                                "# Baz",
+                                "[] > baz"
+                            )
+                        ).parsed()
                     ),
                     new MapEntry<>(
                         "baz-packaged",
-                        new ParsedEo(
-                            "org/eolang/lints/errors/object-is-not-unique/baz-packaged.eo"
-                        ).value()
+                        new EoSyntax(
+                            String.join(
+                                "\n",
+                                "+package utils",
+                                "",
+                                "# Baz",
+                                "[] > baz"
+                            )
+                        ).parsed()
                     )
                 )
             ),
@@ -129,15 +167,35 @@ final class LtObjectIsNotUniqueTest {
                 new MapOf<String, XML>(
                     new MapEntry<>(
                         "mul",
-                        new ParsedEo(
-                            "org/eolang/lints/errors/object-is-not-unique/mul.eo"
-                        ).value()
+                        new EoSyntax(
+                            String.join(
+                                "\n",
+                                "# Some object",
+                                "[] > foo",
+                                "  52 > inn",
+                                "",
+                                "# test",
+                                "[] > bar",
+                                "  52 > inn"
+                            )
+                        ).parsed()
                     ),
                     new MapEntry<>(
                         "mul-packaged",
-                        new ParsedEo(
-                            "org/eolang/lints/errors/object-is-not-unique/mul-packaged.eo"
-                        ).value()
+                        new EoSyntax(
+                            String.join(
+                                "\n",
+                                "+package mul",
+                                "",
+                                "# test",
+                                "[] > foo",
+                                "  52 > inn",
+                                "",
+                                "# test",
+                                "[] > bar",
+                                "  52 > inn"
+                            )
+                        ).parsed()
                     )
                 )
             ),

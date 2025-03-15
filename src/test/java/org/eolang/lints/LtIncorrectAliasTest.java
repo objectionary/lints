@@ -8,11 +8,11 @@ import com.jcabi.xml.XML;
 import com.jcabi.xml.XMLDocument;
 import com.yegor256.Mktmp;
 import com.yegor256.MktmpResolver;
-import fixtures.ParsedEo;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import matchers.DefectMatcher;
+import org.cactoos.io.ResourceOf;
 import org.cactoos.map.MapEntry;
 import org.cactoos.map.MapOf;
 import org.eolang.parser.EoSyntax;
@@ -95,12 +95,7 @@ final class LtIncorrectAliasTest {
         MatcherAssert.assertThat(
             "Defects aren't empty, but should be",
             new LtIncorrectAlias().defects(
-                new MapOf<>(
-                    new MapEntry<>(
-                        "foo",
-                        new ParsedEo(path).value()
-                    )
-                )
+                new MapOf<>(new MapEntry<>("foo", new EoSyntax(new ResourceOf(path)).parsed()))
             ),
             Matchers.hasSize(0)
         );

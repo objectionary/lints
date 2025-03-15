@@ -5,10 +5,10 @@
 package org.eolang.lints;
 
 import com.jcabi.xml.XML;
-import fixtures.ParsedEo;
 import matchers.DefectMatcher;
 import org.cactoos.map.MapEntry;
 import org.cactoos.map.MapOf;
+import org.eolang.parser.EoSyntax;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
@@ -28,15 +28,25 @@ final class LtAtomIsNotUniqueTest {
                 new MapOf<String, XML>(
                     new MapEntry<>(
                         "foo",
-                        new ParsedEo(
-                            "org/eolang/lints/errors/atom-is-not-unique/foo.eo"
-                        ).value()
+                        new EoSyntax(
+                            String.join(
+                                "\n",
+                                "# Foo.",
+                                "[] > foo",
+                                "  [] > at ?"
+                            )
+                        ).parsed()
                     ),
                     new MapEntry<>(
                         "bar",
-                        new ParsedEo(
-                            "org/eolang/lints/errors/atom-is-not-unique/bar-but-foo.eo"
-                        ).value()
+                        new EoSyntax(
+                            String.join(
+                                "\n",
+                                "# Bar, but its foo.",
+                                "[] > foo",
+                                "  [] > at ?"
+                            )
+                        ).parsed()
                     )
                 )
             ),
@@ -52,15 +62,25 @@ final class LtAtomIsNotUniqueTest {
                 new MapOf<String, XML>(
                     new MapEntry<>(
                         "foo",
-                        new ParsedEo(
-                            "org/eolang/lints/errors/atom-is-not-unique/foo.eo"
-                        ).value()
+                        new EoSyntax(
+                            String.join(
+                                "\n",
+                                "# Fuz.",
+                                "[] > fuz",
+                                "  [] > test ?"
+                            )
+                        ).parsed()
                     ),
                     new MapEntry<>(
                         "bar",
-                        new ParsedEo(
-                            "org/eolang/lints/errors/atom-is-not-unique/bar.eo"
-                        ).value()
+                        new EoSyntax(
+                            String.join(
+                                "\n",
+                                "# Its bar.",
+                                "[] > bar",
+                                "  [] > test ?"
+                            )
+                        ).parsed()
                     )
                 )
             ),
@@ -76,15 +96,29 @@ final class LtAtomIsNotUniqueTest {
                 new MapOf<String, XML>(
                     new MapEntry<>(
                         "foo-packaged",
-                        new ParsedEo(
-                            "org/eolang/lints/errors/atom-is-not-unique/app-1.eo"
-                        ).value()
+                        new EoSyntax(
+                            String.join(
+                                "\n",
+                                "+package xyz",
+                                "",
+                                "# App, XYZ packaged.",
+                                "[] > app",
+                                "  [] > foo ?"
+                            )
+                        ).parsed()
                     ),
                     new MapEntry<>(
                         "bar-packaged",
-                        new ParsedEo(
-                            "org/eolang/lints/errors/atom-is-not-unique/app-2.eo"
-                        ).value()
+                        new EoSyntax(
+                            String.join(
+                                "\n",
+                                "+package xyz",
+                                "",
+                                "# App duplicate.",
+                                "[] > app",
+                                "  [] > foo ?"
+                            )
+                        ).parsed()
                     )
                 )
             ),
@@ -100,15 +134,32 @@ final class LtAtomIsNotUniqueTest {
                 new MapOf<String, XML>(
                     new MapEntry<>(
                         "nested",
-                        new ParsedEo(
-                            "org/eolang/lints/errors/atom-is-not-unique/nested.eo"
-                        ).value()
+                        new EoSyntax(
+                            String.join(
+                                "\n",
+                                "# Top object with nested atoms inside.",
+                                "[] > top",
+                                "  [] > test ?",
+                                "  [] > f",
+                                "    [] > a",
+                                "      [] > bar",
+                                "        [] > abr ?"
+                            )
+                        ).parsed()
                     ),
                     new MapEntry<>(
                         "nested-dup",
-                        new ParsedEo(
-                            "org/eolang/lints/errors/atom-is-not-unique/nested-dup.eo"
-                        ).value()
+                        new EoSyntax(
+                            String.join(
+                                "\n",
+                                "# Top object with nested atoms inside, but without test atom.",
+                                "[] > top",
+                                "  [] > f",
+                                "    [] > a",
+                                "      [] > bar",
+                                "        [] > abr ?"
+                            )
+                        ).parsed()
                     )
                 )
             ),
@@ -124,9 +175,16 @@ final class LtAtomIsNotUniqueTest {
                 new MapOf<>(
                     new MapEntry<>(
                         "dup",
-                        new ParsedEo(
-                            "org/eolang/lints/errors/atom-is-not-unique/dups.eo"
-                        ).value()
+                        new EoSyntax(
+                            String.join(
+                                "\n",
+                                "# Dups.",
+                                "[attr] > dups",
+                                "  [] > foo ?",
+                                "  [] > @",
+                                "  [] > foo ?"
+                            )
+                        ).parsed()
                     )
                 )
             ),
@@ -145,15 +203,27 @@ final class LtAtomIsNotUniqueTest {
                 new MapOf<String, XML>(
                     new MapEntry<>(
                         "x",
-                        new ParsedEo(
-                            "org/eolang/lints/errors/atom-is-not-unique/x.eo"
-                        ).value()
+                        new EoSyntax(
+                            String.join(
+                                "\n",
+                                "# X.",
+                                "[] > app",
+                                "  [] > x ?"
+                            )
+                        ).parsed()
                     ),
                     new MapEntry<>(
                         "x-packaged",
-                        new ParsedEo(
-                            "org/eolang/lints/errors/atom-is-not-unique/x-packaged.eo"
-                        ).value()
+                        new EoSyntax(
+                            String.join(
+                                "\n",
+                                "+package xyz",
+                                "",
+                                "# X, but its packaged.",
+                                "[] > app",
+                                "  [] > x ?"
+                            )
+                        ).parsed()
                     )
                 )
             ),
@@ -169,15 +239,25 @@ final class LtAtomIsNotUniqueTest {
                 new MapOf<String, XML>(
                     new MapEntry<>(
                         "a",
-                        new ParsedEo(
-                            "org/eolang/lints/errors/atom-is-not-unique/a.eo"
-                        ).value()
+                        new EoSyntax(
+                            String.join(
+                                "\n",
+                                "# A.",
+                                "[attr] > a",
+                                "  [] > x ?"
+                            )
+                        ).parsed()
                     ),
                     new MapEntry<>(
                         "b",
-                        new ParsedEo(
-                            "org/eolang/lints/errors/atom-is-not-unique/b.eo"
-                        ).value()
+                        new EoSyntax(
+                            String.join(
+                                "\n",
+                                "# B.",
+                                "[attr] > b",
+                                "  [] > y ?"
+                            )
+                        ).parsed()
                     )
                 )
             ),
@@ -193,9 +273,15 @@ final class LtAtomIsNotUniqueTest {
                 new MapOf<>(
                     new MapEntry<>(
                         "spb",
-                        new ParsedEo(
-                            "org/eolang/lints/errors/atom-is-not-unique/spb.eo"
-                        ).value()
+                        new EoSyntax(
+                            String.join(
+                                "\n",
+                                "# Spb.",
+                                "[attr] > spb",
+                                "  [] > mow ?",
+                                "  [] > sfo ?"
+                            )
+                        ).parsed()
                     )
                 )
             ),
@@ -211,15 +297,27 @@ final class LtAtomIsNotUniqueTest {
                 new MapOf<String, XML>(
                     new MapEntry<>(
                         "abc",
-                        new ParsedEo(
-                            "org/eolang/lints/errors/atom-is-not-unique/abc.eo"
-                        ).value()
+                        new EoSyntax(
+                            String.join(
+                                "\n",
+                                "+package a.b.c",
+                                "",
+                                "# ABC.",
+                                "[] > abc ?"
+                            )
+                        ).parsed()
                     ),
                     new MapEntry<>(
                         "abc-packaged",
-                        new ParsedEo(
-                            "org/eolang/lints/errors/atom-is-not-unique/abc-packaged.eo"
-                        ).value()
+                        new EoSyntax(
+                            String.join(
+                                "\n",
+                                "+package a.b.z",
+                                "",
+                                "# ABC.",
+                                "[] > abc ?"
+                            )
+                        ).parsed()
                     )
                 )
             ),

@@ -299,6 +299,7 @@
                     <class>org.eolang.lints.ProgramTest</class>
                     <class>org.eolang.lints.PkMonoTest</class>
                     <class>org.eolang.lints.LtByXslTest</class>
+                    <class>org.eolang.lints.LtTestNotVerbTest</class>
                   </excludedTestClasses>
                 </configuration>
               </execution>
