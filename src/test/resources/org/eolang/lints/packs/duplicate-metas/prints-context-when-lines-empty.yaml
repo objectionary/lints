@@ -1,0 +1,25 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/metas/duplicate-metas.xsl
+asserts:
+  - /defects[count(defect[@context and @severity='warning'])=1]
+document: |
+  <program>
+    <metas>
+      <meta>
+        <head>foo</head>
+        <tail>bar</tail>
+        <part>bar</part>
+      </meta>
+      <meta>
+        <head>foo</head>
+        <tail>bar</tail>
+        <part>bar</part>
+      </meta>
+     </metas>
+     <objects>
+       <o name="foo"/>
+     </objects>
+  </program>

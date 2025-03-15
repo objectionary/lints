@@ -4,7 +4,7 @@
 sheets:
   - /org/eolang/lints/critical/atom-with-data.xsl
 asserts:
-  - /defects[count(defect[@severity='critical'])=1]
+  - /defects[count(defect[@context and @severity='critical'])=1]
 document: |
   <program>
     <objects>

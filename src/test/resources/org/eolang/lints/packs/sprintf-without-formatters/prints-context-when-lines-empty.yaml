@@ -1,0 +1,22 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/misc/sprintf-without-formatters.xsl
+asserts:
+  - /defects[count(defect[@context and @severity='warning'])=1]
+document: |
+  <program>
+    <objects>
+      <o name="app">
+         <o base="Q.org.eolang.io.stdout" name="@">
+            <o base="Q.org.eolang.txt.sprintf">
+               <o base="Q.org.eolang.string">
+                  <o base="Q.org.eolang.bytes">48-65-6C-6C-6F-20-4A-65-66-66-21</o>
+               </o>
+               <o base="Q.org.eolang.tuple.empty"/>
+            </o>
+         </o>
+      </o>
+    </objects>
+  </program>
