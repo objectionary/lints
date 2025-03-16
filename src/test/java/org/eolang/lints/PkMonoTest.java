@@ -11,6 +11,7 @@ import com.tngtech.archunit.lang.syntax.ArchRuleDefinition;
 import com.yegor256.Together;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.Collection;
 import java.util.stream.Collectors;
 import org.cactoos.list.ListOf;
 import org.cactoos.scalar.LengthOf;
@@ -60,6 +61,30 @@ final class PkMonoTest {
         );
     }
 
+    static class LintDecorator<T> implements Lint<T> {
+
+        private final Lint<T> origin;
+
+        public LintDecorator(final Lint<T> origin) {
+            this.origin = origin;
+        }
+
+        @Override
+        public String name() {
+            return this.origin.name();
+        }
+
+        @Override
+        public Collection<Defect> defects(final T entity) throws IOException {
+            return this.origin.defects(entity);
+        }
+
+        @Override
+        public String motive() throws IOException {
+            return this.origin.motive();
+        }
+    }
+
     @Test
     void checksThatLintsCanBeUnlinted() {
         new ListOf<>(new PkMono()).stream()
@@ -71,7 +96,7 @@ final class PkMonoTest {
                             "Lint '%s' can not be unlinted, since its not wrapped by LtUnlint",
                             lint.name()
                         ),
-                        PkMonoTest.decoratee(lint).getClass().equals(LtUnlint.class),
+                        PkMonoTest.decoratee(new LintDecorator<>(lint)).getClass().equals(LtUnlint.class),
                         new IsEqual<>(true)
                     )
             );
