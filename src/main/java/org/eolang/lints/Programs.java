@@ -10,11 +10,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -127,7 +127,7 @@ public final class Programs {
      * @see <a href="https://www.eolang.org/XMIR.xsd">XMIR schema</a>
      */
     public Collection<Defect> defects() {
-        final Collection<Defect> messages = new LinkedList<>();
+        final Collection<Defect> messages = new ArrayList<>(0);
         for (final Lint<Map<String, XML>> lint : this.lints) {
             try {
                 messages.addAll(lint.defects(this.pkg));

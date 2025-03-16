@@ -5,8 +5,8 @@
 package matchers;
 
 import com.jcabi.xml.XML;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
 import org.eolang.lints.Defect;
 import org.eolang.lints.Severity;
 import org.hamcrest.BaseMatcher;
@@ -28,7 +28,7 @@ public final class DefectsMatcher extends BaseMatcher<XML> {
 
     @Override
     public boolean matches(final Object xml) {
-        final Collection<Defect> defects = new LinkedList<>();
+        final Collection<Defect> defects = new ArrayList<>(0);
         for (final XML defect : ((XML) xml).nodes("/defects/defect")) {
             defects.add(
                 new Defect.Default(

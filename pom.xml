@@ -420,6 +420,22 @@
         <configuration>
           <source>11</source>
           <target>11</target>
+          <release>11</release>
+          <showWarnings>true</showWarnings>
+          <!--If you want to get all the errors at once, write false here and run-->
+          <failOnWarning>true</failOnWarning>
+          <compilerArgs>
+            <arg>-XDcompilePolicy=simple</arg>
+            <arg>--should-stop=ifError=FLOW</arg>
+            <arg>-Xplugin:ErrorProne -XepAllErrorsAsWarnings -Xep:InvalidBlockTag:OFF</arg>
+          </compilerArgs>
+          <annotationProcessorPaths>
+            <path>
+              <groupId>com.google.errorprone</groupId>
+              <artifactId>error_prone_core</artifactId>
+              <version>2.36.0</version>
+            </path>
+          </annotationProcessorPaths>
         </configuration>
       </plugin>
       <plugin>

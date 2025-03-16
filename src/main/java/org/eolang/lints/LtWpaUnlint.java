@@ -7,8 +7,8 @@ package org.eolang.lints;
 import com.jcabi.log.Logger;
 import com.jcabi.xml.XML;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.Map;
 
 /**
@@ -38,7 +38,7 @@ final class LtWpaUnlint implements Lint<Map<String, XML>> {
 
     @Override
     public Collection<Defect> defects(final Map<String, XML> map) throws IOException {
-        final Collection<Defect> defects = new LinkedList<>();
+        final Collection<Defect> defects = new ArrayList<>(0);
         for (final Defect defect : this.origin.defects(map)) {
             final XML xmir = map.get(defect.program());
             if (xmir == null) {
