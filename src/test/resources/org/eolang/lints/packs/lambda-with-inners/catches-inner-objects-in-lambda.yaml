@@ -2,15 +2,17 @@
 # SPDX-License-Identifier: MIT
 ---
 sheets:
-  - /org/eolang/lints/critical/atom-with-data.xsl
+  - /org/eolang/lints/atoms/lambda-with-inners.xsl
 asserts:
   - /defects[count(defect[@severity='critical'])=1]
+  - /defects[count(defect[@context])]
 document: |
   <program>
     <objects>
       <o name="obj">
-        A1-B2-C3-D4-E5
-        <o name="λ"/>
+        <o name="λ">
+          <o name="foo"/>
+        </o>
       </o>
     </objects>
   </program>

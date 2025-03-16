@@ -11,6 +11,8 @@ document: |
       second line
       third line</listing>
     <objects>
-      <o line="5.5.5.a" atom="foo"/>
+      <o line="5.5.5.a" name="f">
+        <o name="λ"/>
+      </o>
     </objects>
   </program>

@@ -1,6 +1,5 @@
 # Atom in Atom
 
-In [XMIR], object with `@atom` attribute must not have child objects
-(attributes) with  `@atom`.
+In [XMIR], object is an atom must not have atoms as child objects (attributes).
 
 [XMIR]: https://news.eolang.org/2022-11-25-xmir-guide.html

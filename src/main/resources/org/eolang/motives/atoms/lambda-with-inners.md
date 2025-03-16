@@ -1,14 +1,16 @@
-# Atom and Base
+# Lambda With Inners
 
-In [XMIR], atom object can not have `@base` attribute.
+In [XMIR], atom object cannot have inner objects inside lambda object.
 
 Incorrect:
 
 ```xml
 <program>
   <objects>
-    <o name="obj" base="bar">
-      <o name="λ"/>
+    <o name="obj">
+      <o name="λ">
+        <o name="foo"/>
+      </o>
     </o>
   </objects>
 </program>
@@ -21,18 +23,6 @@ Correct:
   <objects>
     <o name="obj">
       <o name="λ"/>
-    </o>
-  </objects>
-</program>
-```
-
-or:
-
-```xml
-<program>
-  <objects>
-    <o name="obj" base="bar">
-      <o name="foo"/>
     </o>
   </objects>
 </program>

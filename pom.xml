@@ -119,7 +119,7 @@
     <dependency>
       <groupId>org.eolang</groupId>
       <artifactId>eo-parser</artifactId>
-      <version>0.52.0</version>
+      <version>0.53.0</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
@@ -299,6 +299,7 @@
                     <class>org.eolang.lints.ProgramTest</class>
                     <class>org.eolang.lints.PkMonoTest</class>
                     <class>org.eolang.lints.LtByXslTest</class>
+                    <class>org.eolang.lints.LtTestNotVerbTest</class>
                   </excludedTestClasses>
                 </configuration>
               </execution>
@@ -357,7 +358,7 @@
       <plugin>
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
-        <version>4.9.1.0</version>
+        <version>4.9.3.0</version>
         <executions>
           <execution>
             <goals>

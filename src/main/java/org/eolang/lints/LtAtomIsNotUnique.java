@@ -5,6 +5,7 @@
 package org.eolang.lints;
 
 import com.github.lombrozo.xnav.Xnav;
+import com.jcabi.xml.ClasspathSources;
 import com.jcabi.xml.XML;
 import com.jcabi.xml.XSL;
 import com.jcabi.xml.XSLDocument;
@@ -24,7 +25,7 @@ import org.cactoos.text.TextOf;
 import org.cactoos.text.UncheckedText;
 
 /**
- * All FQNs that have `@atom` in the entire scope must be unique.
+ * All atom FQNs in the entire scope of programs must be unique.
  * This lint firstly transforms the original XMIR into XMIR that contains `@fqn`
  * attributes for each atom `o`, and then lints it.
  *
@@ -46,7 +47,7 @@ final class LtAtomIsNotUnique implements Lint<Map<String, XML>> {
                 new UncheckedInput(
                     new ResourceOf("org/eolang/funcs/atom-fqns.xsl")
                 ).stream()
-            )
+            ).with(new ClasspathSources())
         );
     }
 
@@ -128,7 +129,9 @@ final class LtAtomIsNotUnique implements Lint<Map<String, XML>> {
             Severity.ERROR,
             xml.element("program").attribute("name").text().orElse("unknown"),
             Integer.parseInt(
-                xml.path(String.format("//o[@atom and @name='%s']", LtAtomIsNotUnique.oname(fqn)))
+                xml.path(
+                    String.format("//o[@name='%s' and o[@name='λ']]", LtAtomIsNotUnique.oname(fqn))
+                    )
                     .map(o -> o.attribute("line").text().get())
                     .collect(Collectors.toList()).get(pos)
             ),
@@ -143,9 +146,9 @@ final class LtAtomIsNotUnique implements Lint<Map<String, XML>> {
             xml.element("program").attribute("name").text().orElse("unknown"),
             Integer.parseInt(
                 xml.path(
-                    String.format("//o[@atom and @name='%s']/@line", LtAtomIsNotUnique.oname(fqn))
+                    String.format("//o[@name='%s' and o[@name='λ']]", LtAtomIsNotUnique.oname(fqn))
                     )
-                    .map(o -> o.text().get())
+                    .map(xnav -> xnav.attribute("line").text().orElse("0"))
                     .collect(Collectors.toList()).get(0)
             ),
             String.format(
@@ -180,6 +183,16 @@ final class LtAtomIsNotUnique implements Lint<Map<String, XML>> {
             .collect(Collectors.toList());
     }
 
+    private static String pairHash(final Xnav first, final Xnav second) {
+        final String pair;
+        if (first.hashCode() < second.hashCode()) {
+            pair = String.format("%d:%d", first.hashCode(), second.hashCode());
+        } else {
+            pair = String.format("%d:%d", second.hashCode(), first.hashCode());
+        }
+        return pair;
+    }
+
     private static String oname(final String fqn) {
         final String result;
         final List<String> parts = new ListOf<>(fqn.split("\\."));
@@ -189,15 +202,5 @@ final class LtAtomIsNotUnique implements Lint<Map<String, XML>> {
             result = parts.get(0);
         }
         return result;
-    }
-
-    private static String pairHash(final Xnav first, final Xnav second) {
-        final String pair;
-        if (first.hashCode() < second.hashCode()) {
-            pair = String.format("%d:%d", first.hashCode(), second.hashCode());
-        } else {
-            pair = String.format("%d:%d", second.hashCode(), first.hashCode());
-        }
-        return pair;
     }
 }

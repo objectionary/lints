@@ -4,11 +4,12 @@
  * SPDX-License-Identifier: MIT
 -->
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:eo="https://www.eolang.org" id="rt-without-atoms" version="2.0">
+  <xsl:import href="/org/eolang/parser/_funcs.xsl"/>
   <xsl:import href="/org/eolang/funcs/lineno.xsl"/>
   <xsl:output encoding="UTF-8" method="xml"/>
   <xsl:template match="/">
     <defects>
-      <xsl:if test="not(//o[@atom])">
+      <xsl:if test="not(//o[eo:atom(.)])">
         <xsl:if test="/program/metas/meta[head='rt']">
           <xsl:element name="defect">
             <xsl:attribute name="line">

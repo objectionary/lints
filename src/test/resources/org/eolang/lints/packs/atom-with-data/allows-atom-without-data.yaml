@@ -8,6 +8,8 @@ asserts:
 document: |
   <program>
     <objects>
-      <o atom="Foo"/>
+      <o name="obj">
+        <o name="λ"/>
+      </o>
     </objects>
   </program>
