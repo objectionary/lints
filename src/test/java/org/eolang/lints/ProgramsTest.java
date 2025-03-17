@@ -33,7 +33,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 final class ProgramsTest {
 
     @Test
-    void simpleTest(@Mktmp final Path dir) throws IOException {
+    void checksSimple(@Mktmp final Path dir) throws IOException {
         MatcherAssert.assertThat(
             "the defect is found",
             new Programs(
