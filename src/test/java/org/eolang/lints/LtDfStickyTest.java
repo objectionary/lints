@@ -64,7 +64,7 @@ final class LtDfStickyTest {
     }
 
     @Test
-    void preventDefectsLoadingBeforeMethodCall() {
+    void preventsDefectsLoadingBeforeMethodCall() {
         final AtomicInteger count = new AtomicInteger();
         new LtDfSticky<>(
             new LtFake<>(
