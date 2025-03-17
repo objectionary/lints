@@ -63,7 +63,7 @@ final class PkMonoTest {
     @Test
     void checksThatLintsCanBeUnlinted() {
         new ListOf<>(new PkMono()).stream()
-            .filter(lint -> !lint.getClass().equals(LtIncorrectUnlint.class))
+            .filter(lint -> !PkMonoTest.decoratee(lint).getClass().equals(LtIncorrectUnlint.class))
             .collect(Collectors.toList()).forEach(
                 lint ->
                     MatcherAssert.assertThat(
@@ -93,14 +93,11 @@ final class PkMonoTest {
      * Found decorated lint of specific lint.
      * @param decorate Lint
      * @return Decorated lint
-     * @todo #394:25min Replace `LtAlways` in comparison with lint caching decorator.
-     *  Currently, its not available, once <a href="https://github.com/objectionary/lints/issues/372">this</a>
-     *  ticket will be solved, we can replace the class.
      */
     @SuppressWarnings("PMD.AvoidAccessibilityAlteration")
     private static Lint<?> decoratee(final Lint<XML> decorate) {
         Lint<?> result = decorate;
-        while (decorate.getClass().equals(LtAlways.class)) {
+        while (result.getClass().equals(LtDfSticky.class)) {
             final Field[] fields = decorate.getClass().getDeclaredFields();
             for (final Field field : fields) {
                 field.setAccessible(true);
