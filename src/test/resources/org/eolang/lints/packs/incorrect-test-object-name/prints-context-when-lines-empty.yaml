@@ -1,0 +1,24 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/misc/incorrect-test-object-name.xsl
+asserts:
+  - /defects[count(defect[@context and @severity='warning'])=1]
+document: |
+  <program>
+    <metas>
+      <meta>
+        <head>tests</head>
+        <tail/>
+        <part/>
+      </meta>
+    </metas>
+    <objects>
+      <o name="booM" pos="0">
+        <o base="Q.org.eolang.number" name="foo">
+          <o base="Q.org.eolang.bytes">40-45-00-00-00-00-00-00</o>
+        </o>
+      </o>
+    </objects>
+  </program>

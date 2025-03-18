@@ -1,0 +1,15 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/misc/sparse-decoration.xsl
+asserts:
+  - /defects[count(defect[@context and @severity='warning'])=1]
+document: |
+  <objects>
+    <o name="decorates-num">
+      <o base="Q.org.eolang.number" name="@">
+        <o base="Q.org.eolang.bytes">40-14-00-00-00-00-00-00</o>
+      </o>
+    </o>
+  </objects>

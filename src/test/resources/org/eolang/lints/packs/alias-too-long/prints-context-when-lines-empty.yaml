@@ -1,0 +1,22 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/aliases/alias-too-long.xsl
+asserts:
+  - /defects[count(defect[@context and @severity='error'])=1]
+document: |
+  <program>
+    <metas>
+      <meta>
+        <head>alias</head>
+        <tail>a b Q.c</tail>
+        <part>a</part>
+        <part>b</part>
+        <part>Q.c</part>
+      </meta>
+     </metas>
+     <objects>
+       <o name="foo"/>
+     </objects>
+  </program>

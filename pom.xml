@@ -76,7 +76,7 @@
     <dependency>
       <groupId>org.cactoos</groupId>
       <artifactId>cactoos</artifactId>
-      <version>0.56.1</version>
+      <version>0.57.0</version>
     </dependency>
     <dependency>
       <groupId>net.sf.saxon</groupId>
@@ -188,7 +188,7 @@
     <dependency>
       <groupId>com.yegor256</groupId>
       <artifactId>farea</artifactId>
-      <version>0.15.0</version>
+      <version>0.15.2</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -206,7 +206,7 @@
     <dependency>
       <groupId>net.java.dev.jna</groupId>
       <artifactId>jna</artifactId>
-      <version>5.15.0</version>
+      <version>5.17.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -297,7 +297,7 @@
           <plugin>
             <groupId>org.pitest</groupId>
             <artifactId>pitest-maven</artifactId>
-            <version>1.18.2</version>
+            <version>1.19.0</version>
             <executions>
               <execution>
                 <goals>
@@ -319,7 +319,7 @@
               <dependency>
                 <groupId>org.pitest</groupId>
                 <artifactId>pitest-junit5-plugin</artifactId>
-                <version>1.2.1</version>
+                <version>1.2.2</version>
               </dependency>
             </dependencies>
           </plugin>
@@ -381,7 +381,7 @@
           <dependency>
             <groupId>com.github.spotbugs</groupId>
             <artifactId>spotbugs</artifactId>
-            <version>4.9.2</version>
+            <version>4.9.3</version>
           </dependency>
         </dependencies>
       </plugin>

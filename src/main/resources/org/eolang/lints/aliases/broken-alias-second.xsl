@@ -6,15 +6,22 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:eo="https://www.eolang.org" id="broken-alias-second" version="2.0">
   <xsl:import href="/org/eolang/funcs/lineno.xsl"/>
   <xsl:import href="/org/eolang/funcs/escape.xsl"/>
+  <xsl:import href="/org/eolang/funcs/defect-context.xsl"/>
   <xsl:output encoding="UTF-8" method="xml"/>
   <xsl:variable name="pattern" select="'^Q\.[a-z]+[^&gt;&lt;.\[\]()!:&quot;@^$#&amp;/\s]*(\.[a-z]+[^&gt;&lt;.\[\]()!:&quot;@^$#&amp;/\s]*)*$'"/>
   <xsl:template match="/">
     <defects>
       <xsl:for-each select="/program/metas/meta[head='alias' and not(matches(part[last()], $pattern))]">
         <xsl:element name="defect">
+          <xsl:variable name="line" select="eo:lineno(@line)"/>
           <xsl:attribute name="line">
-            <xsl:value-of select="eo:lineno(@line)"/>
+            <xsl:value-of select="$line"/>
           </xsl:attribute>
+          <xsl:if test="$line = '0'">
+            <xsl:attribute name="context">
+              <xsl:value-of select="eo:defect-context(.)"/>
+            </xsl:attribute>
+          </xsl:if>
           <xsl:attribute name="severity">
             <xsl:text>error</xsl:text>
           </xsl:attribute>

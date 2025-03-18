@@ -1,0 +1,21 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/atoms/rt-without-atoms.xsl
+asserts:
+  - /defects[count(defect[@context and @severity='error'])=1]
+document: |
+  <program>
+    <metas>
+      <meta>
+        <head>rt</head>
+        <tail>ruby something</tail>
+        <part>ruby</part>
+        <part>something</part>
+      </meta>
+    </metas>
+    <objects>
+      <o base="org.eolang.foo"/>
+    </objects>
+  </program>
