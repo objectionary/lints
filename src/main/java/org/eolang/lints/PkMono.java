@@ -7,10 +7,11 @@ package org.eolang.lints;
 import com.jcabi.xml.XML;
 import java.util.List;
 import javax.annotation.concurrent.ThreadSafe;
+import org.cactoos.func.Chained;
 import org.cactoos.iterable.IterableEnvelope;
 import org.cactoos.iterable.Joined;
 import org.cactoos.iterable.Mapped;
-import org.cactoos.iterable.Shuffled;
+import org.cactoos.list.ListOf;
 
 /**
  * Collection of lints for individual XML files, provided
@@ -31,39 +32,21 @@ final class PkMono extends IterableEnvelope<Lint<XML>> {
     /**
      * All XML-based lints.
      */
-    private static final Iterable<Lint<XML>> LINTS = new Shuffled<>(
-        new Joined<Lint<XML>>(
-            new PkByXsl(),
-            List.of(
-                new LtAsciiOnly()
-            )
-        )
-    );
+    private static final Iterable<Lint<XML>> LINTS = new MonoLints();
 
     /**
      * Default ctor.
      */
     PkMono() {
         super(
-            new Mapped<>(
-                LtDfSticky::new,
-                new Joined<Lint<XML>>(
-                    new Mapped<Lint<XML>>(
-                        LtUnlint::new,
-                        new Joined<Lint<XML>>(
-                            PkMono.LINTS,
-                            List.of(new LtUnlintNonExistingDefect(PkMono.LINTS))
-                        )
-                    ),
-                    List.of(
-                        new LtIncorrectUnlint(
-                            new Mapped<>(
-                                Lint::name,
-                                new Joined<>(
-                                    new PkWpa(),
-                                    PkMono.LINTS,
-                                    List.of(new LtUnlintNonExistingDefect(PkMono.LINTS))
-                                )
+            new Joined<>(
+                new Mapped<Lint<XML>>(
+                    new Chained<>(LtUnlint::new, LtDfSticky::new),
+                    new Joined<Lint<XML>>(
+                        PkMono.LINTS,
+                        List.of(
+                            new LtUnlintNonExistingDefect(
+                                PkMono.LINTS, new ListOf<>(new WpaLintNames())
                             )
                         )
                     )

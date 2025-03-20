@@ -188,7 +188,7 @@
     <dependency>
       <groupId>com.yegor256</groupId>
       <artifactId>farea</artifactId>
-      <version>0.15.2</version>
+      <version>0.15.3</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -304,12 +304,15 @@
                   <goal>mutationCoverage</goal>
                 </goals>
                 <configuration>
-                  <threads>4</threads>
+                  <threads>6</threads>
                   <mutationThreshold>60</mutationThreshold>
                   <excludedTestClasses>
                     <class>org.eolang.lints.ProgramTest</class>
                     <class>org.eolang.lints.PkMonoTest</class>
                     <class>org.eolang.lints.LtByXslTest</class>
+                    <class>org.eolang.lints.PkWpaTest</class>
+                    <class>org.eolang.lints.ProgramsTest</class>
+                    <class>org.eolang.lints.LtUnlintNonExistingDefectWpaTest</class>
                     <class>org.eolang.lints.LtTestNotVerbTest</class>
                   </excludedTestClasses>
                 </configuration>

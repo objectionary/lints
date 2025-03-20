@@ -26,13 +26,7 @@ final class PkWpa extends IterableEnvelope<Lint<Map<String, XML>>> {
     /**
      * WPA lints.
      */
-    private static final Iterable<Lint<Map<String, XML>>> WPA = new ListOf<>(
-        new LtUnitTestMissing(),
-        new LtUnitTestWithoutLiveFile(),
-        new LtIncorrectAlias(),
-        new LtObjectIsNotUnique(),
-        new LtAtomIsNotUnique()
-    );
+    private static final Iterable<Lint<Map<String, XML>>> WPA = new WpaLints();
 
     /**
      * Ctor.
@@ -48,7 +42,9 @@ final class PkWpa extends IterableEnvelope<Lint<Map<String, XML>>> {
                     new Joined<Lint<Map<String, XML>>>(
                         PkWpa.WPA,
                         new ListOf<>(
-                            new LtUnlintNonExistingDefectWpa(PkWpa.WPA)
+                            new LtUnlintNonExistingDefectWpa(
+                                PkWpa.WPA, new ListOf<>(new MonoLintNames())
+                            )
                         )
                     )
                 )
