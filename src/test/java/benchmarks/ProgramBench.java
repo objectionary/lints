@@ -9,7 +9,8 @@ import com.jcabi.xml.XMLDocument;
 import fixtures.LargeXmir;
 import java.util.concurrent.TimeUnit;
 import org.cactoos.scalar.Unchecked;
-import org.eolang.lints.Program;
+import org.eolang.lints.Project;
+import org.eolang.lints.ProjectOf;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
 import org.openjdk.jmh.annotations.Fork;
@@ -21,7 +22,7 @@ import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.annotations.Warmup;
 
 /**
- * Benchmark for {@link Program}.
+ * Benchmark for {@link Project}::singleDefects.
  *
  * @since 0.0.34
  * @checkstyle DesignForExtensionCheck (10 lines)
@@ -47,11 +48,11 @@ public class ProgramBench {
 
     @Benchmark
     public final void scansLargeXmir() {
-        new Program(ProgramBench.LARGE).defects();
+        new ProjectOf(ProgramBench.LARGE).singleDefects();
     }
 
     @Benchmark
     public final void scansSmallXmir() {
-        new Program(ProgramBench.SMALL).defects();
+        new ProjectOf(ProgramBench.SMALL).singleDefects();
     }
 }
