@@ -1,0 +1,15 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/critical/incorrect-bytes-format.xsl
+asserts:
+  - /defects[count(defect[@context and @severity='critical'])=1]
+document: |
+  <program>
+    <objects>
+      <o name="f">
+        哈囉世界
+      </o>
+    </objects>
+  </program>

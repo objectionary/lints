@@ -1,0 +1,20 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/critical/incorrect-rt-parts.xsl
+asserts:
+  - /defects[count(defect[@context and @severity='critical'])=1]
+document: |
+  <program>
+    <metas>
+      <meta>
+        <head>rt</head>
+        <tail>test</tail>
+        <part>test</part>
+      </meta>
+    </metas>
+    <objects>
+      <o base="Q.org.eolang.foo"/>
+    </objects>
+  </program>

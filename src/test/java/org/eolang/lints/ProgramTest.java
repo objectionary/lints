@@ -112,7 +112,7 @@ final class ProgramTest {
 
     @Test
     @Timeout(60L)
-    void simpleTest(@Mktmp final Path dir) throws IOException {
+    void checksSimple(@Mktmp final Path dir) throws IOException {
         final Path path = dir.resolve("foo.xmir");
         Files.write(
             path,
@@ -147,7 +147,7 @@ final class ProgramTest {
     }
 
     @Test
-    void largerBrokenProgramTest() throws IOException {
+    void checksLargerBrokenProgram() throws IOException {
         MatcherAssert.assertThat(
             "checking passes",
             new Program(

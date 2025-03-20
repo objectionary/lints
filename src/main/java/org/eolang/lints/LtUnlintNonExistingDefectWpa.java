@@ -35,12 +35,29 @@ final class LtUnlintNonExistingDefectWpa implements Lint<Map<String, XML>> {
     private final Iterable<Lint<Map<String, XML>>> lints;
 
     /**
+     * Lint names for exclusion.
+     */
+    private final Collection<String> excluded;
+
+    /**
      * Ctor.
-     *
      * @param lnts Lints
      */
     LtUnlintNonExistingDefectWpa(final Iterable<Lint<Map<String, XML>>> lnts) {
+        this(lnts, new ListOf<>());
+    }
+
+    /**
+     * Ctor.
+     *
+     * @param lnts Lints
+     * @param exld Lint names to exclude
+     */
+    LtUnlintNonExistingDefectWpa(
+        final Iterable<Lint<Map<String, XML>>> lnts, final Collection<String> exld
+    ) {
         this.lints = lnts;
+        this.excluded = exld;
     }
 
     @Override
@@ -60,7 +77,7 @@ final class LtUnlintNonExistingDefectWpa implements Lint<Map<String, XML>> {
                     .map(xnav -> xnav.text().get())
                     .collect(Collectors.toSet())
                     .stream()
-                    .filter(unlint -> !present.contains(unlint))
+                    .filter(unlint -> !present.contains(unlint) && !this.excluded.contains(unlint))
                     .forEach(
                         unlint -> xml
                             .path(

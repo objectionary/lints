@@ -141,6 +141,7 @@ final class LtTestNotVerbTest {
         );
     }
 
+    @SuppressWarnings("JTCOP.RuleNotContainsTestWord")
     @Test
     @ExtendWith(MayBeSlow.class)
     void lintsRegexTests() throws Exception {

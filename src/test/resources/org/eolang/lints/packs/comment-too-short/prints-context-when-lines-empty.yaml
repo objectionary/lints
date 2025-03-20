@@ -1,0 +1,20 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/comments/comment-too-short.xsl
+asserts:
+  - /defects[count(defect[@context and @severity='warning'])=1]
+document: |
+  <program>
+    <objects>
+      <o name="foo" pos="0">
+        <o base="Q.org.eolang.number" name="@">
+          <o base="Q.org.eolang.bytes">40-45-00-00-00-00-00-00</o>
+        </o>
+      </o>
+    </objects>
+    <comments>
+      <comment>This comment is short.</comment>
+    </comments>
+  </program>

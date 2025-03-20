@@ -1,0 +1,21 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/metas/package-contains-multiple-parts.xsl
+asserts:
+  - /defects[count(defect[@context and @severity='critical'])=1]
+document: |
+  <program>
+    <metas>
+      <meta>
+        <head>package</head>
+        <tail>hello foo</tail>
+        <part>hello</part>
+        <part>foo</part>
+      </meta>
+     </metas>
+     <objects>
+       <o name="foo"/>
+     </objects>
+  </program>

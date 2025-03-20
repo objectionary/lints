@@ -1,0 +1,17 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/errors/decorated-formation.xsl
+asserts:
+  - /defects[count(defect[@context and @severity='warning'])=1]
+document: |
+  <program>
+     <objects>
+      <o name="main">
+        <o name="@">
+          <o base="Q.org.eolang.foo" name="test"/>
+        </o>
+      </o>
+    </objects>
+  </program>

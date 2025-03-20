@@ -214,7 +214,7 @@ final class LtObjectIsNotUniqueTest {
                     )
                 )
             ),
-            () -> "Exception was thrown, but it should not"
+            "Exception was thrown, but it should not"
         );
     }
 }

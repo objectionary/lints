@@ -1,0 +1,27 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/aliases/duplicate-aliases.xsl
+asserts:
+  - /defects[count(defect[@context and @severity='error'])=1]
+document: |
+  <program>
+    <metas>
+      <meta>
+         <head>alias</head>
+         <tail>stdout Q.org.eolang.io.stdout</tail>
+         <part>stdout</part>
+         <part>Q.org.eolang.io.stdout</part>
+      </meta>
+      <meta>
+         <head>alias</head>
+         <tail>stdout Q.org.eolang.io.stdout</tail>
+         <part>stdout</part>
+         <part>Q.org.eolang.io.stdout</part>
+      </meta>
+   </metas>
+   <objects>
+      <o name="foo"/>
+   </objects>
+  </program>
