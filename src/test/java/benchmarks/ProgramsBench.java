@@ -11,8 +11,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.concurrent.TimeUnit;
 import org.cactoos.scalar.IoChecked;
-import org.eolang.lints.Program;
-import org.eolang.lints.Programs;
+import org.eolang.lints.Project;
+import org.eolang.lints.ProjectOf;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
 import org.openjdk.jmh.annotations.Fork;
@@ -24,7 +24,7 @@ import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.annotations.Warmup;
 
 /**
- * Benchmark for {@link Program}.
+ * Benchmark for {@link Project}::wpaDefects.
  *
  * @since 0.0.34
  * @checkstyle DesignForExtensionCheck (10 lines)
@@ -62,6 +62,6 @@ public class ProgramsBench {
 
     @Benchmark
     public final void scansLargeProgram() throws IOException {
-        new Programs(this.home).defects();
+        new ProjectOf(this.home).wpaDefects();
     }
 }
