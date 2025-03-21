@@ -105,28 +105,28 @@ Here is the result of linting XMIRs:
 <!-- benchmark_begin -->
 ```text
 Input: com/sun/jna/Pointer.class
-Lint time: 9s (8602 ms)
+Lint time: 14s (14125 ms)
 
-unlint-non-existing-defect (2790 ms)
-application-duality (467 ms)
-object-has-data (402 ms)
-duplicate-names (336 ms)
-line-is-absent (207 ms)
-incorrect-bytes-format (112 ms)
-broken-alias-second (88 ms)
-void-attributes-not-higher-than-other (72 ms)
-sprintf-without-formatters (68 ms)
-noname-attribute (58 ms)
-decorated-formation (48 ms)
-many-free-attributes (47 ms)
-sparse-decoration (37 ms)
-wrong-sprintf-arguments (34 ms)
-atom-without-rt (34 ms)
-atom-in-atom (34 ms)
+unlint-non-existing-defect (5102 ms)
+object-has-data (936 ms)
+name-outside-of-abstract-object (877 ms)
+application-duality (628 ms)
+wrong-sprintf-arguments (353 ms)
+incorrect-bytes-format (189 ms)
+line-is-absent (170 ms)
+duplicate-names (168 ms)
+empty-object (163 ms)
+not-empty-atom (140 ms)
+lambda-with-inners (135 ms)
+sparse-decoration (123 ms)
+incorrect-jvm-rt-location (88 ms)
+atom-and-base (85 ms)
+atom-without-rt (84 ms)
+many-free-attributes (77 ms)
 ```
 
 The results were calculated in [this GHA job][benchmark-gha]
-on 2025-03-02 at 18:19,
+on 2025-03-21 at 03:38,
 on Linux with 4 CPUs.
 <!-- benchmark_end -->
 
@@ -152,4 +152,4 @@ You will need [Maven 3.3+](https://maven.apache.org) and Java 11+ installed.
 
 [XMIR]: https://news.eolang.org/2022-11-25-xmir-guide.html
 [EO]: https://www.eolang.org
-[benchmark-gha]: https://github.com/objectionary/lints/actions/runs/13618083726
+[benchmark-gha]: https://github.com/objectionary/lints/actions/runs/13984107071
