@@ -9,17 +9,10 @@
   <xsl:output encoding="UTF-8" method="xml"/>
   <xsl:template match="/">
     <defects>
-      <!-- starts-with(@base, '$.^') -->
       <xsl:for-each select="//o[@base and starts-with(@base, '$.^')]">
-        <xsl:variable name="carets">
-          <xsl:analyze-string select="@base" regex="\^\." flags="m">
-            <xsl:matching-substring>
-              <xsl:value-of select="'1'"/>
-            </xsl:matching-substring>
-          </xsl:analyze-string>
-        </xsl:variable>
         <xsl:variable name="uncareted" select="translate(translate(@base, '.^', ''), '$', '')"/>
-        <xsl:variable name="owner" select="../.."/>
+        <xsl:variable name="position" select="number((count(tokenize(@base, '\^')) - 1) * 2) + 1"/>
+        <xsl:variable name="owner" select="ancestor::node()[$position]"/>
         <xsl:if test="not($owner/o[@name=$uncareted])">
           <xsl:element name="defect">
             <xsl:variable name="line" select="eo:lineno(@line)"/>
