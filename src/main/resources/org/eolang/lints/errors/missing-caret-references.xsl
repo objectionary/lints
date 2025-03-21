@@ -20,7 +20,7 @@
         </xsl:variable>
         <xsl:variable name="uncareted" select="translate(translate(@base, '.^', ''), '$', '')"/>
         <xsl:variable name="owner" select="../.."/>
-        <xsl:if test="$owner/o[not(@name=$uncareted)]">
+        <xsl:if test="not($owner/o[@name=$uncareted])">
           <xsl:element name="defect">
             <xsl:variable name="line" select="eo:lineno(@line)"/>
             <xsl:attribute name="line">

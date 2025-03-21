@@ -4,10 +4,10 @@
 sheets:
   - /org/eolang/lints/errors/missing-caret-references.xsl
 asserts:
-  - /defects[count(defect[@severity='error'])=1]
-  - /defects/defect[@line='4']
+  - /defects[count(defect[@severity='error'])=0]
 input: |
   # Foo.
   [] > foo
+    [] > hello
     [] > bar
       ^.hello > @
