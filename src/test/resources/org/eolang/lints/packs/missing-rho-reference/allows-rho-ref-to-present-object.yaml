@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: MIT
 ---
 sheets:
-  - /org/eolang/lints/errors/missing-caret-references.xsl
+  - /org/eolang/lints/errors/missing-rho-reference.xsl
 asserts:
   - /defects[count(defect[@severity='error'])=0]
 input: |
