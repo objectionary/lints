@@ -7,21 +7,28 @@
   <xsl:import href="/org/eolang/funcs/lineno.xsl"/>
   <xsl:import href="/org/eolang/funcs/defect-context.xsl"/>
   <xsl:output encoding="UTF-8" method="xml"/>
-  <xsl:template name="no-autonamed">
+  <!--
+   Recursively check if owner object is not auto named object, otherwise check is attribute is present.
+   You can read more about auto named objects here: https://news.eolang.org/2025-02-21-auto-named-abstract-objects.html.
+   @todo #13:45min Restructure `report-missing` template and its call in the root template.
+    Currently, we are calling `report-missing` template from root template to do the job, while
+    we should return only the parent object to which the rho attribute refers. Also, don't forget
+    to rename the template to something like `rho-parent`.
+  -->
+  <xsl:template name="report-missing">
     <xsl:param name="position"/>
-    <xsl:param name="uncareted"/>
+    <xsl:param name="attribute"/>
     <xsl:param name="owner"/>
     <xsl:choose>
       <xsl:when test="not(empty($owner/o[starts-with(@name, 'a🌵')]))">
-        <xsl:variable name="upper" select="ancestor::node()[$position + 1]"/>
-        <xsl:call-template name="no-autonamed">
+        <xsl:call-template name="report-missing">
           <xsl:with-param name="position" select="$position + 1"/>
-          <xsl:with-param name="uncareted" select="$uncareted"/>
-          <xsl:with-param name="owner" select="$upper"/>
+          <xsl:with-param name="attribute" select="$attribute"/>
+          <xsl:with-param name="owner" select="ancestor::node()[$position + 1]"/>
         </xsl:call-template>
       </xsl:when>
       <xsl:otherwise>
-        <xsl:if test="not($owner/o[@name=$uncareted])">
+        <xsl:if test="not($owner/o[@name=$attribute])">
           <xsl:element name="defect">
             <xsl:variable name="line" select="eo:lineno(@line)"/>
             <xsl:attribute name="line">
@@ -35,8 +42,8 @@
             <xsl:attribute name="severity">
               <xsl:text>error</xsl:text>
             </xsl:attribute>
-            <xsl:text>The caret reference "</xsl:text>
-            <xsl:value-of select="$uncareted"/>
+            <xsl:text>The rho reference "</xsl:text>
+            <xsl:value-of select="$attribute"/>
             <xsl:text>" </xsl:text>
             <xsl:text>is missing in "</xsl:text>
             <xsl:value-of select="$owner/@name"/>
@@ -49,13 +56,11 @@
   <xsl:template match="/">
     <defects>
       <xsl:for-each select="//o[@base and starts-with(@base, '$.^')]">
-        <xsl:variable name="uncareted" select="translate(translate(@base, '.^', ''), '$', '')"/>
         <xsl:variable name="position" select="(count(tokenize(@base, '\^')) - 1) * 2"/>
-        <xsl:variable name="owner" select="ancestor::node()[$position]"/>
-        <xsl:call-template name="no-autonamed">
+        <xsl:call-template name="report-missing">
           <xsl:with-param name="position" select="$position"/>
-          <xsl:with-param name="uncareted" select="$uncareted"/>
-          <xsl:with-param name="owner" select="$owner"/>
+          <xsl:with-param name="attribute" select="translate(translate(@base, '.^', ''), '$', '')"/>
+          <xsl:with-param name="owner" select="ancestor::node()[$position]"/>
         </xsl:call-template>
       </xsl:for-each>
     </defects>

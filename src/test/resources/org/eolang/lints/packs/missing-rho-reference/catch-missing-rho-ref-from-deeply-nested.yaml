@@ -6,7 +6,7 @@ sheets:
 asserts:
   - /defects[count(defect[@severity='error'])=1]
   - /defects/defect[@line='10']
-  - /defects/defect[1][normalize-space()='The caret reference "messageeee" is missing in "foo" object']
+  - /defects/defect[1][normalize-space()='The rho reference "messageeee" is missing in "foo" object']
 input: |
   # Foo.
   [] > foo
