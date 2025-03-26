@@ -1,0 +1,15 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/names/duplicate-as-attribute.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=0]
+document: |
+  <program>
+    <objects>
+      <o base="foo">
+        <o base="f1" as="bar"/>
+      </o>
+    </objects>
+  </program>
