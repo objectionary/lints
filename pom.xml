@@ -119,7 +119,7 @@
     <dependency>
       <groupId>org.eolang</groupId>
       <artifactId>eo-parser</artifactId>
-      <version>0.53.0</version>
+      <version>0.55.0</version>
       <scope>compile</scope>
     </dependency>
     <dependency>

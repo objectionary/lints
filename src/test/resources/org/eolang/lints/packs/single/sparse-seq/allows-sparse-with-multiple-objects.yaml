@@ -1,0 +1,16 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/misc/sparse-seq.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=0]
+input: |
+  # App.
+  [] > app
+    QQ.seq > @
+      *
+        52
+        42
+        28
+        true

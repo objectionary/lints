@@ -2,14 +2,13 @@
 # SPDX-License-Identifier: MIT
 ---
 sheets:
-  - /org/eolang/lints/misc/sprintf-without-formatters.xsl
+  - /org/eolang/lints/misc/sparse-seq.xsl
 asserts:
   - /defects[count(defect[@severity='warning'])=1]
-  - /defects/defect[@line='4']
+  - /defects/defect[@line='3']
 input: |
   # App.
   [] > app
-    QQ.io.stdout > @
-      QQ.txt.sprintf
-        "Boom! We are here"
-        * name "x"
+    QQ.seq > @
+      *
+        true

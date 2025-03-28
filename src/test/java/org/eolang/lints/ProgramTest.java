@@ -70,6 +70,7 @@ final class ProgramTest {
                         "+spdx SPDX-FileCopyrightText Copyright (c) 2016-2025 Objectionary.com",
                         "+spdx SPDX-License-Identifier: MIT",
                         // REUSE-IgnoreEnd
+                        "+unlint object-has-data",
                         "",
                         "# This is just a test object with no functionality.",
                         "[] > foo",

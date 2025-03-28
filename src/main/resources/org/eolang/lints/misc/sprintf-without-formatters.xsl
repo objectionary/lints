@@ -18,7 +18,7 @@
   <xsl:template match="/">
     <defects>
       <xsl:for-each select="//o[@base='Q.org.eolang.txt.sprintf']">
-        <xsl:variable name="text" select="o[1][@base='Q.org.eolang.string']/o[1][@base='Q.org.eolang.bytes']/text()"/>
+        <xsl:variable name="text" select="o[1][@base='Q.org.eolang.string']/o[1][@base='Q.org.eolang.bytes']/o/text()"/>
         <xsl:variable name="txt" select="translate($text, '-', '')"/>
         <xsl:variable name="formatters">
           <xsl:variable name="txt" select="translate($text, '-', '')"/>
