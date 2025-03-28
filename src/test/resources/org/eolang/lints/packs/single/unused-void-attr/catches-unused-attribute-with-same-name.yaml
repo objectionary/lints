@@ -1,0 +1,22 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+# @todo #24:45min Enable this YAML test after `unused-void-attr` lint will recognize rho references with same name.
+#  In this example we use "x" name for both formations: `foo` and `top`. An expression `^.x`
+#  refers to `x` from `top`, and `x` from `foo` stays unused. Thus, the lint should complain
+#  about `x` from `foo`, while currently it just checks that inside the formation we have `@base`
+#  that contains `*.x`.
+skip: true
+sheets:
+  - /org/eolang/lints/errors/unused-void-attr.xsl
+asserts:
+  - /defects[count(defect[@severity='error'])=1]
+  - /defects/defect[@line='2']
+  - /defects/defect[1][normalize-space()='The void attribute "x" is unused anywhere in the object "foo"']
+input: |
+  # Foo
+  [x] > foo
+    [] > bar
+    [x] > top
+      [] > inside
+        ^.x > aaa

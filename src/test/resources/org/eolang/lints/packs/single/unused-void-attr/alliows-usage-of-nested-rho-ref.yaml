@@ -1,0 +1,19 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/errors/unused-void-attr.xsl
+asserts:
+  - /defects[count(defect[@severity='error'])=0]
+input: |
+  # Foo.
+  [message] > foo
+    [] > bar
+      while
+        [i] >>
+          if.
+            i.lt 5
+            QQ.io.stdout
+              ^.^.message
+            true
+        true > @
