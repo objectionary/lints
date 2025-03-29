@@ -1,0 +1,20 @@
+<h1 id="incorrect-number-of-attributes">Incorrect Number Of
+Attributes</h1>
+<p>The number of provided attributes to the object should match with the
+number of its declared attributes.</p>
+<p>Incorrect:</p>
+<p><code>foo.eo</code>:</p>
+<pre class="eo"><code># Its foo with one attribute.
+[at] &gt; foo</code></pre>
+<p><code>bar.eo</code>:</p>
+<pre class="eo"><code># Its bar.
+[args] &gt; bar
+  foo 1 2</code></pre>
+<p>Correct:</p>
+<p><code>foo.eo</code>:</p>
+<pre class="eo"><code># Its foo with one attribute.
+[at] &gt; foo</code></pre>
+<p><code>bar.eo</code>:</p>
+<pre class="eo"><code># Its bar.
+[args] &gt; bar
+  foo 1</code></pre>

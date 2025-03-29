@@ -1,0 +1,22 @@
+<h1 id="is-not-first"><code>@</code> Is Not First</h1>
+<p>The <code>@</code> attribute should always go first.</p>
+<p>Incorrect:</p>
+<pre class="eo"><code># Foo.
+[] &gt; foo
+  x &gt; bar
+  y &gt; @
+  z &gt; hey</code></pre>
+<p>Correct:</p>
+<pre class="eo"><code># Foo.
+[] &gt; foo
+  y &gt; @
+  x &gt; bar
+  z &gt; hey</code></pre>
+<p>The position of <code>@</code> after void attributes is also
+allowed:</p>
+<pre class="eo"><code># Foo.
+[] &gt; foo
+  [i] &gt;&gt;
+    boom &gt; @
+      *
+        &quot;f&quot;</code></pre>

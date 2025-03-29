@@ -1,0 +1,13 @@
+<h1 id="empty-spdx-tail">Empty <code>+spdx</code> Tail</h1>
+<p>The special meta attribute <code>+spdx</code> cannot have an empty
+tail.</p>
+<p>Incorrect:</p>
+<pre class="eo"><code>+spdx
+
+# Foo.
+[] &gt; foo</code></pre>
+<p>Correct:</p>
+<pre class="eo"><code>+spdx foo
+
+# Foo.
+[] &gt; foo</code></pre>
