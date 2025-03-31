@@ -20,7 +20,7 @@
     <xsl:param name="attribute"/>
     <xsl:param name="owner"/>
     <xsl:choose>
-      <xsl:when test="not(empty($owner/o[starts-with(@name, 'a🌵')]))">
+      <xsl:when test="$owner[(not(@name) and @base) or @name='@'] or not(empty($owner/o[starts-with(@name, 'a🌵')]))">
         <xsl:call-template name="report-missing">
           <xsl:with-param name="position" select="$position + 1"/>
           <xsl:with-param name="attribute" select="$attribute"/>
