@@ -147,4 +147,62 @@ final class LtUnlintNonExistingDefectWpaTest {
             Matchers.emptyIterable()
         );
     }
+
+    @Test
+    void allowsExistingUnlintWithLineNumber() throws IOException {
+        MatcherAssert.assertThat(
+            "An existing defect should be able to be unlinted with line number",
+            new LtUnlintNonExistingDefectWpa(
+                new ListOf<>(new LtInconsistentArgs()),
+                new ListOf<>()
+            ).defects(
+                new MapOf<>(
+                    new MapEntry<>(
+                        "foo",
+                        new EoSyntax(
+                            String.join(
+                                "\n",
+                                "+unlint inconsistent-args:6",
+                                "",
+                                "# Foo.",
+                                "[] > foo",
+                                "  bar 42 > x",
+                                "  bar 42 52 > y"
+                            )
+                        ).parsed()
+                    )
+                )
+            ),
+            Matchers.emptyIterable()
+        );
+    }
+
+    @Test
+    void catchesNonExistingUnlintWithLineNumber() throws IOException {
+        MatcherAssert.assertThat(
+            "Non existing defect with line number should be reported",
+            new LtUnlintNonExistingDefectWpa(
+                new ListOf<>(new LtInconsistentArgs()),
+                new ListOf<>()
+            ).defects(
+                new MapOf<>(
+                    new MapEntry<>(
+                        "app",
+                        new EoSyntax(
+                            String.join(
+                                "\n",
+                                "+unlint inconsistent-args:25",
+                                "",
+                                "# App.",
+                                "[] > app",
+                                "  tee 42 > x",
+                                "  tee 42 52 > y"
+                            )
+                        ).parsed()
+                    )
+                )
+            ),
+            Matchers.hasSize(Matchers.greaterThan(0))
+        );
+    }
 }

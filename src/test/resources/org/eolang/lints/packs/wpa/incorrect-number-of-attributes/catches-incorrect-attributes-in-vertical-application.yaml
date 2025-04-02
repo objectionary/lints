@@ -1,0 +1,21 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+lints:
+  - incorrect-number-of-attributes
+asserts:
+  - /defects[count(defect[@severity='error'])=1]
+  - /defects/defect[@program='usage' and @line='5']
+  - /defects/defect[1][normalize-space()='The object "Q.org.eolang.a" expects 2 arguments, while 1 provided']
+foo.eo: |
+  # A.
+  [pos sigma] > a
+b.eo: |
+  # B.
+  [left right] > b
+usage.eo: |
+  # Usage of A and B objects with vertical application.
+  [] > app
+    b
+      1
+      a 0

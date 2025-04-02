@@ -1,0 +1,24 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+lints:
+  - atom-is-not-unique
+asserts:
+  - /defects[count(defect[@severity='error'])=2]
+  - /defects/defect[@program='nested' and @line='7']
+  - /defects/defect[@program='nested-dup' and @line='6']
+nested.eo: |
+  # Top object with nested atoms inside.
+  [] > top
+    [] > test ?
+    [] > f
+      [] > a
+        [] > bar
+          [] > abr ?
+nested-dup.eo: |
+  # Top object with nested atoms inside.
+  [] > top
+    [] > f
+      [] > a
+        [] > bar
+          [] > abr ?

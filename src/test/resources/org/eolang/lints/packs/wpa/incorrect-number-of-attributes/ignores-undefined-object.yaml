@@ -1,0 +1,15 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+lints:
+  - incorrect-number-of-attributes
+asserts:
+  - /defects[count(defect)=0]
+hello.eo: |
+  # Foo with one attribute.
+  [content] > hello
+app.eo: |
+  # App uses hello.
+  [] > app
+    hello "f"
+    bye 0x1

@@ -1,0 +1,13 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+lints:
+  - unit-test-without-live-file
+asserts:
+  - /defects[count(defect)=0]
+foo-tests.eo: |
+  # Foo tests.
+  [] > checks-foo
+foo.eo: |
+  # Foo.
+  [] > foo

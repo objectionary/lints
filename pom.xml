@@ -119,13 +119,13 @@
     <dependency>
       <groupId>org.eolang</groupId>
       <artifactId>eo-parser</artifactId>
-      <version>0.53.0</version>
+      <version>0.55.1</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>com.github.volodya-lombrozo</groupId>
       <artifactId>xnav</artifactId>
-      <version>0.1.10</version>
+      <version>0.1.16</version>
     </dependency>
     <dependency>
       <groupId>org.apache.opennlp</groupId>
@@ -314,6 +314,7 @@
                     <class>org.eolang.lints.ProgramsTest</class>
                     <class>org.eolang.lints.LtUnlintNonExistingDefectWpaTest</class>
                     <class>org.eolang.lints.LtTestNotVerbTest</class>
+                    <class>org.eolang.lints.WpaLintsTest</class>
                   </excludedTestClasses>
                 </configuration>
               </execution>
@@ -339,7 +340,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.5.2</version>
+            <version>3.5.3</version>
             <configuration>
               <excludedGroups>benchmark</excludedGroups>
               <excludes>

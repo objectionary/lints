@@ -62,4 +62,45 @@ final class LtIncorrectUnlintTest {
             Matchers.containsString("Suppressing \"boom\" does not make sense")
         );
     }
+
+    @Test
+    void understandsUnlintsWithLineNumber() throws IOException {
+        MatcherAssert.assertThat(
+            "Unlints with line number should be supported",
+            new LtIncorrectUnlint(new ListOf<>("comment-not-capitalized"))
+                .defects(
+                    new EoSyntax(
+                        "foo",
+                        String.join(
+                            "\n",
+                            "+unlint comment-not-capitalized:3",
+                            "",
+                            "# foo.",
+                            "[] > foo"
+                        )
+                    ).parsed()
+                ),
+            Matchers.emptyIterable()
+        );
+    }
+
+    @Test
+    void catchesNonExistingUnlintWithLineNumber() throws IOException {
+        MatcherAssert.assertThat(
+            "Non existing unlint with line number should be caught",
+            new LtIncorrectUnlint(new ListOf<>("a")).defects(
+                new EoSyntax(
+                    "app",
+                    String.join(
+                        "\n",
+                        "+unlint b:1",
+                        "",
+                        "# App.",
+                        "[] > app"
+                    )
+                ).parsed()
+            ),
+            Matchers.hasSize(Matchers.greaterThan(0))
+        );
+    }
 }

@@ -55,7 +55,7 @@ final class LtByXslTest {
 
     @SuppressWarnings("JTCOP.RuleNotContainsTestWord")
     @ParameterizedTest
-    @ClasspathSource(value = "org/eolang/lints/packs/", glob = "**.yaml")
+    @ClasspathSource(value = "org/eolang/lints/packs/single/", glob = "**.yaml")
     void testsAllLintsByEo(final String yaml) {
         MatcherAssert.assertThat(
             "Doesn't tell the story as it's expected",
@@ -85,7 +85,7 @@ final class LtByXslTest {
             .filter(path -> path.toString().endsWith(".xsl"))
             .map(path -> path.getParent().getFileName().toString())
             .collect(Collectors.toSet());
-        Files.walk(Paths.get("src/test/resources/org/eolang/lints/packs"))
+        Files.walk(Paths.get("src/test/resources/org/eolang/lints/packs/single"))
             .filter(Files::isRegularFile)
             .forEach(
                 path -> {
@@ -128,7 +128,10 @@ final class LtByXslTest {
                         path
                     ),
                     path,
-                    Matchers.endsWith("org/eolang/lints/packs")
+                    Matchers.anyOf(
+                        Matchers.endsWith("org/eolang/lints/packs/single"),
+                        Matchers.endsWith("org/eolang/lints/packs/wpa")
+                    )
                 )
             );
     }

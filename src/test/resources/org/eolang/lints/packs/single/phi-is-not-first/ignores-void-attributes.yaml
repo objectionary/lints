@@ -1,0 +1,16 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/names/phi-is-not-first.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=0]
+document: |
+  <program>
+    <objects>
+      <o name="f">
+        <o base="∅" name="i"/>
+        <o base="Q.org.eolang.seq" name="@"/>
+      </o>
+    </objects>
+  </program>

@@ -1,0 +1,21 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+lints:
+  - atom-is-not-unique
+asserts:
+  - /defects[count(defect[@severity='error'])=2]
+  - /defects/defect[@program='foo-packaged' and @line='5']
+  - /defects/defect[@program='bar-packaged' and @line='5']
+foo-packaged.eo: |
+  +package xyz
+
+  # App.
+  [] > app
+    [] > foo ?
+bar-packaged.eo: |
+  +package xyz
+
+  # App.
+  [] > app
+    [] > foo ?

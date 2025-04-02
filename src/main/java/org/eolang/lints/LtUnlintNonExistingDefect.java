@@ -8,8 +8,12 @@ import com.github.lombrozo.xnav.Xnav;
 import com.jcabi.xml.XML;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import org.cactoos.io.ResourceOf;
 import org.cactoos.list.ListOf;
@@ -35,6 +39,7 @@ final class LtUnlintNonExistingDefect implements Lint<XML> {
 
     /**
      * Ctor.
+     *
      * @param lnts Lints
      */
     LtUnlintNonExistingDefect(final Iterable<Lint<XML>> lnts) {
@@ -60,13 +65,14 @@ final class LtUnlintNonExistingDefect implements Lint<XML> {
     @Override
     public Collection<Defect> defects(final XML xmir) throws IOException {
         final Collection<Defect> defects = new LinkedList<>();
-        final Collection<String> present = this.existingDefects(xmir);
+        final Map<String, List<Integer>> present = this.existingDefects(xmir);
         final Xnav xml = new Xnav(xmir.inner());
         final Set<String> unlints = xml.path("/program/metas/meta[head='unlint']/tail")
             .map(xnav -> xnav.text().get())
             .collect(Collectors.toSet());
+        final Function<String, Boolean> missing = new DefectMissing(present, this.excluded);
         unlints.stream()
-            .filter(unlint -> !present.contains(unlint) && !this.excluded.contains(unlint))
+            .filter(missing::apply)
             .forEach(
                 unlint ->
                     xml.path(
@@ -111,15 +117,15 @@ final class LtUnlintNonExistingDefect implements Lint<XML> {
         ).asString();
     }
 
-    private Collection<String> existingDefects(final XML xmir) {
-        final Collection<String> existing = new ListOf<>();
+    private Map<String, List<Integer>> existingDefects(final XML xmir) {
+        final Map<String, List<Integer>> existing = new HashMap<>(0);
         this.lints.forEach(
             lint -> {
                 try {
-                    existing.addAll(
-                        lint.defects(xmir).stream()
-                            .map(Defect::rule)
-                            .collect(Collectors.toList())
+                    lint.defects(xmir).forEach(
+                        defect ->
+                            existing.computeIfAbsent(defect.rule(), key -> new ListOf<>())
+                                .add(defect.line())
                     );
                 } catch (final IOException exception) {
                     throw new IllegalStateException(exception);

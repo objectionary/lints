@@ -44,7 +44,10 @@ final class LtIncorrectUnlint implements Lint<XML> {
         final Collection<Defect> defects = new LinkedList<>();
         final Xnav xml = new Xnav(xmir.inner());
         xml.path("/program/metas/meta[head='unlint']")
-            .filter(u -> !this.names.contains(u.element("tail").text().orElse("unknown")))
+            .filter(
+                u ->
+                    !this.names.contains(u.element("tail").text().orElse("unknown").split(":")[0])
+            )
             .forEach(
                 u -> defects.add(
                     new Defect.Default(

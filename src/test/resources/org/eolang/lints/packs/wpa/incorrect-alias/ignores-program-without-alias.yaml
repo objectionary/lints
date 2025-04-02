@@ -1,0 +1,13 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+lints:
+  - incorrect-alias
+asserts:
+  - /defects[count(defect)=0]
+bar.eo: |
+  +package ttt
+
+  # Bar.
+  [] > foo
+    foo > @

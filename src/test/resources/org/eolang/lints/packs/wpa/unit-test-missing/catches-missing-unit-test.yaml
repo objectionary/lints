@@ -1,0 +1,10 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+lints:
+  - unit-test-missing
+asserts:
+  - /defects[count(defect[@severity='warning'])=1]
+foo.eo: |
+  # Foo.
+  [] > foo

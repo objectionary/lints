@@ -4,6 +4,7 @@
  */
 package org.eolang.lints;
 
+import com.github.lombrozo.xnav.Xnav;
 import com.jcabi.xml.XML;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,11 +18,6 @@ import org.cactoos.list.ListOf;
  * Lint that ignores linting if {@code +unlint} meta is present.
  *
  * @since 0.0.1
- * @todo #386:30min Replace `XML.xpath()` with `Xnav.path()` usage in defects() method.
- *  Currently, we cannot use `Xnav.path()` method due to
- *  <a href="https://github.com/volodya-lombrozo/xnav/issues/74">this</a> bug.
- *  Once it will be resolved, we should replace `XML.xpath()` with `Xnav.path()`
- *  in order to improve the performance of the `LtUnlint.defects()` execution.
  */
 final class LtUnlint implements Lint<XML> {
 
@@ -57,12 +53,12 @@ final class LtUnlint implements Lint<XML> {
             .filter(defect -> defect.rule().equals(lname))
             .map(Defect::line)
             .collect(Collectors.toList());
-        final List<String> granular = xmir.xpath(
+        final List<String> granular = new Xnav(xmir.inner()).path(
             String.format(
-                "/program/metas/meta[head='unlint' and (tail='%s' or starts-with(tail, '%s:'))]/tail/text()",
+                "/program/metas/meta[head='unlint' and (tail='%s' or starts-with(tail, '%s:'))]/tail",
                 lname, lname
             )
-        );
+        ).map(xnav -> xnav.text().get()).collect(Collectors.toList());
         final boolean global = !granular.isEmpty();
         granular.forEach(
             unlint -> {

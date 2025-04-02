@@ -1,0 +1,15 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/critical/object-has-data.xsl
+asserts:
+  - /defects[count(defect[@severity='critical'])=0]
+document: |
+  <program>
+    <objects>
+      <o name="foo" base="Q.org.eolang.bytes">
+        <o>A1-B2-C3-D4-E5</o>
+      </o>
+    </objects>
+  </program>
