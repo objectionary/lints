@@ -33,6 +33,11 @@
         </xsl:if>
       </xsl:when>
       <xsl:otherwise>
+        <!--
+          @todo #13:90min Enable processing of rho references inside auto named objects.
+           For now we ignore them, but we need to check them as well, as they are abstract
+           objects. Don't forget to add test packs with auto named objects.
+        -->
         <xsl:if test="not($owner/o[@name=$attribute]) and not(contains($owner/@name, 'a🌵'))">
           <xsl:element name="defect">
             <xsl:variable name="line" select="eo:lineno(@line)"/>
