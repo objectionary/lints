@@ -21,15 +21,18 @@
     <xsl:param name="attribute"/>
     <xsl:param name="owner"/>
     <xsl:choose>
-      <xsl:when test="$owner[not(eo:abstract(.)) or @name='@'] or not(empty($owner/o[starts-with(@name, 'a🌵')]))">
-        <xsl:call-template name="report-missing">
-          <xsl:with-param name="position" select="$position + 1"/>
-          <xsl:with-param name="attribute" select="$attribute"/>
-          <xsl:with-param name="owner" select="ancestor::node()[$position + 1]"/>
-        </xsl:call-template>
+      <xsl:when test="$owner[not(eo:abstract(.))] or not(empty($owner/o[starts-with(@name, 'a🌵')]))">
+        <xsl:variable name="up" select="ancestor::node()[$position + 1]"/>
+        <xsl:if test="name($up) = 'o'">
+          <xsl:call-template name="report-missing">
+            <xsl:with-param name="position" select="$position + 1"/>
+            <xsl:with-param name="attribute" select="$attribute"/>
+            <xsl:with-param name="owner" select="$up"/>
+          </xsl:call-template>
+        </xsl:if>
       </xsl:when>
       <xsl:otherwise>
-        <xsl:if test="not($owner/o[@name=$attribute])">
+        <xsl:if test="not($owner/o[@name=$attribute]) and not(contains($owner/@name, 'a🌵'))">
           <xsl:element name="defect">
             <xsl:variable name="line" select="eo:lineno(@line)"/>
             <xsl:attribute name="line">
