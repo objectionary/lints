@@ -9,7 +9,7 @@ Incorrect:
 <program>
   <objects>
     <o name="bar" base="foo">
-      A1-B2-C3-D4-E5
+      <o>A1-B2-C3-D4-E5</o>
     </o>
   </objects>
 </program>
@@ -21,7 +21,7 @@ Correct:
 <program>
   <objects>
     <o name="bar" base="org.eolang.bytes">
-      A1-B2-C3-D4-E5
+      <o>A1-B2-C3-D4-E5</o>
     </o>
   </objects>
 </program>

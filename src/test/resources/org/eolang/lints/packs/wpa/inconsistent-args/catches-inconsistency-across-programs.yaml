@@ -1,0 +1,17 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+lints:
+  - inconsistent-args
+asserts:
+  - /defects[count(defect[@severity='warning'])=2]
+  - /defects/defect[@program='app' and @line='3']
+  - /defects/defect[@program='main' and @line='3']
+app.eo: |
+  # App.
+  [] > app
+    f 42 > x
+main.eo: |
+  # Main.
+  [] > main
+    f 1 2 3 > y

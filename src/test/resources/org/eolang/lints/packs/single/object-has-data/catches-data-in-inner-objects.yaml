@@ -10,7 +10,9 @@ document: |
   <program>
     <objects>
       <o base="foo" name="o" line="1">
-        <o name="i" line="2">TEST</o>
+        <o name="i" line="2">
+          <o>TEST</o>
+        </o>
       </o>
     </objects>
   </program>

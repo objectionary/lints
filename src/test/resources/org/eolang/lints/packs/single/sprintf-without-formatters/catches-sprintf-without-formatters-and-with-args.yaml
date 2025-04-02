@@ -1,0 +1,15 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/misc/sprintf-without-formatters.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=1]
+  - /defects/defect[@line='4']
+input: |
+  # App.
+  [] > app
+    QQ.io.stdout > @
+      QQ.txt.sprintf
+        "Boom! We are here"
+        * name "x"

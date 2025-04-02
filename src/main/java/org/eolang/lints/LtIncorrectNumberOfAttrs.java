@@ -45,7 +45,7 @@ final class LtIncorrectNumberOfAttrs implements Lint<Map<String, XML>> {
                                     program,
                                     Integer.parseInt(xnav.attribute("line").text().orElse("0")),
                                     String.format(
-                                        "The object %s expects %d arguments, while %d provided",
+                                        "The object \"%s\" expects %d arguments, while %d provided",
                                         object, expected, provided
                                     )
                                 )

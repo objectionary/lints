@@ -1,0 +1,15 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+lints:
+  - inconsistent-args
+asserts:
+  - /defects[count(defect)=0]
+fizz.eo: |
+  # Fizz.
+  [] > fizz
+    f 42 > x
+buzz.eo: |
+  # Buzz.
+  [a] > buzz
+    f a > y

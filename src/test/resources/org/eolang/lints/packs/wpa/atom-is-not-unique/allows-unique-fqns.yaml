@@ -1,0 +1,15 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+lints:
+  - atom-is-not-unique
+asserts:
+  - /defects[count(defect)=0]
+fuz.eo: |
+  # Fuz.
+  [] > fuz
+    [] > test ?
+buz.eo: |
+  # Buz.
+  [] > buz
+    [] > test ?

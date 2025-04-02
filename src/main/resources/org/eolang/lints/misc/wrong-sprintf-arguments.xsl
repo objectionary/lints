@@ -10,24 +10,21 @@
   <!-- Find arguments in tuple -->
   <xsl:template match="o" mode="arguments" as="xs:integer">
     <xsl:choose>
-      <xsl:when test="@base='.with' and count(o)=2">
+      <xsl:when test="@base='Q.org.eolang.tuple.empty'">
+        <xsl:value-of select="0"/>
+      </xsl:when>
+      <xsl:when test="@base='Q.org.eolang.tuple'">
         <xsl:variable name="nested">
           <xsl:apply-templates select="o[1]" mode="arguments"/>
         </xsl:variable>
         <xsl:choose>
-          <xsl:when test="$nested!=-1">
+          <xsl:when test="count(o) &gt;= 2">
             <xsl:value-of select="$nested + 1"/>
           </xsl:when>
           <xsl:otherwise>
-            <xsl:value-of select="-1"/>
+            <xsl:value-of select="$nested"/>
           </xsl:otherwise>
         </xsl:choose>
-      </xsl:when>
-      <xsl:when test="@base='Q.org.eolang.tuple.empty'">
-        <xsl:value-of select="0"/>
-      </xsl:when>
-      <xsl:when test="@base='Q.org.eolang.tuple.empty.with' and count(o)=1">
-        <xsl:value-of select="1"/>
       </xsl:when>
       <xsl:otherwise>
         <xsl:value-of select="-1"/>
@@ -37,7 +34,7 @@
   <xsl:template match="/">
     <defects>
       <xsl:for-each select="//o[@base='Q.org.eolang.txt.sprintf']">
-        <xsl:variable name="text" select="o[1][@base='Q.org.eolang.string']/o[1][@base='Q.org.eolang.bytes']/text()"/>
+        <xsl:variable name="text" select="o[1][@base='Q.org.eolang.string']/o[1][@base='Q.org.eolang.bytes']/o/text()"/>
         <xsl:choose>
           <xsl:when test="count(o)&gt;2">
             <defect>
@@ -112,7 +109,7 @@
                   <xsl:attribute name="severity">
                     <xsl:text>warning</xsl:text>
                   </xsl:attribute>
-                  <xsl:text>The second argument "Q.org.eolang.txt.sprintf" object must be a right structured "Q.org.eolang.tuple" object built via ".with" method</xsl:text>
+                  <xsl:text>The second argument "Q.org.eolang.txt.sprintf" object must be a right structured "Q.org.eolang.tuple" object</xsl:text>
                 </defect>
               </xsl:when>
               <xsl:otherwise>

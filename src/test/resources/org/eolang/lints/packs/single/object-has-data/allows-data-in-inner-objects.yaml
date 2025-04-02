@@ -4,12 +4,14 @@
 sheets:
   - /org/eolang/lints/critical/object-has-data.xsl
 asserts:
-  - /defects[count(defect[@context and @severity='critical'])=1]
+  - /defects[count(defect[@severity='critical'])=0]
 document: |
   <program>
     <objects>
-      <o base="foo" name="o">
-        <o name="bar">BAR</o>
+      <o name="foo">
+        <o name="inner" base="Q.org.eolang.bytes">
+          <o>12-23-FF</o>
+        </o>
       </o>
     </objects>
   </program>

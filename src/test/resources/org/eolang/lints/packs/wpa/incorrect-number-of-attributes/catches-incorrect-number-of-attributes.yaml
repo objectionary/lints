@@ -1,0 +1,16 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+lints:
+  - incorrect-number-of-attributes
+asserts:
+  - /defects[count(defect[@severity='error'])=1]
+  - /defects/defect[@program='app' and @line='3']
+  - /defects/defect[1][normalize-space()='The object "Q.org.eolang.foo" expects 1 arguments, while 2 provided']
+foo.eo: |
+  # Foo with one attribute.
+  [a] > foo
+app.eo: |
+  # App uses foo with two attributes instead.
+  [a b] > app
+    foo a b

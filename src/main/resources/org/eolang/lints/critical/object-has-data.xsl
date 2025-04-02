@@ -11,22 +11,30 @@
   <xsl:output encoding="UTF-8" method="xml"/>
   <xsl:template match="/">
     <defects>
-      <xsl:for-each select="//o[eo:has-data(.) and (not(@base) or @base!='Q.org.eolang.bytes')]">
+      <xsl:for-each select="//o[eo:has-data(.) and not(parent::o[@base='Q.org.eolang.bytes'])]">
         <defect>
-          <xsl:variable name="line" select="eo:lineno(@line)"/>
+          <xsl:variable name="parent" select="parent::o"/>
+          <xsl:variable name="line" select="eo:lineno($parent/@line)"/>
           <xsl:attribute name="line">
             <xsl:value-of select="$line"/>
           </xsl:attribute>
           <xsl:if test="$line = '0'">
             <xsl:attribute name="context">
-              <xsl:value-of select="eo:defect-context(.)"/>
+              <xsl:value-of select="eo:defect-context($parent)"/>
             </xsl:attribute>
           </xsl:if>
           <xsl:attribute name="severity">critical</xsl:attribute>
-          <xsl:text>Only object with @base equal to "Q.org.eolang.bytes" may contain data, </xsl:text>
-          <xsl:text>while object with @base "</xsl:text>
-          <xsl:value-of select="@base"/>
-          <xsl:text>" provided</xsl:text>
+          <xsl:text>Only object that have parent object with @base equal to "Q.org.eolang.bytes" may contain data, while</xsl:text>
+          <xsl:choose>
+            <xsl:when test="$parent/@base">
+              <xsl:text> parent object with @base </xsl:text>
+              <xsl:value-of select="eo:escape($parent/@base)"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:text> anonymous parent object</xsl:text>
+            </xsl:otherwise>
+          </xsl:choose>
+          <xsl:text> provided</xsl:text>
         </defect>
       </xsl:for-each>
     </defects>

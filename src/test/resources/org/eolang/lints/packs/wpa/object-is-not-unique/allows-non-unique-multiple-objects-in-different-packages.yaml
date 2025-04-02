@@ -1,0 +1,25 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+lints:
+  - object-is-not-unique
+asserts:
+  - /defects[count(defect)=0]
+mul.eo: |
+  # Multiple objects here.
+  [] > foo
+    52 > inn
+
+  # Test.
+  [] > bar
+    52 > inn
+baz-packaged.eo: |
+  +package mul
+
+  # Multiple objects here.
+  [] > foo
+    52 > inn
+
+  # Test.
+  [] > bar
+    52 > inn

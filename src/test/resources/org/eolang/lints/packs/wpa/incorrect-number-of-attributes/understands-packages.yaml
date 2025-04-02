@@ -1,0 +1,21 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+lints:
+  - incorrect-number-of-attributes
+asserts:
+  - /defects[count(defect)=0]
+foo-unpackaged.eo: |
+  # An unpackaged foo.
+  [] > foo
+foo-packaged.eo: |
+  +package f
+
+  # Packaged Foo in f.
+  [bar] > foo
+app.eo: |
+  +alias f.foo
+
+  # Resolver application that uses f.foo.
+  [args] > app
+    foo args > @

@@ -1,0 +1,20 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+lints:
+  - incorrect-number-of-attributes
+asserts:
+  - /defects[count(defect[@severity='error'])=1]
+  - /defects/defect[@program='usage' and @line='4']
+  - /defects/defect[1][normalize-space()='The object "Q.org.eolang.stf" expects 0 arguments, while 1 provided']
+std.eo: |
+  # Std.
+  [a] > std
+
+  # Stf.
+  [] > stf
+usage.eo: |
+  # App uses std and stf.
+  [args] > app
+    std 0
+    stf 1

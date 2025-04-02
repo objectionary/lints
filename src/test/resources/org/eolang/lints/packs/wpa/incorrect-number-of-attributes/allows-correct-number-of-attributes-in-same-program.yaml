@@ -1,0 +1,14 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+lints:
+  - incorrect-number-of-attributes
+asserts:
+  - /defects[count(defect)=0]
+single.eo: |
+  # A with one attribute.
+  [pos] > a
+
+  # B uses A properly.
+  [] > b
+    a 52

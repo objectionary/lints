@@ -9,6 +9,9 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Map;
+import org.cactoos.io.ResourceOf;
+import org.cactoos.text.IoCheckedText;
+import org.cactoos.text.TextOf;
 
 /**
  * A test is missing for a live EO program.
@@ -48,6 +51,14 @@ final class LtUnitTestMissing implements Lint<Map<String, XML>> {
 
     @Override
     public String motive() throws IOException {
-        return "";
+        return new IoCheckedText(
+            new TextOf(
+                new ResourceOf(
+                    String.format(
+                        "org/eolang/motives/units/%s.md", this.name()
+                    )
+                )
+            )
+        ).asString();
     }
 }

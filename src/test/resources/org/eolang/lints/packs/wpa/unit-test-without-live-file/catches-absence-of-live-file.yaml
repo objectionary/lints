@@ -1,0 +1,14 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+lints:
+  - unit-test-without-live-file
+asserts:
+  - /defects[count(defect[@severity='warning'])=1]
+  - /defects/defect[1][normalize-space()='Live ".eo" file "foo" was not found for "foo-test"']
+foo-test.eo: |
+  # Foo tests.
+  [] > checks-foo
+bar.eo: |
+  # Bar.
+  [] > bar

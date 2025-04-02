@@ -1,0 +1,20 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/critical/object-has-data.xsl
+asserts:
+  - /defects[count(defect[@severity='critical'])=2]
+  - /defects/defect[1][normalize-space()='Only object that have parent object with @base equal to "Q.org.eolang.bytes" may contain data, while parent object with @base "x" provided']
+  - /defects/defect[2][normalize-space()='Only object that have parent object with @base equal to "Q.org.eolang.bytes" may contain data, while parent object with @base "y" provided']
+document: |
+  <program>
+    <objects>
+      <o name="foo" base="x">
+        <o>10-20-30-40-50</o>
+      </o>
+      <o name="f" base="y">
+        <o>哈囉世界</o>
+      </o>
+    </objects>
+  </program>

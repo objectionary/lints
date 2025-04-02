@@ -1,0 +1,17 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+lints:
+  - object-is-not-unique
+asserts:
+  - /defects[count(defect[@severity='error'])=2]
+  - /defects/defect[@program='bar' and @line='2']
+  - /defects/defect[@program='foo' and @line='2']
+  - /defects/defect[1][normalize-space()='The object name "foo" is not unique, original object was found in "bar"']
+  - /defects/defect[2][normalize-space()='The object name "foo" is not unique, original object was found in "foo"']
+foo.eo: |
+  # Foo.
+  [] > foo
+bar.eo: |
+  # Bar.
+  [] > foo

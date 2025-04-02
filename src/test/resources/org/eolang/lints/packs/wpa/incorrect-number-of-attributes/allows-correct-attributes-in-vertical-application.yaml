@@ -1,0 +1,19 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+lints:
+  - incorrect-number-of-attributes
+asserts:
+  - /defects[count(defect)=0]
+foo.eo: |
+  # A.
+  [pos] > a
+b.eo: |
+  # B.
+  [left right] > b
+usage.eo: |
+  # Usage of A and B objects with vertical application.
+  [] > app
+    b
+      0
+      a 0

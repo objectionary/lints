@@ -1,0 +1,15 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+lints:
+  - incorrect-alias
+asserts:
+  - /defects[count(defect[@severity='critical'])=1]
+  - /defects/defect[@program='bar' and @line='1']
+bar.eo: |
+  +alias foo
+  +package ttt
+
+  # Bar.
+  [] > foo
+    foo > @
