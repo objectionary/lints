@@ -1,7 +1,6 @@
 /*
  * SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
  * SPDX-License-Identifier: MIT
- * @checkstyle OuterTypeNumberCheck (200 lines)
  */
 package org.eolang.lints;
 
@@ -83,82 +82,82 @@ final class LtDfStickyTest {
             Matchers.equalTo(0)
         );
     }
-}
-
-/**
- * Fake class for Lint class.
- *
- * @param <T> The type of entity to analyze
- * @since 0.0.42
- */
-@SuppressWarnings("PMD.AvoidFieldNameMatchingMethodName")
-final class LtFake<T> implements Lint<T> {
 
     /**
-     * Name supplier.
+     * Fake class for Lint class.
+     *
+     * @param <T> The type of entity to analyze
+     * @since 0.0.42
      */
-    private final Supplier<String> name;
+    @SuppressWarnings("PMD.AvoidFieldNameMatchingMethodName")
+    private static final class LtFake<T> implements Lint<T> {
 
-    /**
-     * Defects supplier.
-     */
-    private final Function<T, Collection<Defect>> defects;
+        /**
+         * Name supplier.
+         */
+        private final Supplier<String> name;
 
-    /**
-     * Motive supplier.
-     */
-    private final Supplier<String> motive;
+        /**
+         * Defects supplier.
+         */
+        private final Function<T, Collection<Defect>> defects;
 
-    /**
-     * Constructor.
-     * @param name Lint name supplier.
-     * @param defects Lint defects supplier.
-     * @param motive Lint motive supplier.
-     */
-    LtFake(
-        final Supplier<String> name,
-        final Function<T, Collection<Defect>> defects,
-        final Supplier<String> motive
-    ) {
-        this.name = name;
-        this.defects = defects;
-        this.motive = motive;
-    }
+        /**
+         * Motive supplier.
+         */
+        private final Supplier<String> motive;
 
-    /**
-     * Constructor. Name and motive are provided by value.
-     * @param name Lint name value.
-     * @param defects Lint defects supplier.
-     * @param motive Lint motive value.
-     */
-    LtFake(
-        final String name,
-        final Function<T, Collection<Defect>> defects,
-        final String motive
-    ) {
-        this(() -> name, defects, () -> motive);
-    }
+        /**
+         * Constructor. Name and motive are provided by value.
+         * @param name Lint name value.
+         * @param defects Lint defects supplier.
+         * @param motive Lint motive value.
+         */
+        LtFake(
+            final String name,
+            final Function<T, Collection<Defect>> defects,
+            final String motive
+        ) {
+            this(() -> name, defects, () -> motive);
+        }
 
-    /**
-     * Constructor. Name and motive are hardcoded.
-     * @param defects Lint defects supplier.
-     */
-    LtFake(final Function<T, Collection<Defect>> defects) {
-        this("Lint", defects, "Motive");
-    }
+        /**
+         * Constructor. Name and motive are hardcoded.
+         * @param defects Lint defects supplier.
+         */
+        LtFake(final Function<T, Collection<Defect>> defects) {
+            this("Lint", defects, "Motive");
+        }
 
-    @Override
-    public String name() {
-        return this.name.get();
-    }
+        /**
+         * Constructor.
+         * @param name Lint name supplier.
+         * @param defects Lint defects supplier.
+         * @param motive Lint motive supplier.
+         */
+        LtFake(
+            final Supplier<String> name,
+            final Function<T, Collection<Defect>> defects,
+            final Supplier<String> motive
+        ) {
+            this.name = name;
+            this.defects = defects;
+            this.motive = motive;
+        }
 
-    @Override
-    public Collection<Defect> defects(final T entity) throws IOException {
-        return this.defects.apply(entity);
-    }
+        @Override
+        public String name() {
+            return this.name.get();
+        }
 
-    @Override
-    public String motive() throws IOException {
-        return this.motive.get();
+        @Override
+        public Collection<Defect> defects(final T entity) throws IOException {
+            return this.defects.apply(entity);
+        }
+
+        @Override
+        public String motive() throws IOException {
+            return this.motive.get();
+        }
     }
 }
