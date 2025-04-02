@@ -6,6 +6,7 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:eo="https://www.eolang.org" id="missing-rho-reference" version="2.0">
   <xsl:import href="/org/eolang/parser/_funcs.xsl"/>
   <xsl:import href="/org/eolang/funcs/lineno.xsl"/>
+  <xsl:import href="/org/eolang/funcs/escape.xsl"/>
   <xsl:import href="/org/eolang/funcs/defect-context.xsl"/>
   <xsl:output encoding="UTF-8" method="xml"/>
   <!--
@@ -46,12 +47,11 @@
             <xsl:attribute name="severity">
               <xsl:text>error</xsl:text>
             </xsl:attribute>
-            <xsl:text>The rho reference "</xsl:text>
-            <xsl:value-of select="$attribute"/>
-            <xsl:text>" </xsl:text>
-            <xsl:text>is missing in "</xsl:text>
-            <xsl:value-of select="$owner/@name"/>
-            <xsl:text>" object</xsl:text>
+            <xsl:text>The rho reference </xsl:text>
+            <xsl:value-of select="eo:escape($attribute)"/>
+            <xsl:text> is missing in </xsl:text>
+            <xsl:value-of select="eo:escape($owner/@name)"/>
+            <xsl:text> object</xsl:text>
           </xsl:element>
         </xsl:if>
       </xsl:otherwise>
