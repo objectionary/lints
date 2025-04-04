@@ -123,4 +123,57 @@ final class LtUnlintTest {
             Matchers.emptyIterable()
         );
     }
+
+    @Test
+    void doesNotDuplicateDefects() throws IOException {
+        MatcherAssert.assertThat(
+            "Unlint should not duplicate defects",
+            new LtUnlint(
+                new LtByXsl("errors/noname-attribute")
+            ).defects(
+                new EoSyntax(
+                    "app",
+                    String.join(
+                        "\n",
+                        "+home https://github.com/objectionary/eo",
+                        "+package f",
+                        "+version 0.0.0",
+                        "",
+                        "# No comments.",
+                        "[] > main",
+                        "  QQ.io.stdout",
+                        "    \"Hello world\""
+                    )
+                ).parsed()
+            ),
+            Matchers.iterableWithSize(1)
+        );
+    }
+
+    @Test
+    void doesNotReportWhenUnlinted() throws IOException {
+        MatcherAssert.assertThat(
+            "Defect should not be reported when its unlinted",
+            new LtUnlint(
+                new LtByXsl("errors/noname-attribute")
+            ).defects(
+                new EoSyntax(
+                    "boom",
+                    String.join(
+                        "\n",
+                        "+home https://github.com/objectionary/eo",
+                        "+package f",
+                        "+version 0.0.0",
+                        "+unlint noname-attribute:8",
+                        "",
+                        "# No comments.",
+                        "[] > boom",
+                        "  QQ.io.stdout",
+                        "    \"we are booming!\""
+                    )
+                ).parsed()
+            ),
+            Matchers.emptyIterable()
+        );
+    }
 }

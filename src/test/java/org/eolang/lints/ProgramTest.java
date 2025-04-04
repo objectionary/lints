@@ -51,6 +51,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
  *  adjust lint-summary.txt file to capture all the measurements.
  * @checkstyle MethodBodyCommentsCheck (50 lines)
  */
+@SuppressWarnings("PMD.TooManyMethods")
 @ExtendWith(MktmpResolver.class)
 final class ProgramTest {
 
@@ -254,6 +255,30 @@ final class ProgramTest {
                 "mandatory-spdx"
             ).defects(),
             Matchers.emptyIterable()
+        );
+    }
+
+    @Test
+    void returnsOnlyOneDefect() throws IOException {
+        MatcherAssert.assertThat(
+            "Only one defect should be found",
+            new Program(
+                new EoSyntax(
+                    "app",
+                    String.join(
+                        "\n",
+                        "+home https://github.com/objectionary/eo",
+                        "+package f",
+                        "+version 0.0.0",
+                        "",
+                        "# No comments.",
+                        "[] > main",
+                        "  QQ.io.stdout",
+                        "    \"Hello world\""
+                    )
+                ).parsed()
+            ).without("mandatory-spdx", "comment-too-short").defects(),
+            Matchers.hasSize(1)
         );
     }
 

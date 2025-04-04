@@ -4,9 +4,10 @@
 +version 0.0.0
 +spdx SPDX-FileCopyrightText Copyright (c) 2016-2025 Objectionary.com
 +spdx SPDX-License-Identifier: MIT
++unlint unused-void-attr
 
 # Times table, which is a canonical example of EO program.
-[args] > canonical
+[] > canonical
   malloc.for > @
     0
     [x] >>

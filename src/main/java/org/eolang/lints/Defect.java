@@ -5,6 +5,7 @@
 package org.eolang.lints;
 
 import com.jcabi.manifests.Manifests;
+import java.util.Objects;
 
 /**
  * A single defect found.
@@ -198,6 +199,27 @@ public interface Defect {
         @Override
         public String context() {
             return "Context is empty";
+        }
+
+        @Override
+        public boolean equals(final Object obj) {
+            final boolean result;
+            if (obj == null || this.getClass() != obj.getClass()) {
+                result = false;
+            } else {
+                final Defect.Default defect = (Defect.Default) obj;
+                result = this.lineno == defect.lineno
+                    && Objects.equals(this.rle, defect.rle)
+                    && this.sev == defect.sev
+                    && Objects.equals(this.prg, defect.prg)
+                    && Objects.equals(this.txt, defect.txt);
+            }
+            return result;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(this.rle, this.sev, this.prg, this.lineno, this.txt);
         }
     }
 

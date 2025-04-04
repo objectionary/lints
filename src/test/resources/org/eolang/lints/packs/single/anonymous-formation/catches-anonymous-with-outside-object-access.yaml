@@ -1,0 +1,18 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/names/anonymous-formation.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=1]
+  - /defects/defect[@line='8']
+  - /defects/defect[1][normalize-space()='It is not recommended to have anonymous formation accessing undefined object "t" inside the formation']
+input: |
+  # App.
+  [] > app
+    "Hello" > t
+    malloc.of
+      64
+      [m]
+        QQ.io.stdout > @
+          t

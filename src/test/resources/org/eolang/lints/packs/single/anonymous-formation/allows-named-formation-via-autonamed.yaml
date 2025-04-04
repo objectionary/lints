@@ -1,0 +1,14 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/names/anonymous-formation.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=0]
+input: |
+  # Main.
+  malloc.of
+    64
+    [m] >>
+      QQ.io.stdout > @
+        "foo"

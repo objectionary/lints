@@ -1,0 +1,14 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/errors/unused-void-attr.xsl
+asserts:
+  - /defects[count(defect[@severity='error'])=1]
+  - /defects/defect[@line='2']
+  - /defects/defect[1][normalize-space()='The void attribute "x" is unused anywhere in the object "foo"']
+input: |
+  # Foo.
+  [x] > foo
+    [x] > bar
+      5.plus $.x > @

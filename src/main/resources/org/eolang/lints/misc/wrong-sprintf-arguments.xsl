@@ -55,25 +55,6 @@
               <xsl:text> provided</xsl:text>
             </defect>
           </xsl:when>
-          <xsl:when test="not($text)">
-            <defect>
-              <xsl:variable name="line" select="eo:lineno(@line)"/>
-              <xsl:attribute name="line">
-                <xsl:value-of select="$line"/>
-              </xsl:attribute>
-              <xsl:if test="$line = '0'">
-                <xsl:attribute name="context">
-                  <xsl:value-of select="eo:defect-context(.)"/>
-                </xsl:attribute>
-              </xsl:if>
-              <xsl:attribute name="severity">
-                <xsl:text>warning</xsl:text>
-              </xsl:attribute>
-              <xsl:text>The first argument of "Q.org.eolang.txt.sprintf" object must be "Q.org.eolang.string" object, but </xsl:text>
-              <xsl:value-of select="o[1]/@base"/>
-              <xsl:text> provided</xsl:text>
-            </defect>
-          </xsl:when>
           <xsl:otherwise>
             <xsl:variable name="declared">
               <xsl:variable name="txt" select="translate($text, '-', '')"/>
@@ -113,7 +94,7 @@
                 </defect>
               </xsl:when>
               <xsl:otherwise>
-                <xsl:if test="$declared!=$used">
+                <xsl:if test="$declared!=$used and o[1]/@base = 'Q.org.eolang.string'">
                   <defect>
                     <xsl:variable name="line" select="eo:lineno(@line)"/>
                     <xsl:attribute name="line">
@@ -129,7 +110,7 @@
                     </xsl:attribute>
                     <xsl:text>According to the formatting template of the "Q.org.eolang.txt.sprintf" object, a tuple of </xsl:text>
                     <xsl:value-of select="$declared"/>
-                    <xsl:text> elements is expected as the second argument of it, while a tuple of </xsl:text>
+                    <xsl:text> element(s) is expected as the second argument of it, while a tuple of </xsl:text>
                     <xsl:value-of select="$used"/>
                     <xsl:text> element(s) is provided</xsl:text>
                   </defect>

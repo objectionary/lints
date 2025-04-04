@@ -1,0 +1,15 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/errors/noname-attribute.xsl
+asserts:
+  - /defects[count(defect[@severity='error'])=1]
+  - /defects/defect[@line='5']
+input: |
+  +package f
+
+  # No comments.
+  [] > main
+    QQ.io.stdout
+      "Hello world"

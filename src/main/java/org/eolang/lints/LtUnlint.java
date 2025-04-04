@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import org.cactoos.list.ListOf;
@@ -60,6 +61,7 @@ final class LtUnlint implements Lint<XML> {
             )
         ).map(xnav -> xnav.text().get()).collect(Collectors.toList());
         final boolean global = !granular.isEmpty();
+        final AtomicBoolean added = new AtomicBoolean(false);
         granular.forEach(
             unlint -> {
                 if (LtUnlint.LINE_NUMBER.matcher(unlint).matches()) {
@@ -78,11 +80,12 @@ final class LtUnlint implements Lint<XML> {
                 defect -> {
                     if (line != 0 && defect.line() == line) {
                         defects.add(defect);
+                        added.set(true);
                     }
                 }
             )
         );
-        if (!global) {
+        if (!added.get() && !global) {
             defects.addAll(this.origin.defects(xmir));
         }
         return defects;
