@@ -15,7 +15,7 @@
         *
           x.put 2
           while
-            x.as-number.lt 6 > [i] >>
+            x.as-number.lt 6 > [i1] >>
             [i] >>
               seq > @
                 *
