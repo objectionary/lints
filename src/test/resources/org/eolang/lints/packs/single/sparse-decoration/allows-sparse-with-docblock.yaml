@@ -1,0 +1,13 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/misc/sparse-decoration.xsl
+asserts:
+  - /defects[count(defect)=0]
+input: |
+  # App.
+  [] > app
+    # Checks whether it is TRUE.
+    [] > is-true
+      0.eq 0 > @
