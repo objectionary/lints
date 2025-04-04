@@ -28,7 +28,7 @@
       </xsl:choose>
     </xsl:variable>
     <xsl:variable name="source" as="xs:string" select="replace($opath, '\.', '/')"/>
-    <xsl:if test="not(starts-with(/program/@source, concat($source, '.')))">
+    <xsl:if test="not(contains(/program/@source, concat($source, '.eo')) or contains(/program/@source, concat($source, '.phi')))">
       <defect>
         <xsl:variable name="line" select="eo:lineno(@line)"/>
         <xsl:attribute name="line">

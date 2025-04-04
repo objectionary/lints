@@ -1,0 +1,21 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/names/object-does-not-match-filename.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=1]
+  - /defects/defect[@line='2']
+document: |
+  <program source=".eoc/2-pull/org/eolang/broken/posix.eo">
+    <metas>
+      <meta>
+        <head>package</head>
+        <tail>org.eolang.sys</tail>
+        <part>org.eolang.sys</part>
+      </meta>
+    </metas>
+    <objects>
+      <o line="2" name="posix" pos="0"/>
+    </objects>
+  </program>

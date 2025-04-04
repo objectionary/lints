@@ -4,18 +4,17 @@
 sheets:
   - /org/eolang/lints/names/object-does-not-match-filename.xsl
 asserts:
-  - /defects[count(defect[@severity='warning'])=1]
-  - /defects/defect[@line='2']
+  - /defects[count(defect[@severity='warning'])=0]
 document: |
-  <program source="app/app/app.eo">
+  <program source=".eoc/2-pull/org/eolang/sys/posix.eo">
     <metas>
       <meta>
         <head>package</head>
-        <tail>app</tail>
-        <part>app</part>
+        <tail>org.eolang.sys</tail>
+        <part>org.eolang.sys</part>
       </meta>
     </metas>
     <objects>
-      <o line="2" name="app" pos="0"/>
+      <o line="2" name="posix" pos="0"/>
     </objects>
   </program>
