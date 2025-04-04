@@ -22,7 +22,7 @@ import org.cactoos.list.ListOf;
  * @see <a href="https://news.eolang.org/2022-11-25-xmir-guide.html">XMIR</a>
  * @since 0.1.0
  */
-public final class Program {
+final class Program {
 
     /**
      * Collection of mono lints, preloaded on JVM start.
@@ -48,7 +48,7 @@ public final class Program {
      * @param file The absolute path of the XMIR file
      * @throws FileNotFoundException If file isn't found
      */
-    public Program(final Path file) throws FileNotFoundException {
+    Program(final Path file) throws FileNotFoundException {
         this(new XMLDocument(file));
     }
 
@@ -56,7 +56,7 @@ public final class Program {
      * Ctor.
      * @param xml The XMIR
      */
-    public Program(final XML xml) {
+    Program(final XML xml) {
         this(xml, Program.MONO);
     }
 

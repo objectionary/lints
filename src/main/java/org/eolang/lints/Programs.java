@@ -37,7 +37,7 @@ import org.cactoos.list.Synced;
  * @see <a href="https://news.eolang.org/2022-11-25-xmir-guide.html">XMIR</a>
  * @since 0.1.0
  */
-public final class Programs {
+final class Programs {
 
     /**
      * Collection of mono lints, preloaded on JVM start.
@@ -65,7 +65,7 @@ public final class Programs {
      * @param dirs The directory
      * @throws IOException If fails
      */
-    public Programs(final Path... dirs) throws IOException {
+    Programs(final Path... dirs) throws IOException {
         this(Arrays.asList(dirs));
     }
 
@@ -78,7 +78,7 @@ public final class Programs {
      * @param dirs The directory
      * @throws IOException If fails
      */
-    public Programs(final Collection<Path> dirs) throws IOException {
+    Programs(final Collection<Path> dirs) throws IOException {
         this(Programs.discover(dirs));
     }
 
@@ -86,7 +86,7 @@ public final class Programs {
      * Ctor.
      * @param map The map with them
      */
-    public Programs(final Map<String, XML> map) {
+    Programs(final Map<String, XML> map) {
         this(map, Programs.WPA);
     }
 
