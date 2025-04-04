@@ -18,11 +18,11 @@ import org.xembly.Directives;
 import org.xembly.Xembler;
 
 /**
- * Large XMIR document.
+ * Java `.class` to XMIR document.
  *
  * @since 0.0.31
  */
-public final class LargeXmir implements Scalar<XML> {
+public final class JavaToXmir implements Scalar<XML> {
 
     /**
      * Name of the program.
@@ -30,35 +30,42 @@ public final class LargeXmir implements Scalar<XML> {
     private final String name;
 
     /**
-     * Constructor.
+     * Java class to transform.
      */
-    public LargeXmir() {
-        this("unknown");
+    private final String java;
+
+    /**
+     * Constructor.
+     * @param jclass Java class to transform
+     */
+    public JavaToXmir(final String jclass) {
+        this("unknown", jclass);
     }
 
     /**
      * Constructor.
      * @param nme Program name.
+     * @param jclass Java class to transform
      */
-    public LargeXmir(final String nme) {
+    public JavaToXmir(final String nme, final String jclass) {
         this.name = nme;
+        this.java = jclass;
     }
 
     @Override
     public XML value() throws Exception {
         final Path home = Files.createTempDirectory("tmp");
-        final String path = "com/sun/jna/Pointer.class";
         final AtomicReference<XML> ref = new AtomicReference<>();
         new Farea(home).together(
             f -> {
                 f.clean();
                 f.files()
-                    .file(String.format("target/classes/%s", path))
+                    .file(String.format("target/classes/%s", this.java))
                     .write(
                         new UncheckedBytes(
                             new BytesOf(
                                 new ResourceOf(
-                                    "com/sun/jna/Pointer.class"
+                                    this.java
                                 )
                             )
                         ).asBytes()
@@ -73,7 +80,10 @@ public final class LargeXmir implements Scalar<XML> {
                 ref.set(
                     new XMLDocument(
                         f.files().file(
-                            "target/generated-sources/jeo-xmir/com/sun/jna/Pointer.xmir"
+                            String.format(
+                                "target/generated-sources/jeo-xmir/%s.xmir",
+                                this.java.replace(".class", "")
+                            )
                         ).path()
                     )
                 );

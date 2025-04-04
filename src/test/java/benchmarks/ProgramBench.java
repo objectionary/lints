@@ -5,8 +5,8 @@
 package benchmarks;
 
 import com.jcabi.xml.XML;
-import com.jcabi.xml.XMLDocument;
-import fixtures.LargeXmir;
+import fixtures.JavaToXmir;
+import fixtures.ProgramBenches;
 import java.util.concurrent.TimeUnit;
 import org.cactoos.scalar.Unchecked;
 import org.eolang.lints.Program;
@@ -36,14 +36,49 @@ import org.openjdk.jmh.annotations.Warmup;
 public class ProgramBench {
 
     /**
-     * Large XMIR document.
-     */
-    private static final XML LARGE = new Unchecked<>(new LargeXmir()).value();
-
-    /**
      * Small XMIR document.
      */
-    private static final XML SMALL = new XMLDocument("<program name='foo'/>");
+    private static final XML SMALL = new Unchecked<>(
+        new JavaToXmir(new ProgramBenches().value().get(ProgramBenches.ProgramSize.S))
+    ).value();
+
+    /**
+     * Medium XMIR document.
+     */
+    private static final XML MEDIUM = new Unchecked<>(
+        new JavaToXmir(new ProgramBenches().value().get(ProgramBenches.ProgramSize.M))
+    ).value();
+
+    /**
+     * Large XMIR document.
+     */
+    private static final XML LARGE = new Unchecked<>(
+        new JavaToXmir(new ProgramBenches().value().get(ProgramBenches.ProgramSize.L))
+    ).value();
+
+    /**
+     * X-Large XMIR document.
+     */
+    private static final XML X_LARGE = new Unchecked<>(
+        new JavaToXmir(new ProgramBenches().value().get(ProgramBenches.ProgramSize.XL))
+    ).value();
+
+    /**
+     * XXL XMIR document.
+     */
+    private static final XML XXL = new Unchecked<>(
+        new JavaToXmir(new ProgramBenches().value().get(ProgramBenches.ProgramSize.XXL))
+    ).value();
+
+    @Benchmark
+    public final void scansSmallXmir() {
+        new Program(ProgramBench.SMALL).defects();
+    }
+
+    @Benchmark
+    public final void scansMediumXmir() {
+        new Program(ProgramBench.MEDIUM).defects();
+    }
 
     @Benchmark
     public final void scansLargeXmir() {
@@ -51,7 +86,12 @@ public class ProgramBench {
     }
 
     @Benchmark
-    public final void scansSmallXmir() {
-        new Program(ProgramBench.SMALL).defects();
+    public final void scansXlargeXmir() {
+        new Program(ProgramBench.X_LARGE).defects();
+    }
+
+    @Benchmark
+    public final void scansXxlXmir() {
+        new Program(ProgramBench.XXL).defects();
     }
 }

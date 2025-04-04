@@ -15,7 +15,8 @@ import com.yegor256.tojos.MnCsv;
 import com.yegor256.tojos.TjCached;
 import com.yegor256.tojos.TjDefault;
 import com.yegor256.tojos.Tojos;
-import fixtures.LargeXmir;
+import fixtures.JavaToXmir;
+import fixtures.ProgramBenches;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -24,6 +25,8 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.stream.Collectors;
+import org.cactoos.bytes.BytesOf;
+import org.cactoos.bytes.UncheckedBytes;
 import org.cactoos.io.InputOf;
 import org.cactoos.io.ResourceOf;
 import org.cactoos.iterable.Sticky;
@@ -39,16 +42,16 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.ClassVisitor;
+import org.objectweb.asm.Label;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
 
 /**
  * Test for {@link Program}.
  *
  * @since 0.0.1
- * @todo #134:45min Measure lint time for smaller/larger classes, similar way to JNA Pointer.
- *  Currently, we measure linting of just one big class. Would be good to measure
- *  other classes in size too, for instance smaller classes (standard program),
- *  large class (JNA pointer), x-large class, and xxl class. Don't forget to
- *  adjust lint-summary.txt file to capture all the measurements.
  * @checkstyle MethodBodyCommentsCheck (50 lines)
  */
 @SuppressWarnings("PMD.TooManyMethods")
@@ -287,28 +290,79 @@ final class ProgramTest {
     @ExtendWith(MktmpResolver.class)
     @ExtendWith(MayBeSlow.class)
     @Timeout(600L)
-    void lintsLargeJnaClass() throws Exception {
-        final String path = "com/sun/jna/Pointer.class";
-        final XML xmir = new Unchecked<>(new LargeXmir()).value();
-        final long start = System.currentTimeMillis();
-        final Collection<Defect> defects = new ProgramTest.BcProgram(xmir).defects();
-        final long msec = System.currentTimeMillis() - start;
-        final Path target = Paths.get("target");
-        Files.write(
-            target.resolve("lint-summary.txt"),
-            String.join(
-                "\n",
-                String.format("Input: %s", path),
-                Logger.format(
-                    "Lint time: %[ms]s (%d ms)",
-                    msec, msec
-                )
-            ).getBytes(StandardCharsets.UTF_8)
+    void lintsBenchmarkProgramsFromJava() throws Exception {
+        final StringBuilder sum = new StringBuilder(256);
+        new ProgramBenches().value().forEach(
+            (size, program) -> {
+                final XML xmir = new Unchecked<>(new JavaToXmir(program)).value();
+                final long start = System.currentTimeMillis();
+                final Collection<Defect> defects = new ProgramTest.BcProgram(
+                    xmir, size.size()
+                ).defects();
+                final long msec = System.currentTimeMillis() - start;
+                sum.append(
+                    String.join(
+                        "\n",
+                        String.format("Input: %s (%s program)", program, size.size()),
+                        Logger.format(
+                            "Lint time: %s[ms]s (%d ms)",
+                            msec, msec
+                        )
+                    )
+                ).append("\n\n");
+                MatcherAssert.assertThat(
+                    "Defects are empty, but they should not be",
+                    defects,
+                    Matchers.hasSize(Matchers.greaterThan(0))
+                );
+            }
         );
-        MatcherAssert.assertThat(
-            "Defects are empty, but they should not be",
-            defects,
-            Matchers.hasSize(Matchers.greaterThan(0))
+        Files.write(
+            Paths.get("target").resolve("lint-summary.txt"),
+            sum.toString().getBytes(StandardCharsets.UTF_8)
+        );
+    }
+
+    @Test
+    void checksJavaProgramsForBenchmarking() {
+        new ProgramBenches().value().forEach(
+            (size, program) -> {
+                final ProgramTest.LineCountVisitor visitor = new ProgramTest.LineCountVisitor();
+                new ClassReader(
+                    new UncheckedBytes(
+                        new BytesOf(
+                            new ResourceOf(
+                                program
+                            )
+                        )
+                    ).asBytes()
+                ).accept(visitor, 0);
+                final int lines = visitor.total();
+                final int min = size.minAllowed();
+                final int max = size.maxAllowed();
+                MatcherAssert.assertThat(
+                    String.join(
+                        ", ",
+                        String.format(
+                            "Java program \"%s\" was supplied with incorrect size marker (\"%s\")",
+                            program, size.size()
+                        ),
+                        String.format(
+                            "since it has %d executable lines inside",
+                            lines
+                        ),
+                        String.format(
+                            "while it is expected to have between %d and %d line numbers",
+                            min, max
+                        )
+                    ),
+                    lines,
+                    Matchers.allOf(
+                        Matchers.greaterThanOrEqualTo(min),
+                        Matchers.lessThanOrEqualTo(max)
+                    )
+                );
+            }
         );
     }
 
@@ -334,10 +388,16 @@ final class ProgramTest {
         private final Tojos timings;
 
         /**
+         * Size marker of the program.
+         */
+        private final String marker;
+
+        /**
          * Ctor.
          * @param program XMIR program to lint
+         * @param size Program size
          */
-        BcProgram(final XML program) {
+        BcProgram(final XML program, final String size) {
             this(
                 program,
                 new Synced<>(new Sticky<>(new PkMono())),
@@ -345,7 +405,8 @@ final class ProgramTest {
                     new TjDefault(
                         new MnCsv("target/timings.csv")
                     )
-                )
+                ),
+                size
             );
         }
 
@@ -354,11 +415,16 @@ final class ProgramTest {
          * @param program XMIR program to lint
          * @param lnts Lints to apply
          * @param tmngs Timings
+         * @param size Program size
+         * @checkstyle ParameterNumberCheck (5 lines)
          */
-        BcProgram(final XML program, final Iterable<Lint<XML>> lnts, final Tojos tmngs) {
+        BcProgram(
+            final XML program, final Iterable<Lint<XML>> lnts, final Tojos tmngs, final String size
+        ) {
             this.xmir = program;
             this.lints = lnts;
             this.timings = tmngs;
+            this.marker = size;
         }
 
         /**
@@ -376,7 +442,8 @@ final class ProgramTest {
                     final long start = System.currentTimeMillis();
                     final Collection<Defect> defects = lint.defects(this.xmir);
                     final long done = System.currentTimeMillis() - start;
-                    this.timings.add(lint.name()).set("ms", done);
+                    this.timings.add(String.format("%s (%s)", lint.name(), this.marker))
+                        .set("ms", done);
                     messages.addAll(defects);
                 }
                 return messages;
@@ -386,6 +453,49 @@ final class ProgramTest {
                     ex
                 );
             }
+        }
+    }
+
+    /**
+     * Line number visitor.
+     * @since 0.0.45
+     */
+    private static final class LineCountVisitor extends ClassVisitor {
+
+        /**
+         * Count.
+         */
+        private int count;
+
+        /**
+         * Ctor.
+         */
+        LineCountVisitor() {
+            super(Opcodes.ASM9);
+        }
+
+        @Override
+        public MethodVisitor visitMethod(
+            final int access,
+            final String name,
+            final String descriptor,
+            final String signature,
+            final String[] exceptions
+        ) {
+            return new MethodVisitor(Opcodes.ASM9) {
+                @Override
+                public void visitLineNumber(final int line, final Label start) {
+                    ProgramTest.LineCountVisitor.this.count += 1;
+                }
+            };
+        }
+
+        /**
+         * Total found.
+         * @return Lines count
+         */
+        public int total() {
+            return this.count;
         }
     }
 }

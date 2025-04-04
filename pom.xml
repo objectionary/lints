@@ -210,6 +210,12 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>org.apache.hadoop</groupId>
+      <artifactId>hadoop-hdfs</artifactId>
+      <version>3.4.0</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>org.openjdk.jmh</groupId>
       <artifactId>jmh-core</artifactId>
       <version>1.37</version>
@@ -219,6 +225,12 @@
       <groupId>com.tngtech.archunit</groupId>
       <artifactId>archunit</artifactId>
       <version>1.4.0</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.ow2.asm</groupId>
+      <artifactId>asm</artifactId>
+      <version>9.7.1</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
