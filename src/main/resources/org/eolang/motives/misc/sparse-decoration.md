@@ -23,3 +23,12 @@ Correct:
 [free] > decorates-with-free-args
   five > @
 ```
+
+Also, it is possible to have sparse decoration in tests:
+
+```eo
+# This is my unit test.
+[] > runs-analysis
+  assert > @
+    foo.eq 42
+```
