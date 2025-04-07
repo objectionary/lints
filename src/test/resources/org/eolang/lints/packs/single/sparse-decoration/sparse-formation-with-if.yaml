@@ -8,7 +8,6 @@ asserts:
 input: |
   # No comments.
   [] > test
-    # No comments.
     [] > @
       if. > @
         a
