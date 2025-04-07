@@ -1,0 +1,14 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/misc/sparse-decoration.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=0]
+input: |
+  +tests
+
+  # No comments.
+  [] > my-super-test
+    assert > @
+      foo.eq 42
