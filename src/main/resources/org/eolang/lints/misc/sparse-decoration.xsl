@@ -15,7 +15,7 @@
           <xsl:variable name="link" select="@line"/>
           <xsl:if test="not(//comment[@line=$link]/text() and ..[@name])">
             <xsl:element name="defect">
-              <xsl:variable name="line" select="eo:lineno(@line)"/>
+              <xsl:variable name="line" select="eo:lineno($link)"/>
               <xsl:attribute name="line">
                 <xsl:value-of select="$line"/>
               </xsl:attribute>
