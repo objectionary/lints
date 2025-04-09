@@ -1,0 +1,22 @@
+<h1 id="anonymous-formation">Anonymous Formation</h1>
+<p>Anonymous formation should not access object, undefined inside the
+formation.</p>
+<p>Incorrect:</p>
+<pre class="eo"><code># App.
+[] &gt; app
+  &quot;Hello&quot; &gt; t
+  malloc.of
+    64
+    [m]
+      QQ.io.stdout &gt; @
+        t</code></pre>
+<p>Correct:</p>
+<pre class="eo"><code># App.
+[] &gt; app
+  &quot;Hello&quot; &gt; t
+  malloc.of
+    64
+    [m]
+      &quot;boom&quot; &gt; x
+      QQ.io.stdout &gt; @
+        x</code></pre>
