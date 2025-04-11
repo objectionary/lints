@@ -1,0 +1,10 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/errors/unused-void-attr.xsl
+asserts:
+  - /defects[count(defect[@severity='error'])=0]
+input: |
+  # Error.
+  [message] > error ?

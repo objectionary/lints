@@ -25,3 +25,10 @@ Unused void attributes are allowed only if there are atoms in the program:
 [x] > foo
   [] > bar ?
 ```
+
+Or formation itself is the atom:
+
+```eo
+# Foo.
+[x] > foo ?
+```

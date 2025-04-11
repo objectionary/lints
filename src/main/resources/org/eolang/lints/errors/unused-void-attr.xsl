@@ -14,7 +14,7 @@
       <xsl:for-each select="//o[@base='∅']">
         <xsl:variable name="attr" select="@name"/>
         <xsl:variable name="formation" select=".."/>
-        <xsl:if test="not($formation//o[contains(@base, concat('$.', $attr))]/ancestor::o[eo:abstract(.)][1][generate-id()=$formation/generate-id()]) and not($formation//o[eo:atom(.)])">
+        <xsl:if test="not(eo:atom($formation)) and not($formation//o[contains(@base, concat('$.', $attr))]/ancestor::o[eo:abstract(.)][1][generate-id()=$formation/generate-id()]) and not($formation//o[eo:atom(.)])">
           <xsl:element name="defect">
             <xsl:variable name="line" select="eo:lineno(@line)"/>
             <xsl:attribute name="line">
