@@ -77,8 +77,8 @@ final class ProgramTest {
                         // REUSE-IgnoreEnd
                         "",
                         "# This is just a test object with no functionality.",
-                        "[] > foo",
-                        "  42 > x"
+                        "[i] > foo",
+                        "  i > x"
                     )
                 ).parsed()
             ).defects(),
@@ -105,6 +105,7 @@ final class ProgramTest {
                             "+unlint comment-too-short",
                             "+unlint unsorted-metas",
                             "+unlint mandatory-spdx",
+                            "+unlint no-attribute-formation",
                             "# Test.",
                             "[] > foo"
                         )
@@ -256,7 +257,8 @@ final class ProgramTest {
                 "mandatory-version",
                 "mandatory-package",
                 "comment-too-short",
-                "mandatory-spdx"
+                "mandatory-spdx",
+                "no-attribute-formation"
             ).defects(),
             Matchers.emptyIterable()
         );
@@ -276,9 +278,11 @@ final class ProgramTest {
                         "+version 0.0.0",
                         "",
                         "# No comments.",
-                        "[] > main",
+                        "[c] > main",
                         "  QQ.io.stdout",
-                        "    \"Hello world\""
+                        "    QQ.txt.sprintf",
+                        "      \"Hello %s\"",
+                        "      * c"
                     )
                 ).parsed()
             ).without("mandatory-spdx", "comment-too-short").defects(),

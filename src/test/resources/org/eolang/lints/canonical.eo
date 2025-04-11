@@ -7,9 +7,9 @@
 +unlint unused-void-attr
 
 # Times table, which is a canonical example of EO program.
-[] > canonical
+[start] > canonical
   malloc.for > @
-    0
+    start
     [x] >>
       seq > @
         *
