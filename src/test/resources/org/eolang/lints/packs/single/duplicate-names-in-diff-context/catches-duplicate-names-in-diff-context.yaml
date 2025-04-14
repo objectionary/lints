@@ -1,0 +1,14 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/misc/duplicate-names-in-diff-context.xsl
+asserts:
+  - /defects/defect[@line='3' or @line='5']
+  - /defects[count(defect[@severity='warning'])=2]
+input: |
+  [] > foo
+    [] > a1
+      42 > bar
+    [] > a2
+      33 > bar
