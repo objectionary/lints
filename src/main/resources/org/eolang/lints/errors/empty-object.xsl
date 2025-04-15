@@ -12,7 +12,7 @@
   <xsl:output encoding="UTF-8" method="xml"/>
   <xsl:template match="/">
     <defects>
-      <xsl:for-each select="/program/objects//o[not(@base) and not(o) and not(eo:atom(.)) and not(eo:has-data(.) and parent::o[@base='Q.org.eolang.bytes']) and not(@name=$eo:lambda and parent::o)]">
+      <xsl:for-each select="/program/objects//o[not(@base) and not(o) and not(eo:atom(.)) and not(eo:has-data(.) and parent::o[@base='Q.org.eolang.bytes']) and not(parent::o[eo:atom(.)])]">
         <xsl:element name="defect">
           <xsl:variable name="line" select="eo:lineno(@line)"/>
           <xsl:attribute name="line">
