@@ -9,8 +9,8 @@ The format of the bytes inside [XMIR] objects must follow special regexp:
 Incorrect:
 
 ```xml
-<program>
-  <objects>
+<object>
+  <o name="app">
     <o name="a">
       hello, world!
     </o>
@@ -32,15 +32,15 @@ Incorrect:
     <o name="g">
       哈囉世界
     </o>
-  </objects>
-</program>
+  </o>
+</object>
 ```
 
 Correct:
 
 ```xml
-<program>
-  <objects>
+<object>
+  <o name="app">
     <o name="a">
       --
     </o>
@@ -69,8 +69,8 @@ Correct:
       10-20-30-40-50
     </o>
     <o name="z"/>
-  </objects>
-</program>
+  </o>
+</object>
 ```
 
 [XMIR]: https://news.eolang.org/2022-11-25-xmir-guide.html

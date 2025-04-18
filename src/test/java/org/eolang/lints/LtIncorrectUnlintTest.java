@@ -25,7 +25,7 @@ final class LtIncorrectUnlintTest {
             "unlint must point to existing lint",
             new LtIncorrectUnlint(List.of("hello")).defects(
                 new EoSyntax(
-                    "+unlint foo\n+unlint bar"
+                    "+unlint foo\n+unlint bar\n\n# Foo.\n[] > foo"
                 ).parsed()
             ),
             Matchers.allOf(
@@ -70,7 +70,6 @@ final class LtIncorrectUnlintTest {
             new LtIncorrectUnlint(new ListOf<>("comment-not-capitalized"))
                 .defects(
                     new EoSyntax(
-                        "foo",
                         String.join(
                             "\n",
                             "+unlint comment-not-capitalized:3",
@@ -90,7 +89,6 @@ final class LtIncorrectUnlintTest {
             "Non existing unlint with line number should be caught",
             new LtIncorrectUnlint(new ListOf<>("a")).defects(
                 new EoSyntax(
-                    "app",
                     String.join(
                         "\n",
                         "+unlint b:1",

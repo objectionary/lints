@@ -6,16 +6,14 @@ sheets:
 asserts:
   - /defects[count(defect[@context and @severity='warning'])=1]
 document: |
-  <program>
+  <object>
     <metas>
       <meta>
          <head>tests</head>
          <tail/>
       </meta>
     </metas>
-    <objects>
-      <o name="test">
-         <o base="Q.org.eolang.true"/>
-      </o>
-    </objects>
-  </program>
+    <o name="test">
+       <o base="Q.org.eolang.true"/>
+    </o>
+  </object>

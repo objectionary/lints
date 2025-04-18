@@ -10,12 +10,12 @@
   <xsl:output encoding="UTF-8" method="xml"/>
   <xsl:template match="/">
     <defects>
-      <xsl:for-each select="//o|/program/objects">
+      <xsl:for-each select="//o|/object">
         <xsl:apply-templates select="." mode="dups"/>
       </xsl:for-each>
     </defects>
   </xsl:template>
-  <xsl:template match="o|objects" mode="dups">
+  <xsl:template match="o|object" mode="dups">
     <xsl:for-each select="o[@name]">
       <xsl:variable name="x" select="."/>
       <xsl:if test="preceding-sibling::o/@name = $x/@name">

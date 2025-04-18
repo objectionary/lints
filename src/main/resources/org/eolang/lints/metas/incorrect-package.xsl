@@ -10,7 +10,7 @@
   <xsl:output encoding="UTF-8" method="xml"/>
   <xsl:template match="/">
     <defects>
-      <xsl:for-each select="/program/metas/meta">
+      <xsl:for-each select="/object/metas/meta">
         <xsl:variable name="meta-head" select="head"/>
         <xsl:variable name="meta-tail" select="tail"/>
         <xsl:variable name="first" select="normalize-space(substring-before(concat($meta-tail, ' '), ' '))"/>

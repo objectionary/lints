@@ -6,6 +6,7 @@ sheets:
 asserts:
   - /defects[count(defect[@severity='critical'])=1]
 input: |
-  foo
+  # Foo.
+  [] > foo
     1 > name
     2 > name

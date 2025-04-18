@@ -32,11 +32,11 @@
     <a>tuple</a>
     <a>while</a>
   </xsl:variable>
-  <xsl:variable name="name" select="//objects/o[1]/@name"/>
+  <xsl:variable name="name" select="/object/o[1]/@name"/>
   <xsl:template match="/">
     <defects>
-      <xsl:variable name="tested" select="/program/metas/meta[head='tests']"/>
-      <xsl:for-each select="/program/metas/meta">
+      <xsl:variable name="tested" select="/object/metas/meta[head='tests']"/>
+      <xsl:for-each select="/object/metas/meta">
         <xsl:variable name="meta-head" select="head"/>
         <xsl:variable name="meta-tail" select="tail"/>
         <xsl:if test="not($tested) and $meta-head='package' and $meta-tail='org.eolang' and not($white-list/a=$name)">

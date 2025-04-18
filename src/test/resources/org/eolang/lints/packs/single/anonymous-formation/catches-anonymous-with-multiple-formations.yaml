@@ -12,13 +12,13 @@ input: |
   [] > app
     "1st" > f
     "2nd" > t
-    malloc.of
-      64
+    malloc.of > fi
+      64 > i
       [m]
         QQ.io.stdout > @
           t
-    malloc.of
-      52
+    malloc.of > sec
+      52 > xa
       [o]
         QQ.io.stdout > @
           f

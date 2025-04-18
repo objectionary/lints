@@ -13,4 +13,4 @@ foo.eo: |
 app.eo: |
   # App uses foo with two attributes instead.
   [a b] > app
-    foo a b
+    foo a b > i

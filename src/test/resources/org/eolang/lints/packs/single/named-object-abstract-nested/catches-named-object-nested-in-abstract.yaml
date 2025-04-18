@@ -7,12 +7,10 @@ asserts:
   - /defects[count(defect[@severity='critical'])=1]
   - /defects/defect[@line='3']
 document: |
-  <program>
-    <objects>
-      <o name="foo" line="1">
-        <o base="xyz" line="2">
-          <o base="num" name="abc" line="3"/>
-        </o>
+  <object>
+    <o name="foo" line="1">
+      <o base="xyz" line="2">
+        <o base="num" name="abc" line="3"/>
       </o>
-    </objects>
-  </program>
+    </o>
+  </object>

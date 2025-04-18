@@ -10,7 +10,7 @@
   <xsl:output encoding="UTF-8" method="xml"/>
   <xsl:template match="/">
     <defects>
-      <xsl:for-each select="/program/metas/meta">
+      <xsl:for-each select="/object/metas/meta">
         <xsl:variable name="head" select="head"/>
         <xsl:variable name="tail" select="tail"/>
         <xsl:if test="preceding-sibling::meta[head=$head and tail=$tail]">

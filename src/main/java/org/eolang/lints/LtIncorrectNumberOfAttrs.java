@@ -85,8 +85,7 @@ final class LtIncorrectNumberOfAttrs implements Lint<Map<String, XML>> {
         pkg.forEach(
             (program, xmir) -> {
                 final Xnav xml = new Xnav(xmir.inner());
-                xml.element("program")
-                    .element("objects")
+                xml.element("object")
                     .elements(Filter.withName("o")).forEach(
                         xob -> {
                             final List<Xnav> attrs = new ListOf<>();
@@ -110,7 +109,7 @@ final class LtIncorrectNumberOfAttrs implements Lint<Map<String, XML>> {
      */
     private static String packagedFqn(final String oname, final Xnav xml) {
         final String pack;
-        final List<Xnav> packages = xml.element("program")
+        final List<Xnav> packages = xml.element("object")
             .element("metas")
             .elements(Filter.withName("meta"))
             .filter(

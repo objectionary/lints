@@ -51,7 +51,6 @@ final class MonoLintsTest {
     @Test
     void lintsProgramCorrectly() throws IOException {
         final XML xmir = new EoSyntax(
-            "app",
             String.join(
                 "\n",
                 "+home https://github.com/objectionary/eo",

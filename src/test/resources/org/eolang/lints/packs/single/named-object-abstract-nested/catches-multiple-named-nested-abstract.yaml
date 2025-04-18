@@ -8,12 +8,10 @@ asserts:
   - /defects/defect[@line='2']
   - /defects/defect[@line='3']
 document: |
-  <program>
-    <objects>
-      <o base="x" name="@" line="1">
-        <o base="y" name="a" line="2">
-          <o base="z" name="b" line="3"/>
-        </o>
+  <object>
+    <o base="x" name="@" line="1">
+      <o base="y" name="a" line="2">
+        <o base="z" name="b" line="3"/>
       </o>
-    </objects>
-  </program>
+    </o>
+  </object>

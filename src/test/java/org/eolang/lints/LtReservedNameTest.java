@@ -32,7 +32,6 @@ final class LtReservedNameTest {
             new LtReservedName(new MapOf<>("true", "org.eolang.true.eo"))
                 .defects(
                     new EoSyntax(
-                        "foo",
                         String.join(
                             "\n",
                             "# Foo.",
@@ -52,7 +51,6 @@ final class LtReservedNameTest {
             new LtReservedName(new MapOf<>("true", "org.eolang.true.eo"))
                 .defects(
                     new EoSyntax(
-                        "x",
                         String.join(
                             "# X object.",
                             "[] > x",
@@ -71,7 +69,6 @@ final class LtReservedNameTest {
             new LtReservedName(new MapOf<>("f", "org.eolang.f.eo"))
                 .defects(
                     new EoSyntax(
-                        "top",
                         String.join(
                             "# top.",
                             "[] > top",
@@ -89,7 +86,6 @@ final class LtReservedNameTest {
             new MapOf<>("stdout", "org.eolang.stdout.eo")
         ).defects(
             new EoSyntax(
-                "t-packaged",
                 String.join(
                     "+package org.foo",
                     "",
@@ -111,56 +107,25 @@ final class LtReservedNameTest {
     }
 
     @Test
-    void catchesMultipleNames() throws IOException {
+    void reportsMultipleNames() throws IOException {
         MatcherAssert.assertThat(
             "Defects size does not match with expected",
             new LtReservedName(
                 new MapOf<String, String>(
-                    new MapEntry<>("left", "org.eolang.left.eo"),
-                    new MapEntry<>("right", "org.eolang.right.eo")
-                )
-            ).defects(
-                new EoSyntax(
-                    "two-defects",
-                    String.join(
-                        "\n",
-                        "# Left.",
-                        "[] > left",
-                        "",
-                        "# Right.",
-                        "[] > right"
-                    )
-                ).parsed()
-            ),
-            Matchers.hasSize(2)
-        );
-    }
-
-    @Test
-    void reportsAll() throws IOException {
-        MatcherAssert.assertThat(
-            "Defects size does not match with expected",
-            new LtReservedName(
-                new MapOf<>(
                     new MapEntry<>("ja", "org.eolang.ja.eo"),
-                    new MapEntry<>("jp", "org.eolang.jp.eo"),
                     new MapEntry<>("spb", "org.eolang.spb.eo")
                 )
             ).defects(
                 new EoSyntax(
-                    "tops",
                     String.join(
                         "\n",
                         "# JA.",
                         "[] > ja",
-                        "  52 > spb",
-                        "",
-                        "# JP.",
-                        "[] > jp"
+                        "  52 > spb"
                     )
                 ).parsed()
             ),
-            Matchers.hasSize(3)
+            Matchers.hasSize(2)
         );
     }
 
@@ -171,7 +136,6 @@ final class LtReservedNameTest {
             new MapOf<>("foo", "org.eolang.foo.eo")
         ).defects(
             new EoSyntax(
-                target,
                 String.join(
                     "\n",
                     "# Foo.",
@@ -204,7 +168,6 @@ final class LtReservedNameTest {
         final Lint<XML> lint = new LtReservedName();
         final Collection<Defect> defects = lint.defects(
             new EoSyntax(
-                "foo",
                 String.join(
                     "\n",
                     "# Foo",

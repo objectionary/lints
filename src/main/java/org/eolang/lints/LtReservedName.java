@@ -32,6 +32,7 @@ import org.cactoos.list.ListOf;
 import org.cactoos.text.TextOf;
 import org.cactoos.text.UncheckedText;
 import org.eolang.parser.EoSyntax;
+import org.eolang.parser.ObjectName;
 
 /**
  * Lint for reserved names.
@@ -90,8 +91,7 @@ final class LtReservedName implements Lint<XML> {
                             new Defect.Default(
                                 this.name(),
                                 Severity.WARNING,
-                                program.element("program").attribute("name")
-                                    .text().orElse("unknown"),
+                                new ObjectName(xmir).get(),
                                 Integer.parseInt(object.attribute("line").text().orElse("0")),
                                 String.format(
                                     "Object name \"%s\" is already reserved by object in the \"%s\"",
@@ -185,7 +185,7 @@ final class LtReservedName implements Lint<XML> {
     private static Map<String, String> namesInFile(final Path path) {
         final XML parsed;
         try {
-            parsed = new EoSyntax("reserved", new UncheckedInput(new InputOf(path.toFile())))
+            parsed = new EoSyntax(new UncheckedInput(new InputOf(path.toFile())))
                 .parsed();
         } catch (final IOException exception) {
             throw new IllegalStateException(
@@ -206,7 +206,7 @@ final class LtReservedName implements Lint<XML> {
     private static Map<String, String> namesInJar(final Path path) {
         final XML parsed;
         try (InputStream input = Files.newInputStream(path)) {
-            parsed = new EoSyntax("reserved", new TextOf(input).asString()).parsed();
+            parsed = new EoSyntax(new TextOf(input).asString()).parsed();
         } catch (final Exception exception) {
             throw new IllegalStateException(
                 String.format("Failed to parse EO source in \"%s\"", path),
@@ -224,7 +224,7 @@ final class LtReservedName implements Lint<XML> {
      */
     private static Map<String, String> namesInXmir(final XML xmir, final Path path) {
         final Map<String, String> names = new HashMap<>(64);
-        new Xnav(xmir.inner()).path("/program/objects/o/@name")
+        new Xnav(xmir.inner()).path("/object/o/@name")
             .map(oname -> oname.text().get())
             .forEach(
                 oname ->

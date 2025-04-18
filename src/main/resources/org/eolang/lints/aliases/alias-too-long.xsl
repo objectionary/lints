@@ -10,7 +10,7 @@
   <xsl:output encoding="UTF-8" method="xml"/>
   <xsl:template match="/">
     <defects>
-      <xsl:for-each select="/program/metas/meta[head='alias' and count(part)&gt;2]">
+      <xsl:for-each select="/object/metas/meta[head='alias' and count(part)&gt;2]">
         <xsl:element name="defect">
           <xsl:variable name="line" select="eo:lineno(@line)"/>
           <xsl:attribute name="line">

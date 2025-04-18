@@ -6,9 +6,7 @@ lints:
 asserts:
   - /defects[count(defect[@severity='error'])=2]
   - /defects/defect[@program='foo' and @line='3']
-  - /defects/defect[@program='bar' and @line='3']
   - /defects/defect[normalize-space()='Atom with FQN "Ф.foo.at" is duplicated, original was found in "foo"']
-  - /defects/defect[normalize-space()='Atom with FQN "Ф.foo.at" is duplicated, original was found in "bar"']
 foo.eo: |
   # Foo.
   [] > foo

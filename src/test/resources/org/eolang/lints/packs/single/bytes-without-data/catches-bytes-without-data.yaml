@@ -8,10 +8,8 @@ asserts:
   - /defects/defect[@line='1']
   - /defects/defect[1][normalize-space()='Objects with parent @base equal to "Q.org.eolang.bytes" must contain data, while "bar" object does not']
 document: |
-  <program>
-    <objects>
-      <o name="bar" base="Q.org.eolang.bytes" line="1">
-        <o/>
-      </o>
-    </objects>
-  </program>
+  <object>
+    <o name="bar" base="Q.org.eolang.bytes" line="1">
+      <o/>
+    </o>
+  </object>

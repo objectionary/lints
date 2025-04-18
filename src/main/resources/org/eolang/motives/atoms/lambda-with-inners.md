@@ -5,27 +5,23 @@ In [XMIR], atom object cannot have inner objects inside lambda object.
 Incorrect:
 
 ```xml
-<program>
-  <objects>
-    <o name="obj">
-      <o name="λ">
-        <o name="foo"/>
-      </o>
+<object>
+  <o name="obj">
+    <o name="λ">
+      <o name="foo"/>
     </o>
-  </objects>
-</program>
+  </o>
+</object>
 ```
 
 Correct:
 
 ```xml
-<program>
-  <objects>
-    <o name="obj">
-      <o name="λ"/>
-    </o>
-  </objects>
-</program>
+<object>
+  <o name="obj">
+    <o name="λ"/>
+  </o>
+</object>
 ```
 
 [XMIR]: https://news.eolang.org/2022-11-25-xmir-guide.html

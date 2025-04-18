@@ -102,19 +102,18 @@ final class LtUnlintNonExistingDefectWpaTest {
             ).defects(
                 new MapOf<String, XML>(
                     new MapEntry<>(
-                        "e-tests",
+                        "f",
                         new EoSyntax(
-                            "e-tests",
                             String.join(
                                 "\n",
                                 "+unlint unit-test-without-live-file",
                                 "",
                                 "# E tests.",
-                                "[] > runs-e"
+                                "[] > f"
                             )
                         ).parsed()
                     ),
-                    new MapEntry<>("e", new XMLDocument("<program/>"))
+                    new MapEntry<>("e", new XMLDocument("<object><o name='e'/></object>"))
                 )
             ),
             Matchers.hasSize(Matchers.greaterThan(0))

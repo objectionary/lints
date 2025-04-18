@@ -11,7 +11,7 @@ input: |
   # App.
   [] > app
     "Hello" > t
-    malloc.of
+    malloc.of > a
       64
       [m]
         QQ.io.stdout > @

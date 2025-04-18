@@ -6,7 +6,7 @@ sheets:
 asserts:
   - /defects[count(defect[@context and @severity='error'])=1]
 document: |
-  <program>
+  <object>
     <metas>
       <meta>
         <head>rt</head>
@@ -15,7 +15,5 @@ document: |
         <part>something</part>
       </meta>
     </metas>
-    <objects>
-      <o base="org.eolang.foo"/>
-    </objects>
-  </program>
+    <o base="org.eolang.foo"/>
+  </object>

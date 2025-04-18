@@ -10,7 +10,7 @@
   <xsl:template match="/">
     <xsl:variable name="min" select="32"/>
     <defects>
-      <xsl:for-each select="/program/comments/comment[string-length(.) &lt; $min]">
+      <xsl:for-each select="/object/comments/comment[string-length(.) &lt; $min]">
         <xsl:element name="defect">
           <xsl:variable name="line" select="eo:lineno(@line)"/>
           <xsl:attribute name="line">

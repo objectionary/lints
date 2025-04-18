@@ -10,7 +10,7 @@
   <xsl:output encoding="UTF-8" method="xml"/>
   <xsl:template match="/">
     <defects>
-      <xsl:for-each select="/program/metas/meta[head='alias']">
+      <xsl:for-each select="/object/metas/meta[head='alias']">
         <xsl:variable name="name" select="tokenize(tail, ' ')[1]"/>
         <xsl:if test="preceding-sibling::meta[head='alias' and tokenize(tail, ' ')[1]=$name]">
           <xsl:element name="defect">
@@ -35,7 +35,7 @@
     </defects>
   </xsl:template>
   <xsl:template match="meta" mode="dups">
-    <xsl:for-each select="/program/metas/meta[head='alias']">
+    <xsl:for-each select="/object/metas/meta[head='alias']">
       <xsl:variable name="x" select="."/>
       <xsl:if test="preceding-sibling::o/@name = $x/@name">
         <error>

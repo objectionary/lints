@@ -42,44 +42,7 @@ final class LtIncorrectNumberOfAttrsTest {
                                 "\n",
                                 "# App uses foo with two attributes instead.",
                                 "[a b] > app",
-                                "  foo a b"
-                            )
-                        ).parsed()
-                    )
-                )
-            ),
-            Matchers.hasSize(Matchers.greaterThan(0))
-        );
-    }
-
-    @Test
-    void catchesMultipleHighLevelObjectsInFile() throws IOException {
-        MatcherAssert.assertThat(
-            "Defects are empty, but they should not",
-            new LtIncorrectNumberOfAttrs().defects(
-                new MapOf<String, XML>(
-                    new MapEntry<>(
-                        "std",
-                        new EoSyntax(
-                            String.join(
-                                "\n",
-                                "# Std.",
-                                "[a] > std",
-                                "",
-                                "# Stf.",
-                                "[] > stf"
-                            )
-                        ).parsed()
-                    ),
-                    new MapEntry<>(
-                        "usage",
-                        new EoSyntax(
-                            String.join(
-                                "\n",
-                                "# App uses std and stf.",
-                                "[args] > app",
-                                "  std 0",
-                                "  stf 1"
+                                "  foo a b > @"
                             )
                         ).parsed()
                     )
@@ -145,34 +108,6 @@ final class LtIncorrectNumberOfAttrsTest {
                 )
             ),
             Matchers.emptyIterable()
-        );
-    }
-
-    @Test
-    void catchesIncorrectPassedNumberOfAttributesInSameFile() throws IOException {
-        MatcherAssert.assertThat(
-            "Defects are empty, but they should not",
-            new LtIncorrectNumberOfAttrs().defects(
-                new MapOf<>(
-                    new MapEntry<>(
-                        "single-broken",
-                        new EoSyntax(
-                            String.join(
-                                "\n",
-                                "+package broken",
-                                "",
-                                "# F with one attribute.",
-                                "[pos] > f",
-                                "",
-                                "# Z uses F with two attributes",
-                                "[] > z",
-                                "  f 52 42"
-                            )
-                        ).parsed()
-                    )
-                )
-            ),
-            Matchers.hasSize(Matchers.greaterThan(0))
         );
     }
 
@@ -337,7 +272,7 @@ final class LtIncorrectNumberOfAttrsTest {
                                 "\n",
                                 "# Usage of X and Y objects with vertical application.",
                                 "[] > app",
-                                "  y",
+                                "  y > @",
                                 "    1",
                                 "    x 0"
                             )

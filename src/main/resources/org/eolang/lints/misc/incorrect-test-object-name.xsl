@@ -10,7 +10,7 @@
   <xsl:output encoding="UTF-8" method="xml"/>
   <xsl:template match="/">
     <defects>
-      <xsl:for-each select="/program[metas/meta[head='tests']]/objects/o[@name]">
+      <xsl:for-each select="/object[metas/meta[head='tests']]/o[@name]">
         <xsl:variable name="regexp" select="'^[a-z][a-z0-9]*(-[a-z0-9]+)*$'"/>
         <xsl:if test="not(matches(@name, $regexp))">
           <defect>

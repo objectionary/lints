@@ -6,19 +6,17 @@ abstract object.
 Incorrect:
 
 ```xml
-<objects>
-  <o base="x" name="@">
-    <o base="y" name="a">
-      <o base="z" name="b"/>
-    </o>
+<o base="x" name="@">
+  <o base="y" name="a">
+    <o base="z" name="b"/>
   </o>
-</objects>
+</o>
 ```
 
 Correct:
 
 ```xml
-<objects>
+<o name="f">
   <o base="x" name="@">
     <o base="$.a"/>
   </o>
@@ -26,7 +24,7 @@ Correct:
     <o base="$.b"/>
   </o>
   <o base="z" name="b"/>
-</objects>
+</o>
 ```
 
 [XMIR]: https://news.eolang.org/2022-11-25-xmir-guide.html

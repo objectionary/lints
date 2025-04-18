@@ -6,27 +6,23 @@ in the listing.
 Incorrect:
 
 ```xml
-<program>
+<object>
   <listing>first line
     second line
     third line</listing>
-  <objects>
-    <o line="500" name="f"/>
-  </objects>
-</program>
+  <o line="500" name="f"/>
+</object>
 ```
 
 Correct:
 
 ```xml
-<program>
+<object>
   <listing>first line
     second line
     third line</listing>
-  <objects>
-    <o line="2" name="f"/>
-  </objects>
-</program>
+  <o line="2" name="f"/>
+</object>
 ```
 
 [XMIR]: https://news.eolang.org/2022-11-25-xmir-guide.html

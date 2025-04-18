@@ -6,6 +6,7 @@ package org.eolang.lints;
 
 import com.github.lombrozo.xnav.Xnav;
 import com.jcabi.xml.XML;
+import com.jcabi.xml.XMLDocument;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
@@ -16,6 +17,7 @@ import org.cactoos.io.ResourceOf;
 import org.cactoos.list.ListOf;
 import org.cactoos.text.TextOf;
 import org.cactoos.text.UncheckedText;
+import org.eolang.parser.ObjectName;
 
 /**
  * Lint for checking arguments inconsistency provided to the objects.
@@ -23,7 +25,7 @@ import org.cactoos.text.UncheckedText;
  * @since 0.0.41
  * @todo #259:60min Optimize performance of inconsistent arguments finding.
  *  Instead of re-collecting objects in nested loops, we should merge all objects
- *  from all programs into single XMIR under '<objects/>' element. After objects
+ *  from all programs into single XMIR under '<o/>' element. After objects
  *  are merged, we can iterate over all the objects there only once, and find
  *  inconsistencies.
  */
@@ -52,8 +54,7 @@ final class LtInconsistentArgs implements Lint<Map<String, XML>> {
                                         new Defect.Default(
                                             this.name(),
                                             Severity.WARNING,
-                                            program.element("program").attribute("name")
-                                                .text().orElse("unknown"),
+                                            new ObjectName(new XMLDocument(program.node())).get(),
                                             line,
                                             String.format(
                                                 "Object '%s' has arguments inconsistency",

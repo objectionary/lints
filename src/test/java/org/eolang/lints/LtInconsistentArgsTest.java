@@ -77,7 +77,6 @@ final class LtInconsistentArgsTest {
                     new MapEntry<>(
                         "app",
                         new EoSyntax(
-                            "f-one-arg",
                             String.join(
                                 "\n",
                                 "# App",
@@ -89,7 +88,6 @@ final class LtInconsistentArgsTest {
                     new MapEntry<>(
                         "main",
                         new EoSyntax(
-                            "f-three-arg",
                             String.join(
                                 "\n",
                                 "# Main",
@@ -147,7 +145,6 @@ final class LtInconsistentArgsTest {
                     new MapEntry<>(
                         "text-fqn",
                         new EoSyntax(
-                            "text-fqn",
                             String.join(
                                 "\n",
                                 "# App",
@@ -159,7 +156,6 @@ final class LtInconsistentArgsTest {
                     new MapEntry<>(
                         "text-alias",
                         new EoSyntax(
-                            "text-alias",
                             String.join(
                                 "\n",
                                 "+alias org.eolang.txt.text",

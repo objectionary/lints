@@ -56,7 +56,7 @@ final class LtUnlint implements Lint<XML> {
             .collect(Collectors.toList());
         final List<String> granular = new Xnav(xmir.inner()).path(
             String.format(
-                "/program/metas/meta[head='unlint' and (tail='%s' or starts-with(tail, '%s:'))]/tail",
+                "/object/metas/meta[head='unlint' and (tail='%s' or starts-with(tail, '%s:'))]/tail",
                 lname, lname
             )
         ).map(xnav -> xnav.text().get()).collect(Collectors.toList());

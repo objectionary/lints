@@ -6,7 +6,7 @@ sheets:
 asserts:
   - /defects[count(defect[@context and @severity='warning'])=1]
 document: |
-  <program>
+  <object>
     <metas>
       <meta>
         <head>alias</head>
@@ -20,8 +20,6 @@ document: |
         <part>stdin</part>
         <part>org.eolang.io.stdin</part>
       </meta>
-     </metas>
-     <objects>
-       <o name="foo"/>
-     </objects>
-  </program>
+    </metas>
+    <o name="foo"/>
+  </object>

@@ -41,7 +41,7 @@ final class LtIncorrectAliasTest {
                         new EoSyntax(
                             String.join(
                                 "\n",
-                                "+alias foo ",
+                                "+alias foo",
                                 "+package ttt\n",
                                 "# Bar",
                                 "[] > bar",
@@ -110,7 +110,6 @@ final class LtIncorrectAliasTest {
                     new MapEntry<>(
                         "longer-alias",
                         new EoSyntax(
-                            "bar",
                             String.join(
                                 "\n",
                                 "+alias stdout org.eolang.io.stdout",
@@ -137,7 +136,6 @@ final class LtIncorrectAliasTest {
         Files.write(
             dir.resolve("bar.xmir"),
             new EoSyntax(
-                "bar",
                 String.join(
                     "\n",
                     "+alias ttt.foo",
@@ -165,7 +163,6 @@ final class LtIncorrectAliasTest {
         Files.write(
             dir.resolve("main.xmir"),
             new EoSyntax(
-                "main",
                 String.join(
                     "\n",
                     "+alias stdout org.eolang.io.stdout",

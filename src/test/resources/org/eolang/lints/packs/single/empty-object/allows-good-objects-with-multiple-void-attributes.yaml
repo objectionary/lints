@@ -6,17 +6,15 @@ sheets:
 asserts:
   - /defects[count(defect[@severity='warning'])=0]
 document: |
-  <program>
-    <objects>
-      <o line="2" name="main" pos="0">
-         <o base="∅" line="2" name="x" pos="1"/>
-         <o base="∅" line="2" name="y" pos="1"/>
-         <o base=".print" line="3" name="@" pos="2">
-            <o base="stdout" line="4" pos="4">
-               <o base="string" line="4" pos="11">48-65-6C-6C-6F-21</o>
-               <o base="x" line="4" pos="20"/>
-            </o>
-         </o>
-      </o>
-    </objects>
-  </program>
+  <object>
+    <o line="2" name="main" pos="0">
+       <o base="∅" line="2" name="x" pos="1"/>
+       <o base="∅" line="2" name="y" pos="1"/>
+       <o base=".print" line="3" name="@" pos="2">
+          <o base="stdout" line="4" pos="4">
+             <o base="string" line="4" pos="11">48-65-6C-6C-6F-21</o>
+             <o base="x" line="4" pos="20"/>
+          </o>
+       </o>
+    </o>
+  </object>

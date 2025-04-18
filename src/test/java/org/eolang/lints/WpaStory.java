@@ -63,7 +63,7 @@ final class WpaStory {
                 if (key.endsWith(".eo")) {
                     try {
                         final String name = key.substring(0, key.length() - 3);
-                        programs.put(name, new EoSyntax(name, (String) val).parsed());
+                        programs.put(name, new EoSyntax((String) val).parsed());
                     } catch (final IOException exception) {
                         throw new IllegalStateException(
                             "Failed to parse EO syntax", exception

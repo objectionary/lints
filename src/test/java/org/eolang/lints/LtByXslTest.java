@@ -47,7 +47,13 @@ final class LtByXslTest {
             "No defects found, while a few of them expected",
             new LtByXsl("critical/duplicate-names").defects(
                 new EoSyntax(
-                    "# first\n[] > foo\n# first\n[] > foo\n"
+                    String.join(
+                        "\n",
+                        "# first.",
+                        "[] > foo",
+                        "  12 > x",
+                        "  52 > x"
+                    )
                 ).parsed()
             ),
             Matchers.hasSize(Matchers.greaterThan(0))
@@ -63,7 +69,7 @@ final class LtByXslTest {
             new XtSticky(
                 new XtYaml(
                     yaml,
-                    eo -> new EoSyntax("pack", eo).parsed()
+                    eo -> new EoSyntax(eo).parsed()
                 )
             ),
             new XtoryMatcher(new DefectsMatcher())

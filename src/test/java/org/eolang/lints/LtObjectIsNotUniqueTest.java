@@ -50,48 +50,6 @@ final class LtObjectIsNotUniqueTest {
     }
 
     @Test
-    void catchesDuplicatesAcrossMultipleObjects() throws Exception {
-        MatcherAssert.assertThat(
-            "Defects are empty, but they should not",
-            new LtObjectIsNotUnique().defects(
-                new MapOf<String, XML>(
-                    new MapEntry<>(
-                        "test-1",
-                        new EoSyntax(
-                            String.join(
-                                "\n",
-                                "# foo",
-                                "[] > foo",
-                                "  52 > spb",
-                                "",
-                                "# bar",
-                                "[] > bar",
-                                "  0 > spb"
-                            )
-                        ).parsed()
-                    ),
-                    new MapEntry<>(
-                        "test-2",
-                        new EoSyntax(
-                            String.join(
-                                "\n",
-                                "# bar",
-                                "[] > bar",
-                                "  52 > spb",
-                                "",
-                                "# foo",
-                                "[] > foo",
-                                "  0 > spb"
-                            )
-                        ).parsed()
-                    )
-                )
-            ),
-            Matchers.hasSize(Matchers.greaterThan(0))
-        );
-    }
-
-    @Test
     void allowsAllUnique() throws Exception {
         MatcherAssert.assertThat(
             "Defects aren't empty, but they should",
@@ -150,50 +108,6 @@ final class LtObjectIsNotUniqueTest {
                                 "",
                                 "# Baz",
                                 "[] > baz"
-                            )
-                        ).parsed()
-                    )
-                )
-            ),
-            Matchers.emptyIterable()
-        );
-    }
-
-    @Test
-    void allowsNonUniqueMultipleObjectsInDifferentPackages() throws Exception {
-        MatcherAssert.assertThat(
-            "Defects aren't empty, but they should",
-            new LtObjectIsNotUnique().defects(
-                new MapOf<String, XML>(
-                    new MapEntry<>(
-                        "mul",
-                        new EoSyntax(
-                            String.join(
-                                "\n",
-                                "# Some object",
-                                "[] > foo",
-                                "  52 > inn",
-                                "",
-                                "# test",
-                                "[] > bar",
-                                "  52 > inn"
-                            )
-                        ).parsed()
-                    ),
-                    new MapEntry<>(
-                        "mul-packaged",
-                        new EoSyntax(
-                            String.join(
-                                "\n",
-                                "+package mul",
-                                "",
-                                "# test",
-                                "[] > foo",
-                                "  52 > inn",
-                                "",
-                                "# test",
-                                "[] > bar",
-                                "  52 > inn"
                             )
                         ).parsed()
                     )

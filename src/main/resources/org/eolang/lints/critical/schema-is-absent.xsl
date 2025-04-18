@@ -9,10 +9,10 @@
   <xsl:output encoding="UTF-8" method="xml"/>
   <xsl:template match="/">
     <defects>
-      <xsl:apply-templates select="/program[not(@xsi:noNamespaceSchemaLocation)]"/>
+      <xsl:apply-templates select="/object[not(@xsi:noNamespaceSchemaLocation)]"/>
     </defects>
   </xsl:template>
-  <xsl:template match="/program[not(@xsi:noNamespaceSchemaLocation)]">
+  <xsl:template match="/object[not(@xsi:noNamespaceSchemaLocation)]">
     <xsl:element name="defect">
       <xsl:variable name="line" select="eo:lineno(@line)"/>
       <xsl:attribute name="line">

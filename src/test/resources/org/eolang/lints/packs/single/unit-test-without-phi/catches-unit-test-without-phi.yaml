@@ -11,4 +11,4 @@ input: |
 
   # No comments.
   [] > test
-    true
+    true > i
