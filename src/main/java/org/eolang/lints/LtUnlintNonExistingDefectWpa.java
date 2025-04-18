@@ -135,6 +135,7 @@ final class LtUnlintNonExistingDefectWpa implements Lint<Map<String, XML>> {
      */
     private Map<XML, Map<String, List<Integer>>> existingDefects(final Map<String, XML> pkg) {
         final Map<XML, Map<String, List<Integer>>> aggregated = new HashMap<>(0);
+        pkg.values().forEach(xml -> aggregated.put(xml, new HashMap<>(0)));
         this.lints.forEach(
             wpl -> {
                 try {

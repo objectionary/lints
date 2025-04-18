@@ -43,6 +43,8 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.Label;
@@ -287,6 +289,45 @@ final class ProgramTest {
                 ).parsed()
             ).without("mandatory-spdx", "comment-too-short").defects(),
             Matchers.hasSize(1)
+        );
+    }
+
+    @ParameterizedTest
+    @ValueSource(
+        strings = {"mandatory-home", "mandatory-home:0"}
+    )
+    void catchesNonExistingDefectAfterLintWasRemoved(final String lid) throws IOException {
+        MatcherAssert.assertThat(
+            "Found defect does not match with expected",
+            new ListOf<>(
+                new Program(
+                    new EoSyntax(
+                        new InputOf(
+                            String.join(
+                                "\n",
+                                String.format("+unlint %s", lid),
+                                "",
+                                "# Foo.",
+                                "[] > foo"
+                            )
+                        )
+                    ).parsed()
+                ).without(
+                    "mandatory-home",
+                    "mandatory-version",
+                    "empty-object",
+                    "mandatory-package",
+                    "mandatory-spdx",
+                    "comment-too-short",
+                    "no-attribute-formation"
+                ).defects()
+            ).get(0).text(),
+            Matchers.containsString(
+                String.format(
+                    "Unlinting rule '%s' doesn't make sense",
+                    lid
+                )
+            )
         );
     }
 

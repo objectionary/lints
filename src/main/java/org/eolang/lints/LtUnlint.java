@@ -86,7 +86,7 @@ final class LtUnlint implements Lint<XML> {
             )
         );
         if (!added.get() && !global) {
-            defects.addAll(this.origin.defects(xmir));
+            defects.addAll(found);
         }
         return defects;
     }

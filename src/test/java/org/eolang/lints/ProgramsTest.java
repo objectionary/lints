@@ -11,9 +11,11 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Collection;
 import java.util.stream.Collectors;
 import matchers.DefectMatcher;
 import org.cactoos.list.ListOf;
+import org.cactoos.map.MapOf;
 import org.cactoos.set.SetOf;
 import org.eolang.parser.EoSyntax;
 import org.hamcrest.MatcherAssert;
@@ -23,6 +25,8 @@ import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 /**
  * Test for {@link Programs}.
@@ -133,6 +137,43 @@ final class ProgramsTest {
                 )
             ).without("unit-test-missing", "unit-test-without-live-file").defects(),
             Matchers.emptyIterable()
+        );
+    }
+
+    @ParameterizedTest
+    @ValueSource(
+        strings = {"unit-test-missing", "unit-test-missing:0"}
+    )
+    void catchesNonExistingDefectAfterLintWasRemoved(final String lid) throws IOException {
+        final Collection<Defect> found = new Programs(
+            new MapOf<>(
+                "f",
+                new EoSyntax(
+                    "f",
+                    String.join(
+                        "\n",
+                        String.format("+unlint %s", lid),
+                        "",
+                        "# F.",
+                        "[] > f"
+                    )
+                ).parsed()
+            )
+        ).without("unit-test-missing").defects();
+        MatcherAssert.assertThat(
+            "Defects were not found, though code is broken",
+            found,
+            Matchers.hasSize(Matchers.greaterThan(0))
+        );
+        MatcherAssert.assertThat(
+            "Found defect does not match with expected",
+            new ListOf<>(found).get(0).text(),
+            Matchers.containsString(
+                String.format(
+                    "Unlinting rule '%s' doesn't make sense",
+                    lid
+                )
+            )
         );
     }
 
