@@ -38,9 +38,17 @@ import org.openjdk.jmh.annotations.Warmup;
 @State(Scope.Benchmark)
 public class ProgramBench {
 
+    /**
+     * Benchmark for XMIR scanning.
+     * @param state State
+     * @todo #376:60min Enable redundant object in the single scope program benchmarks.
+     *  As for now, the lint is too slow, especially on L, XL and XXL-sized programs.
+     *  This happens mostly because of multiple XPath `//o` selects in the XSL. Once,
+     *  the lint will be optimized, we can enable it in the benchmarks.
+     */
     @Benchmark
     public final void scansXmir(final BenchmarkState state) {
-        new Program(state.xmir).defects();
+        new Program(state.xmir).without("redundant-object").defects();
     }
 
     /**
