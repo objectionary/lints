@@ -4,7 +4,6 @@
 .eoc/
 .idea
 .idea/
-.mvn/
 .nyc_output
 coverage.html
 coverage/

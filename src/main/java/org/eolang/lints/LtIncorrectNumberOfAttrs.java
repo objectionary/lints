@@ -8,9 +8,9 @@ import com.github.lombrozo.xnav.Filter;
 import com.github.lombrozo.xnav.Xnav;
 import com.jcabi.xml.XML;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -28,7 +28,7 @@ final class LtIncorrectNumberOfAttrs implements Lint<Map<String, XML>> {
 
     @Override
     public Collection<Defect> defects(final Map<String, XML> pkg) throws IOException {
-        final Collection<Defect> defects = new LinkedList<>();
+        final Collection<Defect> defects = new ArrayList<>(0);
         final Map<String, Integer> definitions = LtIncorrectNumberOfAttrs.objectDefinitions(pkg);
         pkg.forEach(
             (program, xmir) -> new Xnav(xmir.inner()).path("//o[@base and not(@base='∅')]")

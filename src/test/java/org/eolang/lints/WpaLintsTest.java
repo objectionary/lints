@@ -68,6 +68,7 @@ final class WpaLintsTest {
     }
 
     @Test
+    @SuppressWarnings("StreamResourceLeak")
     void checksLocationOfYamlPacks() throws IOException {
         final List<String> groups = new ListOf<>(new WpaLints()).stream()
             .map(Lint::name)

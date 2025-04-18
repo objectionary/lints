@@ -7,8 +7,8 @@ package org.eolang.lints;
 import com.github.lombrozo.xnav.Xnav;
 import com.jcabi.xml.XML;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
 import org.cactoos.io.ResourceOf;
 import org.cactoos.set.SetOf;
 import org.cactoos.text.TextOf;
@@ -41,12 +41,13 @@ final class LtIncorrectUnlint implements Lint<XML> {
 
     @Override
     public Collection<Defect> defects(final XML xmir) throws IOException {
-        final Collection<Defect> defects = new LinkedList<>();
+        final Collection<Defect> defects = new ArrayList<>(0);
         final Xnav xml = new Xnav(xmir.inner());
         xml.path("/program/metas/meta[head='unlint']")
             .filter(
-                u ->
-                    !this.names.contains(u.element("tail").text().orElse("unknown").split(":")[0])
+                u -> !this.names.contains(
+                    u.element("tail").text().orElse("unknown").split(":", -1)[0]
+                )
             )
             .forEach(
                 u -> defects.add(

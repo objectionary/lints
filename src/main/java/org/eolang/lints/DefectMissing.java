@@ -40,7 +40,7 @@ final class DefectMissing implements Function<String, Boolean> {
     @Override
     public Boolean apply(final String unlint) {
         final boolean matches;
-        final String[] split = unlint.split(":");
+        final String[] split = unlint.split(":", -1);
         final String name = split[0];
         final Set<String> names;
         if (this.defects != null) {

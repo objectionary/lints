@@ -16,15 +16,16 @@ import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.cactoos.io.InputOf;
 import org.cactoos.io.ResourceOf;
 import org.cactoos.io.UncheckedInput;
@@ -79,7 +80,7 @@ final class LtReservedName implements Lint<XML> {
 
     @Override
     public Collection<Defect> defects(final XML xmir) throws IOException {
-        final Collection<Defect> defects = new LinkedList<>();
+        final Collection<Defect> defects = new ArrayList<>(0);
         final Xnav program = new Xnav(xmir.inner());
         program.path("//o[@name]")
             .forEach(
@@ -152,9 +153,11 @@ final class LtReservedName implements Lint<XML> {
                     resource.getFile().substring(5, resource.getFile().indexOf('!'))
                 )
             );
-            try (FileSystem mount = FileSystems.newFileSystem(uri, Collections.emptyMap())) {
-                Files.walk(mount.getPath(location))
-                    .filter(sources)
+            try (
+                FileSystem mount = FileSystems.newFileSystem(uri, Collections.emptyMap());
+                Stream<Path> paths = Files.walk(mount.getPath(location))
+            ) {
+                paths.filter(sources)
                     .forEach(eo -> names.add(LtReservedName.namesInJar(eo)));
             } catch (final IOException exception) {
                 throw new IllegalStateException(
@@ -162,9 +165,8 @@ final class LtReservedName implements Lint<XML> {
                 );
             }
         } else {
-            try {
-                Files.walk(Paths.get(resource.toURI()))
-                    .filter(sources)
+            try (Stream<Path> paths = Files.walk(Paths.get(resource.toURI()))) {
+                paths.filter(sources)
                     .forEach(eo -> names.add(LtReservedName.namesInFile(eo)));
             } catch (final IOException exception) {
                 throw new IllegalStateException("Failed to walk through files", exception);

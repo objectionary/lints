@@ -165,6 +165,8 @@ mvn jmh:benchmark
 You will need [Maven 3.3+](https://maven.apache.org) and Java 11+ installed.
 Also, if you have [xcop](https://github.com/yegor256/xcop) installed, make sure
 it is version `0.8.0`+.
+If you want the code to be checked using error prone, use jdk version 17 and
+higher.
 
 [XMIR]: https://news.eolang.org/2022-11-25-xmir-guide.html
 [EO]: https://www.eolang.org
