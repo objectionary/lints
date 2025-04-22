@@ -5,8 +5,8 @@ objects must follow special regexp:</p>
 <pre class="regexp"><code>^--|[0-9A-F]{2}(-|(-[0-9A-F]{2})+)$</code></pre>
 <p>Incorrect:</p>
 <div class="sourceCode" id="cb2"><pre
-class="sourceCode xml"><code class="sourceCode xml"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>&lt;<span class="kw">program</span>&gt;</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  &lt;<span class="kw">objects</span>&gt;</span>
+class="sourceCode xml"><code class="sourceCode xml"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>&lt;<span class="kw">object</span>&gt;</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  &lt;<span class="kw">o</span><span class="ot"> name=</span><span class="st">&quot;app&quot;</span>&gt;</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">o</span><span class="ot"> name=</span><span class="st">&quot;a&quot;</span>&gt;</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>      hello, world!</span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    &lt;/<span class="kw">o</span>&gt;</span>
@@ -28,12 +28,12 @@ class="sourceCode xml"><code class="sourceCode xml"><span id="cb2-1"><a href="#c
 <span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">o</span><span class="ot"> name=</span><span class="st">&quot;g&quot;</span>&gt;</span>
 <span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>      哈囉世界</span>
 <span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>    &lt;/<span class="kw">o</span>&gt;</span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>  &lt;/<span class="kw">objects</span>&gt;</span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>&lt;/<span class="kw">program</span>&gt;</span></code></pre></div>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>  &lt;/<span class="kw">o</span>&gt;</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>&lt;/<span class="kw">object</span>&gt;</span></code></pre></div>
 <p>Correct:</p>
 <div class="sourceCode" id="cb3"><pre
-class="sourceCode xml"><code class="sourceCode xml"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>&lt;<span class="kw">program</span>&gt;</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  &lt;<span class="kw">objects</span>&gt;</span>
+class="sourceCode xml"><code class="sourceCode xml"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>&lt;<span class="kw">object</span>&gt;</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  &lt;<span class="kw">o</span><span class="ot"> name=</span><span class="st">&quot;app&quot;</span>&gt;</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">o</span><span class="ot"> name=</span><span class="st">&quot;a&quot;</span>&gt;</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>      --</span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    &lt;/<span class="kw">o</span>&gt;</span>
@@ -62,5 +62,5 @@ class="sourceCode xml"><code class="sourceCode xml"><span id="cb3-1"><a href="#c
 <span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>      10-20-30-40-50</span>
 <span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>    &lt;/<span class="kw">o</span>&gt;</span>
 <span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">o</span><span class="ot"> name=</span><span class="st">&quot;z&quot;</span>/&gt;</span>
-<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>  &lt;/<span class="kw">objects</span>&gt;</span>
-<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>&lt;/<span class="kw">program</span>&gt;</span></code></pre></div>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>  &lt;/<span class="kw">o</span>&gt;</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>&lt;/<span class="kw">object</span>&gt;</span></code></pre></div>
