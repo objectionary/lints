@@ -146,6 +146,17 @@
       <version>3.0.2</version>
     </dependency>
     <dependency>
+      <groupId>org.graalvm.js</groupId>
+      <artifactId>js</artifactId>
+      <version>22.2.0</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.graalvm.js</groupId>
+      <artifactId>js-scriptengine</artifactId>
+      <version>22.2.0</version>
+    </dependency>
+    <dependency>
       <groupId>com.yegor256</groupId>
       <artifactId>tojos</artifactId>
       <version>0.18.5</version>
@@ -718,6 +729,29 @@
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <!-- version from the parent pom -->
+        <executions>
+          <execution>
+            <id>copy-javascript</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/javascript</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>src/main/javascript</directory>
+                  <filtering>false</filtering>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
         <!-- version from the parent pom -->
         <executions>
@@ -736,6 +770,35 @@
                   <outputDirectory>${project.build.directory}/classes</outputDirectory>
                 </artifactItem>
               </artifactItems>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>com.github.eirslett</groupId>
+        <artifactId>frontend-maven-plugin</artifactId>
+        <version>1.15.1</version>
+        <executions>
+          <execution>
+            <id>install-node-and-npm</id>
+            <goals>
+              <goal>install-node-and-npm</goal>
+            </goals>
+            <configuration>
+              <nodeVersion>v18.17.1</nodeVersion>
+              <npmVersion>9.8.1</npmVersion>
+            </configuration>
+          </execution>
+          <execution>
+            <id>npm-install</id>
+            <goals>
+              <goal>npm</goal>
+            </goals>
+            <phase>process-resources</phase>
+            <configuration>
+              <arguments>install</arguments>
+              <workingDirectory>${project.build.directory}/javascript</workingDirectory>
+              <installDirectory>.</installDirectory>
             </configuration>
           </execution>
         </executions>
