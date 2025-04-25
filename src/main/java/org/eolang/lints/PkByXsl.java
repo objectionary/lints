@@ -54,13 +54,11 @@ final class PkByXsl extends IterableEnvelope<Lint<XML>> {
                     res ->
                         new LtByXsl(
                             new InputOf(res.getInputStream()),
-                            new InputOf(
-                                PkByXsl.XSL_PATTERN.matcher(
-                                    PkByXsl.LINTS_PATH.matcher(
-                                        res.getURL().toString()
-                                    ).replaceAll("eolang/motives")
-                                ).replaceAll(".md")
-                            )
+                            PkByXsl.XSL_PATTERN.matcher(
+                                PkByXsl.LINTS_PATH.matcher(
+                                    res.getURL().toString()
+                                ).replaceAll("eolang/motives")
+                            ).replaceAll(".md")
                         ),
                     Arrays.asList(
                         new PathMatchingResourcePatternResolver().getResources(

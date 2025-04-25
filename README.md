@@ -17,6 +17,8 @@ This Java package is a collection of "lints" (aka "checkers") for
 formatting. This is about best practices and readiness of code
 for successful compilation and execution.
 
+You can find the current full list of rules [here][lints-list].
+
 We use this package as a dependency in the
 [EO-to-Java compiler][EO]:
 
@@ -171,3 +173,4 @@ If you want the code to be checked using
 [XMIR]: https://news.eolang.org/2022-11-25-xmir-guide.html
 [EO]: https://www.eolang.org
 [benchmark-gha]: https://github.com/objectionary/lints/actions/runs/14839302036
+[lints-list]: https://www.objectionary.com/lints/

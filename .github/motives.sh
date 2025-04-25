@@ -41,12 +41,15 @@ tail() {
   printf '</article></section></body></html>'
 }
 
+mkdir tmp
+mvn clean compile gplus:execute
+
 while IFS= read -r f; do
   n=$(basename "${f}" .md)
   html=gh-pages/${tag}/${n}.html
   ( head && pandoc "${f}" && tail ) > "${html}"
   echo "${n} -> $(du -b "${html}" | cut -f1) bytes"
-done < <(find src/main/resources/org/eolang/motives -name '*.md' | sort)
+done < <(find tmp -name '*.md' | sort)
 
 (
   head
