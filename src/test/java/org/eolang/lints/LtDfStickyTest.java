@@ -95,17 +95,17 @@ final class LtDfStickyTest {
         /**
          * Name supplier.
          */
-        private final Supplier<String> name;
+        private final Supplier<String> nme;
 
         /**
          * Defects supplier.
          */
-        private final Function<T, Collection<Defect>> defects;
+        private final Function<T, Collection<Defect>> aggregated;
 
         /**
          * Motive supplier.
          */
-        private final Supplier<String> motive;
+        private final Supplier<String> mtve;
 
         /**
          * Constructor. Name and motive are provided by value.
@@ -140,24 +140,24 @@ final class LtDfStickyTest {
             final Function<T, Collection<Defect>> defects,
             final Supplier<String> motive
         ) {
-            this.name = name;
-            this.defects = defects;
-            this.motive = motive;
+            this.nme = name;
+            this.aggregated = defects;
+            this.mtve = motive;
         }
 
         @Override
         public String name() {
-            return this.name.get();
+            return this.nme.get();
         }
 
         @Override
         public Collection<Defect> defects(final T entity) throws IOException {
-            return this.defects.apply(entity);
+            return this.aggregated.apply(entity);
         }
 
         @Override
         public String motive() throws IOException {
-            return this.motive.get();
+            return this.mtve.get();
         }
     }
 }
