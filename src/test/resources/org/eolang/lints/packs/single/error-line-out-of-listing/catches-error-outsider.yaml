@@ -6,11 +6,11 @@ sheets:
 asserts:
   - /defects[count(defect[@severity='error'])=1]
 document: |
-  <program>
+  <object>
     <listing>first line
       second line
       third line</listing>
     <errors>
       <error check="abc" line="500" severity="warning">hello</error>
     </errors>
-  </program>
+  </object>

@@ -69,15 +69,14 @@ final class LtInconsistentArgsTest {
     }
 
     @Test
-    void catchesInconsistencyAcrossPrograms() throws IOException {
+    void catchesInconsistencyAcrossSources() throws IOException {
         MatcherAssert.assertThat(
-            "Defects are not caught across multiple programs, but they should",
+            "Defects are not caught across multiple sources, but they should",
             new LtInconsistentArgs().defects(
                 new MapOf<String, XML>(
                     new MapEntry<>(
                         "app",
                         new EoSyntax(
-                            "f-one-arg",
                             String.join(
                                 "\n",
                                 "# App",
@@ -89,7 +88,6 @@ final class LtInconsistentArgsTest {
                     new MapEntry<>(
                         "main",
                         new EoSyntax(
-                            "f-three-arg",
                             String.join(
                                 "\n",
                                 "# Main",
@@ -105,7 +103,7 @@ final class LtInconsistentArgsTest {
     }
 
     @Test
-    void allowsConsistentArgumentsAcrossPrograms() throws IOException {
+    void allowsConsistentArgumentsAcrossSources() throws IOException {
         MatcherAssert.assertThat(
             "Defects are not empty, but they should",
             new LtInconsistentArgs().defects(
@@ -139,15 +137,14 @@ final class LtInconsistentArgsTest {
     }
 
     @Test
-    void catchesInconsistencyAcrossProgramsWithAlias() throws IOException {
+    void catchesInconsistencyAcrossSourcesWithAlias() throws IOException {
         MatcherAssert.assertThat(
-            "Defects are not caught across multiple programs with alias, but they should",
+            "Defects are not caught across multiple sources with alias, but they should",
             new LtInconsistentArgs().defects(
                 new MapOf<String, XML>(
                     new MapEntry<>(
                         "text-fqn",
                         new EoSyntax(
-                            "text-fqn",
                             String.join(
                                 "\n",
                                 "# App",
@@ -159,7 +156,6 @@ final class LtInconsistentArgsTest {
                     new MapEntry<>(
                         "text-alias",
                         new EoSyntax(
-                            "text-alias",
                             String.join(
                                 "\n",
                                 "+alias org.eolang.txt.text",

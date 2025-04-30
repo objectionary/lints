@@ -1,0 +1,17 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/tests/unit-test-without-phi.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=0]
+input: |
+  +tests
+
+  # Test.
+  [] > stdout-tests
+    true > works-just-fine
+    # Test works.
+    [] > prints-hello-world
+      stdout > @
+        "Hello, world"

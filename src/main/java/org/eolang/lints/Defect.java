@@ -5,6 +5,7 @@
 package org.eolang.lints;
 
 import com.jcabi.manifests.Manifests;
+import java.util.Objects;
 
 /**
  * A single defect found.
@@ -96,6 +97,12 @@ public interface Defect {
     String context();
 
     /**
+     * Experimental?
+     * @return Experimental
+     */
+    boolean experimental();
+
+    /**
      * Default implementation of {@link Defect}.
      * <p>
      * Provides a standard implementation with basic functionality.
@@ -103,6 +110,7 @@ public interface Defect {
      *
      * @since 0.0.1
      */
+    @SuppressWarnings("PMD.TooManyMethods")
     final class Default implements Defect {
         /**
          * Rule.
@@ -130,11 +138,12 @@ public interface Defect {
         private final String txt;
 
         /**
+         * Experiment?
+         */
+        private final boolean experiment;
+
+        /**
          * Ctor.
-         * <p>
-         * Constructs a defect with all required information.
-         * </p>
-         *
          * @param rule Rule name
          * @param severity Severity level
          * @param program Name of the program
@@ -146,11 +155,34 @@ public interface Defect {
             final String rule, final Severity severity,
             final String program, final int line, final String text
         ) {
+            this(rule, severity, program, line, text, false);
+        }
+
+        /**
+         * Ctor.
+         * <p>
+         * Constructs a defect with all required information.
+         * </p>
+         *
+         * @param rule Rule name
+         * @param severity Severity level
+         * @param program Name of the program
+         * @param line Line number
+         * @param text Description of the defect
+         * @param exprmnt Experimental?
+         * @checkstyle ParameterNumberCheck (5 lines)
+         */
+        public Default(
+            final String rule, final Severity severity,
+            final String program, final int line, final String text,
+            final boolean exprmnt
+        ) {
             this.rle = rule;
             this.sev = severity;
             this.prg = program;
             this.lineno = line;
             this.txt = text;
+            this.experiment = exprmnt;
         }
 
         @Override
@@ -198,6 +230,32 @@ public interface Defect {
         @Override
         public String context() {
             return "Context is empty";
+        }
+
+        @Override
+        public boolean experimental() {
+            return this.experiment;
+        }
+
+        @Override
+        public boolean equals(final Object obj) {
+            final boolean result;
+            if (obj == null || this.getClass() != obj.getClass()) {
+                result = false;
+            } else {
+                final Defect.Default defect = (Defect.Default) obj;
+                result = this.lineno == defect.lineno
+                    && Objects.equals(this.rle, defect.rle)
+                    && this.sev == defect.sev
+                    && Objects.equals(this.prg, defect.prg)
+                    && Objects.equals(this.txt, defect.txt);
+            }
+            return result;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(this.rle, this.sev, this.prg, this.lineno, this.txt);
         }
     }
 

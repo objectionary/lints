@@ -10,7 +10,7 @@
   <xsl:output encoding="UTF-8" method="xml"/>
   <xsl:template match="/">
     <defects>
-      <xsl:for-each select="/program/metas/meta">
+      <xsl:for-each select="/object/metas/meta">
         <xsl:variable name="meta-head" select="head"/>
         <xsl:variable name="predefined" select="('package', 'alias', 'version', 'tests', 'rt', 'architect', 'home', 'unlint', 'probe', 'spdx')"/>
         <xsl:if test="not($meta-head = $predefined)">

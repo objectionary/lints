@@ -70,6 +70,11 @@ final class DfContext implements Defect {
     }
 
     @Override
+    public boolean experimental() {
+        return this.origin.experimental();
+    }
+
+    @Override
     public String toString() {
         return this.origin.toString();
     }

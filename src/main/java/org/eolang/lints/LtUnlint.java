@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import org.cactoos.list.ListOf;
@@ -52,14 +53,16 @@ final class LtUnlint implements Lint<XML> {
         final List<Integer> problematic = found.stream()
             .filter(defect -> defect.rule().equals(lname))
             .map(Defect::line)
+            .distinct()
             .collect(Collectors.toList());
         final List<String> granular = new Xnav(xmir.inner()).path(
             String.format(
-                "/program/metas/meta[head='unlint' and (tail='%s' or starts-with(tail, '%s:'))]/tail",
+                "/object/metas/meta[head='unlint' and (tail='%s' or starts-with(tail, '%s:'))]/tail",
                 lname, lname
             )
         ).map(xnav -> xnav.text().get()).collect(Collectors.toList());
         final boolean global = !granular.isEmpty();
+        final AtomicBoolean added = new AtomicBoolean(false);
         granular.forEach(
             unlint -> {
                 if (LtUnlint.LINE_NUMBER.matcher(unlint).matches()) {
@@ -78,12 +81,13 @@ final class LtUnlint implements Lint<XML> {
                 defect -> {
                     if (line != 0 && defect.line() == line) {
                         defects.add(defect);
+                        added.set(true);
                     }
                 }
             )
         );
-        if (!global) {
-            defects.addAll(this.origin.defects(xmir));
+        if (!added.get() && !global) {
+            defects.addAll(found);
         }
         return defects;
     }

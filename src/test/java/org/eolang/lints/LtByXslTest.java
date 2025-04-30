@@ -4,21 +4,31 @@
  */
 package org.eolang.lints;
 
+import com.jcabi.log.Logger;
+import com.jcabi.manifests.Manifests;
 import com.jcabi.matchers.XhtmlMatchers;
 import com.jcabi.xml.XMLDocument;
-import fixtures.LargeXmir;
+import fixtures.BytecodeClass;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import matchers.DefectsMatcher;
+import org.cactoos.io.ReaderOf;
 import org.cactoos.io.ResourceOf;
+import org.cactoos.list.ListOf;
+import org.cactoos.map.MapOf;
 import org.cactoos.text.TextOf;
 import org.cactoos.text.UncheckedText;
 import org.eolang.jucs.ClasspathSource;
 import org.eolang.parser.EoSyntax;
+import org.eolang.parser.StrictXmir;
 import org.eolang.xax.XtSticky;
 import org.eolang.xax.XtYaml;
 import org.eolang.xax.XtoryMatcher;
@@ -31,6 +41,9 @@ import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.junit.jupiter.api.condition.OS;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.xembly.Directives;
+import org.xembly.Xembler;
+import org.yaml.snakeyaml.Yaml;
 
 /**
  * Test for {@link LtByXsl}.
@@ -46,7 +59,13 @@ final class LtByXslTest {
             "No defects found, while a few of them expected",
             new LtByXsl("critical/duplicate-names").defects(
                 new EoSyntax(
-                    "# first\n[] > foo\n# first\n[] > foo\n"
+                    String.join(
+                        "\n",
+                        "# first.",
+                        "[] > foo",
+                        "  12 > x",
+                        "  52 > x"
+                    )
                 ).parsed()
             ),
             Matchers.hasSize(Matchers.greaterThan(0))
@@ -62,7 +81,7 @@ final class LtByXslTest {
             new XtSticky(
                 new XtYaml(
                     yaml,
-                    eo -> new EoSyntax("pack", eo).parsed()
+                    eo -> new EoSyntax(eo).parsed()
                 )
             ),
             new XtoryMatcher(new DefectsMatcher())
@@ -79,6 +98,7 @@ final class LtByXslTest {
     }
 
     @Test
+    @SuppressWarnings("StreamResourceLeak")
     void checksLocationsOfYamlPacks() throws IOException {
         final Set<String> groups = Files.walk(Paths.get("src/main/resources/org/eolang/lints"))
             .filter(Files::isRegularFile)
@@ -115,6 +135,7 @@ final class LtByXslTest {
 
     @Test
     @DisabledOnOs(OS.WINDOWS)
+    @SuppressWarnings("StreamResourceLeak")
     void catchesLostYamls() throws IOException {
         Files.walk(Paths.get("src/test/resources/org/eolang/lints"))
             .filter(Files::isRegularFile)
@@ -137,6 +158,7 @@ final class LtByXslTest {
     }
 
     @Test
+    @SuppressWarnings("StreamResourceLeak")
     void catchesLostNonYamls() throws IOException {
         Files.walk(Paths.get("src/test/resources/org/eolang/lints/packs"))
             .filter(Files::isRegularFile)
@@ -153,6 +175,7 @@ final class LtByXslTest {
     }
 
     @Test
+    @SuppressWarnings("StreamResourceLeak")
     void checksFileNaming() throws IOException {
         Files.walk(Paths.get("src/test/resources/org/eolang/lints/packs"))
             .filter(Files::isRegularFile)
@@ -166,6 +189,7 @@ final class LtByXslTest {
     }
 
     @Test
+    @SuppressWarnings("StreamResourceLeak")
     void checksIdsInXslStylesheets() throws IOException {
         Files.walk(Paths.get("src/main/resources/org/eolang/lints"))
             .filter(Files::isRegularFile)
@@ -187,6 +211,7 @@ final class LtByXslTest {
     }
 
     @Test
+    @SuppressWarnings("StreamResourceLeak")
     void checksMotivesForPresence() throws IOException {
         Files.walk(Paths.get("src/main/resources/org/eolang/lints"))
             .filter(Files::isRegularFile)
@@ -215,9 +240,28 @@ final class LtByXslTest {
     void checksEmptyObjectOnLargeXmirInReasonableTime() {
         Assertions.assertDoesNotThrow(
             () -> new LtByXsl("errors/empty-object").defects(
-                new LargeXmir().value()
+                new BytecodeClass("com/sun/jna/Pointer.class").value()
             ),
             "Huge XMIR must pass in reasonable time. See the timeout value."
+        );
+    }
+
+    @Test
+    void returnsNonExperimentalWhenXslStaysQuiet() throws IOException {
+        MatcherAssert.assertThat(
+            "Experimental flag should be set to false",
+            new ListOf<>(
+                new LtByXsl("comments/comment-without-dot").defects(
+                    new EoSyntax(
+                        String.join(
+                            "\n",
+                            "# Foo",
+                            "[] > foo"
+                        )
+                    ).parsed()
+                )
+            ).get(0).experimental(),
+            Matchers.equalTo(false)
         );
     }
 
@@ -236,6 +280,77 @@ final class LtByXslTest {
                     defect.context().length(),
                     Matchers.lessThanOrEqualTo(300)
                 )
+        );
+    }
+
+    @Test
+    @SuppressWarnings("StreamResourceLeak")
+    void validatesPacksAgainstXsdSchema() throws IOException {
+        Files.walk(Paths.get("src/test/resources/org/eolang/lints/packs/single"))
+            .filter(Files::isRegularFile)
+            .filter(p -> p.toString().endsWith(".yaml"))
+            .map(
+                (Function<Path, Map<Path, Map<String, Object>>>)
+                    p ->
+                        new MapOf<>(p, new Yaml().load(new ReaderOf(p.toFile())))
+            )
+            .filter(
+                pack -> {
+                    final Map<String, Object> yaml = pack.values().stream().findFirst().get();
+                    return yaml.containsKey("document") && !yaml.containsKey("ignore-schema");
+                }
+            )
+            .forEach(
+                pack ->
+                    Assertions.assertDoesNotThrow(
+                        () ->
+                            new StrictXmir(
+                                new XMLDocument(
+                                    new Xembler(
+                                        new Directives()
+                                            .xpath("/object")
+                                            .attr(
+                                                "noNamespaceSchemaLocation xsi http://www.w3.org/2001/XMLSchema-instance",
+                                                String.format(
+                                                    "https://www.eolang.org/xsd/XMIR-%s.xsd",
+                                                    Manifests.read("EO-Version")
+                                                )
+                                            )
+                                    ).apply(
+                                        new XMLDocument(
+                                            (String) pack.values().stream().findFirst().get().get(
+                                                "document"
+                                            )
+                                        ).inner()
+                                    )
+                                )
+                            ).inner(),
+                        String.format(
+                            "Validation of XMIR in '%s' pack failed, but it should pass without errors",
+                            pack.keySet().iterator().next()
+                        )
+                    )
+            );
+    }
+
+    @Test
+    void doesNotDuplicateDefectsWhenMultipleDefectsOnTheSameLine() throws Exception {
+        final Collection<Defect> defects = new LtByXsl("misc/unused-void-attr").defects(
+            new EoSyntax(
+                String.join(
+                    "\n",
+                    "# Foo with unused voids on the same line.",
+                    "[x y z] > foo"
+                )
+            ).parsed()
+        );
+        MatcherAssert.assertThat(
+            Logger.format(
+                "Found defects (%[list]s) should not contain duplicates",
+                defects
+            ),
+            new HashSet<>(defects).size() == defects.size(),
+            Matchers.equalTo(true)
         );
     }
 }

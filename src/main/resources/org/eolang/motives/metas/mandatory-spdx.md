@@ -1,6 +1,6 @@
 # Mandatory `+spdx`
 
-Special meta `+spdx` should be present in each `.eo` program.
+Special meta `+spdx` should be present in each `.eo` object.
 
 Incorrect:
 

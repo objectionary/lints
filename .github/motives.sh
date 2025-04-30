@@ -3,7 +3,7 @@
 # SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
 # SPDX-License-Identifier: MIT
 
-set -e
+set -e -o pipefail
 
 tag=$1
 if [ -z "${tag}" ]; then
@@ -13,13 +13,6 @@ fi
 
 rm -rf "gh-pages/${tag}"
 mkdir -p "gh-pages/${tag}"
-
-while IFS= read -r f; do
-  n=$(basename "${f}" .md)
-  html=gh-pages/${tag}/${n}.html
-  pandoc "${f}" -o "${html}"
-  echo "${n} -> $(du -b "${html}" | cut -f1) bytes"
-done < <(find src/main/resources/org/eolang/motives -name '*.md')
 
 list_them() {
   printf "<ul>\n"
@@ -35,8 +28,10 @@ head() {
   printf '<html>\n'
   printf '<head>\n'
   printf '<meta charset="UTF-8"/>\n'
+  printf '<title>lints</title>\n'
   printf '<meta name="viewport" content="width=device-width, initial-scale=1.0"/>\n'
-  printf '<link href="//cdn.jsdelivr.net/npm/tacit-css@1.8.1/dist/tacit-css.min.css" rel="stylesheet" integrity="sha384-JbsYayq5Otme+gjh/pl7NrA/qMIU0bxbdzKvYqQGHvvag0lHhM62TQnDzz+EyzXj" crossorigin="anonymous"/>\n'
+  printf '<link rel="shortcut icon" href="https://www.yegor256.com/images/books/elegant-objects/cactus.png"/>'
+  printf '<link href="https://cdn.jsdelivr.net/npm/tacit-css@1.8.1/dist/tacit-css.min.css" rel="stylesheet" integrity="sha384-JbsYayq5Otme+gjh/pl7NrA/qMIU0bxbdzKvYqQGHvvag0lHhM62TQnDzz+EyzXj" crossorigin="anonymous"/>\n'
   printf '</head>\n'
   printf '<body><section><article>\n'
 }
@@ -45,6 +40,13 @@ tail() {
   printf '<p>Published on %s.</p>\n' "$(date)"
   printf '</article></section></body></html>'
 }
+
+while IFS= read -r f; do
+  n=$(basename "${f}" .md)
+  html=gh-pages/${tag}/${n}.html
+  ( head && pandoc "${f}" && tail ) > "${html}"
+  echo "${n} -> $(du -b "${html}" | cut -f1) bytes"
+done < <(find src/main/resources/org/eolang/motives -name '*.md' | sort)
 
 (
   head

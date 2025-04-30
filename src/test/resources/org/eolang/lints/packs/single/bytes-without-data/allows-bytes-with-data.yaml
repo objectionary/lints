@@ -1,0 +1,13 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/critical/bytes-without-data.xsl
+asserts:
+  - /defects[count(defect)=0]
+document: |
+  <object>
+    <o name="bar" base="Q.org.eolang.bytes" line="1">
+      <o>here is the data</o>
+    </o>
+  </object>

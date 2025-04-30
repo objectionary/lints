@@ -6,7 +6,7 @@ package org.eolang.lints.it;
 
 import com.jcabi.xml.XMLDocument;
 import java.io.IOException;
-import org.eolang.lints.Program;
+import org.eolang.lints.Source;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
@@ -19,10 +19,10 @@ import org.junit.jupiter.api.Test;
 final class LintsItTest {
 
     @Test
-    void lintsProgram() throws IOException {
+    void lintsSource() throws IOException {
         MatcherAssert.assertThat(
             "passes with no exceptions",
-            new Program(new XMLDocument("<program name='it'/>")).defects(),
+            new Source(new XMLDocument("<object/>")).defects(),
             Matchers.notNullValue()
         );
     }

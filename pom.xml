@@ -66,7 +66,7 @@
     <dependency>
       <groupId>com.jcabi</groupId>
       <artifactId>jcabi-xml</artifactId>
-      <version>0.33.5</version>
+      <version>0.34.0</version>
     </dependency>
     <dependency>
       <groupId>io.github.secretx33</groupId>
@@ -119,13 +119,13 @@
     <dependency>
       <groupId>org.eolang</groupId>
       <artifactId>eo-parser</artifactId>
-      <version>0.55.1</version>
+      <version>0.56.1</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>com.github.volodya-lombrozo</groupId>
       <artifactId>xnav</artifactId>
-      <version>0.1.16</version>
+      <version>0.1.18</version>
     </dependency>
     <dependency>
       <groupId>org.apache.opennlp</groupId>
@@ -188,7 +188,7 @@
     <dependency>
       <groupId>com.yegor256</groupId>
       <artifactId>farea</artifactId>
-      <version>0.15.3</version>
+      <version>0.15.4</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -219,6 +219,12 @@
       <groupId>com.tngtech.archunit</groupId>
       <artifactId>archunit</artifactId>
       <version>1.4.0</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.ow2.asm</groupId>
+      <artifactId>asm</artifactId>
+      <version>9.8</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -297,7 +303,7 @@
           <plugin>
             <groupId>org.pitest</groupId>
             <artifactId>pitest-maven</artifactId>
-            <version>1.19.0</version>
+            <version>1.19.1</version>
             <executions>
               <execution>
                 <goals>
@@ -307,15 +313,20 @@
                   <threads>6</threads>
                   <mutationThreshold>60</mutationThreshold>
                   <excludedTestClasses>
-                    <class>org.eolang.lints.ProgramTest</class>
+                    <class>org.eolang.lints.SourceTest</class>
                     <class>org.eolang.lints.PkMonoTest</class>
                     <class>org.eolang.lints.LtByXslTest</class>
                     <class>org.eolang.lints.PkWpaTest</class>
-                    <class>org.eolang.lints.ProgramsTest</class>
+                    <class>org.eolang.lints.ProgramTest</class>
                     <class>org.eolang.lints.LtUnlintNonExistingDefectWpaTest</class>
                     <class>org.eolang.lints.LtTestNotVerbTest</class>
                     <class>org.eolang.lints.WpaLintsTest</class>
+                    <class>org.eolang.lints.LtReservedNameTest</class>
                   </excludedTestClasses>
+                  <excludedClasses>
+                    <!-- Used as benchmark resource. -->
+                    <class>org.apache.hadoop.hdfs.server.namenode.FSNamesystem</class>
+                  </excludedClasses>
                 </configuration>
               </execution>
             </executions>
@@ -353,6 +364,48 @@
         </plugins>
       </build>
     </profile>
+    <profile>
+      <id>java-17-plus</id>
+      <activation>
+        <jdk>[17,)</jdk>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <configuration>
+              <fork>true</fork>
+              <release>11</release>
+              <showWarnings>true</showWarnings>
+              <!--If you want to get all the errors at once, write false here and run-->
+              <failOnWarning>true</failOnWarning>
+              <compilerArgs>
+                <arg>-XDcompilePolicy=simple</arg>
+                <arg>--should-stop=ifError=FLOW</arg>
+                <arg>-Xplugin:ErrorProne -XepAllErrorsAsWarnings -Xep:InvalidBlockTag:OFF -Xep:StringConcatToTextBlock:OFF</arg>
+                <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED</arg>
+                <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED</arg>
+                <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.main=ALL-UNNAMED</arg>
+                <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.model=ALL-UNNAMED</arg>
+                <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.parser=ALL-UNNAMED</arg>
+                <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED</arg>
+                <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED</arg>
+                <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED</arg>
+                <arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED</arg>
+                <arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.comp=ALL-UNNAMED</arg>
+              </compilerArgs>
+              <annotationProcessorPaths>
+                <path>
+                  <groupId>com.google.errorprone</groupId>
+                  <artifactId>error_prone_core</artifactId>
+                  <version>2.38.0</version>
+                </path>
+              </annotationProcessorPaths>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
   </profiles>
   <build>
     <pluginManagement>
@@ -374,13 +427,9 @@
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
         <version>4.9.3.0</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>check</goal>
-            </goals>
-          </execution>
-        </executions>
+        <configuration>
+          <excludeFilterFile>${project.basedir}/spotbugs-exclude.xml</excludeFilterFile>
+        </configuration>
         <dependencies>
           <dependency>
             <groupId>com.github.spotbugs</groupId>
@@ -437,6 +486,7 @@
         <version>1.13.0</version>
         <executions>
           <execution>
+            <id>download-model</id>
             <phase>process-resources</phase>
             <goals>
               <goal>wget</goal>
@@ -445,6 +495,83 @@
               <url>https://opennlp.sourceforge.net/models-1.5/en-pos-perceptron.bin</url>
               <outputFileName>en-pos-perceptron.bin</outputFileName>
               <outputDirectory>${project.build.directory}/classes</outputDirectory>
+            </configuration>
+          </execution>
+          <execution>
+            <id>download-home</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>wget</goal>
+            </goals>
+            <configuration>
+              <url>https://github.com/objectionary/home/archive/refs/heads/master.zip</url>
+              <outputDirectory>${project.build.directory}/downloaded</outputDirectory>
+              <outputFileName>home.zip</outputFileName>
+              <skipCache>true</skipCache>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <!-- version from the parent pom -->
+        <executions>
+          <execution>
+            <phase>generate-sources</phase>
+            <configuration>
+              <target>
+                <unzip src="${project.build.directory}/downloaded/home.zip" dest="${project.build.directory}/downloaded"/>
+              </target>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <!-- version from the parent pom -->
+        <executions>
+          <execution>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/classes/downloaded/home</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>${project.build.directory}/downloaded/home-master</directory>
+                  <filtering>false</filtering>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <!-- version from the parent pom -->
+        <executions>
+          <execution>
+            <goals>
+              <goal>unpack</goal>
+            </goals>
+            <configuration>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>org.apache.hadoop</groupId>
+                  <artifactId>hadoop-hdfs</artifactId>
+                  <version>3.4.1</version>
+                  <type>jar</type>
+                  <includes>org/apache/hadoop/hdfs/server/namenode/FSNamesystem.class</includes>
+                  <outputDirectory>${project.build.directory}/classes</outputDirectory>
+                </artifactItem>
+              </artifactItems>
             </configuration>
           </execution>
         </executions>

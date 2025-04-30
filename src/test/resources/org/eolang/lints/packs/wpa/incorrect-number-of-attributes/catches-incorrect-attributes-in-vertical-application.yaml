@@ -16,6 +16,6 @@ b.eo: |
 usage.eo: |
   # Usage of A and B objects with vertical application.
   [] > app
-    b
+    b > @
       1
       a 0

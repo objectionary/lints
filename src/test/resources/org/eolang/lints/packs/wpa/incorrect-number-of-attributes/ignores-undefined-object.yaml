@@ -11,5 +11,5 @@ hello.eo: |
 app.eo: |
   # App uses hello.
   [] > app
-    hello "f"
-    bye 0x1
+    hello "f" > boom
+    bye 0x1 > boomx

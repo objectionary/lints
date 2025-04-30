@@ -5,7 +5,8 @@ sheets:
   - /org/eolang/lints/critical/schema-is-absent.xsl
 asserts:
   - /defects[count(defect[@context and @severity='critical'])=1]
+ignore-schema: true
 document: |
-  <program>
-    <objects/>
-  </program>
+  <object>
+    <o/>
+  </object>

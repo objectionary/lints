@@ -68,7 +68,7 @@ final class LtUnlintNonExistingDefectWpaTest {
                             )
                         ).parsed()
                     ),
-                    new MapEntry<>("bar-tests", new XMLDocument("<program/>"))
+                    new MapEntry<>("bar-tests", new XMLDocument("<object/>"))
                 )
             ),
             Matchers.hasSize(Matchers.greaterThan(0))
@@ -84,8 +84,8 @@ final class LtUnlintNonExistingDefectWpaTest {
                 new ListOf<>()
             ).defects(
                 new MapOf<String, XML>(
-                    new MapEntry<>("f", new XMLDocument("<program/>")),
-                    new MapEntry<>("f-tests", new XMLDocument("<program/>"))
+                    new MapEntry<>("f", new XMLDocument("<object/>")),
+                    new MapEntry<>("f-tests", new XMLDocument("<object/>"))
                 )
             ),
             Matchers.emptyIterable()
@@ -102,19 +102,18 @@ final class LtUnlintNonExistingDefectWpaTest {
             ).defects(
                 new MapOf<String, XML>(
                     new MapEntry<>(
-                        "e-tests",
+                        "f",
                         new EoSyntax(
-                            "e-tests",
                             String.join(
                                 "\n",
                                 "+unlint unit-test-without-live-file",
                                 "",
                                 "# E tests.",
-                                "[] > runs-e"
+                                "[] > f"
                             )
                         ).parsed()
                     ),
-                    new MapEntry<>("e", new XMLDocument("<program/>"))
+                    new MapEntry<>("e", new XMLDocument("<object><o name='e'/></object>"))
                 )
             ),
             Matchers.hasSize(Matchers.greaterThan(0))
@@ -122,9 +121,9 @@ final class LtUnlintNonExistingDefectWpaTest {
     }
 
     @Test
-    void ignoresSingleProgramUnlint() throws IOException {
+    void ignoresSingleSourceUnlint() throws IOException {
         MatcherAssert.assertThat(
-            "Single program unlint is not ignored, but it should be",
+            "Single source unlint is not ignored, but it should be",
             new LtUnlintNonExistingDefectWpa(
                 new ListOf<>(new LtUnitTestMissing()),
                 new ListOf<>(new MonoLintNames())

@@ -1,0 +1,13 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/errors/empty-object.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=0]
+document: |
+  <object>
+    <o name="@">
+      <o name="λ"/>
+    </o>
+  </object>

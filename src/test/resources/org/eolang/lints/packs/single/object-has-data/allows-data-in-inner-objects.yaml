@@ -6,12 +6,10 @@ sheets:
 asserts:
   - /defects[count(defect[@severity='critical'])=0]
 document: |
-  <program>
-    <objects>
-      <o name="foo">
-        <o name="inner" base="Q.org.eolang.bytes">
-          <o>12-23-FF</o>
-        </o>
+  <object>
+    <o name="foo">
+      <o name="inner" base="Q.org.eolang.bytes">
+        <o>12-23-FF</o>
       </o>
-    </objects>
-  </program>
+    </o>
+  </object>

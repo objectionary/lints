@@ -48,7 +48,7 @@ final class PkMonoTest {
     void allowsUnlint() throws IOException {
         MatcherAssert.assertThat(
             "Defects found, though they were unlinted",
-            new Program(
+            new Source(
                 new EoSyntax(
                     "+unlint ascii-only\n # привет\n# как дела?\n[] > foo\n"
                 ).parsed(),

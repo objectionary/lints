@@ -29,6 +29,7 @@ path = [
     "README.md",
     "renovate.json",
     "src/test/resources/META-INF/MANIFEST.MF",
+    "src/test/resources/org/apache/hadoop/hdfs/server/namenode/FSNamesystem.class"
 ]
 precedence = "override"
 SPDX-FileCopyrightText = "Copyright (c) 2025 Yegor Bugayenko"

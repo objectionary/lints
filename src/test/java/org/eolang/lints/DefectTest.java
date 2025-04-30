@@ -61,4 +61,20 @@ final class DefectTest {
             Matchers.hasToString(Matchers.not(Matchers.containsString(":0")))
         );
     }
+
+    @Test
+    void returnsExperimental() {
+        MatcherAssert.assertThat(
+            "Experimental flag should be true",
+            new Defect.Default(
+                "f12",
+                Severity.ERROR,
+                "f.12",
+                42,
+                "This is wrong",
+                true
+            ).experimental(),
+            Matchers.equalTo(true)
+        );
+    }
 }

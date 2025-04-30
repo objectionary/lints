@@ -7,9 +7,9 @@ package org.eolang.lints;
 import com.github.lombrozo.xnav.Xnav;
 import com.jcabi.xml.XML;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -18,12 +18,13 @@ import org.cactoos.io.ResourceOf;
 import org.cactoos.list.ListOf;
 import org.cactoos.text.IoCheckedText;
 import org.cactoos.text.TextOf;
+import org.eolang.parser.ObjectName;
 
 /**
  * Lint for checking `+unlint` meta to suppress non-existing defects in WPA scope.
  * This lint was not included in {@link LtUnlintNonExistingDefect}, because we need
  * to aggregate the XMIR defects using supplied lints. In {@link LtUnlintNonExistingDefect}
- * we work with single program scope, while this class works with WPA scope.
+ * we work with single XMIR scope, while this class works with WPA scope.
  *
  * @see LtUnlintNonExistingDefect
  * @since 0.0.42
@@ -69,7 +70,7 @@ final class LtUnlintNonExistingDefectWpa implements Lint<Map<String, XML>> {
 
     @Override
     public Collection<Defect> defects(final Map<String, XML> pkg) {
-        final Collection<Defect> defects = new LinkedList<>();
+        final Collection<Defect> defects = new ArrayList<>(0);
         final Map<XML, Map<String, List<Integer>>> existing = this.existingDefects(pkg);
         pkg.values().forEach(
             xmir -> {
@@ -77,7 +78,7 @@ final class LtUnlintNonExistingDefectWpa implements Lint<Map<String, XML>> {
                 final Function<String, Boolean> missing = new DefectMissing(
                     existing.get(xmir), this.excluded
                 );
-                xml.path("/program/metas/meta[head='unlint']/tail")
+                xml.path("/object/metas/meta[head='unlint']/tail")
                     .map(xnav -> xnav.text().get())
                     .collect(Collectors.toSet())
                     .stream()
@@ -86,7 +87,7 @@ final class LtUnlintNonExistingDefectWpa implements Lint<Map<String, XML>> {
                         unlint -> xml
                             .path(
                                 String.format(
-                                    "program/metas/meta[head='unlint' and tail='%s']/@line", unlint
+                                    "object/metas/meta[head='unlint' and tail='%s']/@line", unlint
                                 )
                             )
                             .map(xnav -> xnav.text().get())
@@ -96,10 +97,7 @@ final class LtUnlintNonExistingDefectWpa implements Lint<Map<String, XML>> {
                                     new Defect.Default(
                                         this.name(),
                                         Severity.WARNING,
-                                        xml.element("program")
-                                            .attribute("name")
-                                            .text()
-                                            .orElse("unknown"),
+                                        new ObjectName(xmir).get(),
                                         Integer.parseInt(line),
                                         String.format(
                                             "Unlinting rule '%s' doesn't make sense, since there are no defects with it",
@@ -130,11 +128,12 @@ final class LtUnlintNonExistingDefectWpa implements Lint<Map<String, XML>> {
     /**
      * Find existing defects.
      *
-     * @param pkg Package with programs to scan
+     * @param pkg Program package to scan
      * @return Map of existing defects
      */
     private Map<XML, Map<String, List<Integer>>> existingDefects(final Map<String, XML> pkg) {
         final Map<XML, Map<String, List<Integer>>> aggregated = new HashMap<>(0);
+        pkg.values().forEach(xml -> aggregated.put(xml, new HashMap<>(0)));
         this.lints.forEach(
             wpl -> {
                 try {
@@ -151,7 +150,7 @@ final class LtUnlintNonExistingDefectWpa implements Lint<Map<String, XML>> {
                 } catch (final IOException exception) {
                     throw new IllegalStateException(
                         String.format(
-                            "IO operation failed while linting package of programs with %s",
+                            "IO operation failed while linting program with %s",
                             wpl.name()
                         ),
                         exception

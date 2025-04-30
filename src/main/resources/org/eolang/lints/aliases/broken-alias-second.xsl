@@ -11,7 +11,7 @@
   <xsl:variable name="pattern" select="'^Q\.[a-z]+[^&gt;&lt;.\[\]()!:&quot;@^$#&amp;/\s]*(\.[a-z]+[^&gt;&lt;.\[\]()!:&quot;@^$#&amp;/\s]*)*$'"/>
   <xsl:template match="/">
     <defects>
-      <xsl:for-each select="/program/metas/meta[head='alias' and not(matches(part[last()], $pattern))]">
+      <xsl:for-each select="/object/metas/meta[head='alias' and not(matches(part[last()], $pattern))]">
         <xsl:element name="defect">
           <xsl:variable name="line" select="eo:lineno(@line)"/>
           <xsl:attribute name="line">

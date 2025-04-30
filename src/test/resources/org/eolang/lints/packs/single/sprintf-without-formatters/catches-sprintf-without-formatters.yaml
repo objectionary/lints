@@ -6,7 +6,7 @@ sheets:
 asserts:
   - /defects[count(defect[@severity='warning'])=1]
   - /defects/defect[@line='4']
-  - /defects/defect[1][normalize-space()='According to the formatting template of the "Q.org.eolang.txt.sprintf" object, "Hello⌴Jeff!" does not have any formatters, which makes no sense to use "Q.org.eolang.txt.sprintf"']
+  - /defects/defect[1][normalize-space()='According to the formatting template of the "Q.org.eolang.txt.sprintf" object, "Hello⌴Jeff!" does not have any supported formatters ("%s", "%d", "%f", "%x", "%b"), which makes no sense to use "Q.org.eolang.txt.sprintf"']
 input: |
   # App.
   [] > app

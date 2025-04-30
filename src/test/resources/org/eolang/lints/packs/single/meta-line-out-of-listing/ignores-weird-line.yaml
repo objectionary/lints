@@ -5,8 +5,9 @@ sheets:
   - /org/eolang/lints/lines/meta-line-out-of-listing.xsl
 asserts:
   - /defects[count(defect)=0]
+ignore-schema: true
 document: |
-  <program>
+  <object>
     <listing>first line
       second line
       third line</listing>
@@ -16,4 +17,4 @@ document: |
         <tail/>
       </meta>
     </metas>
-  </program>
+  </object>

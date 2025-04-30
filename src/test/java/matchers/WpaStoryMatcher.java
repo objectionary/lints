@@ -5,7 +5,7 @@
 package matchers;
 
 import com.jcabi.xml.XML;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import org.hamcrest.BaseMatcher;
@@ -31,7 +31,7 @@ public final class WpaStoryMatcher extends BaseMatcher<Map<List<String>, XML>> {
             final Map<List<String>, XML> story = (Map<List<String>, XML>) input;
             final List<String> xpaths = story.keySet().iterator().next();
             final XML defects = story.get(xpaths);
-            final List<String> failures = new LinkedList<>();
+            final List<String> failures = new ArrayList<>(0);
             xpaths.forEach(
                 xpath -> {
                     if (defects.nodes(xpath).isEmpty()) {

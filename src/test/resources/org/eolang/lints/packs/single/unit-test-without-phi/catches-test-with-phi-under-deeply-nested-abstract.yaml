@@ -1,0 +1,18 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/tests/unit-test-without-phi.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=1]
+  - /defects/defect[@line='6']
+input: |
+  +tests
+
+  # Tests.
+  [] > tests
+    # Specific test.
+    [] > test
+      [] > inner
+        [] > deeper
+          true > @

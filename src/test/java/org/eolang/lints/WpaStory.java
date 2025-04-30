@@ -7,9 +7,9 @@ package org.eolang.lints;
 import com.jcabi.xml.XML;
 import com.jcabi.xml.XMLDocument;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -63,7 +63,7 @@ final class WpaStory {
                 if (key.endsWith(".eo")) {
                     try {
                         final String name = key.substring(0, key.length() - 3);
-                        programs.put(name, new EoSyntax(name, (String) val).parsed());
+                        programs.put(name, new EoSyntax((String) val).parsed());
                     } catch (final IOException exception) {
                         throw new IllegalStateException(
                             "Failed to parse EO syntax", exception
@@ -80,7 +80,7 @@ final class WpaStory {
         if (xpaths == null) {
             xpaths = List.of();
         }
-        final Collection<Defect> found = new LinkedList<>();
+        final Collection<Defect> found = new ArrayList<>(0);
         for (final String lint : (Iterable<String>) lints) {
             final Lint<Map<String, XML>> wpl = this.wpa.get(lint);
             found.addAll(wpl.defects(programs));

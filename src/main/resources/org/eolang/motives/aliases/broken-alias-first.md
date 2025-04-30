@@ -21,7 +21,7 @@ The error may also indicate incorrect usage of the `<meta>` element
 in XMIR. The alias defined above must look like this, in XMIR:
 
 ```xml
-<program>
+<object>
   <metas>
     <meta>
       <head>alias</head>
@@ -30,7 +30,7 @@ in XMIR. The alias defined above must look like this, in XMIR:
       <part>org.eolang.io.stdout</part>
     </meta>
   </metas>
-</program>
+</object>
 ```
 
 Here, the `part` elements in the `meta` element must be used to define

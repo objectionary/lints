@@ -5,12 +5,13 @@ sheets:
   - /org/eolang/lints/lines/error-line-out-of-listing.xsl
 asserts:
   - /defects[count(defect)=0]
+ignore-schema: true
 document: |
-  <program>
+  <object>
     <listing>first line
       second line
       third line</listing>
     <errors>
       <error check="abc" line="this is a wrong line number" severity="warning">hello</error>
     </errors>
-  </program>
+  </object>

@@ -7,9 +7,9 @@ package org.eolang.lints;
 import com.github.lombrozo.xnav.Xnav;
 import com.jcabi.xml.XML;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -19,9 +19,10 @@ import org.cactoos.io.ResourceOf;
 import org.cactoos.list.ListOf;
 import org.cactoos.text.IoCheckedText;
 import org.cactoos.text.TextOf;
+import org.eolang.parser.ObjectName;
 
 /**
- * Lint for checking `+unlint` meta to suppress non-existing defects in single program scope.
+ * Lint for checking `+unlint` meta to suppress non-existing defects in single XMIR scope.
  *
  * @since 0.0.40
  */
@@ -64,10 +65,10 @@ final class LtUnlintNonExistingDefect implements Lint<XML> {
 
     @Override
     public Collection<Defect> defects(final XML xmir) throws IOException {
-        final Collection<Defect> defects = new LinkedList<>();
+        final Collection<Defect> defects = new ArrayList<>(0);
         final Map<String, List<Integer>> present = this.existingDefects(xmir);
         final Xnav xml = new Xnav(xmir.inner());
-        final Set<String> unlints = xml.path("/program/metas/meta[head='unlint']/tail")
+        final Set<String> unlints = xml.path("/object/metas/meta[head='unlint']/tail")
             .map(xnav -> xnav.text().get())
             .collect(Collectors.toSet());
         final Function<String, Boolean> missing = new DefectMissing(present, this.excluded);
@@ -77,7 +78,7 @@ final class LtUnlintNonExistingDefect implements Lint<XML> {
                 unlint ->
                     xml.path(
                         String.format(
-                            "program/metas/meta[head='unlint' and tail='%s']/@line", unlint
+                            "object/metas/meta[head='unlint' and tail='%s']/@line", unlint
                         )
                         )
                         .map(xnav -> xnav.text().get())
@@ -88,10 +89,7 @@ final class LtUnlintNonExistingDefect implements Lint<XML> {
                                     new Defect.Default(
                                         this.name(),
                                         Severity.WARNING,
-                                        xml.element("program")
-                                            .attribute("name")
-                                            .text()
-                                            .orElse("unknown"),
+                                        new ObjectName(xmir).get(),
                                         Integer.parseInt(line),
                                         String.format(
                                             "Unlinting rule '%s' doesn't make sense, since there are no defects with it",

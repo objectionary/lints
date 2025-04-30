@@ -1,0 +1,16 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/tests/unit-test-without-phi.xsl
+asserts:
+  - /defects[count(defect)=0]
+input: |
+  +tests
+
+  # Tests.
+  [] > tests
+    # Specific test.
+    [] > test
+      [] > @
+        true > @
