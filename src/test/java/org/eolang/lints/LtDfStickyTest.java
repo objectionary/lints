@@ -89,7 +89,6 @@ final class LtDfStickyTest {
      * @param <T> The type of entity to analyze
      * @since 0.0.42
      */
-    @SuppressWarnings("PMD.AvoidFieldNameMatchingMethodName")
     private static final class LtFake<T> implements Lint<T> {
 
         /**
