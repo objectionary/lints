@@ -66,6 +66,13 @@ final class ReserveHome implements Proc<String> {
     private final Tojos placed;
 
     /**
+     * Empty ctor.
+     */
+    ReserveHome() {
+        this("target/classes/reserved.csv");
+    }
+
+    /**
      * Ctor.
      * @param path CSV file path
      */
