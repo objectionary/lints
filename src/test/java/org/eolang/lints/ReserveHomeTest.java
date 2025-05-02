@@ -12,7 +12,7 @@ import com.yegor256.tojos.Tojo;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+import org.cactoos.map.MapOf;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Tag;
@@ -61,6 +61,7 @@ final class ReserveHomeTest {
      * @return Map of reserved objects
      */
     private static Map<String, String> reserved(final String path) {
+        final Map<String, String> result = new MapOf<>();
         final List<Tojo> selected = new TjCached(
             new TjSynchronized(
                 new TjDefault(
@@ -68,19 +69,8 @@ final class ReserveHomeTest {
                 )
             )
         ).select(tojo -> true);
-        System.out.println(selected);
-        final Map<String, String> collected = selected.stream()
-            .map(Tojo::toMap)
-            .flatMap(map -> map.entrySet().stream())
-            .collect(
-                Collectors.toMap(
-                    Map.Entry::getKey,
-                    Map.Entry::getValue,
-                    (v1, v2) -> v2
-                )
-            );
-        System.out.println(collected);
-        return collected;
+        selected.forEach(tojo -> result.put(tojo.toString(), tojo.get("path")));
+        return result;
     }
 
     /**
