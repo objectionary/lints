@@ -164,7 +164,7 @@ final class LtReservedNameTest {
     @Tag("deep")
     @Timeout(value = 90L, unit = TimeUnit.SECONDS)
     @Test
-    void scansReservedFromHome() throws IOException {
+    void scansReservedFromHome() throws Exception {
         final Lint<XML> lint = new LtReservedName();
         final Collection<Defect> defects = lint.defects(
             new EoSyntax(
