@@ -6,6 +6,12 @@ package org.eolang.lints;
 
 import com.github.lombrozo.xnav.Xnav;
 import com.jcabi.xml.XML;
+import com.yegor256.tojos.MnCsv;
+import com.yegor256.tojos.TjCached;
+import com.yegor256.tojos.TjDefault;
+import com.yegor256.tojos.TjSynchronized;
+import com.yegor256.tojos.Tojo;
+import com.yegor256.tojos.Tojos;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
@@ -22,9 +28,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import org.cactoos.Scalar;
+import org.cactoos.Proc;
 import org.cactoos.io.InputOf;
 import org.cactoos.io.UncheckedInput;
 import org.cactoos.list.ListOf;
@@ -44,7 +49,7 @@ import org.eolang.parser.EoSyntax;
  * in the term of access - for JAR we need to "mount" the file system using {@link FileSystem}.
  * @since 0.0.49
  */
-final class HomeReserved implements Scalar<Map<String, String>> {
+final class ReserveHome implements Proc<String> {
     /**
      * Home objects regex.
      */
@@ -56,35 +61,43 @@ final class HomeReserved implements Scalar<Map<String, String>> {
     private static final Pattern NON_UNIX = Pattern.compile("\\\\");
 
     /**
-     * The location of home objects.
+     * Reserved store.
      */
-    private final String location;
+    private final Tojos placed;
 
     /**
-     * Empty ctor.
+     * Ctor.
+     * @param path CSV file path
      */
-    HomeReserved() {
-        this(Paths.get("downloaded", "home").toString());
+    ReserveHome(final String path) {
+        this(
+            new TjCached(
+                new TjSynchronized(
+                    new TjDefault(
+                        new MnCsv(path)
+                    )
+                )
+            )
+        );
     }
 
     /**
      * Ctor.
-     * @param loc The location of home objects
+     * @param tjs Reserved store
      */
-    HomeReserved(final String loc) {
-        this.location = loc;
+    ReserveHome(final Tojos tjs) {
+        this.placed = tjs;
     }
 
     @Override
-    public Map<String, String> value() throws Exception {
-        // move them into /target/classes/reserved.txt
+    public void exec(final String location) {
         final List<Map<String, String>> names = new ListOf<>();
-        final URL resource = Thread.currentThread().getContextClassLoader().getResource(this.location);
+        final URL resource = Thread.currentThread().getContextClassLoader().getResource(location);
         final Predicate<Path> sources = p -> {
             final String file = p.toString().replace("\\", "/");
             return file.endsWith(".eo")
                 && file.contains(
-                Path.of(this.location)
+                Path.of(location)
                     .resolve("objects")
                     .resolve("org")
                     .resolve("eolang")
@@ -100,10 +113,10 @@ final class HomeReserved implements Scalar<Map<String, String>> {
             );
             try (
                 final FileSystem mount = FileSystems.newFileSystem(uri, Collections.emptyMap());
-                final Stream<Path> paths = Files.walk(mount.getPath(this.location))
+                final Stream<Path> paths = Files.walk(mount.getPath(location))
             ) {
                 paths.filter(sources)
-                    .forEach(eo -> names.add(HomeReserved.namesInJar(eo)));
+                    .forEach(eo -> names.add(ReserveHome.namesInJar(eo)));
             } catch (final IOException exception) {
                 throw new IllegalStateException(
                     "Failed to read home objects from JAR", exception
@@ -112,16 +125,19 @@ final class HomeReserved implements Scalar<Map<String, String>> {
         } else {
             try (final Stream<Path> paths = Files.walk(Paths.get(resource.toURI()))) {
                 paths.filter(sources)
-                    .forEach(eo -> names.add(HomeReserved.namesInFile(eo)));
+                    .forEach(eo -> names.add(ReserveHome.namesInFile(eo)));
             } catch (final IOException exception) {
                 throw new IllegalStateException("Failed to walk through files", exception);
             } catch (final URISyntaxException exception) {
                 throw new IllegalStateException("URI syntax is broken", exception);
             }
         }
-        return names.stream()
+        // write them into CSV format under target/classes/reserved.csv
+        // invoke this class via Groovy
+        // reuse the `reserved.csv`
+        names.stream()
             .flatMap(map -> map.entrySet().stream())
-            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+            .forEach(entry -> this.placed.add(entry.getKey()).set("path", entry.getValue()));
     }
 
     /**
@@ -140,7 +156,7 @@ final class HomeReserved implements Scalar<Map<String, String>> {
                 exception
             );
         }
-        return HomeReserved.namesInXmir(parsed, path);
+        return ReserveHome.namesInXmir(parsed, path);
     }
 
     /**
@@ -160,7 +176,7 @@ final class HomeReserved implements Scalar<Map<String, String>> {
                 exception
             );
         }
-        return HomeReserved.namesInXmir(parsed, path);
+        return ReserveHome.namesInXmir(parsed, path);
     }
 
     /**
@@ -177,8 +193,8 @@ final class HomeReserved implements Scalar<Map<String, String>> {
                 oname ->
                     names.put(
                         oname,
-                        HomeReserved.HOME_OBJECTS.matcher(
-                                HomeReserved.NON_UNIX.matcher(path.toString()).replaceAll("/")
+                        ReserveHome.HOME_OBJECTS.matcher(
+                                ReserveHome.NON_UNIX.matcher(path.toString()).replaceAll("/")
                             )
                             .replaceFirst("")
                             .substring(1)

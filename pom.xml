@@ -141,7 +141,6 @@
       <groupId>com.yegor256</groupId>
       <artifactId>tojos</artifactId>
       <version>0.18.5</version>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.opencsv</groupId>
