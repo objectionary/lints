@@ -1,0 +1,13 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/refs/base-must-be-merged.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=0]
+document: |
+  <object>
+    <o base="foo">
+      <o base=".bar"/>
+    </o>
+  </object>
