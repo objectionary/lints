@@ -495,6 +495,7 @@
               <url>https://opennlp.sourceforge.net/models-1.5/en-pos-perceptron.bin</url>
               <outputFileName>en-pos-perceptron.bin</outputFileName>
               <outputDirectory>${project.build.directory}/classes</outputDirectory>
+              <readTimeOut>15000</readTimeOut>
             </configuration>
           </execution>
           <execution>
@@ -508,6 +509,7 @@
               <outputDirectory>${project.build.directory}/downloaded</outputDirectory>
               <outputFileName>home.zip</outputFileName>
               <skipCache>true</skipCache>
+              <readTimeOut>15000</readTimeOut>
             </configuration>
           </execution>
         </executions>
