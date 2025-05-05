@@ -1,4 +1,4 @@
-# `+rt` Without Atoms
+# `+rt` without atoms
 
 Special `+rt` meta must be used only with atoms.
 

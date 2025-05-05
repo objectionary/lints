@@ -1,6 +1,6 @@
-# Object Line Out Of Listing
+# Object line out of listing
 
-Line number inside `<o/>` in [XMIR] cannot be bigger than amount of lines
+Line number inside `<o/>` in [XMIR] can't be bigger than amount of lines
 in the listing.
 
 Incorrect:

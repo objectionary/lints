@@ -1,4 +1,4 @@
-# Atom is not unique
+# Atom isn't unique
 
 All atom FQNs across all `.eo` files must not be duplicated.
 

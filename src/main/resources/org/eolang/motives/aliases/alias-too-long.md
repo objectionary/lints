@@ -1,4 +1,4 @@
-# Alias Too Long
+# Alias too long
 
 Object's alias must have **2 parts at max**.
 

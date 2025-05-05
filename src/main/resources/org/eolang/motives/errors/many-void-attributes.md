@@ -1,4 +1,4 @@
-# Many Void Attributes
+# Many void attributes
 
 Object must have at **max 5** void  attributes.
 

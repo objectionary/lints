@@ -1,4 +1,4 @@
-# Incorrect Alias
+# Incorrect alias
 
 Special meta `+alias` must point to existing file in the dir, outlined by
 `+package` meta.

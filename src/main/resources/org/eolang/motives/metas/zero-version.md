@@ -1,4 +1,4 @@
-# Zero Version
+# Zero version
 
 Objects inside `src/(main|test)` must use `0.0.0` version during the
 development.

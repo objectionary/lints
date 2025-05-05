@@ -1,4 +1,4 @@
-# Same Line Names
+# Same line names
 
 @todo #19:35min Document motives for `same-line-names` lint.
  Currently, we don't have a test case for this `same-line-names` lint.

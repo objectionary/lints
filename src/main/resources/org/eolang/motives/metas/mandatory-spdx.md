@@ -18,7 +18,7 @@ Correct:
 [] > foo
 ```
 
-In [XMIR], spdx meta should look like this:
+In [XMIR], `spdx` meta should look like this:
 
 ```xml
 <meta>

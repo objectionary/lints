@@ -1,4 +1,4 @@
-# Schema Is Absent
+# Schema is absent
 
 [XMIR] document must have `xsi:noNamespaceSchemaLocation` inside it.
 

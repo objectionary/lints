@@ -1,4 +1,4 @@
-# Empty Object
+# Empty object
 
 In the [XMIR], objects without any attributes: neither void nor attached are
 prohibited.

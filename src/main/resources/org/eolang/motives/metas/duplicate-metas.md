@@ -1,4 +1,4 @@
-# Duplicate Metas
+# Duplicate metas
 
 Metas must not be duplicated.
 

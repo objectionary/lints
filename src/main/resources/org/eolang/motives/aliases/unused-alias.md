@@ -1,4 +1,4 @@
-# Unused Alias
+# Unused alias
 
 All defined object's aliases must be in use.
 

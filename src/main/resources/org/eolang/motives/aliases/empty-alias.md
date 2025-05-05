@@ -1,4 +1,4 @@
-# Empty Alias
+# Empty alias
 
 Object's alias must be not empty.
 

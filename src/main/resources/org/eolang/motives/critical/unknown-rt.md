@@ -3,7 +3,7 @@
 Special `+rt` meta must use only allowed values at it's first part. Currently,
 the following runtimes are supported:
 
-* [jvm](https://github.com/objectionary/eo)
+* [JVM](https://github.com/objectionary/eo)
 * [node](https://github.com/objectionary/eo2js)
 
 Incorrect:

@@ -1,6 +1,6 @@
-# Meta Line Out Of Listing
+# Meta line out of listing
 
-Line number inside `<meta/>` in [XMIR] cannot be bigger than amount of lines
+Line number inside `<meta/>` in [XMIR] can't be bigger than amount of lines
 in the listing.
 
 Incorrect:
