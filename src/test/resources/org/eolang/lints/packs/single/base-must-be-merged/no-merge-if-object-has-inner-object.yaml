@@ -9,7 +9,7 @@ document: |
   <object>
     <o base=".foo">
       <o base="bar">
-        A1-B2-C3-D4-E5
+        <o base="baz"/>
       </o>
     </o>
   </object>

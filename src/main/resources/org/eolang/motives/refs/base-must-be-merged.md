@@ -7,14 +7,15 @@ conditions are met:
 2. Attribute `@base` of parent object should start with dot
 3. Attribute `@base` object should not start with dot
 4. Object should not have data
+5. Object should not have inner objects
 
 Incorrect:
 
 ```xml
 <o base=".foo">
-    <o base=".bar">
-        <o base="x"/>
-    </o>
+  <o base=".bar">
+    <o base="x"/>
+  </o>
 </o>
 ```
 
@@ -28,7 +29,7 @@ Correct:
 
 ```xml
 <o base=".foo">
-    <o base=".bar"/>
+  <o base=".bar"/>
 </o>
 ```
 
@@ -36,7 +37,7 @@ Correct:
 
 ```xml
 <o base=".foo">
-    <o/>
+  <o/>
 </o>
 ```
 
@@ -44,17 +45,19 @@ Correct:
 
 ```xml
 <o base=".foo">
-    <o base="bar">
-        A1-B2-C3-D4-E5
-    </o>
+  <o base="bar">
+    A1-B2-C3-D4-E5
+  </o>
 </o>
 ```
 
 Correct:
 
 ```xml
-<o base="foo">
-    <o base=".bar"/>
+<o base=".foo">
+  <o base="bar">
+    <o base="baz"/>
+  </o>
 </o>
 ```
 
