@@ -1,0 +1,32 @@
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>lints</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="shortcut icon" href="https://www.yegor256.com/images/books/elegant-objects/cactus.png"/><link href="https://cdn.jsdelivr.net/npm/tacit-css@1.8.1/dist/tacit-css.min.css" rel="stylesheet" integrity="sha384-JbsYayq5Otme+gjh/pl7NrA/qMIU0bxbdzKvYqQGHvvag0lHhM62TQnDzz+EyzXj" crossorigin="anonymous"/>
+</head>
+<body><section><article>
+<h1 id="anonymous-formation">Anonymous Formation</h1>
+<p>Anonymous formation should not access object, undefined inside the
+formation.</p>
+<p>Incorrect:</p>
+<pre class="eo"><code># App.
+[] &gt; app
+  &quot;Hello&quot; &gt; t
+  malloc.of
+    64
+    [m]
+      QQ.io.stdout &gt; @
+        t</code></pre>
+<p>Correct:</p>
+<pre class="eo"><code># App.
+[] &gt; app
+  &quot;Hello&quot; &gt; t
+  malloc.of
+    64
+    [m]
+      &quot;boom&quot; &gt; x
+      QQ.io.stdout &gt; @
+        x</code></pre>
+<p>Published on Tue May  6 17:11:10 UTC 2025.</p>
+</article></section></body></html>
