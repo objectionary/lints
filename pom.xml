@@ -69,6 +69,7 @@
     <skipITs/>
     <!-- This is the flag that allows to skip all tests -->
     <skipTests/>
+    <test.timeout>45s</test.timeout>
   </properties>
   <dependencies>
     <dependency>
@@ -324,6 +325,11 @@
             <artifactId>maven-surefire-plugin</artifactId>
             <!-- version from the parent pom -->
             <configuration>
+              <systemPropertyVariables>
+                <junit.jupiter.execution.timeout.test.method.default>
+                  ${test.timeout}
+                </junit.jupiter.execution.timeout.test.method.default>
+              </systemPropertyVariables>
               <excludedGroups>!benchmark</excludedGroups>
               <excludes>
                 <exclude>
@@ -395,6 +401,11 @@
             <artifactId>maven-surefire-plugin</artifactId>
             <version>3.5.3</version>
             <configuration>
+              <systemPropertyVariables>
+                <junit.jupiter.execution.timeout.test.method.default>
+                  ${test.timeout}
+                </junit.jupiter.execution.timeout.test.method.default>
+              </systemPropertyVariables>
               <excludedGroups>benchmark</excludedGroups>
               <excludes>
                 <exclude>
@@ -448,6 +459,28 @@
         </plugins>
       </build>
     </profile>
+    <profile>
+      <id>mac</id>
+      <activation>
+        <os>
+          <family>mac</family>
+        </os>
+      </activation>
+      <properties>
+        <test.timeout>15s</test.timeout>
+      </properties>
+    </profile>
+    <profile>
+      <id>unix</id>
+      <activation>
+        <os>
+          <family>unix</family>
+        </os>
+      </activation>
+      <properties>
+        <test.timeout>15s</test.timeout>
+      </properties>
+    </profile>
   </profiles>
   <build>
     <pluginManagement>
@@ -484,6 +517,11 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <!-- version from the parent pom -->
         <configuration>
+          <systemPropertyVariables>
+            <junit.jupiter.execution.timeout.test.method.default>
+              ${test.timeout}
+            </junit.jupiter.execution.timeout.test.method.default>
+          </systemPropertyVariables>
           <skipTests>${skipUTs}</skipTests>
           <excludedGroups>benchmark,deep</excludedGroups>
           <excludes>
