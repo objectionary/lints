@@ -16,11 +16,9 @@ import org.cactoos.iterable.Synced;
 
 /**
  * A single source XMIR to analyze.
- *
- * @see <a href="https://news.eolang.org/2022-11-25-xmir-guide.html">XMIR</a>
  * @since 0.1.0
  */
-public final class Source {
+final class Source {
 
     /**
      * Collection of mono lints, preloaded on JVM start.
@@ -46,7 +44,7 @@ public final class Source {
      * @param file The absolute path of the XMIR file
      * @throws FileNotFoundException If file isn't found
      */
-    public Source(final Path file) throws FileNotFoundException {
+    Source(final Path file) throws FileNotFoundException {
         this(new XMLDocument(file));
     }
 
@@ -54,16 +52,12 @@ public final class Source {
      * Ctor.
      * @param xml The XMIR
      */
-    public Source(final XML xml) {
+    Source(final XML xml) {
         this(xml, Source.MONO);
     }
 
     /**
      * Ctor.
-     *
-     * <p>This constructor is for internal use only. It is not supposed
-     * to be visible by end-users. Keep it this way!</p>
-     *
      * @param xml The XMIR
      * @param list The lints
      */
@@ -77,18 +71,15 @@ public final class Source {
      * @param names Lint names
      * @return Program analysis without specific name
      */
-    public Source without(final String... names) {
+    Source without(final String... names) {
         return new Source(this.xmir, new MonoWithout(names));
     }
 
     /**
      * Find defects possible defects in the XMIR file.
      * @return All defects found
-     * @see <a href="https://news.eolang.org/2022-11-25-xmir-guide.html">XMIR guide</a>
-     * @see <a href="https://www.eolang.org/XMIR.html">XMIR specification</a>
-     * @see <a href="https://www.eolang.org/XMIR.xsd">XMIR schema</a>
      */
-    public Collection<Defect> defects() {
+    Collection<Defect> defects() {
         try {
             final Collection<Defect> messages = new ArrayList<>(0);
             for (final Lint<XML> lint : this.lints) {

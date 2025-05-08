@@ -56,7 +56,7 @@ final class LtUnitTestMissingTest {
         );
         MatcherAssert.assertThat(
             "some defects found by mistake",
-            new Program(dir).defects(),
+            new EoPackage(dir).defects(),
             Matchers.emptyIterable()
         );
     }
@@ -70,7 +70,7 @@ final class LtUnitTestMissingTest {
         );
         MatcherAssert.assertThat(
             " defects found",
-            new Program(dir).defects(),
+            new EoPackage(dir).defects(),
             Matchers.allOf(
                 Matchers.<Defect>iterableWithSize(Matchers.greaterThan(0)),
                 Matchers.<Defect>everyItem(new DefectMatcher())
