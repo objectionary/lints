@@ -105,42 +105,42 @@ Here is the result of linting XMIRs:
 <!-- benchmark_begin -->
 ```text
 Input: com/sun/jna/PointerType.class (S source)
-Lint time: 4s (4446 ms)
+Lint time: 5s (4713 ms)
 
 Input: com/sun/jna/Memory.class (M source)
-Lint time: 5s (4951 ms)
+Lint time: 6s (6183 ms)
 
 Input: com/sun/jna/Pointer.class (L source)
-Lint time: 6s (6035 ms)
+Lint time: 11s (11140 ms)
 
 Input: com/sun/jna/Structure.class (XL source)
-Lint time: 7s (7342 ms)
+Lint time: 23s (22525 ms)
 
 Input: org/apache/hadoop/hdfs/server/namenode/FSNamesystem.class (XXL source)
-Lint time: 20s (20040 ms)
+Lint time: 5min (300308 ms)
 
 
 
-unlint-non-existing-defect (XXL) (9925 ms)
-unlint-non-existing-defect (XL) (3628 ms)
-unlint-non-existing-defect (L) (2983 ms)
-unlint-non-existing-defect (M) (2435 ms)
-unlint-non-existing-defect (S) (2194 ms)
-application-duality (XXL) (1555 ms)
-object-has-data (XXL) (1273 ms)
-named-object-abstract-nested (XXL) (980 ms)
-name-outside-of-abstract-object (XXL) (805 ms)
-incorrect-bytes-format (XXL) (418 ms)
-line-is-absent (XXL) (354 ms)
-application-duality (XL) (313 ms)
-bytes-without-data (XXL) (276 ms)
-duplicate-names (XXL) (268 ms)
-object-has-data (XL) (263 ms)
-named-object-abstract-nested (XL) (197 ms)
+unlint-non-existing-defect (XXL) (149156 ms)
+duplicate-names-in-diff-context (XXL) (141039 ms)
+unlint-non-existing-defect (XL) (9820 ms)
+duplicate-names-in-diff-context (XL) (8834 ms)
+unlint-non-existing-defect (L) (5459 ms)
+unlint-non-existing-defect (M) (3056 ms)
+duplicate-names-in-diff-context (L) (2561 ms)
+unlint-non-existing-defect (S) (2321 ms)
+application-duality (XXL) (1613 ms)
+object-has-data (XXL) (1223 ms)
+named-object-abstract-nested (XXL) (964 ms)
+name-outside-of-abstract-object (XXL) (793 ms)
+duplicate-names-in-diff-context (M) (516 ms)
+incorrect-bytes-format (XXL) (403 ms)
+line-is-absent (XXL) (355 ms)
+application-duality (XL) (306 ms)
 ```
 
 The results were calculated in [this GHA job][benchmark-gha]
-on 2025-05-05 at 14:53,
+on 2025-05-08 at 08:46,
 on Linux with 4 CPUs.
 <!-- benchmark_end -->
 
@@ -170,4 +170,4 @@ If you want the code to be checked using
 
 [XMIR]: https://news.eolang.org/2022-11-25-xmir-guide.html
 [EO]: https://www.eolang.org
-[benchmark-gha]: https://github.com/objectionary/lints/actions/runs/14839302036
+[benchmark-gha]: https://github.com/objectionary/lints/actions/runs/14902205809
