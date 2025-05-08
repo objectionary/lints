@@ -61,6 +61,6 @@ public class ProgramBench {
 
     @Benchmark
     public final void scansLargeProgram() throws IOException {
-        new Package(this.home).defects();
+        new EoPackage(this.home).defects();
     }
 }

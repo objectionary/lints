@@ -14,7 +14,7 @@ import org.cactoos.list.ListOf;
 
 /**
  * A collection of lints for Whole Package Analysis (WPA),
- * provided by the {@link Package} class.
+ * provided by the {@link EoPackage} class.
  *
  * <p>This class is thread-safe.</p>
  *

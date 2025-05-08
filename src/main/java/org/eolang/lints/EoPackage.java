@@ -26,8 +26,7 @@ import org.cactoos.list.Synced;
  * Whole EO package, as collection of XMIR sources to analyze.
  * @since 0.1.0
  */
-@SuppressWarnings("JavaLangClash")
-final class Package {
+final class EoPackage {
 
     /**
      * Collection of wpa lints, preloaded on JVM start.
@@ -55,7 +54,7 @@ final class Package {
      * @param dirs The directory
      * @throws IOException If fails
      */
-    Package(final Path... dirs) throws IOException {
+    EoPackage(final Path... dirs) throws IOException {
         this(Arrays.asList(dirs));
     }
 
@@ -68,16 +67,16 @@ final class Package {
      * @param dirs The directory
      * @throws IOException If fails
      */
-    Package(final Collection<Path> dirs) throws IOException {
-        this(Package.discover(dirs));
+    EoPackage(final Collection<Path> dirs) throws IOException {
+        this(EoPackage.discover(dirs));
     }
 
     /**
      * Ctor.
      * @param map The map with them
      */
-    Package(final Map<String, XML> map) {
-        this(map, Package.WPA);
+    EoPackage(final Map<String, XML> map) {
+        this(map, EoPackage.WPA);
     }
 
     /**
@@ -85,7 +84,7 @@ final class Package {
      * @param map The map with them
      * @param list The lints
      */
-    Package(final Map<String, XML> map, final Iterable<Lint<Map<String, XML>>> list) {
+    EoPackage(final Map<String, XML> map, final Iterable<Lint<Map<String, XML>>> list) {
         this.pkg = Collections.unmodifiableMap(map);
         this.lints = list;
     }
@@ -95,8 +94,8 @@ final class Package {
      * @param names Lint names
      * @return Package analysis without specifics names
      */
-    public Package without(final String... names) {
-        return new Package(this.pkg, new WpaWithout(names));
+    public EoPackage without(final String... names) {
+        return new EoPackage(this.pkg, new WpaWithout(names));
     }
 
     /**
@@ -131,7 +130,7 @@ final class Package {
     private static Map<String, XML> discover(final Iterable<Path> dirs) throws IOException {
         final Map<String, XML> map = new HashMap<>(0);
         for (final Path dir : dirs) {
-            map.putAll(Package.discover(dir));
+            map.putAll(EoPackage.discover(dir));
         }
         return map;
     }

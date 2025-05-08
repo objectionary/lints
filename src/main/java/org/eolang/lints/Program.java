@@ -33,7 +33,7 @@ public class Program {
     /**
      * EO package.
      */
-    private final Package pkg;
+    private final EoPackage pkg;
 
     /**
      * All sources of EO package {@link #pkg}.
@@ -48,7 +48,7 @@ public class Program {
      */
     public Program(final Path... dirs) throws IOException {
         this(
-            new Package(dirs),
+            new EoPackage(dirs),
             Program.sources(
                 Arrays.asList(dirs),
                 new CheckedFunc<>(Source::new, IOException.class::cast)
@@ -67,7 +67,7 @@ public class Program {
      */
     public Program(final Collection<Path> dirs) throws IOException {
         this(
-            new Package(dirs),
+            new EoPackage(dirs),
             Program.sources(dirs, new CheckedFunc<>(Source::new, IOException.class::cast))
         );
     }
@@ -79,7 +79,7 @@ public class Program {
      */
     public Program(final Map<String, XML> map) {
         this(
-            new Package(map),
+            new EoPackage(map),
             Program.sources(
                 map.values(),
                 new CheckedFunc<>(Source::new, RuntimeException.class::cast)
@@ -87,7 +87,7 @@ public class Program {
         );
     }
 
-    Program(final Package pkg, final Collection<Source> srcs) {
+    Program(final EoPackage pkg, final Collection<Source> srcs) {
         this.pkg = pkg;
         this.srcs = srcs;
     }

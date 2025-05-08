@@ -28,18 +28,18 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 /**
- * Test for {@link Package}.
+ * Test for {@link EoPackage}.
  *
  * @since 0.1.0
  */
 @ExtendWith(MktmpResolver.class)
-final class PackageTest {
+final class EoPackageTest {
 
     @Test
     void checksSimple(@Mktmp final Path dir) throws IOException {
         MatcherAssert.assertThat(
             "the defect is found",
-            new Package(
+            new EoPackage(
                 this.withSource(
                     dir,
                     "a/b/c/foo.xmir",
@@ -57,7 +57,7 @@ final class PackageTest {
     void skipsAllWarnings(@Mktmp final Path dir) throws IOException {
         MatcherAssert.assertThat(
             "the defect is found",
-            new Package(
+            new EoPackage(
                 this.withSource(
                     dir,
                     "bar.xmir",
@@ -86,7 +86,7 @@ final class PackageTest {
             "",
             new SetOf<>(
                 new Together<>(
-                    thread -> new Package(source).defects().size()
+                    thread -> new EoPackage(source).defects().size()
                 )
             ).size(),
             Matchers.equalTo(1)
@@ -96,7 +96,7 @@ final class PackageTest {
     @Test
     void doesNotThrowIoException() {
         Assertions.assertDoesNotThrow(
-            () -> new Package(new ListOf<>()).defects(),
+            () -> new EoPackage(new ListOf<>()).defects(),
             "Exception was thrown, but it should not be"
         );
     }
@@ -106,7 +106,7 @@ final class PackageTest {
         final String disabled = "unit-test-missing";
         MatcherAssert.assertThat(
             "Defects for disabled lint are not empty, but should be",
-            new Package(
+            new EoPackage(
                 this.withSource(
                     dir,
                     "bar.xmir",
@@ -123,7 +123,7 @@ final class PackageTest {
     void createsProgramWithoutMultipleLints(@Mktmp final Path dir) throws IOException {
         MatcherAssert.assertThat(
             "Defects for disabled lint are not empty, but should be",
-            new Package(
+            new EoPackage(
                 this.withSource(
                     dir,
                     "bar.xmir",
@@ -146,7 +146,7 @@ final class PackageTest {
     void catchesBrokenUnlintAfterLintWasRemoved(final String lid) throws IOException {
         MatcherAssert.assertThat(
             "Found defect does not match with expected",
-            new Package(
+            new EoPackage(
                 new MapOf<>(
                     "f",
                     new EoSyntax(
@@ -181,7 +181,7 @@ final class PackageTest {
     void outputsInformationAboutWpaScope() throws IOException {
         MatcherAssert.assertThat(
             "Found defects don't contain information about WPA scope, but they should",
-            new Package(
+            new EoPackage(
                 new MapOf<>(
                     "foo",
                     new EoSyntax(

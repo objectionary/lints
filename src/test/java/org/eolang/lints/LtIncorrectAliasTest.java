@@ -156,7 +156,7 @@ final class LtIncorrectAliasTest {
         );
         MatcherAssert.assertThat(
             "Defects are not empty, but should be",
-            new Package(dir).defects(),
+            new EoPackage(dir).defects(),
             Matchers.emptyIterable()
         );
     }
@@ -199,7 +199,7 @@ final class LtIncorrectAliasTest {
         );
         MatcherAssert.assertThat(
             "Defects are not empty, but should be",
-            new Package(dir).defects(),
+            new EoPackage(dir).defects(),
             Matchers.emptyIterable()
         );
     }
