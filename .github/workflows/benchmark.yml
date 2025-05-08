@@ -58,8 +58,9 @@ jobs:
       - uses: peter-evans/create-pull-request@v7
         with:
           branch: benchmark
-          commit-message: 'new benchmark results'
+          commit-message: 'New benchmark results'
           delete-branch: true
           title: "New benchmark results"
           assignees: yegor256
           base: master
+          sign-commits: true

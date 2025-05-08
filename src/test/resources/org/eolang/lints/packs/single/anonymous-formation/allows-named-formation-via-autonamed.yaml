@@ -7,8 +7,9 @@ asserts:
   - /defects[count(defect[@severity='warning'])=0]
 input: |
   # Main.
-  malloc.of
-    64
-    [m] >>
-      QQ.io.stdout > @
-        "foo"
+  [] > main
+    malloc.of > @
+      64
+      [m] >>
+        QQ.io.stdout > @
+          "foo"

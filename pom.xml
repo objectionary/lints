@@ -8,7 +8,7 @@
   <parent>
     <groupId>com.jcabi</groupId>
     <artifactId>parent</artifactId>
-    <version>0.69.0</version>
+    <version>0.69.2</version>
   </parent>
   <groupId>org.eolang</groupId>
   <artifactId>lints</artifactId>
@@ -62,11 +62,19 @@
       <url>https://github.com/objectionary/lints</url>
     </site>
   </distributionManagement>
+  <properties>
+    <!-- This is the flag that allows to skip unit tests run by maven-surefire-plugin -->
+    <skipUTs/>
+    <!-- This is the flag that allows to skip integration tests run by maven-invoker-plugin -->
+    <skipITs/>
+    <!-- This is the flag that allows to skip all tests -->
+    <skipTests/>
+  </properties>
   <dependencies>
     <dependency>
       <groupId>com.jcabi</groupId>
       <artifactId>jcabi-xml</artifactId>
-      <version>0.34.0</version>
+      <version>0.35.0</version>
     </dependency>
     <dependency>
       <groupId>io.github.secretx33</groupId>
@@ -81,7 +89,7 @@
     <dependency>
       <groupId>net.sf.saxon</groupId>
       <artifactId>Saxon-HE</artifactId>
-      <version>12.5</version>
+      <version>12.6</version>
       <scope>runtime</scope>
     </dependency>
     <dependency>
@@ -145,7 +153,7 @@
     <dependency>
       <groupId>com.opencsv</groupId>
       <artifactId>opencsv</artifactId>
-      <version>5.10</version>
+      <version>5.11</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -228,6 +236,40 @@
     </dependency>
   </dependencies>
   <profiles>
+    <profile>
+      <id>skipTests</id>
+      <activation>
+        <property>
+          <name>skipTests</name>
+        </property>
+      </activation>
+      <properties>
+        <skipITs>true</skipITs>
+        <skipUTs>true</skipUTs>
+      </properties>
+    </profile>
+    <profile>
+      <id>skipITs</id>
+      <activation>
+        <property>
+          <name>skipITs</name>
+        </property>
+      </activation>
+      <properties>
+        <skipITs>true</skipITs>
+      </properties>
+    </profile>
+    <profile>
+      <id>skipUTs</id>
+      <activation>
+        <property>
+          <name>skipUTs</name>
+        </property>
+      </activation>
+      <properties>
+        <skipUTs>true</skipUTs>
+      </properties>
+    </profile>
     <profile>
       <id>qulice</id>
       <activation>
@@ -441,6 +483,7 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <!-- version from the parent pom -->
         <configuration>
+          <skipTests>${skipUTs}</skipTests>
           <excludedGroups>benchmark,deep</excludedGroups>
           <excludes>
             <exclude>
@@ -451,6 +494,9 @@
       </plugin>
       <plugin>
         <artifactId>maven-invoker-plugin</artifactId>
+        <configuration>
+          <skipInvocation>${skipITs}</skipInvocation>
+        </configuration>
         <!-- version from the parent pom -->
       </plugin>
       <plugin>

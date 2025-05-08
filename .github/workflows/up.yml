@@ -25,7 +25,8 @@ jobs:
       - uses: peter-evans/create-pull-request@v7
         with:
           branch: version-up
-          commit-message: 'new version in README'
+          commit-message: 'New version in README'
           delete-branch: true
           title: 'New version in README'
           base: master
+          sign-commits: true

@@ -5,16 +5,15 @@ lints:
   - inconsistent-args
 asserts:
   - /defects[count(defect[@severity='warning'])=2]
-  - /defects/defect[@object='main' and @line='4']
+  - /defects/defect[@object='main' and @line='3']
   - /defects/defect[@object='app' and @line='3']
-  - /defects/defect[contains(normalize-space(), 'clashes with [main:4]')]
+  - /defects/defect[contains(normalize-space(), 'clashes with [main:3]')]
   - /defects/defect[contains(normalize-space(), 'clashes with [app:3]')]
 app.eo: |
   # App.
   [] > app
     Q.org.eolang.txt.text "f" "y" > x
 main.eo: |
-
   # Main.
   [] > main
     Q.org.eolang.txt.text "f" > y

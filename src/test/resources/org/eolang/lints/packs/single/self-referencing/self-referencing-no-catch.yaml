@@ -10,8 +10,8 @@ input: |
   [] > first
     5.plus a > a
     ^.size > size
-  # No comments.
-  [size] > more
     # No comments.
-    [] > inner
-      ^.size > size
+    [size] > more
+      # No comments.
+      [] > inner
+        ^.size > size

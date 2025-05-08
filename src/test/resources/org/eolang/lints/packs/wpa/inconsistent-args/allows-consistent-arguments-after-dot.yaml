@@ -2,13 +2,19 @@
 # SPDX-License-Identifier: MIT
 ---
 lints:
-  - incorrect-number-of-attributes
+  - inconsistent-args
 asserts:
   - /defects[count(defect)=0]
 foo.eo: |
-  # Foo with one attribute.
-  [a] > foo
-app.eo: |
-  # App uses foo properly.
-  [a b] > app
-    foo 1 > @
+  # App.
+  [] > app
+    foo. > x
+      52
+      52
+      f
+        i.x
+        z
+    foo. > @
+      1
+      23
+      107

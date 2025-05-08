@@ -9,17 +9,9 @@ mul.eo: |
   # Multiple objects here.
   [] > foo
     52 > inn
-
-  # Test.
-  [] > bar
-    52 > inn
 baz-packaged.eo: |
   +package mul
 
   # Multiple objects here.
   [] > foo
-    52 > inn
-
-  # Test.
-  [] > bar
     52 > inn

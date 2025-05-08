@@ -8,5 +8,15 @@ asserts:
 foo.eo: |
   # App.
   [] > app
-    foo 42 > x
-    foo 52 > spb
+    foo 42 1 2 3 > x
+    foo > spb
+      52
+      52
+      f
+        i.x
+        z
+      argo
+        z
+        a
+        b
+          c

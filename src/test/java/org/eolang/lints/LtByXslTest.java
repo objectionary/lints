@@ -4,6 +4,7 @@
  */
 package org.eolang.lints;
 
+import com.github.lombrozo.xnav.Xnav;
 import com.jcabi.log.Logger;
 import com.jcabi.manifests.Manifests;
 import com.jcabi.matchers.XhtmlMatchers;
@@ -18,6 +19,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import matchers.DefectsMatcher;
 import org.cactoos.io.ReaderOf;
@@ -36,6 +38,7 @@ import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.IsEqual;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.api.condition.DisabledOnOs;
@@ -139,7 +142,7 @@ final class LtByXslTest {
     void catchesLostYamls() throws IOException {
         Files.walk(Paths.get("src/test/resources/org/eolang/lints"))
             .filter(Files::isRegularFile)
-            .filter(path -> path.toString().endsWith(".yaml"))
+            .filter(LtByXslTest.yamls())
             .map(path -> path.getParent().getParent().toString())
             .collect(Collectors.toSet())
             .forEach(
@@ -288,7 +291,7 @@ final class LtByXslTest {
     void validatesPacksAgainstXsdSchema() throws IOException {
         Files.walk(Paths.get("src/test/resources/org/eolang/lints/packs/single"))
             .filter(Files::isRegularFile)
-            .filter(p -> p.toString().endsWith(".yaml"))
+            .filter(LtByXslTest.yamls())
             .map(
                 (Function<Path, Map<Path, Map<String, Object>>>)
                     p ->
@@ -352,5 +355,59 @@ final class LtByXslTest {
             new HashSet<>(defects).size() == defects.size(),
             Matchers.equalTo(true)
         );
+    }
+
+    @SuppressWarnings("StreamResourceLeak")
+    @Tag("deep")
+    @Timeout(180L)
+    @Test
+    void validatesEoPacksForErrors() throws IOException {
+        Files.walk(Paths.get("src/test/resources/org/eolang/lints/packs/single"))
+            .filter(Files::isRegularFile)
+            .filter(LtByXslTest.yamls())
+            .map(
+                (Function<Path, Map<Path, Map<String, Object>>>)
+                    p ->
+                        new MapOf<>(p, new Yaml().load(new ReaderOf(p.toFile())))
+            )
+            .filter(
+                pack ->
+                    pack.values().stream().findFirst().get().containsKey("input")
+            )
+            .forEach(
+                pack -> {
+                    final Path location = pack.keySet().iterator().next();
+                    try {
+                        MatcherAssert.assertThat(
+                            String.format(
+                                "EO snippet in '%s' pack contains errors, but it should not",
+                                location
+                            ),
+                            new Xnav(
+                                new EoSyntax(
+                                    (String) pack.values().stream().findFirst().get().get("input")
+                                ).parsed().inner()
+                            ).path("/object[errors]").findAny().isEmpty(),
+                            Matchers.equalTo(true)
+                        );
+                    } catch (final IOException exception) {
+                        throw new IllegalStateException(
+                            String.format(
+                                "Failed to parse EO snippet from '%s' pack", location
+                            ),
+                            exception
+                        );
+                    }
+                }
+            );
+    }
+
+    /**
+     * Filter YAML files.
+     * @return Predicate
+     */
+    @SuppressWarnings("UnnecessaryLambda")
+    private static Predicate<Path> yamls() {
+        return path -> path.toString().endsWith(".yaml");
     }
 }

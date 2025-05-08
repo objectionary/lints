@@ -11,36 +11,36 @@ input: |
   [a b c d e f] > with-many
     something > @
 
-  # No comments.
-  [x y z] > main
     # No comments.
-    [v] > zz /int
-    # No comments.
-    [v] > yy /int
-    # No comments.
-    [v] > uu /int
-    # No comments.
-    [v] > ff /int
-    # No comments.
-    [v] > oo /int
-    # No comments
-    [v] > pp /int
+    [x y z] > main
+      # No comments.
+      [v] > zz ?
+      # No comments.
+      [v] > yy ?
+      # No comments.
+      [v] > uu ?
+      # No comments.
+      [v] > ff ?
+      # No comments.
+      [v] > oo ?
+      # No comments
+      [v] > pp ?
 
-  # No comments
-  [] > not-many-free-attributes
-    # No comments
-    [] > empty1
-      true > @
-    # No comments
-    [] > empty2
-      true > @
-    # No comments
-    [] > empty3
-      true > @
-    # No comments
-    [] > empty4
-      true > @
-    # No comments
-    [] > empty5
-      true > @
-    true > @
+      # No comments
+      [] > not-many-free-attributes
+        # No comments
+        [] > empty1
+          true > @
+        # No comments
+        [] > empty2
+          true > @
+        # No comments
+        [] > empty3
+          true > @
+        # No comments
+        [] > empty4
+          true > @
+        # No comments
+        [] > empty5
+          true > @
+        true > @

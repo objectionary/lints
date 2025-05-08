@@ -12,4 +12,6 @@ input: |
   +rt test test
   +rt привет, как дела?
   +rt foo
+
+  # Foo.
   [] > foo

@@ -1,5 +1,26 @@
 # Not Empty Atom
 
-@todo #19:35min Document motives for `not-empty-atoms` lint.
- Currently, we don't have a test case for this `not-empty-atoms` lint.
- We should create a new test case, and then document a motive for this lint.
+In [XMIR], atom(object, that have inner object with `@name` equal to `λ`)
+should not have inner object with `@base` not equal to `∅`.
+
+Incorrect:
+
+```xml
+<object>
+  <o line="1" name="number">
+    <o base="f" name="λ"/>
+  </o>
+</object>
+```
+
+Correct:
+
+```xml
+<object>
+  <o name="number">
+    <o base="∅" name="λ"/>
+  </o>
+</object>
+```
+
+[XMIR]: https://news.eolang.org/2022-11-25-xmir-guide.html

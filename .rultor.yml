@@ -14,6 +14,9 @@ install: |
   pdd --file=/dev/null
 merge:
   script: |
+    pwd
+    ls -al .
+    ls -al ..
     mvn clean install -Pqulice --errors -Dstyle.color=never
 release:
   pre: false
