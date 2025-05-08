@@ -2,7 +2,7 @@
  * SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
  * SPDX-License-Identifier: MIT
  */
-package benchmarks;
+package org.eolang.lints;
 
 import fixtures.BytecodeClass;
 import fixtures.SourceSize;
@@ -12,8 +12,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.concurrent.TimeUnit;
 import org.cactoos.scalar.IoChecked;
-import org.eolang.lints.Program;
-import org.eolang.lints.Source;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
 import org.openjdk.jmh.annotations.Fork;
@@ -63,6 +61,6 @@ public class ProgramBench {
 
     @Benchmark
     public final void scansLargeProgram() throws IOException {
-        new Program(this.home).defects();
+        new Package(this.home).defects();
     }
 }
