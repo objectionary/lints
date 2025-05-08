@@ -118,8 +118,8 @@ final class ReserveHome implements Proc<String> {
                 )
             );
             try (
-                final FileSystem mount = FileSystems.newFileSystem(uri, Collections.emptyMap());
-                final Stream<Path> paths = Files.walk(mount.getPath(location))
+                FileSystem mount = FileSystems.newFileSystem(uri, Collections.emptyMap());
+                Stream<Path> paths = Files.walk(mount.getPath(location))
             ) {
                 paths.filter(sources)
                     .forEach(eo -> names.add(ReserveHome.namesInJar(eo)));
@@ -129,7 +129,7 @@ final class ReserveHome implements Proc<String> {
                 );
             }
         } else {
-            try (final Stream<Path> paths = Files.walk(Paths.get(resource.toURI()))) {
+            try (Stream<Path> paths = Files.walk(Paths.get(resource.toURI()))) {
                 paths.filter(sources)
                     .forEach(eo -> names.add(ReserveHome.namesInFile(eo)));
             } catch (final IOException exception) {
@@ -171,7 +171,7 @@ final class ReserveHome implements Proc<String> {
     @SuppressWarnings("PMD.AvoidCatchingGenericException")
     private static Map<String, String> namesInJar(final Path path) {
         final XML parsed;
-        try (final InputStream input = Files.newInputStream(path)) {
+        try (InputStream input = Files.newInputStream(path)) {
             parsed = new EoSyntax(new TextOf(input).asString()).parsed();
         } catch (final Exception exception) {
             throw new IllegalStateException(
@@ -197,7 +197,7 @@ final class ReserveHome implements Proc<String> {
                     names.put(
                         oname,
                         ReserveHome.HOME_OBJECTS.matcher(
-                                ReserveHome.NON_UNIX.matcher(path.toString()).replaceAll("/")
+                            ReserveHome.NON_UNIX.matcher(path.toString()).replaceAll("/")
                             )
                             .replaceFirst("")
                             .substring(1)
