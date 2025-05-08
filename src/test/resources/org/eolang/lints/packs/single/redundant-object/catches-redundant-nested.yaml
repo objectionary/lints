@@ -1,0 +1,19 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/misc/redundant-object.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=1]
+  - /defects/defect[@line='3']
+  - /defects/defect[1][normalize-space()='The object "xo" is redundant, consider inline it instead']
+input: |
+  # Foo.
+  [] > foo
+    52 > xo
+    f > @
+      a
+      b
+      c
+        x.io
+          xo

@@ -39,15 +39,21 @@ import org.openjdk.jmh.annotations.Warmup;
 public class SourceBench {
 
     /**
+     * Benchmark for XMIR scanning.
      * Scans XMIR.
      * @param state State
      * @todo #555:35min Enable `duplicate-names-in-diff-context` benchmark.
      *  Currently, its slow, especially for `L` and `XL`-sized sources. Let's optimize it,
      *  in order to enable this benchmark.
+     * @todo #376:60min Enable redundant object in the single XMIR scope benchmarks.
+     *  As for now, the lint is too slow, especially on L, XL and XXL-sized XMIRs.
+     *  This happens mostly because of multiple XPath `//o` selects in the XSL. Once,
+     *  the lint will be optimized, we can enable the lint in the benchmarks.
      */
     @Benchmark
     public final void scansXmir(final BenchmarkState state) {
-        new Source(state.xmir).without("duplicate-names-in-diff-context").defects();
+        new Source(state.xmir).without("redundant-object", "duplicate-names-in-diff-context")
+            .defects();
     }
 
     /**
