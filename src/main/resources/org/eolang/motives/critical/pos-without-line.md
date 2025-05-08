@@ -1,4 +1,4 @@
-# `@pos` Without `@line`
+# `@pos` without `@line`
 
 In [XMIR], each `<o/>` that has `@pos` attribute, must have `@line` attribute
 as well.

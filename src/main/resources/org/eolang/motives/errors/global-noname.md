@@ -1,4 +1,4 @@
-# Global Noname
+# Global no name
 
 Global object must have a name.
 

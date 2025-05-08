@@ -1,4 +1,4 @@
-# `Q.org.eolang.txt.sprintf` Without Formatters
+# `Q.org.eolang.txt.sprintf` without formatters
 
 The use of `Q.org.eolang.txt.sprintf` object makes no sense if there is no
 formatters in template string.

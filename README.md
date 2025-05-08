@@ -167,6 +167,9 @@ Also, if you have [xcop](https://github.com/yegor256/xcop) installed, make sure
 it is version `0.8.0`+.
 If you want the code to be checked using
 [error-prone](https://errorprone.info/), use Java 17+
+If you want to check [markdown files](src/main/resources/org/eolang/motives)
+using [vale](https://vale.sh/docs/install),
+just install it and make sure it's in your `PATH`
 
 [XMIR]: https://news.eolang.org/2022-11-25-xmir-guide.html
 [EO]: https://www.eolang.org

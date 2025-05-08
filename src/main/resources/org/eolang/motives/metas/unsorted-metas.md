@@ -1,4 +1,4 @@
-# Unsorted Metas
+# Unsorted metas
 
 Metas must be alphabetically ordered.
 

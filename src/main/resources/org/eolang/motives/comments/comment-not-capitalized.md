@@ -1,4 +1,4 @@
-# Comment Not Capitalized
+# Comment not capitalized
 
 Comment must start with the capital letter.
 

@@ -1,4 +1,4 @@
-# Many Free Attributes
+# Many free attributes
 
 Object must have at **max 5 attributes**.
 

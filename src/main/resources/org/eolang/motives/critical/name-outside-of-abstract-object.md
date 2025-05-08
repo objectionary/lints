@@ -1,4 +1,4 @@
-# `@name` Outside of Abstract Object
+# `@name` outside of abstract object
 
 The `@name` attribute may only be present in `<o/>` in [XMIR], only if the
 parent of the object has `@abstract` attribute.
