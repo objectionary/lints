@@ -4,15 +4,7 @@
  */
 package org.eolang.lints;
 
-import com.yegor256.tojos.MnCsv;
-import com.yegor256.tojos.TjCached;
-import com.yegor256.tojos.TjDefault;
-import com.yegor256.tojos.TjSynchronized;
-import com.yegor256.tojos.Tojo;
 import java.nio.file.Paths;
-import java.util.List;
-import java.util.Map;
-import org.cactoos.map.MapOf;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Tag;
@@ -32,7 +24,7 @@ final class ReserveHomeTest {
         new ReserveHome(csv).exec(ReserveHomeTest.homeLocation());
         MatcherAssert.assertThat(
             "Reserved objects are empty, but they should not",
-            ReserveHomeTest.reserved(csv),
+            new ReservedNames(csv).value(),
             Matchers.aMapWithSize(Matchers.greaterThan(0))
         );
     }
@@ -43,7 +35,7 @@ final class ReserveHomeTest {
         new ReserveHome(csv).exec(ReserveHomeTest.homeLocation());
         MatcherAssert.assertThat(
             "Home objects do not match with expected format",
-            ReserveHomeTest.reserved(csv).values(),
+            new ReservedNames(csv).value().values(),
             Matchers.everyItem(
                 Matchers.hasToString(
                     Matchers.matchesRegex(
@@ -52,25 +44,6 @@ final class ReserveHomeTest {
                 )
             )
         );
-    }
-
-    /**
-     * Fetch all reserved objects.
-     *
-     * @param path Path with reserved objects
-     * @return Map of reserved objects
-     */
-    private static Map<String, String> reserved(final String path) {
-        final Map<String, String> result = new MapOf<>();
-        final List<Tojo> selected = new TjCached(
-            new TjSynchronized(
-                new TjDefault(
-                    new MnCsv(path)
-                )
-            )
-        ).select(tojo -> true);
-        selected.forEach(tojo -> result.put(tojo.toString(), tojo.get("path")));
-        return result;
     }
 
     /**

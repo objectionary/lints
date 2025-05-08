@@ -10,7 +10,6 @@ import com.yegor256.tojos.MnCsv;
 import com.yegor256.tojos.TjCached;
 import com.yegor256.tojos.TjDefault;
 import com.yegor256.tojos.TjSynchronized;
-import com.yegor256.tojos.Tojo;
 import com.yegor256.tojos.Tojos;
 import java.io.IOException;
 import java.io.InputStream;
@@ -139,9 +138,6 @@ final class ReserveHome implements Proc<String> {
                 throw new IllegalStateException("URI syntax is broken", exception);
             }
         }
-        // write them into CSV format under target/classes/reserved.csv
-        // invoke this class via Groovy
-        // reuse the `reserved.csv`
         names.stream()
             .flatMap(map -> map.entrySet().stream())
             .forEach(entry -> this.placed.add(entry.getKey()).set("path", entry.getValue()));
