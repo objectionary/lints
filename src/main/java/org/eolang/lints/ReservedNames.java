@@ -26,6 +26,13 @@ final class ReservedNames implements Scalar<Map<String, String>> {
     private final String path;
 
     /**
+     * Empty ctor.
+     */
+    ReservedNames() {
+        this("target/classes/reserved.csv");
+    }
+
+    /**
      * Ctor.
      * @param pth Path to reserved names
      */

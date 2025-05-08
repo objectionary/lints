@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 import org.cactoos.io.ResourceOf;
-import org.cactoos.map.MapOf;
 import org.cactoos.text.TextOf;
 import org.cactoos.text.UncheckedText;
 import org.eolang.parser.ObjectName;
@@ -32,8 +31,8 @@ final class LtReservedName implements Lint<XML> {
     /**
      * Ctor.
      */
-    LtReservedName() throws Exception {
-        this(new MapOf<String, String>());
+    LtReservedName() {
+        this(new ReservedNames().value());
     }
 
     /**
