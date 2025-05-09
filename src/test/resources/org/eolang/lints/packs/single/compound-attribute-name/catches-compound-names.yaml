@@ -1,0 +1,20 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/names/compound-attribute-name.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=4]
+  - /defects/defect[@line='3']
+  - /defects/defect[@line='4']
+  - /defects/defect[@line='6']
+  - /defects/defect[@line='7']
+input: |
+  # No comments.
+  [] > main-app
+    [csv-file-name] > csv
+      parse > read-records
+        read csv-file-name
+    foo > objFoo
+    bar > obj_bar
+  
