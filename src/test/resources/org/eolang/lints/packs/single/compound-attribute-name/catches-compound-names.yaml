@@ -17,4 +17,3 @@ input: |
         read csv-file-name
     foo > objFoo
     bar > obj_bar
-  
