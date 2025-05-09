@@ -7,6 +7,8 @@ asserts:
   - /defects[count(defect[@severity='warning'])=0]
 input: |
   # App.
-  [] >>
+  [] > app
+    x > f
+      [] >>
     foo > @
-      bar ?
+    [] > baz ?
