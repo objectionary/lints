@@ -4,11 +4,11 @@
 sheets:
   - /org/eolang/lints/names/compound-attribute-name.xsl
 asserts:
-  - /defects[count(defect[@severity='warning'])=4]
   - /defects/defect[@line='3']
   - /defects/defect[@line='4']
   - /defects/defect[@line='6']
   - /defects/defect[@line='7']
+  - /defects[count(defect[@severity='warning'])=4]
 input: |
   # No comments.
   [] > main-app
