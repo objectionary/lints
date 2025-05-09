@@ -15,8 +15,8 @@
         *
           x.put 2
           while
-            x.as-number.lt 6 > [i1] >>
-            [i] >>
+            x.as-number.lt 6 > [i] >>
+            [j] >>
               seq > @
                 *
                   QQ.io.stdout
