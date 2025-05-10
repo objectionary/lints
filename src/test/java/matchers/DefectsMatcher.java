@@ -30,13 +30,17 @@ public final class DefectsMatcher extends BaseMatcher<XML> {
     public boolean matches(final Object xml) {
         final Collection<Defect> defects = new ArrayList<>(0);
         for (final XML defect : ((XML) xml).nodes("/defects/defect")) {
+            final String text = defect.xpath("text()")
+                .stream()
+                .findFirst()
+                .orElse(defect.xpath("message/text()").get(0));
             defects.add(
                 new Defect.Default(
                     "unknown",
                     Severity.parsed(defect.xpath("@severity").get(0)),
                     "unknown",
                     Integer.parseInt(defect.xpath("@line").get(0)),
-                    defect.xpath("text()").get(0)
+                    text
                 )
             );
         }

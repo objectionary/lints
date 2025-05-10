@@ -10,7 +10,7 @@
   <xsl:template match="/">
     <defects>
       <xsl:for-each select="/object/metas/meta[head='alias' and not(part[1]/text())]">
-        <xsl:element name="defect">
+        <defect>
           <xsl:variable name="line" select="eo:lineno(@line)"/>
           <xsl:attribute name="line">
             <xsl:value-of select="$line"/>
@@ -23,8 +23,19 @@
           <xsl:attribute name="severity">
             <xsl:text>error</xsl:text>
           </xsl:attribute>
-          <xsl:text>The alias doesn't have a tail</xsl:text>
-        </xsl:element>
+          <message>
+            <xsl:text>The alias doesn't have a tail</xsl:text>
+          </message>
+          <edit>
+            <start character="0">
+              <xsl:attribute name="line" select="$line"/>
+            </start>
+            <end character="0">
+              <xsl:attribute name="line" select="number($line) + 1"/>
+            </end>
+            <newText/>
+          </edit>
+        </defect>
       </xsl:for-each>
     </defects>
   </xsl:template>
