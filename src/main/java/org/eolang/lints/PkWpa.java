@@ -13,8 +13,8 @@ import org.cactoos.iterable.Shuffled;
 import org.cactoos.list.ListOf;
 
 /**
- * A collection of lints for Whole Program Analysis (WPA),
- * provided by the {@link Program} class.
+ * A collection of lints for Whole Package Analysis (WPA),
+ * provided by the {@link EoPackage} class.
  *
  * <p>This class is thread-safe.</p>
  *

@@ -2,14 +2,13 @@
  * SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
  * SPDX-License-Identifier: MIT
  */
-package benchmarks;
+package org.eolang.lints;
 
 import com.jcabi.xml.XML;
 import fixtures.BytecodeClass;
 import fixtures.SourceSize;
 import java.util.concurrent.TimeUnit;
 import org.cactoos.scalar.Unchecked;
-import org.eolang.lints.Source;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
 import org.openjdk.jmh.annotations.Fork;
