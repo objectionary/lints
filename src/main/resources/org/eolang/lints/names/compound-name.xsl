@@ -3,10 +3,11 @@
   * SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
   * SPDX-License-Identifier: MIT
   -->
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:eo="https://www.eolang.org" id="compound-attribute-name" version="2.0">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:eo="https://www.eolang.org" id="compound-name" version="2.0">
   <xsl:import href="/org/eolang/funcs/lineno.xsl"/>
   <xsl:import href="/org/eolang/funcs/defect-context.xsl"/>
   <xsl:import href="/org/eolang/funcs/special-name.xsl"/>
+  <xsl:import href="/org/eolang/funcs/escape.xsl"/>
   <xsl:output encoding="UTF-8" method="xml"/>
   <!--Since developers might decide not to use kebab-case, it’s better to catch all such cases.-->
   <xsl:function name="eo:compound" as="xs:boolean">
@@ -27,9 +28,9 @@
             </xsl:attribute>
           </xsl:if>
           <xsl:attribute name="severity">warning</xsl:attribute>
-          <xsl:text>Object name "</xsl:text>
-          <xsl:value-of select="@name"/>
-          <xsl:text>" should not be compound unless it's formation</xsl:text>
+          <xsl:text>Object name </xsl:text>
+          <xsl:value-of select="eo:escape(@name)"/>
+          <xsl:text> should not be compound unless it's formation</xsl:text>
         </defect>
       </xsl:for-each>
     </defects>

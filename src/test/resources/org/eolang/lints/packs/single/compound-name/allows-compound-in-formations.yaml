@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: MIT
 ---
 sheets:
-  - /org/eolang/lints/names/compound-attribute-name.xsl
+  - /org/eolang/lints/names/compound-name.xsl
 asserts:
   - /defects[count(defect[@severity='warning'])=0]
 input: |
