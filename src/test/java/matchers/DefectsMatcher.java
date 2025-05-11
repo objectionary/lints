@@ -33,7 +33,7 @@ public final class DefectsMatcher extends BaseMatcher<XML> {
             final String text = defect.xpath("text()")
                 .stream()
                 .findFirst()
-                .orElse(defect.xpath("message/text()").get(0));
+                .orElseGet(() -> defect.xpath("/message/text()").get(0));
             defects.add(
                 new Defect.Default(
                     "unknown",
