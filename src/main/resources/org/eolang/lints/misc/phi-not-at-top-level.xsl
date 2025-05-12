@@ -9,7 +9,7 @@
   <xsl:output encoding="UTF-8" method="xml"/>
   <xsl:template match="/">
     <defects>
-      <xsl:for-each select="//o[@name = '@' and preceding-sibling::o[o[@base = '$.@']]]">
+      <xsl:for-each select="//o[@name = '@' and @pos and ancestor::o[not(@base)][1][@pos] and number(@pos) - 2 != number(ancestor::o[not(@base)][1][@pos]/@pos)]">
         <defect>
           <xsl:variable name="line" select="eo:lineno(@line)"/>
           <xsl:attribute name="line">

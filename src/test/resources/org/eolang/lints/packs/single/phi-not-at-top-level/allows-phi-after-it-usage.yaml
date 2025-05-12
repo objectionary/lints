@@ -8,6 +8,6 @@ asserts:
 input: |
   # No comments.
   [] > app
-    bar > @
     foo > x
       @
+    bar > @
