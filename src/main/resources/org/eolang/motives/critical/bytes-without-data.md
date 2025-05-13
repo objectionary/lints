@@ -1,4 +1,4 @@
-# Bytes Without Data
+# Bytes without data
 
 Each object `<o/>` in [XMIR], with its parent base containing
 `Q.org.eolang.bytes` must have text data inside.

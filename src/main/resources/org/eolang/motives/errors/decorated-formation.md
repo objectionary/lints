@@ -1,7 +1,7 @@
 # Decorated formation
 
 A formation shouldn't be used as a decoratee. It means that abstract object
-should not have `@` as its name.
+shouldn't have `@` as its name.
 
 Incorrect:
 

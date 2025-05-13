@@ -1,4 +1,4 @@
-# `+package` Without Tail
+# `+package` without tail
 
 Special `+package` meta must have a tail.
 

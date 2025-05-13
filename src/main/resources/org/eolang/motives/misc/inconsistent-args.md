@@ -1,4 +1,4 @@
-# Inconsistent Args
+# Inconsistent args
 
 Objects with the same `@base` should have the same amount of arguments passed
 in it.

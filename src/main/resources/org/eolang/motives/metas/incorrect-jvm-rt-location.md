@@ -1,4 +1,4 @@
-# Incorrect `+rt` jvm location
+# Incorrect `+rt` JVM location
 
 The location of JVM runtime should follow the regexp:
 

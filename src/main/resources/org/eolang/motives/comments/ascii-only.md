@@ -1,4 +1,4 @@
-# ASCII-Only Characters in Comment
+# ASCII-Only characters in comment
 
 All comments must include only ASCII characters.
 

@@ -1,4 +1,4 @@
-# Sparse Decoration
+# Sparse decoration
 
 Sparse decoration of the base object is prohibited.
 
@@ -12,7 +12,7 @@ Incorrect:
 Correct:
 
 ```eo
-[] > decorates-application
+[] > decorates-app
   if > @
     true
     5
@@ -24,7 +24,7 @@ Correct:
   five > @
 ```
 
-Also, it is possible to have sparse decoration in tests:
+Also, it's possible to have sparse decoration in tests:
 
 ```eo
 # This is my unit test.

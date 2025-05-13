@@ -1,4 +1,4 @@
-# Comment Without Dot
+# Comment without dot
 
 Comment must end with a dot.
 

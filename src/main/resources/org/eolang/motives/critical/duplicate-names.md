@@ -1,4 +1,4 @@
-# Duplicate Names
+# Duplicate names
 
 Object's name must not be duplicated.
 

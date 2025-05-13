@@ -1,4 +1,4 @@
-# `@line` Is Absent
+# `@line` is absent
 
 In [XMIR], each `<o/>` with it's `@base`, must have `@line` attribute as well.
 

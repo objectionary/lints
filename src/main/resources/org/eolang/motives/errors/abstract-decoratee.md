@@ -1,4 +1,4 @@
-# Abstract Decoratee
+# Abstract decoratee
 
 Abstract object shouldn't be used as a decoratee.
 

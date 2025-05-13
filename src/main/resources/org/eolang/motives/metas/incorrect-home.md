@@ -1,6 +1,6 @@
 # Incorrect `+home`
 
-Special meta `+home` must follow regex:
+Special meta `+home` must follow regular expression:
 
 ```regexp
 ^(?:http(s)?://)?[\w.-]+(?:\.[\w.-]+)+[\w\-._~:/?#\[\]@!$&'()*+,;=]+$
