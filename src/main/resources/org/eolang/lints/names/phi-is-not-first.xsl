@@ -10,10 +10,10 @@
   <xsl:output encoding="UTF-8" method="xml"/>
   <xsl:template match="/">
     <defects>
-      <xsl:apply-templates select="//o[@name='@'][preceding-sibling::o[not(@base='∅')]]" mode="unordered"/>
+      <xsl:apply-templates select="(//o[@name='@'][preceding-sibling::o[not(@base='∅')]])[last()]" mode="unordered"/>
     </defects>
   </xsl:template>
-  <xsl:template match="o[@name='@']" mode="unordered">
+  <xsl:template match="o" mode="unordered">
     <defect>
       <xsl:variable name="line" select="eo:lineno(@line)"/>
       <xsl:attribute name="line">
