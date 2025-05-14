@@ -32,7 +32,7 @@ final class LtReservedName implements Lint<XML> {
      * Ctor.
      */
     LtReservedName() {
-        this(new ReservedNames().value());
+        this(new ReservedNames());
     }
 
     /**

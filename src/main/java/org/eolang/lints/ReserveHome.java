@@ -28,7 +28,6 @@ import java.util.Map;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
-import org.cactoos.Proc;
 import org.cactoos.io.InputOf;
 import org.cactoos.io.UncheckedInput;
 import org.cactoos.list.ListOf;

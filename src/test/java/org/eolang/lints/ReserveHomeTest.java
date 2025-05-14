@@ -26,7 +26,7 @@ final class ReserveHomeTest {
         new ReserveHome(csv).writeTo(ReserveHomeTest.homeLocation());
         MatcherAssert.assertThat(
             "Reserved objects are empty, but they should not",
-            new ReservedNames(csv).value(),
+            new ReservedNames(csv),
             Matchers.aMapWithSize(Matchers.greaterThan(0))
         );
     }
@@ -37,7 +37,7 @@ final class ReserveHomeTest {
         new ReserveHome(csv).writeTo(ReserveHomeTest.homeLocation());
         MatcherAssert.assertThat(
             "Home objects do not match with expected format",
-            new ReservedNames(csv).value().values(),
+            new ReservedNames(csv).values(),
             Matchers.everyItem(
                 Matchers.hasToString(
                     Matchers.matchesRegex(

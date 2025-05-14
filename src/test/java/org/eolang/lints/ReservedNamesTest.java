@@ -18,7 +18,7 @@ final class ReservedNamesTest {
     void findsReserved() {
         MatcherAssert.assertThat(
             "Reserved objects are empty, but they should not",
-            new ReservedNames("target/classes/reserved.csv").value(),
+            new ReservedNames("target/classes/reserved.csv"),
             Matchers.aMapWithSize(Matchers.greaterThan(0))
         );
     }
@@ -27,7 +27,7 @@ final class ReservedNamesTest {
     void readsReservedInCorrectFormat() {
         MatcherAssert.assertThat(
             "Reserved names do not match with expected format",
-            new ReservedNames("target/classes/reserved.csv").value().values(),
+            new ReservedNames("target/classes/reserved.csv").values(),
             Matchers.everyItem(
                 Matchers.hasToString(
                     Matchers.matchesRegex(
