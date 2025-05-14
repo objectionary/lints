@@ -176,14 +176,8 @@ final class SourceTest {
                             "",
                             "# комментарий здесь",
                             "[] > foo-bar",
-                            "  (bar 42) > zzz",
-                            "  44 > zzz",
-                            "",
-                            "[] > foo-bar",
-                            "",
-                            "[] > another",
-                            "",
-                            "42 > forty-two"
+                            "  boom > @",
+                            "    bar 42 > zzz"
                         )
                     )
                 ).parsed()

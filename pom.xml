@@ -8,7 +8,7 @@
   <parent>
     <groupId>com.jcabi</groupId>
     <artifactId>parent</artifactId>
-    <version>0.69.2</version>
+    <version>0.69.3</version>
   </parent>
   <groupId>org.eolang</groupId>
   <artifactId>lints</artifactId>
@@ -127,7 +127,7 @@
     <dependency>
       <groupId>org.eolang</groupId>
       <artifactId>eo-parser</artifactId>
-      <version>0.56.1</version>
+      <version>0.56.2</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
