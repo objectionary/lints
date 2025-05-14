@@ -11,16 +11,16 @@ import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 
 /**
- * Tests for {@link PlaceHomeNames}.
+ * Tests for {@link CsvHomeNames}.
  * @since 0.0.49
  */
 @Tag("deep")
-final class PlaceHomeNamesTest {
+final class CsvHomeNamesTest {
 
   @Test
   void placesHomeObjectsAsReserved() {
     final String csv = "target/classes/reserved.csv";
-    new PlaceHomeNames(csv).writeTo(homeLocation());
+    new CsvHomeNames(csv, homeLocation()).place();
     MatcherAssert.assertThat(
       "Reserved objects are empty, but they should not",
       new ReservedNames(csv),
@@ -31,7 +31,7 @@ final class PlaceHomeNamesTest {
   @Test
   void placesHomeObjectsWithCorrectNames() {
     final String csv = "target/classes/reserved.csv";
-    new PlaceHomeNames(csv).writeTo(homeLocation());
+    new CsvHomeNames(csv, homeLocation()).place();
     MatcherAssert.assertThat(
       "Home objects do not match with expected format",
       new ReservedNames(csv).values(),

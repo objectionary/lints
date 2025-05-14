@@ -26,10 +26,10 @@ import org.cactoos.text.TextOf
 import org.eolang.parser.EoSyntax
 
 /**
- * Places home names.
+ * Home object names in the CSV file.
  * @since 0.0.49
  */
-final class PlaceHomeNames {
+final class CsvHomeNames {
 
 /**
  * Home objects regex.
@@ -46,18 +46,32 @@ final class PlaceHomeNames {
    */
   private final Tojos placed
 
-/**
- * Empty ctor.
- */
-  PlaceHomeNames() {
-    this("target/classes/reserved.csv")
+  /**
+   * Home objects location
+   */
+  private final String location
+
+  /**
+   * Ctor.
+   * @param path Home path
+   */
+  CsvHomeNames(final Path path) {
+    this(path.toString())
+  }
+
+  /**
+   * Ctor.
+   * @param hloc Home location
+   */
+  CsvHomeNames(final String hloc) {
+    this("target/classes/reserved.csv", hloc)
   }
 
   /**
    * Ctor.
    * @param path CSV file path
    */
-  PlaceHomeNames(final String path) {
+  CsvHomeNames(final String path, final String hloc) {
     this(
       new TjCached(
         new TjSynchronized(
@@ -65,26 +79,38 @@ final class PlaceHomeNames {
             new MnCsv(path)
           )
         )
-      )
+      ),
+      hloc
     )
   }
 
   /**
    * Ctor.
    * @param tjs Reserved store
+   * @param hloc Home location
    */
-  PlaceHomeNames(final Tojos tjs) {
+  CsvHomeNames(final Tojos tjs, final String hloc) {
     this.placed = tjs
+    this.location = hloc;
   }
 
-  void writeTo(final String location) {
+  /**
+   * Place them into CSV file.
+   * Here, we are receiving names from either JAR or normal file depending, where the source of home
+   * objects is located. When `lints` used as a dependency, home repo is accessed from JAR, while,
+   * in local tests, we use read as normal file on disk.
+   * Both methods: {@link CsvHomeNames#namesInJar} and {@link CsvHomeNames#namesInFile} depend on
+   * the same directory, which we pass in the ctor, the only difference in the term of access - for
+   * JAR we need to "mount" the file system using {@link FileSystem}.
+   */
+  void place() {
     final List<Map<String, String>> names = new ListOf<>()
-    final URL resource = Thread.currentThread().contextClassLoader.getResource(location)
+    final URL resource = Thread.currentThread().contextClassLoader.getResource(this.location)
     final Predicate<Path> sources = p -> {
       final String file = p.toString().replace("\\", "/")
       return file.endsWith(".eo")
         && file.contains(
-        Path.of(location)
+        Path.of(this.location)
           .resolve("objects")
           .resolve("org")
           .resolve("eolang")
@@ -100,7 +126,7 @@ final class PlaceHomeNames {
       )
       try (
         FileSystem mount = FileSystems.newFileSystem(uri, Collections.emptyMap())
-        Stream<Path> paths = Files.walk(mount.getPath(location))
+        Stream<Path> paths = Files.walk(mount.getPath(this.location))
       ) {
         paths.filter(sources)
           .forEach(eo -> names.add(namesInJar(eo)))
