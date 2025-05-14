@@ -12,6 +12,5 @@ input: |
       []
         build 1 > @
         [i] > build
-          42 > b
           i > @
           ^.build (1.plus b) > next
