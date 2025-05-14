@@ -29,7 +29,7 @@
         <xsl:variable name="anonymous" select="."/>
         <xsl:for-each select=".//o[starts-with(@base, '$.^.') and not(eo:matches-any-void(@base, $allowed))]">
           <xsl:variable name="bname" select="eo:base-to-name(@base)"/>
-          <xsl:if test="@base and not($anonymous/o[@name = $bname])">
+          <xsl:if test="not($anonymous/o[@name = $bname])">
             <defect>
               <xsl:variable name="line" select="eo:lineno(@line)"/>
               <xsl:attribute name="line">
