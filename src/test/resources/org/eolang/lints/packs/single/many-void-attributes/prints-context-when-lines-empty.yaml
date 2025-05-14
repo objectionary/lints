@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: MIT
 ---
 sheets:
-  - /org/eolang/lints/errors/many-free-attributes.xsl
+  - /org/eolang/lints/errors/many-void-attributes.xsl
 asserts:
   - /defects[count(defect[@context and @severity='warning'])=1]
 document: |
