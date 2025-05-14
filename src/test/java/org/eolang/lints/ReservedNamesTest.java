@@ -9,7 +9,7 @@ import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 
 /**
- * Reserved names.
+ * Tests for {@link ReservedNames}.
  * @since 0.0.49
  */
 final class ReservedNamesTest {
