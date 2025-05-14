@@ -9,11 +9,13 @@ import org.hamcrest.MatcherAssert
 import org.hamcrest.Matchers
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.Timeout
 
 /**
  * Tests for {@link CsvHomeNames}.
  * @since 0.0.49
  */
+@Timeout(90L)
 @Tag("deep")
 final class CsvHomeNamesTest {
 
