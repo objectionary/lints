@@ -36,9 +36,9 @@ import org.cactoos.text.TextOf;
 import org.eolang.parser.EoSyntax;
 
 /**
+ * Reserved object names.
  * Reserved object names by EO home objects.
- * Locate reserved names from home EO objects.
- * During the `generate-sources` maven phase we are downloading <a href="https://github.com/objectionary/home">home repo</a>
+ * During the maven build we are downloading <a href="https://github.com/objectionary/home">home repo</a>
  * as the source of object names. After repo downloaded, during `process-resources` phase,
  * we copy downloaded repo to classes in lints JAR: `${project.build.directory}/classes/`.
  * This is mandatory step in order to provide access to the home repo files, when the sources
@@ -48,7 +48,7 @@ import org.eolang.parser.EoSyntax;
  * in the term of access - for JAR we need to "mount" the file system using {@link FileSystem}.
  * @since 0.0.49
  */
-final class ReserveHome implements Proc<String> {
+final class ReserveHome {
     /**
      * Home objects regex.
      */
@@ -95,8 +95,7 @@ final class ReserveHome implements Proc<String> {
         this.placed = tjs;
     }
 
-    @Override
-    public void exec(final String location) {
+    public void writeTo(final String location) {
         final List<Map<String, String>> names = new ListOf<>();
         final URL resource = Thread.currentThread().getContextClassLoader().getResource(location);
         final Predicate<Path> sources = p -> {

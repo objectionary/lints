@@ -23,7 +23,7 @@ final class ReserveHomeTest {
     @Test
     void placesHomeObjectsAsReserved() {
         final String csv = "target/classes/reserved.csv";
-        new ReserveHome(csv).exec(ReserveHomeTest.homeLocation());
+        new ReserveHome(csv).writeTo(ReserveHomeTest.homeLocation());
         MatcherAssert.assertThat(
             "Reserved objects are empty, but they should not",
             new ReservedNames(csv).value(),
@@ -34,7 +34,7 @@ final class ReserveHomeTest {
     @Test
     void placesHomeObjectsWithCorrectNames() {
         final String csv = "target/classes/reserved.csv";
-        new ReserveHome(csv).exec(ReserveHomeTest.homeLocation());
+        new ReserveHome(csv).writeTo(ReserveHomeTest.homeLocation());
         MatcherAssert.assertThat(
             "Home objects do not match with expected format",
             new ReservedNames(csv).value().values(),

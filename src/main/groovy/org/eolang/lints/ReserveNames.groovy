@@ -6,4 +6,4 @@ package org.eolang.lints
 
 import java.nio.file.Paths
 
-new ReserveHome().exec(Paths.get("downloaded", "home").toString())
+new ReserveHome().writeTo(Paths.get("downloaded", "home").toString())
