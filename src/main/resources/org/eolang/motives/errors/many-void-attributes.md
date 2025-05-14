@@ -1,6 +1,6 @@
-# Many Free Attributes
+# Many Void Attributes
 
-Object must have at **max 5 attributes**.
+Object must have at **max 5** void  attributes.
 
 Incorrect:
 
