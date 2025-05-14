@@ -641,6 +641,20 @@
         </configuration>
         <executions>
           <execution>
+            <id>groovy-compile</id>
+            <goals>
+              <goal>addSources</goal>
+              <goal>compile</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>groovy-test</id>
+            <goals>
+              <goal>addTestSources</goal>
+              <goal>compileTests</goal>
+            </goals>
+          </execution>
+          <execution>
             <id>groovy-execute</id>
             <phase>process-classes</phase>
             <goals>
