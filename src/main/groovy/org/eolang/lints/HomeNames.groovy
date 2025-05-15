@@ -58,15 +58,15 @@ final class HomeNames {
 
   /**
    * Ctor.
-   * @param path Home path
+   * @param home Home objects location
    */
-  HomeNames(final Path path) {
-    this(path.toString())
+  HomeNames(final Path home) {
+    this(home.toString())
   }
 
   /**
    * Ctor.
-   * @param hloc Home location
+   * @param Home objects location
    */
   HomeNames(final String hloc) {
     this("target/classes/reserved.csv", hloc)
@@ -74,14 +74,15 @@ final class HomeNames {
 
   /**
    * Ctor.
-   * @param path CSV file path
+   * @param csv CSV file path
+   * @param hloc Home objects location
    */
-  HomeNames(final String path, final String hloc) {
+  HomeNames(final String csv, final String hloc) {
     this(
       new TjCached(
         new TjSynchronized(
           new TjDefault(
-            new MnCsv(path)
+            new MnCsv(csv)
           )
         )
       ),

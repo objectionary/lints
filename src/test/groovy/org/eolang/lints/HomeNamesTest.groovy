@@ -4,12 +4,14 @@
  */
 package org.eolang.lints
 
+import java.nio.file.Path
 import java.nio.file.Paths
 import org.hamcrest.MatcherAssert
 import org.hamcrest.Matchers
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Timeout
+import org.junit.jupiter.api.io.TempDir
 
 /**
  * Tests for {@link HomeNames}.
@@ -20,8 +22,8 @@ import org.junit.jupiter.api.Timeout
 final class HomeNamesTest {
 
   @Test
-  void placesHomeObjectsAsReserved() {
-    final String csv = "target/classes/reserved.csv";
+  void placesHomeObjectsAsReserved(@TempDir final Path temp) {
+    final String csv = temp.resolve("reserved.csv").toString()
     new HomeNames(csv, homeLocation()).placeCsv();
     MatcherAssert.assertThat(
       "Reserved objects are empty, but they should not",
@@ -31,8 +33,8 @@ final class HomeNamesTest {
   }
 
   @Test
-  void placesHomeObjectsWithCorrectNames() {
-    final String csv = "target/classes/reserved.csv";
+  void placesHomeObjectsWithCorrectNames(@TempDir final Path temp) {
+    final String csv = temp.resolve("reserved.csv").toString()
     new HomeNames(csv, homeLocation()).placeCsv();
     MatcherAssert.assertThat(
       "Home objects do not match with expected format",
