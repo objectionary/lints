@@ -6,4 +6,4 @@ package org.eolang.lints
 
 import java.nio.file.Paths
 
-new CsvHomeNames(Paths.get("downloaded", "home")).place()
+new HomeNames(Paths.get("downloaded", "home")).placeCsv()

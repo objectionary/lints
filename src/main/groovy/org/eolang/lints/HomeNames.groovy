@@ -28,8 +28,13 @@ import org.eolang.parser.EoSyntax
 /**
  * Home object names in the CSV file.
  * @since 0.0.49
+ * @todo #465:45min Refactor HomeNames.
+ *  Currently, the class does two things: 1) Object name parsing, and 2) CSV placing.
+ *  Let's refactor it to make it aligned with <a href="https://en.wikipedia.org/wiki/Single-responsibility_principle">SRP</a>.
+ *  Probably one new class will be required (for name parsing), together with proper
+ *  naming of this one (for placing them into CSV).
  */
-final class CsvHomeNames {
+final class HomeNames {
 
 /**
  * Home objects regex.
@@ -55,7 +60,7 @@ final class CsvHomeNames {
    * Ctor.
    * @param path Home path
    */
-  CsvHomeNames(final Path path) {
+  HomeNames(final Path path) {
     this(path.toString())
   }
 
@@ -63,7 +68,7 @@ final class CsvHomeNames {
    * Ctor.
    * @param hloc Home location
    */
-  CsvHomeNames(final String hloc) {
+  HomeNames(final String hloc) {
     this("target/classes/reserved.csv", hloc)
   }
 
@@ -71,7 +76,7 @@ final class CsvHomeNames {
    * Ctor.
    * @param path CSV file path
    */
-  CsvHomeNames(final String path, final String hloc) {
+  HomeNames(final String path, final String hloc) {
     this(
       new TjCached(
         new TjSynchronized(
@@ -89,7 +94,7 @@ final class CsvHomeNames {
    * @param tjs Reserved store
    * @param hloc Home location
    */
-  CsvHomeNames(final Tojos tjs, final String hloc) {
+  HomeNames(final Tojos tjs, final String hloc) {
     this.placed = tjs
     this.location = hloc;
   }
@@ -99,11 +104,11 @@ final class CsvHomeNames {
    * Here, we are receiving names from either JAR or normal file depending, where the source of home
    * objects is located. When `lints` used as a dependency, home repo is accessed from JAR, while,
    * in local tests, we use read as normal file on disk.
-   * Both methods: {@link CsvHomeNames#namesInJar} and {@link CsvHomeNames#namesInFile} depend on
+   * Both methods: {@link HomeNames#namesInJar} and {@link HomeNames#namesInFile} depend on
    * the same directory, which we pass in the ctor, the only difference in the term of access - for
    * JAR we need to "mount" the file system using {@link FileSystem}.
    */
-  void place() {
+  void placeCsv() {
     final List<Map<String, String>> names = new ListOf<>()
     final URL resource = Thread.currentThread().contextClassLoader.getResource(this.location)
     final Predicate<Path> sources = p -> {

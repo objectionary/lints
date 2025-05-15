@@ -12,17 +12,17 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Timeout
 
 /**
- * Tests for {@link CsvHomeNames}.
+ * Tests for {@link HomeNames}.
  * @since 0.0.49
  */
 @Timeout(90L)
 @Tag("deep")
-final class CsvHomeNamesTest {
+final class HomeNamesTest {
 
   @Test
   void placesHomeObjectsAsReserved() {
     final String csv = "target/classes/reserved.csv";
-    new CsvHomeNames(csv, homeLocation()).place();
+    new HomeNames(csv, homeLocation()).placeCsv();
     MatcherAssert.assertThat(
       "Reserved objects are empty, but they should not",
       new ReservedNames(csv),
@@ -33,7 +33,7 @@ final class CsvHomeNamesTest {
   @Test
   void placesHomeObjectsWithCorrectNames() {
     final String csv = "target/classes/reserved.csv";
-    new CsvHomeNames(csv, homeLocation()).place();
+    new HomeNames(csv, homeLocation()).placeCsv();
     MatcherAssert.assertThat(
       "Home objects do not match with expected format",
       new ReservedNames(csv).values(),
