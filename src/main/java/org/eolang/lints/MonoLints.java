@@ -20,12 +20,6 @@ import org.cactoos.list.ListOf;
  * scope lints in both: {@link LtUnlintNonExistingDefect} and {@link LtUnlintNonExistingDefectWpa}
  * without causing recursion errors.
  * @since 0.0.43
- * @todo #165:60min Add {@link LtReservedName} to the LINTS Mono pipeline.
- *  Currently, it will cause timeout exceptions in several places in tests, due to
- *  the design of {@link LtReservedName}. There, it scans all the home EO objects, pulled
- *  from Git by maven in the `generate-sources` phase, and process them. Will be great
- *  to process home objects only once - initially during the build, and then reuse it
- *  everywhere.
  */
 final class MonoLints extends IterableEnvelope<Lint<XML>> {
 
@@ -36,7 +30,8 @@ final class MonoLints extends IterableEnvelope<Lint<XML>> {
         new Joined<Lint<XML>>(
             new PkByXsl(),
             List.of(
-                new LtAsciiOnly()
+                new LtAsciiOnly(),
+                new LtReservedName()
             )
         )
     );

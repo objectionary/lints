@@ -149,13 +149,28 @@
       <groupId>com.yegor256</groupId>
       <artifactId>tojos</artifactId>
       <version>0.18.5</version>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.opencsv</groupId>
       <artifactId>opencsv</artifactId>
       <version>5.11</version>
-      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.groovy</groupId>
+      <artifactId>groovy-all</artifactId>
+      <version>3.0.24</version>
+      <type>pom</type>
+      <exclusions>
+        <exclusion>
+          <!--
+            We need to exclude it, since its dependency `Maven:jline:jline:2.14.6` has no license
+            information. Exclusion will work only under project dependencies section. Don't move it
+            to `gmavenplus-plugin` dependencies.
+          -->
+          <groupId>org.codehaus.groovy</groupId>
+          <artifactId>groovy-groovysh</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>com.yegor256</groupId>
@@ -618,6 +633,42 @@
                   <outputDirectory>${project.build.directory}/classes</outputDirectory>
                 </artifactItem>
               </artifactItems>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.gmavenplus</groupId>
+        <artifactId>gmavenplus-plugin</artifactId>
+        <version>4.2.0</version>
+        <configuration>
+          <verbose>true</verbose>
+        </configuration>
+        <executions>
+          <execution>
+            <id>groovy-compile</id>
+            <goals>
+              <goal>addSources</goal>
+              <goal>compile</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>groovy-test</id>
+            <goals>
+              <goal>addTestSources</goal>
+              <goal>compileTests</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>groovy-execute</id>
+            <phase>process-classes</phase>
+            <goals>
+              <goal>execute</goal>
+            </goals>
+            <configuration>
+              <scripts>
+                <script>src/main/groovy/org/eolang/lints/ReserveNames.groovy</script>
+              </scripts>
             </configuration>
           </execution>
         </executions>
