@@ -4,6 +4,8 @@
  */
 package org.eolang.lints;
 
+import org.eolang.lints.fix.Fix;
+
 /**
  * Defect with context.
  * @since 0.0.40
@@ -58,6 +60,11 @@ final class DfContext implements Defect {
     @Override
     public String version() {
         return this.origin.version();
+    }
+
+    @Override
+    public Fix fix() {
+        return this.origin.fix();
     }
 
     @Override

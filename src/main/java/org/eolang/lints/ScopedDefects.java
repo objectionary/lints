@@ -31,7 +31,8 @@ final class ScopedDefects extends CollectionEnvelope<Defect> {
                             defect.object(),
                             defect.line(),
                             defect.text(),
-                            defect.experimental()
+                            defect.experimental(),
+                            defect.fix()
                         ),
                         defect.context()
                     ),

@@ -6,6 +6,7 @@ package org.eolang.lints;
 
 import com.jcabi.manifests.Manifests;
 import java.util.Objects;
+import org.eolang.lints.fix.Fix;
 
 /**
  * A single defect found.
@@ -103,6 +104,13 @@ public interface Defect {
     boolean experimental();
 
     /**
+     * Information on how to fix this defect.
+     *
+     * @return Fix info.
+     */
+    Fix fix();
+
+    /**
      * Default implementation of {@link Defect}.
      * <p>
      * Provides a standard implementation with basic functionality.
@@ -143,6 +151,11 @@ public interface Defect {
         private final boolean experiment;
 
         /**
+         * How to fix.
+         */
+        private final Fix fix;
+
+        /**
          * Ctor.
          * @param rule Rule name
          * @param severity Severity level
@@ -155,7 +168,7 @@ public interface Defect {
             final String rule, final Severity severity,
             final String object, final int line, final String text
         ) {
-            this(rule, severity, object, line, text, false);
+            this(rule, severity, object, line, text, false, new Fix());
         }
 
         /**
@@ -175,7 +188,7 @@ public interface Defect {
         public Default(
             final String rule, final Severity severity,
             final String object, final int line, final String text,
-            final boolean exprmnt
+            final boolean exprmnt, final Fix fix
         ) {
             this.rle = rule;
             this.sev = severity;
@@ -183,6 +196,7 @@ public interface Defect {
             this.lineno = line;
             this.txt = text;
             this.experiment = exprmnt;
+            this.fix = fix;
         }
 
         @Override
@@ -235,6 +249,11 @@ public interface Defect {
         @Override
         public boolean experimental() {
             return this.experiment;
+        }
+
+        @Override
+        public Fix fix() {
+            return this.fix;
         }
 
         @Override

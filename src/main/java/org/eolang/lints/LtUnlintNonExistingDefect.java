@@ -19,6 +19,10 @@ import org.cactoos.io.ResourceOf;
 import org.cactoos.list.ListOf;
 import org.cactoos.text.IoCheckedText;
 import org.cactoos.text.TextOf;
+import org.eolang.lints.fix.Edit;
+import org.eolang.lints.fix.File;
+import org.eolang.lints.fix.Fix;
+import org.eolang.lints.fix.Position;
 import org.eolang.parser.ObjectName;
 
 /**
@@ -82,7 +86,7 @@ final class LtUnlintNonExistingDefect implements Lint<XML> {
                         )
                         )
                         .map(xnav -> xnav.text().get())
-                        .collect(Collectors.toList())
+                        .map(Integer::parseInt)
                         .forEach(
                             line ->
                                 defects.add(
@@ -90,10 +94,21 @@ final class LtUnlintNonExistingDefect implements Lint<XML> {
                                         this.name(),
                                         Severity.WARNING,
                                         new ObjectName(xmir).get(),
-                                        Integer.parseInt(line),
+                                        line,
                                         String.format(
                                             "Unlinting rule '%s' doesn't make sense, since there are no defects with it",
                                             unlint
+                                        ),
+                                        false,
+                                        new Fix(
+                                            new File(
+                                                new ObjectSource(xmir).get(),
+                                                new Edit(
+                                                    new Position(line, 0),
+                                                    new Position(line + 1, 0),
+                                                    ""
+                                                )
+                                            )
                                         )
                                     )
                                 )
