@@ -27,7 +27,7 @@ final class HomeNamesTest {
   @Test
   void placesHomeObjectsAsReserved(@TempDir final Path temp) {
     final String csv = temp.resolve("reserved.csv").toString()
-    new HomeNames(csv, homeLocation()).placeCsv();
+    new HomeNames(csv, homeLocation()).placeCsv()
     MatcherAssert.assertThat(
       "Reserved objects are empty, but they should not",
       new ReservedNames(csv),
@@ -38,7 +38,7 @@ final class HomeNamesTest {
   @Test
   void placesHomeObjectsWithCorrectNames(@TempDir final Path temp) {
     final String csv = temp.resolve("reserved.csv").toString()
-    new HomeNames(csv, homeLocation()).placeCsv();
+    new HomeNames(csv, homeLocation()).placeCsv()
     MatcherAssert.assertThat(
       "Home objects do not match with expected format",
       new ReservedNames(csv).values(),
