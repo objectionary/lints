@@ -125,10 +125,7 @@ final class HomeNames {
     }
     if ("jar" == resource.protocol) {
       final URI uri = URI.create(
-        String.format(
-          "jar:file:%s",
-          resource.file.substring(5, resource.file.indexOf('!'))
-        )
+        "jar:file:${resource.file.substring(5, resource.file.indexOf('!'))}",
       )
       try (
         FileSystem mount = FileSystems.newFileSystem(uri, Collections.emptyMap())
@@ -169,10 +166,7 @@ final class HomeNames {
       parsed = new EoSyntax(new UncheckedInput(new InputOf(path.toFile())))
         .parsed()
     } catch (final IOException exception) {
-      throw new IllegalStateException(
-        String.format("Failed to parse EO source in \"%s\"", path),
-        exception
-      )
+      throw new IllegalStateException("Failed to parse EO source in \"${path}\"", exception)
     }
     return namesInXmir(parsed, path)
   }
@@ -189,10 +183,7 @@ final class HomeNames {
     try (InputStream input = Files.newInputStream(path)) {
       parsed = new EoSyntax(new TextOf(input).asString()).parsed()
     } catch (final Exception exception) {
-      throw new IllegalStateException(
-        String.format("Failed to parse EO source in \"%s\"", path),
-        exception
-      )
+      throw new IllegalStateException("Failed to parse EO source in \"${path}\"", exception)
     }
     return namesInXmir(parsed, path)
   }

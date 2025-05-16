@@ -4,6 +4,7 @@
  */
 package org.eolang.lints
 
+import com.yegor256.MayBeSlow
 import java.nio.file.Path
 import java.nio.file.Paths
 import org.hamcrest.MatcherAssert
@@ -11,6 +12,7 @@ import org.hamcrest.Matchers
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Timeout
+import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.api.io.TempDir
 
 /**
@@ -19,6 +21,7 @@ import org.junit.jupiter.api.io.TempDir
  */
 @Timeout(90L)
 @Tag("deep")
+@ExtendWith(MayBeSlow)
 final class HomeNamesTest {
 
   @Test
