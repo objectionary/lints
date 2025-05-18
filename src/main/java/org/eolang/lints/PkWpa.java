@@ -6,6 +6,7 @@ package org.eolang.lints;
 
 import com.jcabi.xml.XML;
 import java.util.Map;
+import org.cactoos.func.Chained;
 import org.cactoos.iterable.IterableEnvelope;
 import org.cactoos.iterable.Joined;
 import org.cactoos.iterable.Mapped;
@@ -42,7 +43,10 @@ final class PkWpa extends IterableEnvelope<Lint<Map<String, XML>>> {
         super(
             new Shuffled<>(
                 new Mapped<Lint<Map<String, XML>>>(
-                    LtWpaUnlint::new,
+                    new Chained<>(
+                        LtWpaUnlint::new,
+                        LtDfSticky::new
+                    ),
                     new Joined<Lint<Map<String, XML>>>(
                         lints,
                         new ListOf<>(
