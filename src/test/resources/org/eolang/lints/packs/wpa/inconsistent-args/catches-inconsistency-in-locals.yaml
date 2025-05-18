@@ -4,7 +4,9 @@
 lints:
   - inconsistent-args
 asserts:
-  - /defects[count(defect)=0]
+  - /defects[count(defect)=2]
+  - /defects/defect[@object='foo' and @line='4']
+  - /defects/defect[@object='foo' and @line='5']
 foo.eo: |
   # Foo.
   [as-bytes] > foo

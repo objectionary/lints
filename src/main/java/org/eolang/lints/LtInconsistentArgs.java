@@ -49,7 +49,13 @@ final class LtInconsistentArgs implements Lint<Map<String, XML>> {
                         sources, base
                     );
                     sources.forEach(
-                        src -> src.path(String.format("//o[@base='%s']", base))
+                        src ->
+                            src.path(
+                                String.format(
+                                    "//o[@base='%s']",
+                                    LtInconsistentArgs.relativizeToTopObject(base, src)
+                                )
+                            )
                             .forEach(
                                 o -> {
                                     final String current = new ObjectName(
@@ -211,5 +217,22 @@ final class LtInconsistentArgs implements Lint<Map<String, XML>> {
                 )
         );
         return String.join(", ", others);
+    }
+
+    /**
+     * Relativize base to the top object name.
+     * @param base Object base
+     * @param source Source
+     * @return Relativized object base
+     */
+    private static String relativizeToTopObject(final String base, final Xnav source) {
+        final String top = new ObjectName(source).get();
+        final String result;
+        if (base.startsWith(String.format("%s.$.", top))) {
+            result = base.replace(String.format("%s.", new ObjectName(source).get()), "");
+        } else {
+            result = base;
+        }
+        return result;
     }
 }
