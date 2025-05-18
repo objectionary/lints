@@ -183,7 +183,12 @@ final class LtInconsistentArgs implements Lint<Map<String, XML>> {
     ) {
         final Map<String, List<Integer>> clashes = new HashMap<>(16);
         sources.forEach(
-            src -> src.path(String.format("//o[@base='%s']", base))
+            src ->
+                src.path(
+                    String.format(
+                        "//o[@base='%s']", LtInconsistentArgs.relativizeToTopObject(base, src)
+                    )
+                )
                 .forEach(
                     o -> {
                         final String program = new ObjectName(new XMLDocument(src.node())).get();
