@@ -107,10 +107,17 @@ final class LtInconsistentArgs implements Lint<Map<String, XML>> {
                 final Map<String, List<Integer>> local = new HashMap<>(0);
                 final Xnav source = new Xnav(xmir.inner());
                 source.path("//o[@base]").forEach(
-                    base -> {
-                        final int args = base.node().getChildNodes().getLength();
+                    o -> {
+                        final int args = o.node().getChildNodes().getLength();
+                        final String base = o.attribute("base").text().get();
+                        final String ref;
+                        if (base.startsWith("$.")) {
+                            ref = String.format("%s.%s", new ObjectName(source).get(), base);
+                        } else {
+                            ref = base;
+                        }
                         local.computeIfAbsent(
-                            base.attribute("base").text().get(),
+                            ref,
                             k -> new ListOf<>()
                         ).add(args);
                     }
