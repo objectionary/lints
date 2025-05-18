@@ -1,0 +1,27 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+lints:
+  - inconsistent-args
+asserts:
+  - /defects[count(defect)=0]
+foo.eo: |
+  # Foo.
+  [as-bytes] > foo
+    as-bytes > @
+    times -1.as-i64.as-i32.as-i16 > neg
+    times -2 -88 > aaa
+
+    # Times.
+    [x] > times
+      if. > @
+        or.
+          left.eq 00-00
+          left.eq FF-FF
+        i16 right
+        plus.
+          i16 left
+          i16 right
+      (as-i32.times x.as-i16.as-i32).as-bytes > bts
+      bts.slice 0 2 > left
+      bts.slice 2 2 > right
