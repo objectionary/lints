@@ -7,16 +7,13 @@ package org.eolang.lints;
 import com.jcabi.xml.XML;
 import java.io.IOException;
 import java.util.Collection;
-import java.util.concurrent.TimeUnit;
 import org.cactoos.list.ListOf;
 import org.cactoos.map.MapEntry;
 import org.cactoos.map.MapOf;
 import org.eolang.parser.EoSyntax;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Timeout;
 
 /**
  * Tests for {@link LtReservedName}.
@@ -161,10 +158,8 @@ final class LtReservedNameTest {
         );
     }
 
-    @Tag("deep")
-    @Timeout(value = 90L, unit = TimeUnit.SECONDS)
     @Test
-    void scansReservedFromHome() throws IOException {
+    void scansReservedFromHome() throws Exception {
         final Lint<XML> lint = new LtReservedName();
         final Collection<Defect> defects = lint.defects(
             new EoSyntax(
