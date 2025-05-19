@@ -89,7 +89,7 @@
     <dependency>
       <groupId>net.sf.saxon</groupId>
       <artifactId>Saxon-HE</artifactId>
-      <version>12.6</version>
+      <version>12.7</version>
       <scope>runtime</scope>
     </dependency>
     <dependency>
@@ -360,7 +360,7 @@
           <plugin>
             <groupId>org.pitest</groupId>
             <artifactId>pitest-maven</artifactId>
-            <version>1.19.2</version>
+            <version>1.19.3</version>
             <executions>
               <execution>
                 <goals>
