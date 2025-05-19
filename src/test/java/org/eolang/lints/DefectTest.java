@@ -4,6 +4,7 @@
  */
 package org.eolang.lints;
 
+import org.eolang.lints.fix.Fix;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
@@ -72,7 +73,8 @@ final class DefectTest {
                 "f.12",
                 42,
                 "This is wrong",
-                true
+                true,
+                new Fix()
             ).experimental(),
             Matchers.equalTo(true)
         );

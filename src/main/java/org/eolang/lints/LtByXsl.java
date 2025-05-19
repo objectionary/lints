@@ -20,6 +20,9 @@ import org.cactoos.Input;
 import org.cactoos.io.ResourceOf;
 import org.cactoos.text.IoCheckedText;
 import org.cactoos.text.TextOf;
+import org.eolang.lints.fix.Edit;
+import org.eolang.lints.fix.File;
+import org.eolang.lints.fix.Fix;
 import org.eolang.parser.ObjectName;
 
 /**
@@ -98,6 +101,7 @@ final class LtByXsl implements Lint<XML> {
                     String.format("No severity reported by %s", this.rule)
                 );
             }
+            final Optional<String> message = xml.element("message").text();
             defects.add(
                 new DfContext(
                     new Defect.Default(
@@ -105,8 +109,18 @@ final class LtByXsl implements Lint<XML> {
                         Severity.parsed(sever.get()),
                         new ObjectName(xmir).get(),
                         this.lineno(xml),
-                        xml.text().get(),
-                        LtByXsl.experimental(xml)
+                        message.orElseGet(() -> xml.text().get()),
+                        LtByXsl.experimental(xml),
+                        message.map(
+                                ignored ->
+                                    new Fix(
+                                        new File(
+                                            xmir.xpath("/@source/text()").get(0),
+                                            new Edit(xml.element("edit"))
+                                        )
+                                    )
+                            )
+                            .orElseGet(Fix::new)
                     ),
                     xml.attribute("context").text().orElse("")
                 )
