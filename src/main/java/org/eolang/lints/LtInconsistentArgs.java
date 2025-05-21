@@ -13,6 +13,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import org.cactoos.io.ResourceOf;
 import org.cactoos.list.ListOf;
 import org.cactoos.text.TextOf;
@@ -122,16 +124,36 @@ final class LtInconsistentArgs implements Lint<Map<String, XML>> {
                         } else {
                             ref = base;
                         }
-                        local.computeIfAbsent(
-                            ref,
-                            k -> new ListOf<>()
-                        ).add(args);
+                        if (!LtInconsistentArgs.voidAttribute(base, source)) {
+                            local.computeIfAbsent(
+                                ref,
+                                k -> new ListOf<>()
+                            ).add(args);
+                        }
                     }
                 );
                 usages.put(source, local);
             }
         );
         return usages;
+    }
+
+    private static boolean voidAttribute(final String base, final Xnav source) {
+        final boolean result;
+        if (base.startsWith("$.")) {
+            result = source.path(String.format("//o[@name='%s']", base.replace("$.", "")))
+                .anyMatch(
+                    new Predicate<Xnav>() {
+                        @Override
+                        public boolean test(final Xnav o) {
+                            return o.attribute("base").text().get().equals("∅");
+                        }
+                    }
+                );
+        } else {
+            result = false;
+        }
+        return result;
     }
 
     /**
