@@ -14,12 +14,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 import org.cactoos.io.ResourceOf;
 import org.cactoos.list.ListOf;
 import org.cactoos.text.TextOf;
 import org.cactoos.text.UncheckedText;
 import org.eolang.parser.ObjectName;
+import org.w3c.dom.Node;
 
 /**
  * Lint for checking arguments inconsistency provided to the objects.
@@ -58,6 +58,12 @@ final class LtInconsistentArgs implements Lint<Map<String, XML>> {
                                     "//o[@base='%s']",
                                     LtInconsistentArgs.relativizeToTopObject(base, src)
                                 )
+                            )
+                            .filter(
+                                o ->
+                                    !LtInconsistentArgs.voidAttribute(
+                                        LtInconsistentArgs.relativizeToTopObject(base, src), o
+                                    )
                             )
                             .forEach(
                                 o -> {
@@ -125,7 +131,7 @@ final class LtInconsistentArgs implements Lint<Map<String, XML>> {
                         } else {
                             ref = base;
                         }
-                        if (!LtInconsistentArgs.voidAttribute(base, source)) {
+                        if (!LtInconsistentArgs.voidAttribute(base, o)) {
                             local.computeIfAbsent(
                                 ref,
                                 k -> new ListOf<>()
@@ -139,28 +145,33 @@ final class LtInconsistentArgs implements Lint<Map<String, XML>> {
         return usages;
     }
 
-    private static boolean voidAttribute(final String base, final Xnav source) {
+    private static boolean voidAttribute(final String base, final Xnav object) {
         final boolean result;
         if (base.startsWith("$.")) {
-            result = source.path(String.format("//o[@name='%s']", base.replace("$.", "")))
-                .anyMatch(
-                    new Predicate<Xnav>() {
-                        @Override
-                        public boolean test(final Xnav o) {
-                            final boolean matches;
-                            if (o.attribute("base").text().isPresent()) {
-                                matches = "∅".equals(o.attribute("base").text().get());
-                            } else {
-                                matches = false;
-                            }
-                            return matches;
-                        }
-                    }
-                );
+            final Xnav sibling = LtInconsistentArgs.siblingObject(object);
+            if (sibling.attribute("base").text().isPresent() && sibling.attribute("name").text().isPresent()) {
+                result = base.replace("$.", "").equals(sibling.attribute("name").text().get())
+                    && "∅".equals(sibling.attribute("base").text().get());
+            } else {
+                result = false;
+            }
         } else {
             result = false;
         }
         return result;
+    }
+
+    private static boolean methodReference() {
+        return false;
+    }
+
+    private static Xnav siblingObject(final Xnav object) {
+        final Node prev = object.node().getPreviousSibling();
+        if (prev != null && (int) prev.getNodeType() == (int) Node.ELEMENT_NODE) {
+            return new Xnav(prev);
+        } else {
+            return new Xnav("<o/>");
+        }
     }
 
     /**
@@ -216,6 +227,11 @@ final class LtInconsistentArgs implements Lint<Map<String, XML>> {
                 src.path(
                     String.format(
                         "//o[@base='%s']", LtInconsistentArgs.relativizeToTopObject(base, src)
+                    )
+                )
+                .filter(
+                    o -> !LtInconsistentArgs.voidAttribute(
+                        LtInconsistentArgs.relativizeToTopObject(base, src), o
                     )
                 )
                 .forEach(
