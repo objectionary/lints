@@ -13,7 +13,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Predicate;
+import java.util.Optional;
 import org.cactoos.io.ResourceOf;
 import org.cactoos.list.ListOf;
 import org.cactoos.text.TextOf;
@@ -31,6 +31,7 @@ import org.w3c.dom.Node;
  *  are merged, we can iterate over all the objects there only once, and find
  *  inconsistencies.
  */
+@SuppressWarnings("PMD.TooManyMethods")
 final class LtInconsistentArgs implements Lint<Map<String, XML>> {
 
     @Override
@@ -42,7 +43,6 @@ final class LtInconsistentArgs implements Lint<Map<String, XML>> {
     public Collection<Defect> defects(final Map<String, XML> pkg) throws IOException {
         final Collection<Defect> defects = new ArrayList<>(0);
         final Map<Xnav, Map<String, List<Integer>>> whole = LtInconsistentArgs.scanUsages(pkg);
-        System.out.println(whole.values());
         final Map<String, List<Xnav>> bases = LtInconsistentArgs.baseOccurrences(whole);
         LtInconsistentArgs.mergedSources(whole).forEach(
             (base, counts) -> {
@@ -63,7 +63,7 @@ final class LtInconsistentArgs implements Lint<Map<String, XML>> {
                                 o ->
                                     !LtInconsistentArgs.voidAttribute(
                                         LtInconsistentArgs.relativizeToTopObject(base, src), o
-                                    )
+                                    ) && !LtInconsistentArgs.objectReference(o)
                             )
                             .forEach(
                                 o -> {
@@ -131,12 +131,10 @@ final class LtInconsistentArgs implements Lint<Map<String, XML>> {
                         } else {
                             ref = base;
                         }
-                        if (!LtInconsistentArgs.voidAttribute(base, o)) {
-                            local.computeIfAbsent(
-                                ref,
-                                k -> new ListOf<>()
-                            ).add(args);
-                        }
+                        local.computeIfAbsent(
+                            ref,
+                            k -> new ListOf<>()
+                        ).add(args);
                     }
                 );
                 usages.put(source, local);
@@ -145,11 +143,20 @@ final class LtInconsistentArgs implements Lint<Map<String, XML>> {
         return usages;
     }
 
+    /**
+     * Base refers to void attribute?
+     * @param base Object base
+     * @param object Object
+     * @return True or False
+     */
     private static boolean voidAttribute(final String base, final Xnav object) {
         final boolean result;
         if (base.startsWith("$.")) {
-            final Xnav sibling = LtInconsistentArgs.siblingObject(object);
-            if (sibling.attribute("base").text().isPresent() && sibling.attribute("name").text().isPresent()) {
+            final Xnav sibling = LtInconsistentArgs.prevSibling(object);
+            if (
+                sibling.attribute("base").text().isPresent()
+                    && sibling.attribute("name").text().isPresent()
+            ) {
                 result = base.replace("$.", "").equals(sibling.attribute("name").text().get())
                     && "∅".equals(sibling.attribute("base").text().get());
             } else {
@@ -161,17 +168,15 @@ final class LtInconsistentArgs implements Lint<Map<String, XML>> {
         return result;
     }
 
-    private static boolean methodReference() {
-        return false;
-    }
-
-    private static Xnav siblingObject(final Xnav object) {
-        final Node prev = object.node().getPreviousSibling();
-        if (prev != null && (int) prev.getNodeType() == (int) Node.ELEMENT_NODE) {
-            return new Xnav(prev);
-        } else {
-            return new Xnav("<o/>");
-        }
+    /**
+     * Object is a reference to itself?
+     * @param object Object
+     * @return True or False
+     */
+    private static boolean objectReference(final Xnav object) {
+        final Optional<String> base = object.attribute("base").text();
+        return object.attribute("name").text().isEmpty() && base.isPresent()
+            && base.get().startsWith("$.");
     }
 
     /**
@@ -232,7 +237,7 @@ final class LtInconsistentArgs implements Lint<Map<String, XML>> {
                 .filter(
                     o -> !LtInconsistentArgs.voidAttribute(
                         LtInconsistentArgs.relativizeToTopObject(base, src), o
-                    )
+                    ) && !LtInconsistentArgs.objectReference(o)
                 )
                 .forEach(
                     o -> {
@@ -282,6 +287,22 @@ final class LtInconsistentArgs implements Lint<Map<String, XML>> {
             result = base.replace(String.format("%s.", new ObjectName(source).get()), "");
         } else {
             result = base;
+        }
+        return result;
+    }
+
+    /**
+     * Previous sibling object to the given one.
+     * @param object Object
+     * @return Previous sibling object relatively to the given object
+     */
+    private static Xnav prevSibling(final Xnav object) {
+        final Xnav result;
+        final Node prev = object.node().getPreviousSibling();
+        if (prev != null && (int) prev.getNodeType() == (int) Node.ELEMENT_NODE) {
+            result = new Xnav(prev);
+        } else {
+            result = new Xnav("<o/>");
         }
         return result;
     }
