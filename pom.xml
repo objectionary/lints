@@ -408,11 +408,10 @@
           <plugin>
             <groupId>com.googlecode.maven-download-plugin</groupId>
             <artifactId>download-maven-plugin</artifactId>
-            <version>1.13.0</version>
             <executions>
               <execution>
                 <id>download-home</id>
-                <phase>generate-sources</phase>
+                <phase>initialize</phase>
                 <goals>
                   <goal>wget</goal>
                 </goals>
@@ -431,6 +430,7 @@
             <!-- version from the parent pom -->
             <executions>
               <execution>
+                <id>unzip-home</id>
                 <phase>generate-sources</phase>
                 <configuration>
                   <target>
