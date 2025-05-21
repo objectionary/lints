@@ -10,9 +10,9 @@ input: |
   [] > foo
     "yes" > message
     [] > bar
-      while
+      while > @
         [i] >>
-          if.
+          if. > @
             i.lt 5
             QQ.io.stdout
               ^.^.message

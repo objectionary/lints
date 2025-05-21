@@ -6,16 +6,15 @@ sheets:
   - /org/eolang/lints/errors/missing-rho-reference.xsl
 asserts:
   - /defects[count(defect[@severity='error'])=1]
-  - /defects/defect[@line='10']
+  - /defects/defect[@line='9']
   - /defects/defect[1][normalize-space()='The rho reference "messageeee" is missing in "foo" object']
 input: |
   # Foo.
   [] > foo
-    "yes" > message
     [] > bar
-      while
+      while > @
         [i] >>
-          if.
+          if. > @
             i.lt 5
             QQ.io.stdout
               ^.^.messageeee
