@@ -4,15 +4,20 @@
  */
 package org.eolang.lints;
 
+import com.jcabi.log.Logger;
 import com.jcabi.xml.XML;
 import com.jcabi.xml.XMLDocument;
 import io.github.secretx33.resourceresolver.PathMatchingResourcePatternResolver;
 import io.github.secretx33.resourceresolver.Resource;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
 import org.cactoos.io.InputOf;
+import org.cactoos.list.ListOf;
 import org.cactoos.proc.ForEach;
 import org.cactoos.text.TextOf;
+import org.eolang.parser.EoSyntax;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
@@ -26,7 +31,7 @@ final class PkByXslTest {
 
     @Test
     void passesOnSimpleXmir() throws IOException {
-        final XML xmir = new XMLDocument("<program name='no-exceptions'/>");
+        final XML xmir = new XMLDocument("<object><o name='no-exceptions'/></object>");
         for (final Lint<XML> lint : new PkByXsl()) {
             MatcherAssert.assertThat(
                 "passes with no exceptions",
@@ -67,6 +72,38 @@ final class PkByXslTest {
                 Matchers.equalTo(false)
             );
         }
+    }
+
+    @Test
+    void doesNotDuplicateDefectsWhenMultipleDefectsOnTheSameLine() throws Exception {
+        final XML tuple = new EoSyntax(
+            String.join(
+                "\n",
+                "# Foo with unused voids on the same line.",
+                "[x y z] > foo"
+            )
+        ).parsed();
+        final Collection<Defect> aggregated = new ListOf<>();
+        new PkByXsl().forEach(
+            xsl -> {
+                try {
+                    aggregated.addAll(xsl.defects(tuple));
+                } catch (final IOException exception) {
+                    throw new IllegalStateException(
+                        String.format("Failed to lint tuple with '%s' lint", xsl.name()),
+                        exception
+                    );
+                }
+            }
+        );
+        MatcherAssert.assertThat(
+            Logger.format(
+                "Aggregated defects (%[list]s) contain duplicates, but they should not",
+                aggregated
+            ),
+            new HashSet<>(aggregated).size() == aggregated.size(),
+            Matchers.equalTo(true)
+        );
     }
 
 }

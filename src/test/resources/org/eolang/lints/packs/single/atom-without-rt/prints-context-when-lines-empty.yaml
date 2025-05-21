@@ -6,10 +6,8 @@ sheets:
 asserts:
   - /defects[count(defect[@context and @severity='error'])=1]
 document: |
-  <program>
-    <objects>
-      <o name="foo">
-        <o name="λ"/>
-      </o>
-    </objects>
-  </program>
+  <object>
+    <o name="foo">
+      <o name="λ"/>
+    </o>
+  </object>

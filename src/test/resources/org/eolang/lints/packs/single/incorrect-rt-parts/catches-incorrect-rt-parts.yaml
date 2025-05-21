@@ -16,4 +16,5 @@ input: |
   +rt
   +rt good good
 
+  # Foo.
   [] > foo

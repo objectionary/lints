@@ -7,12 +7,9 @@ name: pit
   push:
     branches:
       - master
-  pull_request:
-    branches:
-      - master
 jobs:
   pit:
-    timeout-minutes: 25
+    timeout-minutes: 90
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
@@ -26,3 +23,12 @@ jobs:
           key: ubuntu-jdk-21-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: ubuntu-jdk-21-maven-
       - run: mvn clean install "-Ppit,deep"
+  report:
+    name: Create issue on failure
+    needs: pit
+    if: failure() && github.event.pull_request == null
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: jayqi/failed-build-issue-action@v1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}

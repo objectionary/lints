@@ -9,6 +9,7 @@ import com.jcabi.xml.XMLDocument;
 import com.yegor256.Mktmp;
 import com.yegor256.MktmpResolver;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import matchers.DefectMatcher;
@@ -33,8 +34,10 @@ final class LtUnitTestMissingTest {
             "some problems found by mistake",
             new LtUnitTestMissing().defects(
                 new MapOf<String, XML>(
-                    new MapEntry<>("bar", new XMLDocument("<program name='bar'/>")),
-                    new MapEntry<>("bar-tests", new XMLDocument("<program name='bar-tests'/>"))
+                    new MapEntry<>("bar", new XMLDocument("<object><o name='bar'/></object>")),
+                    new MapEntry<>(
+                        "bar-tests", new XMLDocument("<object><o name='bar-tests'/></object>")
+                    )
                 )
             ),
             Matchers.emptyIterable()
@@ -43,11 +46,17 @@ final class LtUnitTestMissingTest {
 
     @Test
     void acceptsValidDirectory(@Mktmp final Path dir) throws IOException {
-        Files.write(dir.resolve("foo.xmir"), "<program name='foo'/>".getBytes());
-        Files.write(dir.resolve("foo-tests.xmir"), "<program name='foo-tests'/>".getBytes());
+        Files.write(
+            dir.resolve("foo.xmir"),
+            "<object><o name='foo'/></object>".getBytes(StandardCharsets.UTF_8)
+        );
+        Files.write(
+            dir.resolve("foo-tests.xmir"),
+            "<object><o name='foo-tests'/></object>".getBytes(StandardCharsets.UTF_8)
+        );
         MatcherAssert.assertThat(
             "some defects found by mistake",
-            new Programs(dir).defects(),
+            new Program(dir).defects(),
             Matchers.emptyIterable()
         );
     }
@@ -55,10 +64,13 @@ final class LtUnitTestMissingTest {
     @SuppressWarnings("JTCOP.RuleNotContainsTestWord")
     @Test
     void issuesDetectsOnMissingTest(@Mktmp final Path dir) throws IOException {
-        Files.write(dir.resolve("aaa.xmir"), "<program name='aaa'/>".getBytes());
+        Files.write(
+            dir.resolve("aaa.xmir"),
+            "<object><o name='aaa'/></object>".getBytes(StandardCharsets.UTF_8)
+        );
         MatcherAssert.assertThat(
             " defects found",
-            new Programs(dir).defects(),
+            new Program(dir).defects(),
             Matchers.allOf(
                 Matchers.<Defect>iterableWithSize(Matchers.greaterThan(0)),
                 Matchers.<Defect>everyItem(new DefectMatcher())

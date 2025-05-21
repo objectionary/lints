@@ -6,9 +6,8 @@ sheets:
 asserts:
   - /defects[count(defect[@severity='warning'])=1]
   - /defects/defect[@line='0']
+ignore-schema: true
 document: |
-  <program>
-    <objects>
-      <o line="60.50.301"/>
-    </objects>
-  </program>
+  <object>
+    <o line="60.50.301"/>
+  </object>

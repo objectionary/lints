@@ -11,4 +11,4 @@ foo.eo: |
 app.eo: |
   # App uses foo properly.
   [a b] > app
-    foo 1
+    foo 1 > @

@@ -11,7 +11,7 @@
   <xsl:output encoding="UTF-8" method="xml"/>
   <xsl:template match="/">
     <defects>
-      <xsl:if test="not(/program/metas/meta[head='rt'])">
+      <xsl:if test="not(/object/metas/meta[head='rt'])">
         <xsl:for-each select="//o[eo:atom(.)]">
           <xsl:element name="defect">
             <xsl:variable name="line" select="eo:lineno(@line)"/>

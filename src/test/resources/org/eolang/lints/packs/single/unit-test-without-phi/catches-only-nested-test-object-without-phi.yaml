@@ -1,0 +1,17 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/tests/unit-test-without-phi.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=1]
+  - /defects/defect[@line='6']
+  - /defects/defect[1][contains(normalize-space(), 'works-dummy')]
+input: |
+  +tests
+
+  # Test suite for `foo`.
+  [] > foo-tests
+    # Unit test.
+    [] > works-dummy
+      true > i

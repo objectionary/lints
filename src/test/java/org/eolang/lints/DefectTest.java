@@ -32,7 +32,7 @@ final class DefectTest {
     }
 
     @Test
-    void printsProgramName() {
+    void printsObjectName() {
         final String program = "a.b.c.bar";
         MatcherAssert.assertThat(
             "toString() doesn't show program name",
@@ -59,6 +59,22 @@ final class DefectTest {
                 "the message"
             ),
             Matchers.hasToString(Matchers.not(Matchers.containsString(":0")))
+        );
+    }
+
+    @Test
+    void returnsExperimental() {
+        MatcherAssert.assertThat(
+            "Experimental flag should be true",
+            new Defect.Default(
+                "f12",
+                Severity.ERROR,
+                "f.12",
+                42,
+                "This is wrong",
+                true
+            ).experimental(),
+            Matchers.equalTo(true)
         );
     }
 }

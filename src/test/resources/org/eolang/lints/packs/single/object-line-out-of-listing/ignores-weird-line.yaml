@@ -5,14 +5,13 @@ sheets:
   - /org/eolang/lints/lines/object-line-out-of-listing.xsl
 asserts:
   - /defects[count(defect)=0]
+ignore-schema: true
 document: |
-  <program>
+  <object>
     <listing>first line
       second line
       third line</listing>
-    <objects>
-      <o line="5.5.5.a" name="f">
-        <o name="λ"/>
-      </o>
-    </objects>
-  </program>
+    <o line="5.5.5.a" name="f">
+      <o name="λ"/>
+    </o>
+  </object>

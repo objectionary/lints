@@ -1,0 +1,12 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/design/no-attribute-formation.xsl
+asserts:
+  - /defects[count(defect[@severity='warning' and @experimental])=1]
+  - /defects/defect[@line='2']
+input: |
+  # No comments.
+  [] > foo
+    42 > mw

@@ -41,8 +41,8 @@ final class DfContext implements Defect {
     }
 
     @Override
-    public String program() {
-        return this.origin.program();
+    public String object() {
+        return this.origin.object();
     }
 
     @Override
@@ -67,6 +67,11 @@ final class DfContext implements Defect {
             .replace("&#34;", "\"")
             .replace("&#xA;", "\n")
             .replace("&amp;", "&");
+    }
+
+    @Override
+    public boolean experimental() {
+        return this.origin.experimental();
     }
 
     @Override

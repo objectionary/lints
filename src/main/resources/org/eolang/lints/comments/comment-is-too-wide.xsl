@@ -10,7 +10,7 @@
   <xsl:template match="/">
     <xsl:variable name="max" select="100"/>
     <defects>
-      <xsl:for-each select="/program/comments/comment">
+      <xsl:for-each select="/object/comments/comment">
         <xsl:variable name="line" select="if (@line) then @line else '0'"/>
         <xsl:variable name="lines" select="tokenize(replace(., '\\n', '&#10;'), '&#10;')"/>
         <xsl:choose>

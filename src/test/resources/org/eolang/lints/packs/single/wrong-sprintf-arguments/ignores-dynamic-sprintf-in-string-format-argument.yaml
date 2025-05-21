@@ -1,0 +1,21 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/misc/wrong-sprintf-arguments.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=0]
+input: |
+  # Log.
+  [fmt args kid] > log
+    QQ.seq > @
+      *
+        QQ.stdout
+          magenta
+            QQ.txt.sprintf
+              "\033[90m%s\033[0m\n"
+              *
+                QQ.txt.sprintf
+                  fmt
+                  * args
+        kid

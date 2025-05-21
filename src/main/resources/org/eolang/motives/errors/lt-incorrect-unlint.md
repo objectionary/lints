@@ -1,6 +1,6 @@
 # Incorrect unlints
 
-The meta part of the program should not contain +unlint point on non-existent
+The meta part of the object should not contain +unlint point on non-existent
 lint, as it is useless
 
 Incorrect:

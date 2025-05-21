@@ -26,8 +26,8 @@ final class LtUnitTestWithoutLiveFileTest {
             "Defects are empty, but they should not",
             new LtUnitTestWithoutLiveFile().defects(
                 new MapOf<String, XML>(
-                    new MapEntry<>("abc-test", new XMLDocument("<program/>")),
-                    new MapEntry<>("cde", new XMLDocument("<program/>"))
+                    new MapEntry<>("abc-test", new XMLDocument("<object/>")),
+                    new MapEntry<>("cde", new XMLDocument("<object/>"))
                 )
             ),
             Matchers.hasSize(Matchers.greaterThan(0))
@@ -40,8 +40,12 @@ final class LtUnitTestWithoutLiveFileTest {
             "Defects are empty, but they should not",
             new LtUnitTestWithoutLiveFile().defects(
                 new MapOf<String, XML>(
-                    new MapEntry<>("xyz-test", new XMLDocument("<program name='xyz-test'/>")),
-                    new MapEntry<>("bar", new XMLDocument("<program name='bar'/>"))
+                    new MapEntry<>(
+                        "xyz-test", new XMLDocument("<object><o name='xyz-test'/></object>")
+                    ),
+                    new MapEntry<>(
+                        "bar", new XMLDocument("<object><o name='bar'/></object>")
+                    )
                 )
             ),
             Matchers.everyItem(new DefectMatcher())
@@ -54,8 +58,10 @@ final class LtUnitTestWithoutLiveFileTest {
             "Defects are not empty, but they should",
             new LtUnitTestWithoutLiveFile().defects(
                 new MapOf<String, XML>(
-                    new MapEntry<>("foo-test", new XMLDocument("<program name='foo-test'/>")),
-                    new MapEntry<>("foo", new XMLDocument("<program name='foo'/>"))
+                    new MapEntry<>(
+                        "foo-test", new XMLDocument("<object><o name='foo-test'/></object>")
+                    ),
+                    new MapEntry<>("foo", new XMLDocument("<object><o name='foo'/></object>"))
                 )
             ),
             Matchers.emptyIterable()

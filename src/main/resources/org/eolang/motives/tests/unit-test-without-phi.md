@@ -7,8 +7,11 @@ Incorrect:
 ```eo
 +tests
 
-[] > test
-  true
+# Test suite for `foo`.
+[] > foo-tests
+  # Unit test.
+  [] > works-dummy
+    true > i
 ```
 
 Correct:
@@ -16,6 +19,9 @@ Correct:
 ```eo
 +tests
 
-[] > test
-  true > @
+# Test suite for `foo`.
+[] > foo-tests
+  # Unit test.
+  [] > works-dummy
+    true > @
 ```

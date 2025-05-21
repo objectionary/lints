@@ -14,7 +14,7 @@ import org.cactoos.list.ListOf;
 
 /**
  * Mono lints.
- * Mono lints represent a list of lints for single program scope. This class is required
+ * Mono lints represent a list of lints for single XMIR scope. This class is required
  * in order to provide more fine-grained access and be reused by other classes, including
  * {@link PkMono} and {@link PkWpa} via {@link MonoLintNames}, to mutually ignore other
  * scope lints in both: {@link LtUnlintNonExistingDefect} and {@link LtUnlintNonExistingDefectWpa}
@@ -30,7 +30,8 @@ final class MonoLints extends IterableEnvelope<Lint<XML>> {
         new Joined<Lint<XML>>(
             new PkByXsl(),
             List.of(
-                new LtAsciiOnly()
+                new LtAsciiOnly(),
+                new LtReservedName()
             )
         )
     );

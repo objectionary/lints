@@ -6,10 +6,10 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:eo="https://www.eolang.org" id="meta-line-out-of-listing" version="2.0">
   <xsl:import href="/org/eolang/funcs/lineno.xsl"/>
   <xsl:output encoding="UTF-8" method="xml"/>
-  <xsl:variable name="max" select="count(tokenize(/program/listing, '&#10;'))"/>
+  <xsl:variable name="max" select="count(tokenize(/object/listing, '&#10;'))"/>
   <xsl:template match="/">
     <defects>
-      <xsl:for-each select="/program/metas/meta[number(@line) and @line &gt; $max]">
+      <xsl:for-each select="/object/metas/meta[number(@line) and @line &gt; $max]">
         <xsl:element name="defect">
           <xsl:attribute name="line">
             <xsl:value-of select="eo:lineno(@line)"/>

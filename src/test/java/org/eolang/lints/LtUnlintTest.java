@@ -4,7 +4,10 @@
  */
 package org.eolang.lints;
 
+import com.jcabi.log.Logger;
 import java.io.IOException;
+import java.util.Collection;
+import java.util.HashSet;
 import org.eolang.parser.EoSyntax;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -55,9 +58,8 @@ final class LtUnlintTest {
                         "",
                         "# Foo",
                         "[] > foo",
-                        "",
-                        "# Bar",
-                        "[] > bar"
+                        "  # Bar",
+                        "  [] > bar"
                     )
                 ).parsed()
             ),
@@ -67,7 +69,7 @@ final class LtUnlintTest {
                     Matchers.hasToString(
                         Matchers.allOf(
                             Matchers.containsString("comment-without-dot WARNING"),
-                            Matchers.containsString(":7")
+                            Matchers.containsString(":6")
                         )
                     )
                 )
@@ -86,13 +88,12 @@ final class LtUnlintTest {
                     String.join(
                         "\n",
                         "+unlint comment-without-dot:5",
-                        "+unlint comment-without-dot:8",
+                        "+unlint comment-without-dot:7",
                         "",
                         "# Foo",
                         "[] > foo",
-                        "",
-                        "# Bar",
-                        "[] > bar"
+                        "  # Bar",
+                        "  [] > bar"
                     )
                 ).parsed()
             ),
@@ -114,13 +115,61 @@ final class LtUnlintTest {
                         "",
                         "# Foo",
                         "[] > foo",
-                        "",
-                        "# Bar",
-                        "[] > bar"
+                        "  # Bar",
+                        "  [] > bar"
                     )
                 ).parsed()
             ),
             Matchers.emptyIterable()
+        );
+    }
+
+    @Test
+    void doesNotReportWhenUnlinted() throws IOException {
+        MatcherAssert.assertThat(
+            "Defect should not be reported when its unlinted",
+            new LtUnlint(
+                new LtByXsl("comments/comment-without-dot")
+            ).defects(
+                new EoSyntax(
+                    String.join(
+                        "\n",
+                        "+home https://github.com/objectionary/eo",
+                        "+package f",
+                        "+version 0.0.0",
+                        "+unlint comment-without-dot:7",
+                        "",
+                        "# No comments",
+                        "[] > boom",
+                        "  QQ.io.stdout > @",
+                        "    \"we are booming!\""
+                    )
+                ).parsed()
+            ),
+            Matchers.emptyIterable()
+        );
+    }
+
+    @Test
+    void doesNotDuplicateDefectsWhenMultipleDefectsOnTheSameLine() throws IOException {
+        final Collection<Defect> defects = new LtUnlint(
+            new LtByXsl("misc/unused-void-attr")
+        ).defects(
+            new EoSyntax(
+                String.join(
+                    "\n",
+                    "# Foo with unused voids on the same line.",
+                    "[x y z] > foo"
+                )
+            ).parsed()
+        );
+        MatcherAssert.assertThat(
+            Logger.format(
+                "Found defects (%[list]s) contain duplicates, but they should not",
+                defects
+            ),
+            new HashSet<>(defects).size() == defects.size(),
+            Matchers.equalTo(true)
         );
     }
 }

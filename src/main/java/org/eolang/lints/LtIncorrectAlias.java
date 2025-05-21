@@ -9,14 +9,15 @@ import com.github.lombrozo.xnav.Xnav;
 import com.jcabi.log.Logger;
 import com.jcabi.xml.XML;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import org.cactoos.io.ResourceOf;
 import org.cactoos.text.TextOf;
 import org.cactoos.text.UncheckedText;
+import org.eolang.parser.ObjectName;
 
 /**
  * Checks that `+alias` is pointing to existing `.xmir` files.
@@ -32,11 +33,11 @@ final class LtIncorrectAlias implements Lint<Map<String, XML>> {
 
     @Override
     public Collection<Defect> defects(final Map<String, XML> pkg) {
-        final Collection<Defect> defects = new LinkedList<>();
+        final Collection<Defect> defects = new ArrayList<>(0);
         pkg.values().forEach(
             xmir -> {
                 final Xnav xml = new Xnav(xmir.inner());
-                final List<Xnav> aliased = xml.path("/program/metas/meta[head='alias']")
+                final List<Xnav> aliased = xml.path("/object/metas/meta[head='alias']")
                     .collect(Collectors.toList());
                 for (final Xnav alias : aliased) {
                     final String pointer = alias.element("tail").text().get();
@@ -48,7 +49,7 @@ final class LtIncorrectAlias implements Lint<Map<String, XML>> {
                             new Defect.Default(
                                 "incorrect-alias",
                                 Severity.CRITICAL,
-                                xml.element("program").attribute("name").text().orElse("unknown"),
+                                new ObjectName(xmir).get(),
                                 Integer.parseInt(
                                     alias.attribute("line").text().orElse("0")
                                 ),

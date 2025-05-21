@@ -6,12 +6,10 @@ sheets:
 asserts:
   - /defects[count(defect[@severity='warning'])=0]
 document: |
-  <program>
-    <objects>
-      <o line="2" name="main" pos="0">
-        <o name="f" base="Q.org.eolang.bytes">
-          <o>F1-01</o>
-        </o>
+  <object>
+    <o line="2" name="main" pos="0">
+      <o name="f" base="Q.org.eolang.bytes">
+        <o>F1-01</o>
       </o>
-     </objects>
-  </program>
+    </o>
+  </object>

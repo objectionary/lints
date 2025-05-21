@@ -10,7 +10,7 @@
   <xsl:output encoding="UTF-8" method="xml"/>
   <xsl:template match="/">
     <defects>
-      <xsl:for-each select="/program/metas/meta[head/text()='spdx' and count(part) &gt; 1]">
+      <xsl:for-each select="/object/metas/meta[head/text()='spdx' and count(part) &gt; 1]">
         <xsl:variable name="meta-tail" select="tail"/>
         <xsl:variable name="header" select="normalize-space(substring-before(concat($meta-tail, ' '), ' '))"/>
         <xsl:if test="$header!='SPDX-FileCopyrightText' and $header!='SPDX-License-Identifier:'">

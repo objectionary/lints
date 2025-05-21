@@ -6,11 +6,9 @@ prohibited.
 Incorrect:
 
 ```xml
-<program>
-  <objects>
-   <o name="foo"/>
-  </objects>
-</program>
+<object>
+  <o name="foo"/>
+</object>
 ```
 
 [XMIR]: https://news.eolang.org/2022-11-25-xmir-guide.html

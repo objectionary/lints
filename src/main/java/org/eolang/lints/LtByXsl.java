@@ -12,14 +12,15 @@ import com.jcabi.xml.XMLDocument;
 import com.jcabi.xml.XSL;
 import com.jcabi.xml.XSLDocument;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import org.cactoos.Input;
 import org.cactoos.io.ResourceOf;
 import org.cactoos.text.IoCheckedText;
 import org.cactoos.text.TextOf;
+import org.eolang.parser.ObjectName;
 
 /**
  * Lint by XSL.
@@ -88,7 +89,7 @@ final class LtByXsl implements Lint<XML> {
     @Override
     public Collection<Defect> defects(final XML xmir) {
         final XML report = this.sheet.transform(xmir);
-        final Collection<Defect> defects = new LinkedList<>();
+        final Collection<Defect> defects = new ArrayList<>(0);
         for (final XML defect : LtByXsl.findDefects(report)) {
             final Xnav xml = new Xnav(defect.inner());
             final Optional<String> sever = xml.attribute("severity").text();
@@ -102,9 +103,10 @@ final class LtByXsl implements Lint<XML> {
                     new Defect.Default(
                         this.rule,
                         Severity.parsed(sever.get()),
-                        LtByXsl.findName(xmir),
+                        new ObjectName(xmir).get(),
                         this.lineno(xml),
-                        xml.text().get()
+                        xml.text().get(),
+                        LtByXsl.experimental(xml)
                     ),
                     xml.attribute("context").text().orElse("")
                 )
@@ -116,6 +118,22 @@ final class LtByXsl implements Lint<XML> {
     @Override
     public String motive() throws IOException {
         return new IoCheckedText(new TextOf(this.doc)).asString();
+    }
+
+    /**
+     * Defect is experimental?
+     * @param defect Defect
+     * @return Experimental or not
+     */
+    private static boolean experimental(final Xnav defect) {
+        final boolean result;
+        final Optional<String> attr = defect.attribute("experimental").text();
+        if (attr.isEmpty()) {
+            result = false;
+        } else {
+            result = Boolean.parseBoolean(attr.get());
+        }
+        return result;
     }
 
     /**
@@ -149,19 +167,6 @@ final class LtByXsl implements Lint<XML> {
             );
         }
         return lineno;
-    }
-
-    /**
-     * Find the name of the program.
-     * @param program XML program
-     * @return Name of the program.
-     */
-    private static String findName(final XML program) {
-        return new Xnav(program.inner())
-            .element("program")
-            .attribute("name")
-            .text()
-            .orElse("unknown");
     }
 
     /**

@@ -5,6 +5,7 @@
 package org.eolang.lints;
 
 import com.jcabi.manifests.Manifests;
+import java.util.Objects;
 
 /**
  * A single defect found.
@@ -44,15 +45,15 @@ public interface Defect {
     Severity severity();
 
     /**
-     * Name of the program with defect.
+     * Name of the object with defect.
      * <p>
-     * Returns the name of the program where the defect was found.
+     * Returns the name of the object where the defect was found.
      * </p>
      *
      * @return Name of it, taken from the {@code @name} attribute of
-     *  the {@code program} element in XMIR
+     *  the {@code object} element in XMIR
      */
-    String program();
+    String object();
 
     /**
      * Line where the defect was found.
@@ -96,6 +97,12 @@ public interface Defect {
     String context();
 
     /**
+     * Experimental?
+     * @return Experimental
+     */
+    boolean experimental();
+
+    /**
      * Default implementation of {@link Defect}.
      * <p>
      * Provides a standard implementation with basic functionality.
@@ -103,6 +110,7 @@ public interface Defect {
      *
      * @since 0.0.1
      */
+    @SuppressWarnings("PMD.TooManyMethods")
     final class Default implements Defect {
         /**
          * Rule.
@@ -115,9 +123,9 @@ public interface Defect {
         private final Severity sev;
 
         /**
-         * Name of the program.
+         * Name of the object.
          */
-        private final String prg;
+        private final String oname;
 
         /**
          * Line number with the defect.
@@ -130,6 +138,27 @@ public interface Defect {
         private final String txt;
 
         /**
+         * Experiment?
+         */
+        private final boolean experiment;
+
+        /**
+         * Ctor.
+         * @param rule Rule name
+         * @param severity Severity level
+         * @param object Name of the object
+         * @param line Line number
+         * @param text Description of the defect
+         * @checkstyle ParameterNumberCheck (5 lines)
+         */
+        public Default(
+            final String rule, final Severity severity,
+            final String object, final int line, final String text
+        ) {
+            this(rule, severity, object, line, text, false);
+        }
+
+        /**
          * Ctor.
          * <p>
          * Constructs a defect with all required information.
@@ -137,26 +166,29 @@ public interface Defect {
          *
          * @param rule Rule name
          * @param severity Severity level
-         * @param program Name of the program
+         * @param object Name of the object
          * @param line Line number
          * @param text Description of the defect
+         * @param exprmnt Experimental?
          * @checkstyle ParameterNumberCheck (5 lines)
          */
         public Default(
             final String rule, final Severity severity,
-            final String program, final int line, final String text
+            final String object, final int line, final String text,
+            final boolean exprmnt
         ) {
             this.rle = rule;
             this.sev = severity;
-            this.prg = program;
+            this.oname = object;
             this.lineno = line;
             this.txt = text;
+            this.experiment = exprmnt;
         }
 
         @Override
         public String toString() {
             final StringBuilder text = new StringBuilder(0)
-                .append('[').append(this.prg).append(' ')
+                .append('[').append(this.oname).append(' ')
                 .append(this.rle).append(' ')
                 .append(this.sev).append(']');
             if (this.lineno > 0) {
@@ -176,8 +208,8 @@ public interface Defect {
         }
 
         @Override
-        public String program() {
-            return this.prg;
+        public String object() {
+            return this.oname;
         }
 
         @Override
@@ -198,6 +230,32 @@ public interface Defect {
         @Override
         public String context() {
             return "Context is empty";
+        }
+
+        @Override
+        public boolean experimental() {
+            return this.experiment;
+        }
+
+        @Override
+        public boolean equals(final Object obj) {
+            final boolean result;
+            if (obj == null || this.getClass() != obj.getClass()) {
+                result = false;
+            } else {
+                final Defect.Default defect = (Defect.Default) obj;
+                result = this.lineno == defect.lineno
+                    && Objects.equals(this.rle, defect.rle)
+                    && this.sev == defect.sev
+                    && Objects.equals(this.oname, defect.oname)
+                    && Objects.equals(this.txt, defect.txt);
+            }
+            return result;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(this.rle, this.sev, this.oname, this.lineno, this.txt);
         }
     }
 

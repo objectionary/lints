@@ -1,0 +1,19 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/critical/named-object-abstract-nested.xsl
+asserts:
+  - /defects[count(defect[@severity='critical'])=0]
+document: |
+  <object>
+    <o name="foo">
+      <o base="x" name="@">
+        <o base="$.a"/>
+      </o>
+      <o base="y" name="a">
+        <o base="$.b"/>
+      </o>
+      <o base="z" name="b"/>
+    </o>
+  </object>

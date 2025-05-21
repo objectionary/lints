@@ -8,7 +8,7 @@
   <xsl:output encoding="UTF-8"/>
   <xsl:template match="/">
     <defects>
-      <xsl:if test="count(/program/metas/meta[head ='package'])=0">
+      <xsl:if test="count(/object/metas/meta[head ='package'])=0">
         <xsl:element name="defect">
           <xsl:attribute name="line">
             <xsl:value-of select="eo:lineno(@line)"/>

@@ -130,4 +130,48 @@ final class LtUnlintNonExistingDefectTest {
             Matchers.emptyIterable()
         );
     }
+
+    @Test
+    void allowsExistingUnlintWithLineNumber() throws IOException {
+        MatcherAssert.assertThat(
+            "An existing defect should be able to be unlinted with line number",
+            new LtUnlintNonExistingDefect(
+                new ListOf<>(new LtAsciiOnly()),
+                new ListOf<>()
+            ).defects(
+                new EoSyntax(
+                    String.join(
+                        "\n",
+                        "+unlint ascii-only:4",
+                        "",
+                        "# привет мы тут.",
+                        "[] > hello"
+                    )
+                ).parsed()
+            ),
+            Matchers.emptyIterable()
+        );
+    }
+
+    @Test
+    void catchesNonExistingUnlintWithLineNumber() throws IOException {
+        MatcherAssert.assertThat(
+            "Non existing unlint with line number should be reported",
+            new LtUnlintNonExistingDefect(
+                new ListOf<>(new LtAsciiOnly()),
+                new ListOf<>()
+            ).defects(
+                new EoSyntax(
+                    String.join(
+                        "\n",
+                        "+unlint ascii-only:2",
+                        "",
+                        "# Мы тут.",
+                        "[] > boom"
+                    )
+                ).parsed()
+            ),
+            Matchers.hasSize(Matchers.greaterThan(0))
+        );
+    }
 }

@@ -14,7 +14,7 @@ import org.cactoos.list.ListOf;
 
 /**
  * A collection of lints for Whole Program Analysis (WPA),
- * provided by the {@link Programs} class.
+ * provided by the {@link Program} class.
  *
  * <p>This class is thread-safe.</p>
  *
@@ -28,18 +28,26 @@ final class PkWpa extends IterableEnvelope<Lint<Map<String, XML>>> {
     private static final Iterable<Lint<Map<String, XML>>> WPA = new WpaLints();
 
     /**
-     * Ctor.
+     * Default ctor.
      */
     PkWpa() {
+        this(PkWpa.WPA);
+    }
+
+    /**
+     * Ctor.
+     * @param lints Lints
+     */
+    PkWpa(final Iterable<Lint<Map<String, XML>>> lints) {
         super(
             new Shuffled<>(
                 new Mapped<Lint<Map<String, XML>>>(
                     LtWpaUnlint::new,
                     new Joined<Lint<Map<String, XML>>>(
-                        PkWpa.WPA,
+                        lints,
                         new ListOf<>(
                             new LtUnlintNonExistingDefectWpa(
-                                PkWpa.WPA, new ListOf<>(new MonoLintNames())
+                                lints, new ListOf<>(new MonoLintNames())
                             )
                         )
                     )

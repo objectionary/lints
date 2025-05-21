@@ -7,11 +7,12 @@ package org.eolang.lints;
 import com.github.lombrozo.xnav.Xnav;
 import com.jcabi.xml.ClasspathSources;
 import com.jcabi.xml.XML;
+import com.jcabi.xml.XMLDocument;
 import com.jcabi.xml.XSL;
 import com.jcabi.xml.XSLDocument;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -23,9 +24,10 @@ import org.cactoos.io.UncheckedInput;
 import org.cactoos.list.ListOf;
 import org.cactoos.text.TextOf;
 import org.cactoos.text.UncheckedText;
+import org.eolang.parser.ObjectName;
 
 /**
- * All atom FQNs in the entire scope of programs must be unique.
+ * All atom FQNs in the entire scope of EO program must be unique.
  * This lint firstly transforms the original XMIR into XMIR that contains `@fqn`
  * attributes for each atom `o`, and then lints it.
  *
@@ -67,7 +69,7 @@ final class LtAtomIsNotUnique implements Lint<Map<String, XML>> {
 
     @Override
     public Collection<Defect> defects(final Map<String, XML> pkg) {
-        final Collection<Defect> defects = new LinkedList<>();
+        final Collection<Defect> defects = new ArrayList<>(0);
         final Map<Xnav, List<String>> index = pkg.values().stream()
             .map(this.pre::transform)
             .map(xmir -> new Xnav(xmir.inner()))
@@ -127,7 +129,7 @@ final class LtAtomIsNotUnique implements Lint<Map<String, XML>> {
         return new Defect.Default(
             this.name(),
             Severity.ERROR,
-            xml.element("program").attribute("name").text().orElse("unknown"),
+            new ObjectName(new XMLDocument(xml.node())).get(),
             Integer.parseInt(
                 xml.path(
                     String.format("//o[@name='%s' and o[@name='λ']]", LtAtomIsNotUnique.oname(fqn))
@@ -143,7 +145,7 @@ final class LtAtomIsNotUnique implements Lint<Map<String, XML>> {
         return new Defect.Default(
             this.name(),
             Severity.ERROR,
-            xml.element("program").attribute("name").text().orElse("unknown"),
+            new ObjectName(new XMLDocument(xml.node())).get(),
             Integer.parseInt(
                 xml.path(
                     String.format("//o[@name='%s' and o[@name='λ']]", LtAtomIsNotUnique.oname(fqn))
@@ -154,10 +156,7 @@ final class LtAtomIsNotUnique implements Lint<Map<String, XML>> {
             String.format(
                 "Atom with FQN \"%s\" is duplicated, original was found in \"%s\"",
                 fqn,
-                original.element("program")
-                    .attribute("name")
-                    .text()
-                    .orElse("unknown")
+                new ObjectName(new XMLDocument(original.node())).get()
             )
         );
     }
@@ -168,11 +167,9 @@ final class LtAtomIsNotUnique implements Lint<Map<String, XML>> {
             .map(o -> o.attribute("fqn").text().get())
             .collect(Collectors.toList());
         if (
-            xml.path("/program/metas/meta[head='package']").count() == 1L
+            xml.path("/object/metas/meta[head='package']").count() == 1L
         ) {
-            final String pack = xml.path("/program/metas/meta[head='package']/tail")
-                .map(o -> o.text().get())
-                .findFirst().get();
+            final String pack = xml.one("/object/metas/meta[head='package']/tail").text().get();
             result = fqns.stream().map(fqn -> String.format("%s.%s", pack, fqn))
                 .collect(Collectors.toList());
         } else {

@@ -11,9 +11,9 @@
   <xsl:template match="/">
     <defects>
       <xsl:if test="not(//o[eo:atom(.)])">
-        <xsl:if test="/program/metas/meta[head='rt']">
+        <xsl:if test="/object/metas/meta[head='rt']">
           <xsl:element name="defect">
-            <xsl:variable name="line" select="eo:lineno(/program/metas/meta[head='rt'][1]/@line)"/>
+            <xsl:variable name="line" select="eo:lineno(/object/metas/meta[head='rt'][1]/@line)"/>
             <xsl:attribute name="line">
               <xsl:value-of select="$line"/>
             </xsl:attribute>

@@ -8,7 +8,5 @@ asserts:
 single.eo: |
   # A with one attribute.
   [pos] > a
-
-  # B uses A properly.
-  [] > b
-    a 52
+    [] > b
+      a 52 > @

@@ -6,10 +6,10 @@ sheets:
 asserts:
   - /defects[count(defect[@context and @severity='warning'])=1]
 document: |
-  <objects>
+  <object>
     <o name="decorates-num">
       <o base="Q.org.eolang.number" name="@">
         <o base="Q.org.eolang.bytes">40-14-00-00-00-00-00-00</o>
       </o>
     </o>
-  </objects>
+  </object>

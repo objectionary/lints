@@ -57,7 +57,7 @@
             </xsl:attribute>
             <xsl:text>According to the formatting template of the "Q.org.eolang.txt.sprintf" object, </xsl:text>
             <xsl:value-of select="eo:escape($placeholder)"/>
-            <xsl:text> does not have any formatters, which makes no sense to use "Q.org.eolang.txt.sprintf"</xsl:text>
+            <xsl:text> does not have any supported formatters ("%s", "%d", "%f", "%x", "%b"), which makes no sense to use "Q.org.eolang.txt.sprintf"</xsl:text>
           </defect>
         </xsl:if>
       </xsl:for-each>
