@@ -6,12 +6,16 @@ package org.eolang.lints;
 
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 /**
  * Tests for {@link ReservedNames}.
+ * The tests should be executed only in deep profile, since, we reserved name processing
+ * happens only in that profile.
  * @since 0.0.49
  */
+@Tag("deep")
 final class ReservedNamesTest {
 
     @Test
