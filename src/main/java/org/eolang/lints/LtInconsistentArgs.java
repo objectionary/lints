@@ -42,6 +42,7 @@ final class LtInconsistentArgs implements Lint<Map<String, XML>> {
     public Collection<Defect> defects(final Map<String, XML> pkg) throws IOException {
         final Collection<Defect> defects = new ArrayList<>(0);
         final Map<Xnav, Map<String, List<Integer>>> whole = LtInconsistentArgs.scanUsages(pkg);
+        System.out.println(whole.values());
         final Map<String, List<Xnav>> bases = LtInconsistentArgs.baseOccurrences(whole);
         LtInconsistentArgs.mergedSources(whole).forEach(
             (base, counts) -> {
@@ -146,7 +147,13 @@ final class LtInconsistentArgs implements Lint<Map<String, XML>> {
                     new Predicate<Xnav>() {
                         @Override
                         public boolean test(final Xnav o) {
-                            return o.attribute("base").text().get().equals("∅");
+                            final boolean matches;
+                            if (o.attribute("base").text().isPresent()) {
+                                matches = "∅".equals(o.attribute("base").text().get());
+                            } else {
+                                matches = false;
+                            }
+                            return matches;
                         }
                     }
                 );
