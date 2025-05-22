@@ -258,9 +258,7 @@ final class LtInconsistentArgs implements Lint<Map<String, XML>> {
         sources.forEach(
             src ->
                 src.path(
-                    String.format(
-                        "//o[@base='%s']", LtInconsistentArgs.relativizeToTopObject(base, src)
-                    )
+                    LtInconsistentArgs.fqnToXpath(base, src)
                 )
                 .filter(
                     o -> !LtInconsistentArgs.voidAttribute(
