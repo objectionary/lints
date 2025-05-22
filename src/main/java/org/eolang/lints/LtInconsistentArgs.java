@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.cactoos.io.ResourceOf;
 import org.cactoos.list.ListOf;
 import org.cactoos.text.TextOf;
@@ -43,6 +44,7 @@ final class LtInconsistentArgs implements Lint<Map<String, XML>> {
     public Collection<Defect> defects(final Map<String, XML> pkg) throws IOException {
         final Collection<Defect> defects = new ArrayList<>(0);
         final Map<Xnav, Map<String, List<Integer>>> whole = LtInconsistentArgs.scanUsages(pkg);
+        System.out.println(whole.values());
         final Map<String, List<Xnav>> bases = LtInconsistentArgs.baseOccurrences(whole);
         LtInconsistentArgs.mergedSources(whole).forEach(
             (base, counts) -> {
@@ -54,17 +56,14 @@ final class LtInconsistentArgs implements Lint<Map<String, XML>> {
                     sources.forEach(
                         src ->
                             src.path(
-                                String.format(
-                                    "//o[@base='%s']",
-                                    LtInconsistentArgs.relativizeToTopObject(base, src)
-                                )
+                                LtInconsistentArgs.fqnToXpath(base, src)
                             )
-                            .filter(
-                                o ->
-                                    !LtInconsistentArgs.voidAttribute(
-                                        LtInconsistentArgs.relativizeToTopObject(base, src), o
-                                    ) && !LtInconsistentArgs.objectReference(o)
-                            )
+//                            .filter(
+//                                o ->
+//                                    !LtInconsistentArgs.voidAttribute(
+//                                        LtInconsistentArgs.relativizeToTopObject(base, src), o
+//                                    ) && !LtInconsistentArgs.objectReference(o)
+//                            )
                             .forEach(
                                 o -> {
                                     final String current = new ObjectName(
@@ -127,7 +126,11 @@ final class LtInconsistentArgs implements Lint<Map<String, XML>> {
                         final String base = o.attribute("base").text().get();
                         final String ref;
                         if (base.startsWith("$.")) {
-                            ref = String.format("%s.%s", new ObjectName(source).get(), base);
+                            if (LtInconsistentArgs.voidAttribute(base, o)) {
+                                ref = LtInconsistentArgs.voidFqn(base, o, source);
+                            } else {
+                                ref = String.format("%s.%s", new ObjectName(source).get(), base);
+                            }
                         } else {
                             ref = base;
                         }
@@ -150,22 +153,47 @@ final class LtInconsistentArgs implements Lint<Map<String, XML>> {
      * @return True or False
      */
     private static boolean voidAttribute(final String base, final Xnav object) {
-        final boolean result;
-        if (base.startsWith("$.")) {
-            final Xnav sibling = LtInconsistentArgs.prevSibling(object);
-            if (
-                sibling.attribute("base").text().isPresent()
-                    && sibling.attribute("name").text().isPresent()
-            ) {
-                result = base.replace("$.", "").equals(sibling.attribute("name").text().get())
-                    && "∅".equals(sibling.attribute("base").text().get());
-            } else {
-                result = false;
+        final Xnav method = LtInconsistentArgs.parentObject(object);
+        return method.path(String.format("o[@name='%s']", base.replace("$.", ""))).anyMatch(
+            attr -> attr.attribute("base").text().filter("∅"::equals).isPresent()
+        );
+    }
+
+    private static String voidFqn(final String base, final Xnav object, final Xnav source) {
+        return String.format(
+            "%s%s.∅",
+            LtInconsistentArgs.parentTree(
+                LtInconsistentArgs.parentObject(object), new ObjectName(source).get()
+            ),
+            base
+        );
+    }
+
+    private static String parentTree(final Xnav object, final String top) {
+        final List<String> tree = new ListOf<>(top);
+        Xnav parent = LtInconsistentArgs.parentObject(object);
+        if (!"object".equals(parent.node().getNodeName())) {
+            while (!parent.attribute("name").text().get().equals(top)) {
+                tree.add(parent.attribute("name").text().get());
+                parent = LtInconsistentArgs.parentObject(parent);
             }
-        } else {
-            result = false;
         }
-        return result;
+        return tree.stream().collect(Collectors.joining(".", "", "."));
+    }
+
+    private static String fqnToXpath(final String fnq, final Xnav src) {
+        // main.$.x.∅
+        //o[@name='main']/o[@base='$.x]
+        final String xpath;
+        if (fnq.endsWith("∅")) {
+            // todo build from full tree
+            xpath = "//o[@name='main']/o[@base='$.x']";
+        } else {
+            xpath = String.format(
+                "//o[@base='%s']", LtInconsistentArgs.relativizeToTopObject(fnq, src)
+            );
+        }
+        return xpath;
     }
 
     /**
@@ -291,14 +319,9 @@ final class LtInconsistentArgs implements Lint<Map<String, XML>> {
         return result;
     }
 
-    /**
-     * Previous sibling object to the given one.
-     * @param object Object
-     * @return Previous sibling object relatively to the given object
-     */
-    private static Xnav prevSibling(final Xnav object) {
+    private static Xnav parentObject(final Xnav object) {
         final Xnav result;
-        final Node prev = object.node().getPreviousSibling();
+        final Node prev = object.node().getParentNode();
         if (prev != null && (int) prev.getNodeType() == (int) Node.ELEMENT_NODE) {
             result = new Xnav(prev);
         } else {
