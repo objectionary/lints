@@ -406,6 +406,102 @@
       <build>
         <plugins>
           <plugin>
+            <groupId>com.googlecode.maven-download-plugin</groupId>
+            <artifactId>download-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>download-home</id>
+                <phase>initialize</phase>
+                <goals>
+                  <goal>wget</goal>
+                </goals>
+                <configuration>
+                  <url>https://github.com/objectionary/home/archive/refs/heads/master.zip</url>
+                  <outputDirectory>${project.build.directory}/downloaded</outputDirectory>
+                  <outputFileName>home.zip</outputFileName>
+                  <skipCache>true</skipCache>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <!-- version from the parent pom -->
+            <executions>
+              <execution>
+                <id>unzip-home</id>
+                <phase>generate-sources</phase>
+                <configuration>
+                  <target>
+                    <unzip src="${project.build.directory}/downloaded/home.zip" dest="${project.build.directory}/downloaded"/>
+                  </target>
+                </configuration>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-resources-plugin</artifactId>
+            <!-- version from the parent pom -->
+            <executions>
+              <execution>
+                <phase>process-resources</phase>
+                <goals>
+                  <goal>copy-resources</goal>
+                </goals>
+                <configuration>
+                  <outputDirectory>${project.build.directory}/classes/downloaded/home</outputDirectory>
+                  <resources>
+                    <resource>
+                      <directory>${project.build.directory}/downloaded/home-master</directory>
+                      <filtering>false</filtering>
+                    </resource>
+                  </resources>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.codehaus.gmavenplus</groupId>
+            <artifactId>gmavenplus-plugin</artifactId>
+            <version>4.2.0</version>
+            <configuration>
+              <verbose>true</verbose>
+            </configuration>
+            <executions>
+              <execution>
+                <id>groovy-compile</id>
+                <goals>
+                  <goal>addSources</goal>
+                  <goal>compile</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>groovy-test</id>
+                <goals>
+                  <goal>addTestSources</goal>
+                  <goal>compileTests</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>groovy-execute</id>
+                <phase>process-classes</phase>
+                <goals>
+                  <goal>execute</goal>
+                </goals>
+                <configuration>
+                  <scripts>
+                    <script>src/main/groovy/org/eolang/lints/ReserveNames.groovy</script>
+                  </scripts>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
             <version>3.5.3</version>
@@ -558,59 +654,6 @@
               <outputDirectory>${project.build.directory}/classes</outputDirectory>
             </configuration>
           </execution>
-          <execution>
-            <id>download-home</id>
-            <phase>generate-sources</phase>
-            <goals>
-              <goal>wget</goal>
-            </goals>
-            <configuration>
-              <url>https://github.com/objectionary/home/archive/refs/heads/master.zip</url>
-              <outputDirectory>${project.build.directory}/downloaded</outputDirectory>
-              <outputFileName>home.zip</outputFileName>
-              <skipCache>true</skipCache>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-antrun-plugin</artifactId>
-        <!-- version from the parent pom -->
-        <executions>
-          <execution>
-            <phase>generate-sources</phase>
-            <configuration>
-              <target>
-                <unzip src="${project.build.directory}/downloaded/home.zip" dest="${project.build.directory}/downloaded"/>
-              </target>
-            </configuration>
-            <goals>
-              <goal>run</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-resources-plugin</artifactId>
-        <!-- version from the parent pom -->
-        <executions>
-          <execution>
-            <phase>process-resources</phase>
-            <goals>
-              <goal>copy-resources</goal>
-            </goals>
-            <configuration>
-              <outputDirectory>${project.build.directory}/classes/downloaded/home</outputDirectory>
-              <resources>
-                <resource>
-                  <directory>${project.build.directory}/downloaded/home-master</directory>
-                  <filtering>false</filtering>
-                </resource>
-              </resources>
-            </configuration>
-          </execution>
         </executions>
       </plugin>
       <plugin>
@@ -633,42 +676,6 @@
                   <outputDirectory>${project.build.directory}/classes</outputDirectory>
                 </artifactItem>
               </artifactItems>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.codehaus.gmavenplus</groupId>
-        <artifactId>gmavenplus-plugin</artifactId>
-        <version>4.2.0</version>
-        <configuration>
-          <verbose>true</verbose>
-        </configuration>
-        <executions>
-          <execution>
-            <id>groovy-compile</id>
-            <goals>
-              <goal>addSources</goal>
-              <goal>compile</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>groovy-test</id>
-            <goals>
-              <goal>addTestSources</goal>
-              <goal>compileTests</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>groovy-execute</id>
-            <phase>process-classes</phase>
-            <goals>
-              <goal>execute</goal>
-            </goals>
-            <configuration>
-              <scripts>
-                <script>src/main/groovy/org/eolang/lints/ReserveNames.groovy</script>
-              </scripts>
             </configuration>
           </execution>
         </executions>
