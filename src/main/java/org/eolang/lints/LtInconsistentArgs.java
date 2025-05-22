@@ -57,7 +57,7 @@ final class LtInconsistentArgs implements Lint<Map<String, XML>> {
                     sources.forEach(
                         src -> {
                             final Map<String, Predicate<Xnav>> search =
-                                LtInconsistentArgs.fqnToXpath(base, src);
+                                LtInconsistentArgs.fqnToSearch(base, src);
                             final String xpath = search.keySet().iterator().next();
                             src.path(xpath)
                                 .filter(o -> !LtInconsistentArgs.objectReference(o))
@@ -146,79 +146,6 @@ final class LtInconsistentArgs implements Lint<Map<String, XML>> {
     }
 
     /**
-     * Base refers to void attribute?
-     * @param base Object base
-     * @param object Object
-     * @return True or False
-     */
-    private static boolean voidAttribute(final String base, final Xnav object) {
-        final Xnav method = LtInconsistentArgs.parentObject(object);
-        return method.path(String.format("o[@name='%s']", base.replace("$.", ""))).anyMatch(
-            attr -> attr.attribute("base").text().filter("∅"::equals).isPresent()
-        );
-    }
-
-    private static String voidFqn(final String base, final Xnav object) {
-        final Xnav method = LtInconsistentArgs.parentObject(object);
-        return String.format(
-            "%s%s.%s.∅",
-            LtInconsistentArgs.parentTree(
-                method
-            ),
-            method.attribute("name").text().get(),
-            base
-        );
-    }
-
-    private static String parentTree(final Xnav object) {
-        final List<String> tree = new ListOf<>();
-        Xnav current = LtInconsistentArgs.parentObject(object);
-        while (!"object".equals(current.node().getNodeName())) {
-            tree.add(current.attribute("name").text().get());
-            current = LtInconsistentArgs.parentObject(current);
-        }
-        final String result;
-        if (tree.isEmpty()) {
-            result = "";
-        } else {
-            result = tree.stream().collect(Collectors.joining(".", "", "."));
-        }
-        return result;
-    }
-
-    private static Map<String, Predicate<Xnav>> fqnToXpath(final String fqn, final Xnav src) {
-        final Map<String, Predicate<Xnav>> result = new MapOf<>();
-        final String xpath;
-        if (fqn.endsWith("∅")) {
-            xpath = new VoidXpath(fqn).asString();
-            result.put(xpath, object -> true);
-        } else {
-            xpath = String.format(
-                "//o[@base='%s']", LtInconsistentArgs.relativizeToTopObject(fqn, src)
-            );
-            result.put(
-                xpath,
-                object ->
-                    !LtInconsistentArgs.voidAttribute(
-                        LtInconsistentArgs.relativizeToTopObject(fqn, src), object
-                    )
-            );
-        }
-        return result;
-    }
-
-    /**
-     * Object is a reference to itself?
-     * @param object Object
-     * @return True or False
-     */
-    private static boolean objectReference(final Xnav object) {
-        final Optional<String> base = object.attribute("base").text();
-        return object.attribute("name").text().isEmpty() && base.isPresent()
-            && base.get().startsWith("$.");
-    }
-
-    /**
      * Merge all object usages into single map.
      * @param whole All object usages across all sources
      * @return Merged object usages as a map
@@ -267,22 +194,25 @@ final class LtInconsistentArgs implements Lint<Map<String, XML>> {
     ) {
         final Map<String, List<Integer>> clashes = new HashMap<>(16);
         sources.forEach(
-            src ->
-            {
-                final Map<String, Predicate<Xnav>> search = LtInconsistentArgs.fqnToXpath(
+            src -> {
+                final Map<String, Predicate<Xnav>> search = LtInconsistentArgs.fqnToSearch(
                     base, src
                 );
                 final String xpath = search.keySet().iterator().next();
                 src.path(xpath)
-                .filter(o -> !LtInconsistentArgs.objectReference(o))
-                .filter(search.get(xpath))
-                .forEach(
-                    o -> {
-                        final String program = new ObjectName(new XMLDocument(src.node())).get();
-                        final int line = Integer.parseInt(o.attribute("line").text().orElse("0"));
-                        clashes.computeIfAbsent(program, k -> new ListOf<>()).add(line);
-                    }
-                );
+                    .filter(o -> !LtInconsistentArgs.objectReference(o))
+                    .filter(search.get(xpath))
+                    .forEach(
+                        o -> {
+                            final String program = new ObjectName(
+                                new XMLDocument(src.node())
+                            ).get();
+                            final int line = Integer.parseInt(
+                                o.attribute("line").text().orElse("0")
+                            );
+                            clashes.computeIfAbsent(program, k -> new ListOf<>()).add(line);
+                        }
+                    );
             }
         );
         return clashes;
@@ -313,6 +243,93 @@ final class LtInconsistentArgs implements Lint<Map<String, XML>> {
     }
 
     /**
+     * Base refers to void attribute?
+     * @param base Object base
+     * @param object Object
+     * @return True or False
+     */
+    private static boolean voidAttribute(final String base, final Xnav object) {
+        final Xnav method = LtInconsistentArgs.parentObject(object);
+        return method.path(String.format("o[@name='%s']", base.replace("$.", ""))).anyMatch(
+            attr -> attr.attribute("base").text().filter("∅"::equals).isPresent()
+        );
+    }
+
+    /**
+     * Object is a reference to itself?
+     * @param object Object
+     * @return True or False
+     */
+    private static boolean objectReference(final Xnav object) {
+        final Optional<String> base = object.attribute("base").text();
+        return object.attribute("name").text().isEmpty() && base.isPresent()
+            && base.get().startsWith("$.");
+    }
+
+    /**
+     * Void FQN for given base in object scope.
+     * @param base Base
+     * @param object Object
+     * @return Void FQN
+     */
+    private static String voidFqn(final String base, final Xnav object) {
+        final Xnav method = LtInconsistentArgs.parentObject(object);
+        return String.format(
+            "%s%s.%s.∅",
+            LtInconsistentArgs.parentTree(
+                method
+            ),
+            method.attribute("name").text().get(),
+            base
+        );
+    }
+
+    /**
+     * Parent tree up to the given object, in string.
+     * @param object Object up to build the tree
+     * @return Parent tree
+     */
+    private static String parentTree(final Xnav object) {
+        final List<String> tree = new ListOf<>();
+        Xnav current = LtInconsistentArgs.parentObject(object);
+        while (!"object".equals(current.node().getNodeName())) {
+            tree.add(current.attribute("name").text().get());
+            current = LtInconsistentArgs.parentObject(current);
+        }
+        final String result;
+        if (tree.isEmpty()) {
+            result = "";
+        } else {
+            result = tree.stream().collect(Collectors.joining(".", "", "."));
+        }
+        return result;
+    }
+
+    /**
+     * Map object FQN to search.
+     * @param fqn Object FQN
+     * @param src Source XMIR
+     * @return Search map, where key is XPath, value is search filter
+     */
+    private static Map<String, Predicate<Xnav>> fqnToSearch(final String fqn, final Xnav src) {
+        final Map<String, Predicate<Xnav>> result = new MapOf<>();
+        if (fqn.endsWith("∅")) {
+            result.put(new VoidXpath(fqn).asString(), object -> true);
+        } else {
+            result.put(
+                String.format(
+                    "//o[@base='%s']", LtInconsistentArgs.relativizeToTopObject(fqn, src)
+                ),
+                object ->
+                    !LtInconsistentArgs.voidAttribute(
+                        LtInconsistentArgs.relativizeToTopObject(fqn, src), object
+                    )
+            );
+        }
+        return result;
+    }
+
+    /**
      * Relativize base to the top object name.
      * @param base Object base
      * @param source Source
@@ -329,6 +346,11 @@ final class LtInconsistentArgs implements Lint<Map<String, XML>> {
         return result;
     }
 
+    /**
+     * Parent of the given object.
+     * @param object Current object
+     * @return Parent object
+     */
     private static Xnav parentObject(final Xnav object) {
         final Xnav result;
         final Node prev = object.node().getParentNode();
