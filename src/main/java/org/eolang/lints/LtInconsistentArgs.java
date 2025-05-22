@@ -14,9 +14,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import org.cactoos.io.ResourceOf;
 import org.cactoos.list.ListOf;
+import org.cactoos.map.MapOf;
 import org.cactoos.text.TextOf;
 import org.cactoos.text.UncheckedText;
 import org.eolang.parser.ObjectName;
@@ -54,41 +56,39 @@ final class LtInconsistentArgs implements Lint<Map<String, XML>> {
                         sources, base
                     );
                     sources.forEach(
-                        src ->
-                            src.path(
-                                LtInconsistentArgs.fqnToXpath(base, src)
-                            )
-//                            .filter(
-//                                o ->
-//                                    !LtInconsistentArgs.voidAttribute(
-//                                        LtInconsistentArgs.relativizeToTopObject(base, src), o
-//                                    ) && !LtInconsistentArgs.objectReference(o)
-//                            )
-                            .forEach(
-                                o -> {
-                                    final String current = new ObjectName(
-                                        new XMLDocument(src.node())
-                                    ).get();
-                                    final int cline = Integer.parseInt(
-                                        o.attribute("line").text().orElse("0")
-                                    );
-                                    defects.add(
-                                        new Defect.Default(
-                                            this.name(),
-                                            Severity.WARNING,
-                                            current,
-                                            cline,
-                                            String.format(
-                                                "Object '%s' has arguments inconsistency (the usage clashes with [%s])",
-                                                base,
-                                                LtInconsistentArgs.objectClashes(
-                                                    clashes, current, cline
+                        src -> {
+                            final Map<String, Predicate<Xnav>> search =
+                                LtInconsistentArgs.fqnToXpath(base, src);
+                            final String xpath = search.keySet().iterator().next();
+                            src.path(xpath)
+                                .filter(o -> !LtInconsistentArgs.objectReference(o))
+                                .filter(search.get(xpath))
+                                .forEach(
+                                    o -> {
+                                        final String current = new ObjectName(
+                                            new XMLDocument(src.node())
+                                        ).get();
+                                        final int cline = Integer.parseInt(
+                                            o.attribute("line").text().orElse("0")
+                                        );
+                                        defects.add(
+                                            new Defect.Default(
+                                                this.name(),
+                                                Severity.WARNING,
+                                                current,
+                                                cline,
+                                                String.format(
+                                                    "Object '%s' has arguments inconsistency (the usage clashes with [%s])",
+                                                    base,
+                                                    LtInconsistentArgs.objectClashes(
+                                                        clashes, current, cline
+                                                    )
                                                 )
                                             )
-                                        )
-                                    );
-                                }
-                            )
+                                        );
+                                    }
+                                );
+                        }
                     );
                 }
             }
@@ -162,7 +162,7 @@ final class LtInconsistentArgs implements Lint<Map<String, XML>> {
     private static String voidFqn(final String base, final Xnav object, final Xnav source) {
         final Xnav method = new ParentObject(object).value();
         return String.format(
-            "%s.%s.%s.∅",
+            "%s%s.%s.∅",
             LtInconsistentArgs.parentTree(
                 method, new ObjectName(source).get()
             ),
@@ -178,22 +178,34 @@ final class LtInconsistentArgs implements Lint<Map<String, XML>> {
             tree.add(current.attribute("name").text().get());
             current = new ParentObject(current).value();
         }
-        return tree.stream().collect(Collectors.joining("."));
+        final String result;
+        if (tree.isEmpty()) {
+            result = "";
+        } else {
+            result = tree.stream().collect(Collectors.joining(".", "", "."));
+        }
+        return result;
     }
 
-    private static String fqnToXpath(final String fnq, final Xnav src) {
-        // main.$.x.∅
-        //o[@name='main']/o[@base='$.x]
+    private static Map<String, Predicate<Xnav>> fqnToXpath(final String fqn, final Xnav src) {
+        final Map<String, Predicate<Xnav>> result = new MapOf<>();
         final String xpath;
-        if (fnq.endsWith("∅")) {
-            // todo build from full tree
-            xpath = "//o[@name='main']/o[@base='$.x']";
+        if (fqn.endsWith("∅")) {
+            xpath = new VoidXpath(fqn).asString();
+            result.put(xpath, object -> true);
         } else {
             xpath = String.format(
-                "//o[@base='%s']", LtInconsistentArgs.relativizeToTopObject(fnq, src)
+                "//o[@base='%s']", LtInconsistentArgs.relativizeToTopObject(fqn, src)
+            );
+            result.put(
+                xpath,
+                object ->
+                    !LtInconsistentArgs.voidAttribute(
+                        LtInconsistentArgs.relativizeToTopObject(fqn, src), object
+                    )
             );
         }
-        return xpath;
+        return result;
     }
 
     /**
@@ -257,21 +269,22 @@ final class LtInconsistentArgs implements Lint<Map<String, XML>> {
         final Map<String, List<Integer>> clashes = new HashMap<>(16);
         sources.forEach(
             src ->
-                src.path(
-                    LtInconsistentArgs.fqnToXpath(base, src)
-                )
-                .filter(
-                    o -> !LtInconsistentArgs.voidAttribute(
-                        LtInconsistentArgs.relativizeToTopObject(base, src), o
-                    ) && !LtInconsistentArgs.objectReference(o)
-                )
+            {
+                final Map<String, Predicate<Xnav>> search = LtInconsistentArgs.fqnToXpath(
+                    base, src
+                );
+                final String xpath = search.keySet().iterator().next();
+                src.path(xpath)
+                .filter(o -> !LtInconsistentArgs.objectReference(o))
+                .filter(search.get(xpath))
                 .forEach(
                     o -> {
                         final String program = new ObjectName(new XMLDocument(src.node())).get();
                         final int line = Integer.parseInt(o.attribute("line").text().orElse("0"));
                         clashes.computeIfAbsent(program, k -> new ListOf<>()).add(line);
                     }
-                )
+                );
+            }
         );
         return clashes;
     }
