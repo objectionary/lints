@@ -153,32 +153,32 @@ final class LtInconsistentArgs implements Lint<Map<String, XML>> {
      * @return True or False
      */
     private static boolean voidAttribute(final String base, final Xnav object) {
-        final Xnav method = LtInconsistentArgs.parentObject(object);
+        final Xnav method = new ParentObject(object).value();
         return method.path(String.format("o[@name='%s']", base.replace("$.", ""))).anyMatch(
             attr -> attr.attribute("base").text().filter("∅"::equals).isPresent()
         );
     }
 
     private static String voidFqn(final String base, final Xnav object, final Xnav source) {
+        final Xnav method = new ParentObject(object).value();
         return String.format(
-            "%s%s.∅",
+            "%s.%s.%s.∅",
             LtInconsistentArgs.parentTree(
-                LtInconsistentArgs.parentObject(object), new ObjectName(source).get()
+                method, new ObjectName(source).get()
             ),
+            method.attribute("name").text().get(),
             base
         );
     }
 
     private static String parentTree(final Xnav object, final String top) {
-        final List<String> tree = new ListOf<>(top);
-        Xnav parent = LtInconsistentArgs.parentObject(object);
-        if (!"object".equals(parent.node().getNodeName())) {
-            while (!parent.attribute("name").text().get().equals(top)) {
-                tree.add(parent.attribute("name").text().get());
-                parent = LtInconsistentArgs.parentObject(parent);
-            }
+        final List<String> tree = new ListOf<>();
+        Xnav current = new ParentObject(object).value();
+        while (!"object".equals(current.node().getNodeName())) {
+            tree.add(current.attribute("name").text().get());
+            current = new ParentObject(current).value();
         }
-        return tree.stream().collect(Collectors.joining(".", "", "."));
+        return tree.stream().collect(Collectors.joining("."));
     }
 
     private static String fqnToXpath(final String fnq, final Xnav src) {
@@ -313,17 +313,6 @@ final class LtInconsistentArgs implements Lint<Map<String, XML>> {
             result = base.replace(String.format("%s.", new ObjectName(source).get()), "");
         } else {
             result = base;
-        }
-        return result;
-    }
-
-    private static Xnav parentObject(final Xnav object) {
-        final Xnav result;
-        final Node prev = object.node().getParentNode();
-        if (prev != null && (int) prev.getNodeType() == (int) Node.ELEMENT_NODE) {
-            result = new Xnav(prev);
-        } else {
-            result = new Xnav("<o/>");
         }
         return result;
     }
