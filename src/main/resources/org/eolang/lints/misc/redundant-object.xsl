@@ -12,7 +12,7 @@
     <defects>
       <xsl:for-each select="//o[@name and @name != '@' and @base and @base != '∅']">
         <xsl:variable name="usage" select="concat('^\$(?:\.\^)*\.', @name, '(?:\.[\w-]+)*$')"/>
-        <xsl:if test="count(//o[matches(@base, $usage)])&lt;=1">
+        <xsl:if test="count(//o[matches(@base, $usage)])&lt;=1 and not(@name and o[1]/@base = 'Q.org.eolang.dataized')">
           <xsl:element name="defect">
             <xsl:variable name="line" select="eo:lineno(@line)"/>
             <xsl:attribute name="line">
