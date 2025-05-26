@@ -10,7 +10,8 @@
   <xsl:output encoding="UTF-8" method="xml"/>
   <xsl:template match="/">
     <defects>
-      <xsl:for-each select="//o[@name and @name != '@' and @base and @base != '∅']">
+      <xsl:variable name="top" select="/object/o/generate-id()"/>
+      <xsl:for-each select="//o[generate-id() != $top and @name and @name != '@' and @base and @base != '∅']">
         <xsl:variable name="usage" select="concat('^\$(?:\.\^)*\.', @name, '(?:\.[\w-]+)*$')"/>
         <xsl:if test="count(//o[matches(@base, $usage)])&lt;=1 and not(@name and o[1]/@base = 'Q.org.eolang.dataized')">
           <xsl:element name="defect">
