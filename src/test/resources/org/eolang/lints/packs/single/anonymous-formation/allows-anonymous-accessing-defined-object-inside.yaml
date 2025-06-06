@@ -9,7 +9,7 @@ input: |
   # App.
   [] > app
     "Hello" > t
-    malloc.of
+    malloc.of > @
       64
       [m]
         "boom" > x

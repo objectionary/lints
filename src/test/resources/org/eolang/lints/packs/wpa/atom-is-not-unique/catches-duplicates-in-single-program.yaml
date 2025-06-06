@@ -5,8 +5,8 @@ lints:
   - atom-is-not-unique
 asserts:
   - /defects[count(defect[@severity='error'])=2]
-  - /defects/defect[@program='single' and @line='5']
-  - /defects/defect[@program='single' and @line='3']
+  - /defects/defect[@object='single' and @line='5']
+  - /defects/defect[@object='single' and @line='3']
   - /defects/defect[1][normalize-space()='Atom "Ф.single.foo" is duplicated']
   - /defects/defect[2][normalize-space()='Atom "Ф.single.foo" is duplicated']
 single.eo: |

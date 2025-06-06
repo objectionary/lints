@@ -24,7 +24,7 @@ We use this package as a dependency in the
 <dependency>
   <groupId>org.eolang</groupId>
   <artifactId>lints</artifactId>
-  <version>0.0.45</version>
+  <version>0.0.49</version>
 </dependency>
 ```
 
@@ -105,42 +105,42 @@ Here is the result of linting XMIRs:
 <!-- benchmark_begin -->
 ```text
 Input: com/sun/jna/PointerType.class (S source)
-Lint time: 4s (3527 ms)
+Lint time: 4s (4446 ms)
 
 Input: com/sun/jna/Memory.class (M source)
-Lint time: 4s (4028 ms)
+Lint time: 5s (4951 ms)
 
 Input: com/sun/jna/Pointer.class (L source)
-Lint time: 5s (5005 ms)
+Lint time: 6s (6035 ms)
 
 Input: com/sun/jna/Structure.class (XL source)
-Lint time: 6s (6416 ms)
+Lint time: 7s (7342 ms)
 
 Input: org/apache/hadoop/hdfs/server/namenode/FSNamesystem.class (XXL source)
-Lint time: 19s (19008 ms)
+Lint time: 20s (20040 ms)
 
 
 
-unlint-non-existing-defect (XXL) (9394 ms)
-unlint-non-existing-defect (XL) (3164 ms)
-unlint-non-existing-defect (L) (2467 ms)
-unlint-non-existing-defect (M) (1972 ms)
-unlint-non-existing-defect (S) (1724 ms)
-application-duality (XXL) (1517 ms)
-object-has-data (XXL) (1302 ms)
-named-object-abstract-nested (XXL) (966 ms)
-name-outside-of-abstract-object (XXL) (844 ms)
-incorrect-bytes-format (XXL) (403 ms)
-line-is-absent (XXL) (358 ms)
-application-duality (XL) (292 ms)
-duplicate-names (XXL) (269 ms)
-bytes-without-data (XXL) (261 ms)
-object-has-data (XL) (260 ms)
-named-object-abstract-nested (XL) (193 ms)
+unlint-non-existing-defect (XXL) (9925 ms)
+unlint-non-existing-defect (XL) (3628 ms)
+unlint-non-existing-defect (L) (2983 ms)
+unlint-non-existing-defect (M) (2435 ms)
+unlint-non-existing-defect (S) (2194 ms)
+application-duality (XXL) (1555 ms)
+object-has-data (XXL) (1273 ms)
+named-object-abstract-nested (XXL) (980 ms)
+name-outside-of-abstract-object (XXL) (805 ms)
+incorrect-bytes-format (XXL) (418 ms)
+line-is-absent (XXL) (354 ms)
+application-duality (XL) (313 ms)
+bytes-without-data (XXL) (276 ms)
+duplicate-names (XXL) (268 ms)
+object-has-data (XL) (263 ms)
+named-object-abstract-nested (XL) (197 ms)
 ```
 
 The results were calculated in [this GHA job][benchmark-gha]
-on 2025-04-28 at 16:44,
+on 2025-05-05 at 14:53,
 on Linux with 4 CPUs.
 <!-- benchmark_end -->
 
@@ -170,4 +170,4 @@ If you want the code to be checked using
 
 [XMIR]: https://news.eolang.org/2022-11-25-xmir-guide.html
 [EO]: https://www.eolang.org
-[benchmark-gha]: https://github.com/objectionary/lints/actions/runs/14713088694
+[benchmark-gha]: https://github.com/objectionary/lints/actions/runs/14839302036

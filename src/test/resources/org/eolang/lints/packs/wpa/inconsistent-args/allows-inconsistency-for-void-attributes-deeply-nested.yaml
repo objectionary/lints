@@ -1,0 +1,21 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+lints:
+  - inconsistent-args
+asserts:
+  - /defects[count(defect)=0]
+main.eo: |
+  # Main.
+  [] > main
+    [x] > f
+      x 1 > @
+    [] > run
+      [] > a
+        [] > b
+          [] > c
+            [] > d
+              [] > e
+                [] > f
+                  [x] > g
+                    x "你" "好" "朋友" > o

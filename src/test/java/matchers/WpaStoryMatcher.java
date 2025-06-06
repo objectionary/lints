@@ -16,7 +16,8 @@ import org.hamcrest.Description;
  *
  * @since 0.0.43
  */
-public final class WpaStoryMatcher extends BaseMatcher<Map<List<String>, XML>> {
+public final class WpaStoryMatcher
+    extends BaseMatcher<Map<List<String>, Map<XML, Map<String, XML>>>> {
 
     /**
      * Summary.
@@ -28,9 +29,11 @@ public final class WpaStoryMatcher extends BaseMatcher<Map<List<String>, XML>> {
         final boolean match;
         if (input instanceof Map) {
             @SuppressWarnings("unchecked")
-            final Map<List<String>, XML> story = (Map<List<String>, XML>) input;
+            final Map<List<String>, Map<XML, Map<String, XML>>> story =
+                (Map<List<String>, Map<XML, Map<String, XML>>>) input;
             final List<String> xpaths = story.keySet().iterator().next();
-            final XML defects = story.get(xpaths);
+            final Map<XML, Map<String, XML>> out = story.get(xpaths);
+            final XML defects = out.keySet().iterator().next();
             final List<String> failures = new ArrayList<>(0);
             xpaths.forEach(
                 xpath -> {
@@ -48,7 +51,10 @@ public final class WpaStoryMatcher extends BaseMatcher<Map<List<String>, XML>> {
                 failures.forEach(
                     f -> sum.append('\n').append(String.format("FAIL: %s", f))
                 );
-                sum.append("\n\nFound defects:\n").append(defects);
+                sum.append("\n\nFound defects:\n").append(defects).append("\nParsed objects:\n");
+                out.get(defects).forEach(
+                    (object, xmir) -> sum.append(object).append('\n').append(xmir)
+                );
                 this.summary = sum.toString();
             }
         } else {

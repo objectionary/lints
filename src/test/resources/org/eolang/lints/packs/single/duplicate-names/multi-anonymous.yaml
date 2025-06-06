@@ -6,6 +6,9 @@ sheets:
 asserts:
   - /defects[count(defect)=0]
 input: |
-  *
-    [x] (x.zz > xzz)
-    [x] (x.tt > xtt)
+  # Foo.
+  [] > foo
+    x > @
+      *
+        [x] (x.zz > xzz)
+        [x] (x.tt > xtt)

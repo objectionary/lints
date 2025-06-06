@@ -1,11 +1,12 @@
 # SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
 # SPDX-License-Identifier: MIT
 ---
+# yamllint disable rule:line-length
 lints:
   - atom-is-not-unique
 asserts:
   - /defects[count(defect[@severity='error'])=2]
-  - /defects/defect[@program='foo' and @line='3']
+  - /defects/defect[@object='foo' and @line='3']
   - /defects/defect[normalize-space()='Atom with FQN "Ф.foo.at" is duplicated, original was found in "foo"']
 foo.eo: |
   # Foo.

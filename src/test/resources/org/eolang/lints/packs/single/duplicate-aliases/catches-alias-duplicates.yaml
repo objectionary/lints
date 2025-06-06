@@ -13,4 +13,4 @@ input: |
 
   # No comments.
   [] > main
-    (stdout "Hello, world!").print
+    (stdout "Hello, world!").print > @

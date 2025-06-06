@@ -32,7 +32,7 @@ final class DefectTest {
     }
 
     @Test
-    void printsProgramName() {
+    void printsObjectName() {
         final String program = "a.b.c.bar";
         MatcherAssert.assertThat(
             "toString() doesn't show program name",

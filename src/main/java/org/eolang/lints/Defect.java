@@ -45,15 +45,15 @@ public interface Defect {
     Severity severity();
 
     /**
-     * Name of the program with defect.
+     * Name of the object with defect.
      * <p>
-     * Returns the name of the program where the defect was found.
+     * Returns the name of the object where the defect was found.
      * </p>
      *
      * @return Name of it, taken from the {@code @name} attribute of
-     *  the {@code program} element in XMIR
+     *  the {@code object} element in XMIR
      */
-    String program();
+    String object();
 
     /**
      * Line where the defect was found.
@@ -123,9 +123,9 @@ public interface Defect {
         private final Severity sev;
 
         /**
-         * Name of the program.
+         * Name of the object.
          */
-        private final String prg;
+        private final String oname;
 
         /**
          * Line number with the defect.
@@ -146,16 +146,16 @@ public interface Defect {
          * Ctor.
          * @param rule Rule name
          * @param severity Severity level
-         * @param program Name of the program
+         * @param object Name of the object
          * @param line Line number
          * @param text Description of the defect
          * @checkstyle ParameterNumberCheck (5 lines)
          */
         public Default(
             final String rule, final Severity severity,
-            final String program, final int line, final String text
+            final String object, final int line, final String text
         ) {
-            this(rule, severity, program, line, text, false);
+            this(rule, severity, object, line, text, false);
         }
 
         /**
@@ -166,7 +166,7 @@ public interface Defect {
          *
          * @param rule Rule name
          * @param severity Severity level
-         * @param program Name of the program
+         * @param object Name of the object
          * @param line Line number
          * @param text Description of the defect
          * @param exprmnt Experimental?
@@ -174,12 +174,12 @@ public interface Defect {
          */
         public Default(
             final String rule, final Severity severity,
-            final String program, final int line, final String text,
+            final String object, final int line, final String text,
             final boolean exprmnt
         ) {
             this.rle = rule;
             this.sev = severity;
-            this.prg = program;
+            this.oname = object;
             this.lineno = line;
             this.txt = text;
             this.experiment = exprmnt;
@@ -188,7 +188,7 @@ public interface Defect {
         @Override
         public String toString() {
             final StringBuilder text = new StringBuilder(0)
-                .append('[').append(this.prg).append(' ')
+                .append('[').append(this.oname).append(' ')
                 .append(this.rle).append(' ')
                 .append(this.sev).append(']');
             if (this.lineno > 0) {
@@ -208,8 +208,8 @@ public interface Defect {
         }
 
         @Override
-        public String program() {
-            return this.prg;
+        public String object() {
+            return this.oname;
         }
 
         @Override
@@ -247,7 +247,7 @@ public interface Defect {
                 result = this.lineno == defect.lineno
                     && Objects.equals(this.rle, defect.rle)
                     && this.sev == defect.sev
-                    && Objects.equals(this.prg, defect.prg)
+                    && Objects.equals(this.oname, defect.oname)
                     && Objects.equals(this.txt, defect.txt);
             }
             return result;
@@ -255,7 +255,7 @@ public interface Defect {
 
         @Override
         public int hashCode() {
-            return Objects.hash(this.rle, this.sev, this.prg, this.lineno, this.txt);
+            return Objects.hash(this.rle, this.sev, this.oname, this.lineno, this.txt);
         }
     }
 

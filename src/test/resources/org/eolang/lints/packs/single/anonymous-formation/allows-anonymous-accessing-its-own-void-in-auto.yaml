@@ -1,0 +1,31 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+# yamllint disable rule:line-length
+sheets:
+  - /org/eolang/lints/names/anonymous-formation.xsl
+asserts:
+  - /defects[count(defect)=0]
+input: |
+  # This unit test is supposed to check the functionality of the corresponding object.
+  [] > go-tests
+    # This unit test is supposed to check the functionality of the corresponding object.
+    [] > tests-goto-jumps-backwards
+      eq. > @
+        malloc.of
+          8
+          [i]
+            seq > @
+              *
+                i.put 1
+                go.to
+                  [g] >>
+                    seq > @
+                      *
+                        i.put (i.as-number.plus 1)
+                        if.
+                          i.as-number.lt 10
+                          g.backward
+                          true
+                i
+        10

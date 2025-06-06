@@ -4,6 +4,7 @@
  */
 package org.eolang.lints;
 
+import com.github.lombrozo.xnav.Xnav;
 import com.jcabi.xml.XML;
 import com.jcabi.xml.XMLDocument;
 import java.io.IOException;
@@ -55,7 +56,7 @@ final class WpaStory {
      * @throws IOException if I/O fails
      */
     @SuppressWarnings("unchecked")
-    public Map<List<String>, XML> execute() throws IOException {
+    public Map<List<String>, Map<XML, Map<String, XML>>> execute() throws IOException {
         final Map<String, Object> loaded = new Yaml().load(this.yaml);
         final Map<String, XML> programs = new HashMap<>(0);
         loaded.forEach(
@@ -63,7 +64,9 @@ final class WpaStory {
                 if (key.endsWith(".eo")) {
                     try {
                         final String name = key.substring(0, key.length() - 3);
-                        programs.put(name, new EoSyntax((String) val).parsed());
+                        programs.put(
+                            name, WpaStory.checkForErrors(name, new EoSyntax((String) val).parsed())
+                        );
                     } catch (final IOException exception) {
                         throw new IllegalStateException(
                             "Failed to parse EO syntax", exception
@@ -87,7 +90,8 @@ final class WpaStory {
         }
         return new MapOf<>(
             new MapEntry<>(
-                (List<String>) xpaths, WpaStory.defectsAsXml(found)
+                (List<String>) xpaths,
+                new MapOf<>(WpaStory.defectsAsXml(found), programs)
             )
         );
     }
@@ -96,7 +100,7 @@ final class WpaStory {
         final Directives directives = new Directives().add("defects");
         defects.forEach(
             d -> directives.add("defect")
-                .attr("program", d.program())
+                .attr("object", d.object())
                 .attr("line", d.line())
                 .attr("severity", d.severity().toString().toLowerCase(Locale.ROOT))
                 .attr("context", d.context())
@@ -110,5 +114,17 @@ final class WpaStory {
                 "Failed to create XML document from defects", exception
             );
         }
+    }
+
+    private static XML checkForErrors(final String name, final XML xmir) {
+        if (new Xnav(xmir.inner()).path("/object[errors]").findAny().isEmpty()) {
+            return xmir;
+        }
+        throw new IllegalStateException(
+            String.format(
+                "Parsed EO snippet '%s' contains errors, but it should not:\n %s",
+                name, xmir
+            )
+        );
     }
 }

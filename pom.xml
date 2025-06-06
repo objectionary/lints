@@ -8,7 +8,7 @@
   <parent>
     <groupId>com.jcabi</groupId>
     <artifactId>parent</artifactId>
-    <version>0.68.0</version>
+    <version>0.69.3</version>
   </parent>
   <groupId>org.eolang</groupId>
   <artifactId>lints</artifactId>
@@ -62,11 +62,19 @@
       <url>https://github.com/objectionary/lints</url>
     </site>
   </distributionManagement>
+  <properties>
+    <!-- This is the flag that allows to skip unit tests run by maven-surefire-plugin -->
+    <skipUTs/>
+    <!-- This is the flag that allows to skip integration tests run by maven-invoker-plugin -->
+    <skipITs/>
+    <!-- This is the flag that allows to skip all tests -->
+    <skipTests/>
+  </properties>
   <dependencies>
     <dependency>
       <groupId>com.jcabi</groupId>
       <artifactId>jcabi-xml</artifactId>
-      <version>0.34.0</version>
+      <version>0.35.0</version>
     </dependency>
     <dependency>
       <groupId>io.github.secretx33</groupId>
@@ -81,7 +89,7 @@
     <dependency>
       <groupId>net.sf.saxon</groupId>
       <artifactId>Saxon-HE</artifactId>
-      <version>12.5</version>
+      <version>12.7</version>
       <scope>runtime</scope>
     </dependency>
     <dependency>
@@ -119,7 +127,7 @@
     <dependency>
       <groupId>org.eolang</groupId>
       <artifactId>eo-parser</artifactId>
-      <version>0.56.1</version>
+      <version>0.56.2</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
@@ -141,13 +149,28 @@
       <groupId>com.yegor256</groupId>
       <artifactId>tojos</artifactId>
       <version>0.18.5</version>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.opencsv</groupId>
       <artifactId>opencsv</artifactId>
-      <version>5.10</version>
-      <scope>test</scope>
+      <version>5.11</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.groovy</groupId>
+      <artifactId>groovy-all</artifactId>
+      <version>3.0.24</version>
+      <type>pom</type>
+      <exclusions>
+        <exclusion>
+          <!--
+            We need to exclude it, since its dependency `Maven:jline:jline:2.14.6` has no license
+            information. Exclusion will work only under project dependencies section. Don't move it
+            to `gmavenplus-plugin` dependencies.
+          -->
+          <groupId>org.codehaus.groovy</groupId>
+          <artifactId>groovy-groovysh</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>com.yegor256</groupId>
@@ -218,7 +241,7 @@
     <dependency>
       <groupId>com.tngtech.archunit</groupId>
       <artifactId>archunit</artifactId>
-      <version>1.4.0</version>
+      <version>1.4.1</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -229,6 +252,40 @@
     </dependency>
   </dependencies>
   <profiles>
+    <profile>
+      <id>skipTests</id>
+      <activation>
+        <property>
+          <name>skipTests</name>
+        </property>
+      </activation>
+      <properties>
+        <skipITs>true</skipITs>
+        <skipUTs>true</skipUTs>
+      </properties>
+    </profile>
+    <profile>
+      <id>skipITs</id>
+      <activation>
+        <property>
+          <name>skipITs</name>
+        </property>
+      </activation>
+      <properties>
+        <skipITs>true</skipITs>
+      </properties>
+    </profile>
+    <profile>
+      <id>skipUTs</id>
+      <activation>
+        <property>
+          <name>skipUTs</name>
+        </property>
+      </activation>
+      <properties>
+        <skipUTs>true</skipUTs>
+      </properties>
+    </profile>
     <profile>
       <id>qulice</id>
       <activation>
@@ -303,7 +360,7 @@
           <plugin>
             <groupId>org.pitest</groupId>
             <artifactId>pitest-maven</artifactId>
-            <version>1.19.1</version>
+            <version>1.19.4</version>
             <executions>
               <execution>
                 <goals>
@@ -348,6 +405,102 @@
       </activation>
       <build>
         <plugins>
+          <plugin>
+            <groupId>com.googlecode.maven-download-plugin</groupId>
+            <artifactId>download-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>download-home</id>
+                <phase>initialize</phase>
+                <goals>
+                  <goal>wget</goal>
+                </goals>
+                <configuration>
+                  <url>https://github.com/objectionary/home/archive/refs/heads/master.zip</url>
+                  <outputDirectory>${project.build.directory}/downloaded</outputDirectory>
+                  <outputFileName>home.zip</outputFileName>
+                  <skipCache>true</skipCache>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <!-- version from the parent pom -->
+            <executions>
+              <execution>
+                <id>unzip-home</id>
+                <phase>generate-sources</phase>
+                <configuration>
+                  <target>
+                    <unzip src="${project.build.directory}/downloaded/home.zip" dest="${project.build.directory}/downloaded"/>
+                  </target>
+                </configuration>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-resources-plugin</artifactId>
+            <!-- version from the parent pom -->
+            <executions>
+              <execution>
+                <phase>process-resources</phase>
+                <goals>
+                  <goal>copy-resources</goal>
+                </goals>
+                <configuration>
+                  <outputDirectory>${project.build.directory}/classes/downloaded/home</outputDirectory>
+                  <resources>
+                    <resource>
+                      <directory>${project.build.directory}/downloaded/home-master</directory>
+                      <filtering>false</filtering>
+                    </resource>
+                  </resources>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.codehaus.gmavenplus</groupId>
+            <artifactId>gmavenplus-plugin</artifactId>
+            <version>4.2.0</version>
+            <configuration>
+              <verbose>true</verbose>
+            </configuration>
+            <executions>
+              <execution>
+                <id>groovy-compile</id>
+                <goals>
+                  <goal>addSources</goal>
+                  <goal>compile</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>groovy-test</id>
+                <goals>
+                  <goal>addTestSources</goal>
+                  <goal>compileTests</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>groovy-execute</id>
+                <phase>process-classes</phase>
+                <goals>
+                  <goal>execute</goal>
+                </goals>
+                <configuration>
+                  <scripts>
+                    <script>src/main/groovy/org/eolang/lints/ReserveNames.groovy</script>
+                  </scripts>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
@@ -442,6 +595,7 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <!-- version from the parent pom -->
         <configuration>
+          <skipTests>${skipUTs}</skipTests>
           <excludedGroups>benchmark,deep</excludedGroups>
           <excludes>
             <exclude>
@@ -452,6 +606,9 @@
       </plugin>
       <plugin>
         <artifactId>maven-invoker-plugin</artifactId>
+        <configuration>
+          <skipInvocation>${skipITs}</skipInvocation>
+        </configuration>
         <!-- version from the parent pom -->
       </plugin>
       <plugin>
@@ -495,59 +652,6 @@
               <url>https://opennlp.sourceforge.net/models-1.5/en-pos-perceptron.bin</url>
               <outputFileName>en-pos-perceptron.bin</outputFileName>
               <outputDirectory>${project.build.directory}/classes</outputDirectory>
-            </configuration>
-          </execution>
-          <execution>
-            <id>download-home</id>
-            <phase>generate-sources</phase>
-            <goals>
-              <goal>wget</goal>
-            </goals>
-            <configuration>
-              <url>https://github.com/objectionary/home/archive/refs/heads/master.zip</url>
-              <outputDirectory>${project.build.directory}/downloaded</outputDirectory>
-              <outputFileName>home.zip</outputFileName>
-              <skipCache>true</skipCache>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-antrun-plugin</artifactId>
-        <!-- version from the parent pom -->
-        <executions>
-          <execution>
-            <phase>generate-sources</phase>
-            <configuration>
-              <target>
-                <unzip src="${project.build.directory}/downloaded/home.zip" dest="${project.build.directory}/downloaded"/>
-              </target>
-            </configuration>
-            <goals>
-              <goal>run</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-resources-plugin</artifactId>
-        <!-- version from the parent pom -->
-        <executions>
-          <execution>
-            <phase>process-resources</phase>
-            <goals>
-              <goal>copy-resources</goal>
-            </goals>
-            <configuration>
-              <outputDirectory>${project.build.directory}/classes/downloaded/home</outputDirectory>
-              <resources>
-                <resource>
-                  <directory>${project.build.directory}/downloaded/home-master</directory>
-                  <filtering>false</filtering>
-                </resource>
-              </resources>
             </configuration>
           </execution>
         </executions>

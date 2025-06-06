@@ -5,7 +5,7 @@ lints:
   - incorrect-alias
 asserts:
   - /defects[count(defect[@severity='critical'])=1]
-  - /defects/defect[@program='ttt.bar' and @line='1']
+  - /defects/defect[@object='ttt.bar' and @line='1']
 bar.eo: |
   +alias foo
   +package ttt

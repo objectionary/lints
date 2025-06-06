@@ -28,7 +28,7 @@ final class ScopedDefects extends CollectionEnvelope<Defect> {
                         new Defect.Default(
                             String.format("%s (%s)", defect.rule(), marker),
                             defect.severity(),
-                            defect.program(),
+                            defect.object(),
                             defect.line(),
                             defect.text(),
                             defect.experimental()

@@ -9,4 +9,6 @@ input: |
   +rt jvm org.eolang:eo-runtime:0.0.0
   +rt node path
   +rt
+
+  # Foo.
   [] > foo

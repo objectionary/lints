@@ -5,8 +5,8 @@ lints:
   - atom-is-not-unique
 asserts:
   - /defects[count(defect[@severity='error'])=2]
-  - /defects/defect[@program='top' and @line='7']
-  - /defects/defect[@program='top' and @line='6']
+  - /defects/defect[@object='top' and @line='7']
+  - /defects/defect[@object='top' and @line='6']
 nested.eo: |
   # Top object with nested atoms inside.
   [] > top

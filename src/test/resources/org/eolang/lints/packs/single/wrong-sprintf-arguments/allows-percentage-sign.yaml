@@ -8,6 +8,6 @@ asserts:
 input: |
   # App.
   [] > app
-    org.eolang.txt.sprintf
+    QQ.txt.sprintf > @
       "Water constitutes 0.023%% of Earth mass, which is %d tons"
       * 1.4e18
