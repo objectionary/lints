@@ -275,18 +275,12 @@ final class LtInconsistentArgs implements Lint<Map<String, XML>> {
      */
     private static String voidFqn(final String base, final Xnav object) {
         final Xnav method = LtInconsistentArgs.parentObject(object);
-        final String coordinates;
-        if (method.attribute("name").text().isPresent()) {
-            coordinates = method.attribute("name").text().get();
-        } else {
-            coordinates = ":anonymous";
-        }
         return String.format(
             "%s%s.%s.∅",
             LtInconsistentArgs.parentTree(
                 method
             ),
-            coordinates,
+            LtInconsistentArgs.coordinates(method),
             base
         );
     }
@@ -300,7 +294,7 @@ final class LtInconsistentArgs implements Lint<Map<String, XML>> {
         final List<String> tree = new ListOf<>();
         Xnav current = LtInconsistentArgs.parentObject(object);
         while (!"object".equals(current.node().getNodeName())) {
-            tree.add(current.attribute("name").text().get());
+            tree.add(LtInconsistentArgs.coordinates(current));
             current = LtInconsistentArgs.parentObject(current);
             if ("@".equals(tree.get(0)) && tree.size() > 1) {
                 Collections.swap(tree, 0, 1);
@@ -352,6 +346,21 @@ final class LtInconsistentArgs implements Lint<Map<String, XML>> {
             result = base.replace(String.format("%s.", new ObjectName(source).get()), "");
         } else {
             result = base;
+        }
+        return result;
+    }
+
+    /**
+     * Object coordinates.
+     * @param object Object
+     * @return Object coordinates
+     */
+    private static String coordinates(final Xnav object) {
+        final String result;
+        if (object.attribute("name").text().isPresent()) {
+            result = object.attribute("name").text().get();
+        } else {
+            result = ":anonymous";
         }
         return result;
     }
