@@ -10,6 +10,7 @@ import com.jcabi.xml.XMLDocument;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -274,12 +275,18 @@ final class LtInconsistentArgs implements Lint<Map<String, XML>> {
      */
     private static String voidFqn(final String base, final Xnav object) {
         final Xnav method = LtInconsistentArgs.parentObject(object);
+        final String coordinates;
+        if (method.attribute("name").text().isPresent()) {
+            coordinates = method.attribute("name").text().get();
+        } else {
+            coordinates = ":anonymous";
+        }
         return String.format(
             "%s%s.%s.∅",
             LtInconsistentArgs.parentTree(
                 method
             ),
-            method.attribute("name").text().get(),
+            coordinates,
             base
         );
     }
@@ -295,6 +302,9 @@ final class LtInconsistentArgs implements Lint<Map<String, XML>> {
         while (!"object".equals(current.node().getNodeName())) {
             tree.add(current.attribute("name").text().get());
             current = LtInconsistentArgs.parentObject(current);
+            if ("@".equals(tree.get(0)) && tree.size() > 1) {
+                Collections.swap(tree, 0, 1);
+            }
         }
         final String result;
         if (tree.isEmpty()) {

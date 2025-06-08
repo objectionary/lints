@@ -14,5 +14,5 @@ foo.eo: |
   [] > foo
     start > @
       [x]
-        x 1 > a
-        x 2 2 > b
+        x 0 > x1
+        x 0 1 > x2
