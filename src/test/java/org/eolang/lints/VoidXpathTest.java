@@ -21,7 +21,10 @@ final class VoidXpathTest {
         {
             "main.$.x.∅, //o[@name='main']/o[@base='$.x']",
             "foo.foo.foo.$.x.∅, //o[@name='foo']/o[@name='foo']/o[@name='foo']/o[@base='$.x']",
-            "@.foo.:anonymous.$.x.∅, //o[@name='@']/o[@name='foo']/o/o[@base='$.x']"
+            "@.foo.:anonymous.$.x.∅, //o[@name='@']/o[@name='foo']/o/o[@base='$.x']",
+            // todo: why `@` and `:anonymous` are reverted in the path?
+            // handle ":anonymous.@.@.:anonymous.@.foo.:anonymous.$.x.∅
+            // should be: foo.@.o.o.$.x.∅
         }
     )
     void convertsToXpath(final String fqn, final String xpath) {
