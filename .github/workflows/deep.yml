@@ -12,7 +12,7 @@ name: deep
       - master
 jobs:
   deep:
-    timeout-minutes: 15
+    timeout-minutes: 20
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
