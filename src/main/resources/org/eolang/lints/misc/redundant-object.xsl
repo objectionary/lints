@@ -29,7 +29,7 @@
             </xsl:attribute>
             <xsl:text>The object </xsl:text>
             <xsl:value-of select="eo:escape(@name)"/>
-            <xsl:text> is redundant, consider inline it instead</xsl:text>
+            <xsl:text> is redundant and may be inlined</xsl:text>
           </xsl:element>
         </xsl:if>
       </xsl:for-each>
