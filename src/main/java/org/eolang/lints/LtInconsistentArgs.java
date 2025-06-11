@@ -296,9 +296,6 @@ final class LtInconsistentArgs implements Lint<Map<String, XML>> {
         while (!"object".equals(current.node().getNodeName())) {
             tree.add(LtInconsistentArgs.coordinates(current));
             current = LtInconsistentArgs.parentObject(current);
-            if ("@".equals(tree.get(0)) && tree.size() > 1) {
-                Collections.swap(tree, 0, 1);
-            }
         }
         final String result;
         if (tree.isEmpty()) {
