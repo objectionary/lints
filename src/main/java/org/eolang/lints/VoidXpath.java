@@ -42,6 +42,6 @@ final class VoidXpath implements Text {
             IntStream.range(rstart + 1, normalized.size())
                 .mapToObj(normalized::get)
                 .collect(Collectors.joining(".", "$.", ""))
-        );
+        ).replace("[@name=':anonymous']", "");
     }
 }
