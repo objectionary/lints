@@ -3,9 +3,10 @@
 ---
 # yamllint disable rule:line-length
 # @todo #624:60min Enable `catches-inconsistency-in-nested-anonymous-formations` test story.
-#  For now, its disabled because `LtInconsistentArgs` fails to convert parent tree path into
-#  searchable XPath for the XMIR. We should change our logic in both `LtInconsistentArgs#voidFqn()`
-#  and `VoidXpath`. Don't forget to enable `catches-inconsistency-resolving-anonymous-path.yaml`,
+#  For now, its disabled because `LtInconsistentArgs` fails to convert parent tree with anonymous
+#  objects to searchable XPath for the XMIR. We should change our logic in both
+#  `LtInconsistentArgs#voidFqn()` and `VoidXpath`. Don't forget to enable
+#  `catches-inconsistency-resolving-anonymous-path.yaml`,
 #  `catches-inconsistency-when-parent-object-lacks-name.yaml`, and test stories as well.
 skip: true
 lints:
