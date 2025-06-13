@@ -79,7 +79,7 @@ final class SourceTest {
                         "+package com.example",
                         "+version 0.0.0",
                         // REUSE-IgnoreStart
-                        "+spdx SPDX-FileCopyrightText Copyright (c) 2016-2025 Objectionary.com",
+                        "+spdx SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com",
                         "+spdx SPDX-License-Identifier: MIT",
                         // REUSE-IgnoreEnd
                         "",
