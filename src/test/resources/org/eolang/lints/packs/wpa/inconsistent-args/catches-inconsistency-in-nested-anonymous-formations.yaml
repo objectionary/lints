@@ -1,0 +1,31 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+# yamllint disable rule:line-length
+# @todo #624:60min Enable `catches-inconsistency-in-nested-anonymous-formations` test story.
+#  For now, its disabled because `LtInconsistentArgs` fails to convert parent tree with anonymous
+#  objects to searchable XPath for the XMIR. We should change our logic in both
+#  `LtInconsistentArgs#voidFqn()` and `VoidXpath`. Don't forget to enable
+#  `catches-inconsistency-resolving-anonymous-path.yaml`,
+#  `catches-inconsistency-when-parent-object-lacks-name.yaml`, and test stories as well.
+skip: true
+lints:
+  - inconsistent-args
+asserts:
+  - /defects[count(defect[@severity='warning'])=2]
+  - /defects/defect[@line='9']
+  - /defects/defect[@line='10']
+  - /defects/defect[contains(normalize-space(), 'foo.@.:anonymous.@.:anonymous.@.:anonymous.$.x.∅')]
+  - /defects/defect[contains(normalize-space(), 'clashes with [foo:9]')]
+  - /defects/defect[contains(normalize-space(), 'clashes with [foo:10]')]
+foo.eo: |
+  # Foo.
+  [] > foo
+    start > @
+      []
+        i > @
+          []
+            i > @
+              [x]
+                x 0 > x1
+                x 0 1 > x2

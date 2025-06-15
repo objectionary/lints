@@ -17,6 +17,7 @@ import java.util.Map;
 import org.cactoos.map.MapEntry;
 import org.cactoos.map.MapOf;
 import org.eolang.parser.EoSyntax;
+import org.junit.jupiter.api.Assumptions;
 import org.xembly.Directives;
 import org.xembly.ImpossibleModificationException;
 import org.xembly.Xembler;
@@ -58,6 +59,7 @@ final class WpaStory {
     @SuppressWarnings("unchecked")
     public Map<List<String>, Map<XML, Map<String, XML>>> execute() throws IOException {
         final Map<String, Object> loaded = new Yaml().load(this.yaml);
+        Assumptions.assumeTrue(loaded.get("skip") == null);
         final Map<String, XML> programs = new HashMap<>(0);
         loaded.forEach(
             (key, val) -> {
