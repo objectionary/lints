@@ -1,25 +1,21 @@
 # Unit Test Missing
 
-Each live file should have unit test file, with the same name.
+Each live object should have unit tests inside.
 
 Incorrect:
 
-```text
-main/
------foo.eo
------...
-tests/
------bar-tests.eo
------...
+```eo
+# Foo.
+[] > foo
 ```
 
 Correct:
 
-```text
-main/
------foo.eo
------...
-tests/
------foo-tests.eo
------...
+```eo
+# Foo.
+[] > foo
+  # Test works.
+  [] +> prints-hello-world
+    stdout > @
+      "Hello, world"
 ```
