@@ -6,8 +6,7 @@ sheets:
 asserts:
   - /defects[count(defect)=0]
 input: |
-  +tests
-
-  # No comments.
-  [] > runs-analysis
-    52 > spb
+  # Foo.
+  [x] > foo
+    [] +> checks-something
+      42 > @

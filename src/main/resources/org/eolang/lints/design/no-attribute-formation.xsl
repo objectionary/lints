@@ -11,26 +11,24 @@
   <xsl:output encoding="UTF-8" method="xml"/>
   <xsl:template match="/">
     <defects>
-      <xsl:if test="not(/object[metas/meta[head='tests']])">
-        <xsl:for-each select="//o[eo:abstract(.) and @name and not(ancestor::o[eo:abstract(.) and @name and o[@base='∅']]) and not(@name = 'λ' and parent::o[eo:atom(.)]) and not(parent::o[@base='Q.org.eolang.bytes']) and not(o[@base='∅'])]">
-          <defect>
-            <xsl:variable name="line" select="eo:lineno(@line)"/>
-            <xsl:attribute name="line">
-              <xsl:value-of select="$line"/>
+      <xsl:for-each select="//o[eo:abstract(.) and @name and not(ancestor::o[eo:abstract(.) and @name and o[@base='∅']]) and not(@name = 'λ' and parent::o[eo:atom(.)]) and not(parent::o[@base='Q.org.eolang.bytes']) and not(o[@base='∅'])]">
+        <defect>
+          <xsl:variable name="line" select="eo:lineno(@line)"/>
+          <xsl:attribute name="line">
+            <xsl:value-of select="$line"/>
+          </xsl:attribute>
+          <xsl:if test="$line = '0'">
+            <xsl:attribute name="context">
+              <xsl:value-of select="eo:defect-context(.)"/>
             </xsl:attribute>
-            <xsl:if test="$line = '0'">
-              <xsl:attribute name="context">
-                <xsl:value-of select="eo:defect-context(.)"/>
-              </xsl:attribute>
-            </xsl:if>
-            <xsl:attribute name="severity">warning</xsl:attribute>
-            <xsl:attribute name="experimental">true</xsl:attribute>
-            <xsl:text>The formation </xsl:text>
-            <xsl:value-of select="eo:escape(@name)"/>
-            <xsl:text> does not have any void attributes</xsl:text>
-          </defect>
-        </xsl:for-each>
-      </xsl:if>
+          </xsl:if>
+          <xsl:attribute name="severity">warning</xsl:attribute>
+          <xsl:attribute name="experimental">true</xsl:attribute>
+          <xsl:text>The formation </xsl:text>
+          <xsl:value-of select="eo:escape(@name)"/>
+          <xsl:text> does not have any void attributes</xsl:text>
+        </defect>
+      </xsl:for-each>
     </defects>
   </xsl:template>
 </xsl:stylesheet>
