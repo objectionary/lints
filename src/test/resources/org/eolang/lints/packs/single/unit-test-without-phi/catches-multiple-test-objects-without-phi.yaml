@@ -13,7 +13,7 @@ input: |
     # Unit test.
     [] +> works-dummy
       true > i
-  
+
     # Another unit test.
     [] +> works-good
       true > out
