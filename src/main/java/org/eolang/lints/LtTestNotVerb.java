@@ -71,10 +71,10 @@ final class LtTestNotVerb implements Lint<XML> {
         final Collection<Defect> defects = new ArrayList<>(0);
         final Xnav xml = new Xnav(xmir.inner());
         final List<Xnav> objects = xml
-            .path("/object[metas/meta[head='tests']]/o[@name]")
+            .path("/object//o[@name and starts-with(@name, '+')]")
             .collect(Collectors.toList());
         for (final Xnav object : objects) {
-            final String name = object.attribute("name").text().get();
+            final String name = object.attribute("name").text().get().replace("+", "");
             final String first = new ListOf<>(
                 this.model.tag(
                     Stream
