@@ -85,7 +85,10 @@ final class SourceTest {
                         "",
                         "# This is just a test object with no functionality.",
                         "[i] > foo",
-                        "  i > @"
+                        "  i > @",
+                        "  # This is real unit test for object with no functionality.",
+                        "  [] +> does-something",
+                        "    foo 1 > @"
                     )
                 ).parsed()
             ).defects(),
@@ -111,6 +114,8 @@ final class SourceTest {
                             "+unlint unsorted-metas",
                             "+unlint mandatory-spdx",
                             "+unlint no-attribute-formation",
+                            "+unlint unit-test-missing",
+                            "",
                             "# Test.",
                             "[] > foo"
                         )
@@ -257,7 +262,8 @@ final class SourceTest {
                 "mandatory-package",
                 "comment-too-short",
                 "mandatory-spdx",
-                "no-attribute-formation"
+                "no-attribute-formation",
+                "unit-test-missing"
             ).defects(),
             Matchers.emptyIterable()
         );
@@ -280,7 +286,9 @@ final class SourceTest {
                         "  QQ.io.stdout > @",
                         "    QQ.txt.sprintf",
                         "      \"Hello %s\"",
-                        "      * c"
+                        "      * c",
+                        "  [] +> starts-correctly",
+                        "    main 42 > @"
                     )
                 ).parsed()
             ).without("mandatory-spdx").defects(),
@@ -312,7 +320,8 @@ final class SourceTest {
                 "mandatory-package",
                 "mandatory-spdx",
                 "comment-too-short",
-                "no-attribute-formation"
+                "no-attribute-formation",
+                "unit-test-missing"
             ).defects(),
             Matchers.allOf(
                 Matchers.iterableWithSize(1),

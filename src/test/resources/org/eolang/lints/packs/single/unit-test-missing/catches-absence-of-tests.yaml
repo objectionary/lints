@@ -1,13 +1,10 @@
 # SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
 # SPDX-License-Identifier: MIT
 ---
-lints:
-  - unit-test-without-live-file
+sheets:
+  - /org/eolang/lints/tests/unit-test-missing.xsl
 asserts:
-  - /defects[count(defect)=0]
-foo-tests.eo: |
-  # Foo tests.
-  [] > checks-foo
-foo.eo: |
+  - /defects[count(defect[@severity='warning'])=1]
+input: |
   # Foo.
   [] > foo

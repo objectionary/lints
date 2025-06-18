@@ -1,0 +1,13 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/atoms/lambda-with-inners.xsl
+asserts:
+  - /defects[count(defect[@severity='critical'])=0]
+input: |
+  # Foo atom.
+  [] > foo ?
+    # Test.
+    [] +> tests-foo
+      foo "x" > @

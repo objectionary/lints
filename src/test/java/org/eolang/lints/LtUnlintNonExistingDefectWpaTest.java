@@ -27,20 +27,34 @@ final class LtUnlintNonExistingDefectWpaTest {
         MatcherAssert.assertThat(
             "Lint should not complain, since program has WPA defects",
             new LtUnlintNonExistingDefectWpa(
-                new ListOf<>(new LtUnitTestMissing()),
+                new ListOf<>(new LtObjectIsNotUnique()),
                 new ListOf<>()
             ).defects(
-                new MapOf<>(
-                    "foo",
-                    new EoSyntax(
-                        String.join(
-                            "\n",
-                            "+unlint unit-test-missing",
-                            "",
-                            "# Foo",
-                            "[] > foo"
-                        )
-                    ).parsed()
+                new MapOf<String, XML>(
+                    new MapEntry<>(
+                        "foo",
+                        new EoSyntax(
+                            String.join(
+                                "\n",
+                                "+unlint object-is-not-unique",
+                                "",
+                                "# Foo.",
+                                "[] > foo"
+                            )
+                        ).parsed()
+                    ),
+                    new MapEntry<>(
+                        "bar",
+                        new EoSyntax(
+                            String.join(
+                                "\n",
+                                "+unlint object-is-not-unique",
+                                "",
+                                "# Bar.",
+                                "[] > foo"
+                            )
+                        ).parsed()
+                    )
                 )
             ),
             Matchers.emptyIterable()
@@ -52,23 +66,20 @@ final class LtUnlintNonExistingDefectWpaTest {
         MatcherAssert.assertThat(
             "Defects are not empty, but they should be, since +unlint unlints non-existing defect",
             new LtUnlintNonExistingDefectWpa(
-                new ListOf<>(new LtUnitTestMissing()),
+                new ListOf<>(new LtObjectIsNotUnique()),
                 new ListOf<>()
             ).defects(
-                new MapOf<String, XML>(
-                    new MapEntry<>(
-                        "bar",
-                        new EoSyntax(
-                            String.join(
-                                "\n",
-                                "+unlint unit-test-missing",
-                                "",
-                                "# Bar",
-                                "[] > bar"
-                            )
-                        ).parsed()
-                    ),
-                    new MapEntry<>("bar-tests", new XMLDocument("<object/>"))
+                new MapOf<>(
+                    "bar",
+                    new EoSyntax(
+                        String.join(
+                            "\n",
+                            "+unlint object-is-not-unique",
+                            "",
+                            "# Bar",
+                            "[] > bar"
+                        )
+                    ).parsed()
                 )
             ),
             Matchers.hasSize(Matchers.greaterThan(0))
@@ -80,12 +91,32 @@ final class LtUnlintNonExistingDefectWpaTest {
         MatcherAssert.assertThat(
             "Defects are not empty, but they should",
             new LtUnlintNonExistingDefectWpa(
-                new ListOf<>(new LtUnitTestMissing()),
+                new ListOf<>(new LtObjectIsNotUnique()),
                 new ListOf<>()
             ).defects(
                 new MapOf<String, XML>(
-                    new MapEntry<>("f", new XMLDocument("<object/>")),
-                    new MapEntry<>("f-tests", new XMLDocument("<object/>"))
+                    new MapEntry<>(
+                        "f",
+                        new XMLDocument(
+                            String.join(
+                                "\n",
+                                "<object>",
+                                "  <o name='f'/>",
+                                "</object>"
+                            )
+                        )
+                    ),
+                    new MapEntry<>(
+                        "fa",
+                        new XMLDocument(
+                            String.join(
+                                "\n",
+                                "<object>",
+                                "  <o name='fa'/>",
+                                "</object>"
+                            )
+                        )
+                    )
                 )
             ),
             Matchers.emptyIterable()
@@ -125,7 +156,7 @@ final class LtUnlintNonExistingDefectWpaTest {
         MatcherAssert.assertThat(
             "Single source unlint is not ignored, but it should be",
             new LtUnlintNonExistingDefectWpa(
-                new ListOf<>(new LtUnitTestMissing()),
+                new ListOf<>(new LtAtomIsNotUnique()),
                 new ListOf<>(new MonoLintNames())
             ).defects(
                 new MapOf<>(
