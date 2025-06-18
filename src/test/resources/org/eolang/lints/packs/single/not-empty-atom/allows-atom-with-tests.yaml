@@ -1,13 +1,13 @@
 # SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
 # SPDX-License-Identifier: MIT
 ---
-lints:
-  - unit-test-missing
+sheets:
+  - /org/eolang/lints/atoms/not-empty-atom.xsl
 asserts:
   - /defects[count(defect)=0]
-foo.eo: |
-  # Foo.
-  [] > foo
-foo-tests.eo: |
-  # Foo tests.
-  [] > checks-foo
+input: |
+  # Some X atom.
+  [] > x ?
+    # Test.
+    [] +> tests-x
+      x "x" > @

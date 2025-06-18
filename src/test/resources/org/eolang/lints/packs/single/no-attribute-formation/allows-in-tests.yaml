@@ -2,13 +2,11 @@
 # SPDX-License-Identifier: MIT
 ---
 sheets:
-  - /org/eolang/lints/tests/unit-test-without-phi.xsl
+  - /org/eolang/lints/design/no-attribute-formation.xsl
 asserts:
   - /defects[count(defect)=0]
 input: |
   # Foo.
-  [] > foo
-    # Specific test.
-    [] +> test
-      [] > @
-        true > @
+  [x] > foo
+    [] +> checks-something
+      42 > @

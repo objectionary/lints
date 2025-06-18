@@ -2,14 +2,12 @@
 # SPDX-License-Identifier: MIT
 ---
 sheets:
-  - /org/eolang/lints/tests/unit-test-without-phi.xsl
+  - /org/eolang/lints/tests/unit-test-missing.xsl
 asserts:
-  - /defects[count(defect[@severity='warning'])=0]
+  - /defects[count(defect)=0]
 input: |
   # Foo.
   [] > foo
-    # Test works.
-    true +> works-just-fine
     # Test works.
     [] +> prints-hello-world
       stdout > @
