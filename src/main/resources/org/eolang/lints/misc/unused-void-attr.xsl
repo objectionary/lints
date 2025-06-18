@@ -30,7 +30,7 @@
             </xsl:attribute>
             <xsl:text>The void attribute </xsl:text>
             <xsl:value-of select="eo:escape($attr)"/>
-            <xsl:text> is unused anywhere in the </xsl:text>
+            <xsl:text> is not used in the </xsl:text>
             <xsl:choose>
               <xsl:when test="$formation/@name">
                 <xsl:text>object </xsl:text>

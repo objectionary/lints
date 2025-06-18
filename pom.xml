@@ -127,7 +127,7 @@
     <dependency>
       <groupId>org.eolang</groupId>
       <artifactId>eo-parser</artifactId>
-      <version>0.56.4</version>
+      <version>0.56.5</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
@@ -366,7 +366,7 @@
           <plugin>
             <groupId>org.pitest</groupId>
             <artifactId>pitest-maven</artifactId>
-            <version>1.19.5</version>
+            <version>1.19.6</version>
             <executions>
               <execution>
                 <goals>

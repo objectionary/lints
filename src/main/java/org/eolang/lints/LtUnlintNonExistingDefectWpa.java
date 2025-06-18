@@ -18,7 +18,7 @@ import org.cactoos.io.ResourceOf;
 import org.cactoos.list.ListOf;
 import org.cactoos.text.IoCheckedText;
 import org.cactoos.text.TextOf;
-import org.eolang.parser.ObjectName;
+import org.eolang.parser.OnDefault;
 
 /**
  * Lint for checking `+unlint` meta to suppress non-existing defects in WPA scope.
@@ -97,7 +97,7 @@ final class LtUnlintNonExistingDefectWpa implements Lint<Map<String, XML>> {
                                     new Defect.Default(
                                         this.name(),
                                         Severity.WARNING,
-                                        new ObjectName(xmir).get(),
+                                        new OnDefault(xmir).get(),
                                         Integer.parseInt(line),
                                         String.format(
                                             "Unlinting rule '%s' doesn't make sense, since there are no defects with it",
