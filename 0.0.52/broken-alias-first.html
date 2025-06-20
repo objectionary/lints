@@ -1,0 +1,40 @@
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>lints</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="shortcut icon" href="https://www.yegor256.com/images/books/elegant-objects/cactus.png"/><link href="https://cdn.jsdelivr.net/npm/tacit-css@1.8.1/dist/tacit-css.min.css" rel="stylesheet" integrity="sha384-JbsYayq5Otme+gjh/pl7NrA/qMIU0bxbdzKvYqQGHvvag0lHhM62TQnDzz+EyzXj" crossorigin="anonymous"/>
+</head>
+<body><section><article>
+<h1 id="broken-alias-first-part">Broken Alias (First Part)</h1>
+<p>The first part of the <code>+alias</code> meta may only contain the
+name of the object, not its FQN. For example, here is how it may look in
+EO:</p>
+<pre class="eo"><code>+alias stdout org.eolang.io.stdout
+
+# Basic object.
+[] &gt; foo
+  stdout
+    &quot;Hello, world!\n&quot;</code></pre>
+<p>Here, the <code>stdout</code> part of the <code>+alias</code> meta is
+the name of the object used later in the code. It will automatically be
+replaced with <code>org.eolang.io.stdout</code>.</p>
+<p>The error may also indicate incorrect usage of the
+<code>&lt;meta&gt;</code> element in XMIR. The alias defined above must
+look like this, in XMIR:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode xml"><code class="sourceCode xml"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>&lt;<span class="kw">object</span>&gt;</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  &lt;<span class="kw">metas</span>&gt;</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">meta</span>&gt;</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">head</span>&gt;alias&lt;/<span class="kw">head</span>&gt;</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">tail</span>&gt;stdout org.eolang.io.stdout&lt;/<span class="kw">tail</span>&gt;</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">part</span>&gt;stdout&lt;/<span class="kw">part</span>&gt;</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">part</span>&gt;org.eolang.io.stdout&lt;/<span class="kw">part</span>&gt;</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    &lt;/<span class="kw">meta</span>&gt;</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  &lt;/<span class="kw">metas</span>&gt;</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>&lt;/<span class="kw">object</span>&gt;</span></code></pre></div>
+<p>Here, the <code>part</code> elements in the <code>meta</code> element
+must be used to define separate parts of the <code>+alias</code>
+meta.</p>
+<p>Published on Fri Jun 20 09:40:11 UTC 2025.</p>
+</article></section></body></html>

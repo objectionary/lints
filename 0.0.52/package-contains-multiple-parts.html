@@ -1,0 +1,22 @@
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>lints</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="shortcut icon" href="https://www.yegor256.com/images/books/elegant-objects/cactus.png"/><link href="https://cdn.jsdelivr.net/npm/tacit-css@1.8.1/dist/tacit-css.min.css" rel="stylesheet" integrity="sha384-JbsYayq5Otme+gjh/pl7NrA/qMIU0bxbdzKvYqQGHvvag0lHhM62TQnDzz+EyzXj" crossorigin="anonymous"/>
+</head>
+<body><section><article>
+<h1 id="package-contains-multiple-parts"><code>+package</code> contains
+multiple parts</h1>
+<p>Special <code>+package</code> meta must be constructed from exact one
+part.</p>
+<p>Incorrect:</p>
+<pre class="eo"><code>+package foo bar
+
+[] &gt; foo</code></pre>
+<p>Correct:</p>
+<pre class="eo"><code>+package foo.bar
+
+[] &gt; foo</code></pre>
+<p>Published on Fri Jun 20 09:40:22 UTC 2025.</p>
+</article></section></body></html>
