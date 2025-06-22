@@ -1,0 +1,31 @@
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>lints</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="shortcut icon" href="https://www.yegor256.com/images/books/elegant-objects/cactus.png"/><link href="https://cdn.jsdelivr.net/npm/tacit-css@1.8.1/dist/tacit-css.min.css" rel="stylesheet" integrity="sha384-JbsYayq5Otme+gjh/pl7NrA/qMIU0bxbdzKvYqQGHvvag0lHhM62TQnDzz+EyzXj" crossorigin="anonymous"/>
+</head>
+<body><section><article>
+<h1 id="mandatory-spdx">Mandatory <code>+spdx</code></h1>
+<p>Special meta <code>+spdx</code> should be present in each
+<code>.eo</code> object.</p>
+<p>Incorrect:</p>
+<pre class="eo"><code># Foo.
+[] &gt; foo</code></pre>
+<p>Correct:</p>
+<pre class="eo"><code>+spdx SPDX-License-Identifier: MIT
+
+# Foo.
+[] &gt; foo</code></pre>
+<p>In <a
+href="https://news.eolang.org/2022-11-25-xmir-guide.html">XMIR</a>, spdx
+meta should look like this:</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode xml"><code class="sourceCode xml"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>&lt;<span class="kw">meta</span>&gt;</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  &lt;<span class="kw">head</span>&gt;spdx&lt;/<span class="kw">head</span>&gt;</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  &lt;<span class="kw">tail</span>&gt;SPDX-License-Identifier: MIT&lt;/<span class="kw">tail</span>&gt;</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  &lt;<span class="kw">part</span>&gt;SPDX-License-Identifier:&lt;/<span class="kw">part</span>&gt;</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  &lt;<span class="kw">part</span>&gt;MIT&lt;/<span class="kw">part</span>&gt;</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>&lt;/<span class="kw">meta</span>&gt;</span></code></pre></div>
+<p>Published on Sun Jun 22 07:53:00 UTC 2025.</p>
+</article></section></body></html>

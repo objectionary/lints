@@ -1,0 +1,18 @@
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>lints</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="shortcut icon" href="https://www.yegor256.com/images/books/elegant-objects/cactus.png"/><link href="https://cdn.jsdelivr.net/npm/tacit-css@1.8.1/dist/tacit-css.min.css" rel="stylesheet" integrity="sha384-JbsYayq5Otme+gjh/pl7NrA/qMIU0bxbdzKvYqQGHvvag0lHhM62TQnDzz+EyzXj" crossorigin="anonymous"/>
+</head>
+<body><section><article>
+<h1 id="many-void-attributes">Many Void Attributes</h1>
+<p>Object must have at <strong>max 5</strong> void attributes.</p>
+<p>Incorrect:</p>
+<pre class="eo"><code>[a b c d e f] &gt; with-many
+  something &gt; @</code></pre>
+<p>Correct:</p>
+<pre class="eo"><code>[a b c d e] &gt; with-ok
+  something &gt; @</code></pre>
+<p>Published on Sun Jun 22 07:52:56 UTC 2025.</p>
+</article></section></body></html>

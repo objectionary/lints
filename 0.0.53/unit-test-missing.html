@@ -1,0 +1,22 @@
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>lints</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="shortcut icon" href="https://www.yegor256.com/images/books/elegant-objects/cactus.png"/><link href="https://cdn.jsdelivr.net/npm/tacit-css@1.8.1/dist/tacit-css.min.css" rel="stylesheet" integrity="sha384-JbsYayq5Otme+gjh/pl7NrA/qMIU0bxbdzKvYqQGHvvag0lHhM62TQnDzz+EyzXj" crossorigin="anonymous"/>
+</head>
+<body><section><article>
+<h1 id="unit-test-missing">Unit Test Missing</h1>
+<p>Each live object should have unit tests inside.</p>
+<p>Incorrect:</p>
+<pre class="eo"><code># Foo.
+[] &gt; foo</code></pre>
+<p>Correct:</p>
+<pre class="eo"><code># Foo.
+[] &gt; foo
+  # Test works.
+  [] +&gt; prints-hello-world
+    stdout &gt; @
+      &quot;Hello, world&quot;</code></pre>
+<p>Published on Sun Jun 22 07:53:06 UTC 2025.</p>
+</article></section></body></html>
