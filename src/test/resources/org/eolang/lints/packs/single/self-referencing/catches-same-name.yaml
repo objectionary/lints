@@ -4,9 +4,10 @@
 sheets:
   - /org/eolang/lints/critical/self-referencing.xsl
 asserts:
-  - /defects[count(defect)=0]
+  - /defects[count(defect[@severity='error'])=1]
+  - /defects/defect[@line='3']
 input: |
   # App.
   [] > app
     a. > foo
-      b > bar!
+      b > foo
