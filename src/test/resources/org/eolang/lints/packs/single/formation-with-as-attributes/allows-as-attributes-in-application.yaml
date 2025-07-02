@@ -6,6 +6,8 @@ sheets:
 asserts:
   - /defects[count(defect)=0]
 document: |
-  <o name='happl' base='Q.org.eolang.f' line='1'>
-    <o as='boom' line='2'/>
-  </o>
+  <object>
+    <o name='happl' base='Q.org.eolang.f' line='1'>
+      <o as='boom' line='2'/>
+    </o>
+  </object>
