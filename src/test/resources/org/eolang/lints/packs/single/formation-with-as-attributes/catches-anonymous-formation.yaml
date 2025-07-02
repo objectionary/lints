@@ -1,0 +1,12 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/critical/formation-with-as-attributes.xsl
+asserts:
+  - /defects[count(defect[@severity='critical'])=1]
+  - /defects/defect[@line='2']
+document: |
+  <o line='1'>
+    <o as='due' line='2'/>
+  </o>
