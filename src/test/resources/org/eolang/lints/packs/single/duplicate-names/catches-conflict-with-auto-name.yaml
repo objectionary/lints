@@ -1,6 +1,7 @@
 # SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
 # SPDX-License-Identifier: MIT
 ---
+# yamllint disable rule:line-length
 # @todo #3147:30min Make duplicate names catcher more powerful. This test pack is disabled now
 #  because names duplication is not caught here. It happens because of "duplicate-names.xsl" thinks
 #  that abstract objects in the tests are on the different levels. Syntactically they are, but

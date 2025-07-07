@@ -13,7 +13,7 @@
       <xsl:for-each select="/object/metas/meta[head/text()='spdx' and count(part) &gt; 1]">
         <xsl:variable name="meta-tail" select="tail"/>
         <xsl:variable name="header" select="normalize-space(substring-before(concat($meta-tail, ' '), ' '))"/>
-        <xsl:if test="$header!='SPDX-FileCopyrightText' and $header!='SPDX-License-Identifier:'">
+        <xsl:if test="$header!='SPDX-FileCopyrightText:' and $header!='SPDX-License-Identifier:'">
           <xsl:element name="defect">
             <xsl:variable name="line" select="eo:lineno(@line)"/>
             <xsl:attribute name="line">

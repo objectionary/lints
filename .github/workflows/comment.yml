@@ -3,9 +3,9 @@
 ---
 # yamllint disable rule:line-length
 name: comment
-on:
+'on':
   workflow_run:
-    workflows: [ "jmh" ]
+    workflows: ["jmh"]
     types:
       - completed
 jobs:
