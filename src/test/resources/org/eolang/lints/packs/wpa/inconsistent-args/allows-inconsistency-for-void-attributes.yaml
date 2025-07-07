@@ -2,12 +2,13 @@
 # SPDX-License-Identifier: MIT
 ---
 lints:
-  - unit-test-without-live-file
+  - inconsistent-args
 asserts:
   - /defects[count(defect)=0]
-foo-tests.eo: |
-  # Foo tests.
-  [] > checks-foo
-foo.eo: |
-  # Foo.
-  [] > foo
+main.eo: |
+  # Main.
+  [] > main
+    [x] > f
+      x 1 > @
+    [x] > run
+      x -2 88 > i

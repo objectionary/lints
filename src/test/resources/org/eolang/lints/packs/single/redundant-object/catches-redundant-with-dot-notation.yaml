@@ -1,0 +1,17 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/misc/redundant-object.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=2]
+  - /defects/defect[@line='6']
+  - /defects/defect[@line='7']
+input: |
+  # Foo.
+  [] > foo
+    and. > @
+      str.length.eq 12
+      py.as-bytes.size.eq 16
+    "Hello, друг!" > str
+    "你好，伙计" > py

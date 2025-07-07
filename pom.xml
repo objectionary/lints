@@ -8,7 +8,7 @@
   <parent>
     <groupId>com.jcabi</groupId>
     <artifactId>parent</artifactId>
-    <version>0.69.3</version>
+    <version>0.69.6</version>
   </parent>
   <groupId>org.eolang</groupId>
   <artifactId>lints</artifactId>
@@ -89,7 +89,7 @@
     <dependency>
       <groupId>net.sf.saxon</groupId>
       <artifactId>Saxon-HE</artifactId>
-      <version>12.7</version>
+      <version>12.8</version>
       <scope>runtime</scope>
     </dependency>
     <dependency>
@@ -127,7 +127,7 @@
     <dependency>
       <groupId>org.eolang</groupId>
       <artifactId>eo-parser</artifactId>
-      <version>0.56.2</version>
+      <version>0.57.0</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
@@ -153,12 +153,18 @@
     <dependency>
       <groupId>com.opencsv</groupId>
       <artifactId>opencsv</artifactId>
-      <version>5.11</version>
+      <version>5.11.2</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.junit.vintage</groupId>
+          <artifactId>junit-vintage-engine</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.codehaus.groovy</groupId>
       <artifactId>groovy-all</artifactId>
-      <version>3.0.24</version>
+      <version>3.0.25</version>
       <type>pom</type>
       <exclusions>
         <exclusion>
@@ -169,6 +175,10 @@
           -->
           <groupId>org.codehaus.groovy</groupId>
           <artifactId>groovy-groovysh</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.junit.platform</groupId>
+          <artifactId>junit-platform-launcher</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
@@ -248,6 +258,12 @@
       <groupId>org.ow2.asm</groupId>
       <artifactId>asm</artifactId>
       <version>9.8</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.platform</groupId>
+      <artifactId>junit-platform-launcher</artifactId>
+      <version>1.13.3</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -360,7 +376,7 @@
           <plugin>
             <groupId>org.pitest</groupId>
             <artifactId>pitest-maven</artifactId>
-            <version>1.19.3</version>
+            <version>1.20.0</version>
             <executions>
               <execution>
                 <goals>
@@ -391,7 +407,7 @@
               <dependency>
                 <groupId>org.pitest</groupId>
                 <artifactId>pitest-junit5-plugin</artifactId>
-                <version>1.2.2</version>
+                <version>1.2.3</version>
               </dependency>
             </dependencies>
           </plugin>
@@ -405,6 +421,102 @@
       </activation>
       <build>
         <plugins>
+          <plugin>
+            <groupId>com.googlecode.maven-download-plugin</groupId>
+            <artifactId>download-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>download-home</id>
+                <phase>initialize</phase>
+                <goals>
+                  <goal>wget</goal>
+                </goals>
+                <configuration>
+                  <url>https://github.com/objectionary/home/archive/refs/heads/master.zip</url>
+                  <outputDirectory>${project.build.directory}/downloaded</outputDirectory>
+                  <outputFileName>home.zip</outputFileName>
+                  <skipCache>true</skipCache>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <!-- version from the parent pom -->
+            <executions>
+              <execution>
+                <id>unzip-home</id>
+                <phase>generate-sources</phase>
+                <configuration>
+                  <target>
+                    <unzip src="${project.build.directory}/downloaded/home.zip" dest="${project.build.directory}/downloaded"/>
+                  </target>
+                </configuration>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-resources-plugin</artifactId>
+            <!-- version from the parent pom -->
+            <executions>
+              <execution>
+                <phase>process-resources</phase>
+                <goals>
+                  <goal>copy-resources</goal>
+                </goals>
+                <configuration>
+                  <outputDirectory>${project.build.directory}/classes/downloaded/home</outputDirectory>
+                  <resources>
+                    <resource>
+                      <directory>${project.build.directory}/downloaded/home-master</directory>
+                      <filtering>false</filtering>
+                    </resource>
+                  </resources>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.codehaus.gmavenplus</groupId>
+            <artifactId>gmavenplus-plugin</artifactId>
+            <version>4.2.0</version>
+            <configuration>
+              <verbose>true</verbose>
+            </configuration>
+            <executions>
+              <execution>
+                <id>groovy-compile</id>
+                <goals>
+                  <goal>addSources</goal>
+                  <goal>compile</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>groovy-test</id>
+                <goals>
+                  <goal>addTestSources</goal>
+                  <goal>compileTests</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>groovy-execute</id>
+                <phase>process-classes</phase>
+                <goals>
+                  <goal>execute</goal>
+                </goals>
+                <configuration>
+                  <scripts>
+                    <script>src/main/groovy/org/eolang/lints/ReserveNames.groovy</script>
+                  </scripts>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
@@ -455,7 +567,7 @@
                 <path>
                   <groupId>com.google.errorprone</groupId>
                   <artifactId>error_prone_core</artifactId>
-                  <version>2.38.0</version>
+                  <version>2.39.0</version>
                 </path>
               </annotationProcessorPaths>
             </configuration>
@@ -483,7 +595,7 @@
       <plugin>
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
-        <version>4.9.3.0</version>
+        <version>4.9.3.2</version>
         <configuration>
           <excludeFilterFile>${project.basedir}/spotbugs-exclude.xml</excludeFilterFile>
         </configuration>
@@ -558,59 +670,6 @@
               <outputDirectory>${project.build.directory}/classes</outputDirectory>
             </configuration>
           </execution>
-          <execution>
-            <id>download-home</id>
-            <phase>generate-sources</phase>
-            <goals>
-              <goal>wget</goal>
-            </goals>
-            <configuration>
-              <url>https://github.com/objectionary/home/archive/refs/heads/master.zip</url>
-              <outputDirectory>${project.build.directory}/downloaded</outputDirectory>
-              <outputFileName>home.zip</outputFileName>
-              <skipCache>true</skipCache>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-antrun-plugin</artifactId>
-        <!-- version from the parent pom -->
-        <executions>
-          <execution>
-            <phase>generate-sources</phase>
-            <configuration>
-              <target>
-                <unzip src="${project.build.directory}/downloaded/home.zip" dest="${project.build.directory}/downloaded"/>
-              </target>
-            </configuration>
-            <goals>
-              <goal>run</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-resources-plugin</artifactId>
-        <!-- version from the parent pom -->
-        <executions>
-          <execution>
-            <phase>process-resources</phase>
-            <goals>
-              <goal>copy-resources</goal>
-            </goals>
-            <configuration>
-              <outputDirectory>${project.build.directory}/classes/downloaded/home</outputDirectory>
-              <resources>
-                <resource>
-                  <directory>${project.build.directory}/downloaded/home-master</directory>
-                  <filtering>false</filtering>
-                </resource>
-              </resources>
-            </configuration>
-          </execution>
         </executions>
       </plugin>
       <plugin>
@@ -633,42 +692,6 @@
                   <outputDirectory>${project.build.directory}/classes</outputDirectory>
                 </artifactItem>
               </artifactItems>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.codehaus.gmavenplus</groupId>
-        <artifactId>gmavenplus-plugin</artifactId>
-        <version>4.2.0</version>
-        <configuration>
-          <verbose>true</verbose>
-        </configuration>
-        <executions>
-          <execution>
-            <id>groovy-compile</id>
-            <goals>
-              <goal>addSources</goal>
-              <goal>compile</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>groovy-test</id>
-            <goals>
-              <goal>addTestSources</goal>
-              <goal>compileTests</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>groovy-execute</id>
-            <phase>process-classes</phase>
-            <goals>
-              <goal>execute</goal>
-            </goals>
-            <configuration>
-              <scripts>
-                <script>src/main/groovy/org/eolang/lints/ReserveNames.groovy</script>
-              </scripts>
             </configuration>
           </execution>
         </executions>

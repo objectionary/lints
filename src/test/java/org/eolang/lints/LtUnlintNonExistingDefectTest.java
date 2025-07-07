@@ -120,7 +120,7 @@ final class LtUnlintNonExistingDefectTest {
                 new EoSyntax(
                     String.join(
                         "\n",
-                        "+unlint unit-test-missing",
+                        "+unlint object-is-not-unique",
                         "",
                         "# Buzz",
                         "[] > buzz"

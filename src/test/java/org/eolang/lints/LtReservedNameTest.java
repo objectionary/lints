@@ -13,6 +13,7 @@ import org.cactoos.map.MapOf;
 import org.eolang.parser.EoSyntax;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -158,6 +159,7 @@ final class LtReservedNameTest {
         );
     }
 
+    @Tag("deep")
     @Test
     void scansReservedFromHome() throws Exception {
         final Lint<XML> lint = new LtReservedName();

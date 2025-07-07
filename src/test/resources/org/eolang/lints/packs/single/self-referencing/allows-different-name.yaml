@@ -2,12 +2,11 @@
 # SPDX-License-Identifier: MIT
 ---
 sheets:
-  - /org/eolang/lints/design/no-attribute-formation.xsl
+  - /org/eolang/lints/critical/self-referencing.xsl
 asserts:
   - /defects[count(defect)=0]
 input: |
-  +tests
-
-  # No comments.
-  [] > runs-analysis
-    52 > spb
+  # App.
+  [] > app
+    a. > foo
+      b > bar!
