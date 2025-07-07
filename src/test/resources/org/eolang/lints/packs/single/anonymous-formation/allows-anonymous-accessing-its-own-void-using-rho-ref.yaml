@@ -1,0 +1,18 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/names/anonymous-formation.xsl
+asserts:
+  - /defects[count(defect)=0]
+input: |
+  # Foo.
+  [] > foo
+    boom > @
+      [acc x i]
+        check x > @
+        [el] > check
+          if. > @
+            ^.x.lt 100
+            ^.acc.plus x
+            ^.acc.minus x

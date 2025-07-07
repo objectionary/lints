@@ -6,11 +6,9 @@ sheets:
 asserts:
   - /defects[count(defect)=0]
 input: |
-  +tests
-
-  # Tests.
-  [] > tests
+  # Foo.
+  [] > foo
     # Specific test.
-    [] > test
+    [] +> test
       [] > @
         true > @

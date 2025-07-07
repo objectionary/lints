@@ -1,11 +1,12 @@
-*.DS_Store
-*.tgz
+.aidy
 .DS_Store
 .eoc/
 .idea
 .idea/
 .mvm/
 .nyc_output
+*.DS_Store
+*.tgz
 coverage.html
 coverage/
 gh-pages/
@@ -13,4 +14,3 @@ mochawesome-report/
 node_modules/
 target/
 temp/
-.aidy

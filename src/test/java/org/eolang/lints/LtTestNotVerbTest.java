@@ -78,11 +78,10 @@ final class LtTestNotVerbTest {
                 new EoSyntax(
                     String.join(
                         "\n",
-                        "+tests",
-                        "",
-                        "# Test",
-                        String.format("[] > %s", name),
-                        "  42 > @"
+                        "# Foo",
+                        "[] > foo",
+                        String.format("  [] +> %s", name),
+                        "    42 > @"
                     )
                 ).parsed()
             ),
@@ -129,11 +128,10 @@ final class LtTestNotVerbTest {
                 new EoSyntax(
                     String.join(
                         "\n",
-                        "+tests",
-                        "",
-                        "# Test",
-                        String.format("[] > %s", name),
-                        "  42 > @"
+                        "# Foo",
+                        "[] > foo",
+                        String.format("  [] +> %s", name),
+                        "    42 > @"
                     )
                 ).parsed()
             ),
@@ -151,23 +149,23 @@ final class LtTestNotVerbTest {
                 new EoSyntax(
                     String.join(
                         "\n",
-                        "+tests",
-                        "",
-                        "# This unit test is supposed to check the functionality of the corresponding object.",
-                        "[] > regex-contains-valid-groups-on-each-matched-block",
-                        "  ((regex \"/([a-z]+)([1-9]{1})/\").compiled.match \"!hello1!world2\").next > first",
-                        "  first.next > second",
-                        "  and. > @",
-                        "    and.",
+                        "# Regex",
+                        "[] > regex",
+                        "  # This unit test is supposed to check the functionality of the corresponding object.",
+                        "  [] +> regex-contains-valid-groups-on-each-matched-block",
+                        "    ((regex \"/([a-z]+)([1-9]{1})/\").compiled.match \"!hello1!world2\").next > first",
+                        "    first.next > second",
+                        "    and. > @",
                         "      and.",
-                        "        first.groups-count.eq 3",
-                        "        (first.group 1).eq \"hello\"",
-                        "      (first.group 2).eq \"1\"",
-                        "    and.",
+                        "        and.",
+                        "          first.groups-count.eq 3",
+                        "          (first.group 1).eq \"hello\"",
+                        "        (first.group 2).eq \"1\"",
                         "      and.",
-                        "        second.groups-count.eq 3",
-                        "        (second.group 1).eq \"world\"",
-                        "      (second.group 2).eq \"2\""
+                        "        and.",
+                        "          second.groups-count.eq 3",
+                        "          (second.group 1).eq \"world\"",
+                        "        (second.group 2).eq \"2\""
                     )
                 ).parsed()
             ),
@@ -186,11 +184,11 @@ final class LtTestNotVerbTest {
                         new EoSyntax(
                             String.join(
                                 "\n",
-                                "+tests",
-                                "",
-                                "# Unit test",
-                                "[] > matches-regex-against-the-pattern",
-                                "  (regex \"/[a-z]+/\").compiled.matches \"hello\" > @"
+                                "# Regex",
+                                "[] > regex",
+                                "  # Unit test",
+                                "  [] +> matches-regex-against-the-pattern",
+                                "    (regex \"/[a-z]+/\").compiled.matches \"hello\" > @"
                             )
                         ).parsed()
                     ).size()

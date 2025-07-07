@@ -5,7 +5,6 @@ The following metas are supported:
 * `+package`
 * `+alias`
 * `+version`
-* `+tests`
 * `+rt`
 * `+architect`
 * `+home`

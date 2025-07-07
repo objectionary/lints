@@ -11,7 +11,7 @@
   <xsl:output encoding="UTF-8" method="xml"/>
   <xsl:template match="/">
     <defects>
-      <xsl:for-each select="/object[metas/meta[head='tests']]/o[1]/o[eo:abstract(.) and @name and not(o[@name='@'])]">
+      <xsl:for-each select="/object//o[starts-with(@name, '+') and eo:abstract(.) and @name and not(o[@name='@'])]">
         <xsl:element name="defect">
           <xsl:variable name="line" select="eo:lineno(@line)"/>
           <xsl:attribute name="line">
@@ -26,7 +26,7 @@
             <xsl:text>warning</xsl:text>
           </xsl:attribute>
           <xsl:text>The unit test doesn't have "@" attribute: </xsl:text>
-          <xsl:value-of select="eo:escape(@name)"/>
+          <xsl:value-of select="eo:escape(eo:escape-plus(@name))"/>
         </xsl:element>
       </xsl:for-each>
     </defects>

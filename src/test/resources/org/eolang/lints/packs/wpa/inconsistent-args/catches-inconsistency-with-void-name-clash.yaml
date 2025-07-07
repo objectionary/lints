@@ -1,0 +1,21 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+lints:
+  - inconsistent-args
+asserts:
+  - /defects[count(defect[@severity='warning'])=2]
+  - /defects/defect[@line='4']
+  - /defects/defect[@line='5']
+  - /defects/defect[contains(normalize-space(), 'clashes with [main:4]')]
+  - /defects/defect[contains(normalize-space(), 'clashes with [main:5]')]
+main.eo: |
+  # Main.
+  [] > main
+    start > @
+      x > a
+      x 12 > b
+      [x] > foo
+        x 1 > @
+      [] > x
+        "t" > @

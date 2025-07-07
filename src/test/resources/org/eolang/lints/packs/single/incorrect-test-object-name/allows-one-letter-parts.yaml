@@ -6,8 +6,8 @@ sheets:
 asserts:
   - /defects[count(defect[@severity='warning'])=0]
 input: |
-  +tests
-
-  # Test.
-  [] > tests-ln-of-e-one-is-one
-    42 > @
+  # Foo.
+  [] > foo
+    # Test.
+    [] +> tests-ln-of-e-one-is-one
+      42 > @

@@ -20,7 +20,7 @@ import org.cactoos.Input;
 import org.cactoos.io.ResourceOf;
 import org.cactoos.text.IoCheckedText;
 import org.cactoos.text.TextOf;
-import org.eolang.parser.ObjectName;
+import org.eolang.parser.OnDefault;
 
 /**
  * Lint by XSL.
@@ -103,7 +103,7 @@ final class LtByXsl implements Lint<XML> {
                     new Defect.Default(
                         this.rule,
                         Severity.parsed(sever.get()),
-                        new ObjectName(xmir).get(),
+                        new OnDefault(xmir).get(),
                         this.lineno(xml),
                         xml.text().get(),
                         LtByXsl.experimental(xml)

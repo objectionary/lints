@@ -6,8 +6,8 @@ sheets:
 asserts:
   - /defects[count(defect[@severity='warning'])=0]
 input: |
-  +tests
-
-  # Test.
-  [] > foo-i32-if-out-of-bounds
-    42 > @
+  # Foo.
+  [] > foo
+    # Test.
+    [] +> foo-i32-if-out-of-bounds
+      42 > @

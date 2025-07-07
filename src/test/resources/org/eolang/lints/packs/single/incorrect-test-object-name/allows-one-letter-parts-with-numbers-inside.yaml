@@ -6,8 +6,8 @@ sheets:
 asserts:
   - /defects[count(defect[@severity='warning'])=0]
 input: |
-  +tests
-
-  # Test.
-  [] > f-1-runs-from-0-km
-    42 > @
+  # Foo.
+  [] > foo
+    # Test.
+    [] +> f-1-runs-from-0-km
+      42 > @

@@ -42,8 +42,8 @@ final class ProgramTest {
             new Program(
                 this.withSource(
                     dir,
-                    "a/b/c/foo.xmir",
-                    "# first.\n[] > foo\n# second.\n[] > foo\n"
+                    "a/b/c/first.xmir",
+                    "+package a.b.c\n+alias ttt.x obj\n\n# First.\n[] > first"
                 )
             ).defects(),
             Matchers.allOf(
@@ -60,10 +60,11 @@ final class ProgramTest {
             new Program(
                 this.withSource(
                     dir,
-                    "bar.xmir",
+                    "foo.xmir",
                     String.join(
                         "\n",
-                        "+unlint unit-test-missing",
+                        "+alias a.b.nowhere",
+                        "+unlint incorrect-alias",
                         "",
                         "# Test.",
                         "[] > foo"
@@ -103,14 +104,14 @@ final class ProgramTest {
 
     @Test
     void createsProgramWithoutOneLint(@Mktmp final Path dir) throws IOException {
-        final String disabled = "unit-test-missing";
+        final String disabled = "incorrect-alias";
         MatcherAssert.assertThat(
             "Defects for disabled lint are not empty, but should be",
             new Program(
                 this.withSource(
                     dir,
                     "bar.xmir",
-                    "# first.\n# second.\n[] > bar\n"
+                    "+alias x.y.ta\n\n# first.\n# second.\n[] > bar\n"
                 )
             ).without(disabled).defects().stream()
                 .filter(defect -> defect.rule().equals(disabled))
@@ -127,21 +128,27 @@ final class ProgramTest {
                 this.withSource(
                     dir,
                     "bar.xmir",
-                    "# first.\n# second.\n[] > bar\n"
+                    "+alias aaa.t\n\n# first.\n# second.\n[] > bar\n"
                 ),
                 this.withSource(
                     dir,
                     "foo-test.xmir",
-                    "# first.\n# second.\n[] > x\n"
+                    String.join(
+                        "\n",
+                        "# Foo.",
+                        "[] > foo",
+                        "  x 2 52 > o",
+                        "  x 1 > i"
+                    )
                 )
-            ).without("unit-test-missing", "unit-test-without-live-file").defects(),
+            ).without("incorrect-alias", "inconsistent-args").defects(),
             Matchers.emptyIterable()
         );
     }
 
     @ParameterizedTest
     @ValueSource(
-        strings = {"unit-test-missing", "unit-test-missing:0"}
+        strings = {"incorrect-alias", "incorrect-alias:1"}
     )
     void catchesBrokenUnlintAfterLintWasRemoved(final String lid) throws IOException {
         MatcherAssert.assertThat(
@@ -152,6 +159,7 @@ final class ProgramTest {
                     new EoSyntax(
                         String.join(
                             "\n",
+                            "+alias x.y.z z",
                             String.format("+unlint %s", lid),
                             "",
                             "# F.",
@@ -159,7 +167,7 @@ final class ProgramTest {
                         )
                     ).parsed()
                 )
-            ).without("unit-test-missing").defects(),
+            ).without("incorrect-alias").defects(),
             Matchers.allOf(
                 Matchers.iterableWithSize(1),
                 Matchers.hasItem(
@@ -187,6 +195,8 @@ final class ProgramTest {
                     new EoSyntax(
                         String.join(
                             "\n",
+                            "+alias ttt.x",
+                            "\n",
                             "# Foo",
                             "[] > foo"
                         )
@@ -195,7 +205,7 @@ final class ProgramTest {
             ).defects(),
             Matchers.hasItem(
                 Matchers.hasToString(
-                    Matchers.containsString("unit-test-missing (WPA) WARNING")
+                    Matchers.containsString("incorrect-alias (WPA) CRITICAL")
                 )
             )
         );

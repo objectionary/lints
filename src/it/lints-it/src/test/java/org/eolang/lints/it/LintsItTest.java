@@ -22,7 +22,7 @@ final class LintsItTest {
     void lintsSource() throws IOException {
         MatcherAssert.assertThat(
             "passes with no exceptions",
-            new Source(new XMLDocument("<object/>")).defects(),
+            new Source(new XMLDocument("<object><o name='foo'/></object>")).defects(),
             Matchers.notNullValue()
         );
     }

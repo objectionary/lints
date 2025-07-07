@@ -55,7 +55,7 @@ final class LtIncorrectUnlintTest {
             new ListOf<>(
                 new LtIncorrectUnlint(List.of("hello")).defects(
                     new EoSyntax(
-                        "+unlint boom"
+                        "+unlint boom\n\n# Foo.\n[] > foo"
                     ).parsed()
                 )
             ).get(0).text(),

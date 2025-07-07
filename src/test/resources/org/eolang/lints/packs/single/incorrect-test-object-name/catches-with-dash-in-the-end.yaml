@@ -7,8 +7,8 @@ asserts:
   - /defects[count(defect[@severity='warning'])=1]
   - /defects/defect[@line='4']
 input: |
-  +tests
-
-  # Test.
-  [] > test-test-
-    42 > foo
+  # Foo.
+  [] > foo
+    # Test.
+    [] +> test-test-
+      42 > foo

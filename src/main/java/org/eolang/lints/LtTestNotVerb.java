@@ -22,7 +22,7 @@ import org.cactoos.io.UncheckedInput;
 import org.cactoos.list.ListOf;
 import org.cactoos.text.TextOf;
 import org.cactoos.text.UncheckedText;
-import org.eolang.parser.ObjectName;
+import org.eolang.parser.OnDefault;
 
 /**
  * Lint that checks test object name is a verb in singular.
@@ -71,10 +71,10 @@ final class LtTestNotVerb implements Lint<XML> {
         final Collection<Defect> defects = new ArrayList<>(0);
         final Xnav xml = new Xnav(xmir.inner());
         final List<Xnav> objects = xml
-            .path("/object[metas/meta[head='tests']]/o[@name]")
+            .path("/object//o[@name and starts-with(@name, '+')]")
             .collect(Collectors.toList());
         for (final Xnav object : objects) {
-            final String name = object.attribute("name").text().get();
+            final String name = object.attribute("name").text().get().replace("+", "");
             final String first = new ListOf<>(
                 this.model.tag(
                     Stream
@@ -91,7 +91,7 @@ final class LtTestNotVerb implements Lint<XML> {
                     new Defect.Default(
                         "unit-test-is-not-verb",
                         Severity.WARNING,
-                        new ObjectName(xmir).get(),
+                        new OnDefault(xmir).get(),
                         Integer.parseInt(object.attribute("line").text().orElse("0")),
                         String.format(
                             "Test object name: \"%s\" doesn't start with verb in singular form",

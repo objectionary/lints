@@ -124,7 +124,7 @@ final class LtObjectIsNotUniqueTest {
                 new MapOf<>(
                     new MapEntry<>(
                         "empty",
-                        new XMLDocument("<object/>")
+                        new XMLDocument("<object><o name='empty'/></object>")
                     )
                 )
             ),

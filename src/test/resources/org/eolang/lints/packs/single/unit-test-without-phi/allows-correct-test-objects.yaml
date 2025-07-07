@@ -6,11 +6,9 @@ sheets:
 asserts:
   - /defects[count(defect[@severity='warning'])=0]
 input: |
-  +tests
-
-  # Test.
-  [] > stdout-tests
+  # Foo.
+  [] > foo
     # Test works.
-    [] > prints-hello-world
+    [] +> prints-hello-world
       stdout > @
         "Hello, world"

@@ -3,33 +3,31 @@
  * SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
  * SPDX-License-Identifier: MIT
 -->
-<program>
-  <objects>
-    <o base="jeo.frame">
-      <!-- Application duality here, since 2 objects have `@as` attribute, and 2 of them don't -->
-      <o base="jeo.int">
-        <o base="org.eolang.number">
-          <o base="Q.org.eolang.bytes">40-10-00-00-00-00-00-00</o>
-        </o>
+<object>
+  <o base="jeo.frame" name="x">
+    <!-- Application duality here, since 2 objects have `@as` attribute, and 2 of them don't -->
+    <o base="jeo.int">
+      <o base="org.eolang.number">
+        <o base="Q.org.eolang.bytes">40-10-00-00-00-00-00-00</o>
       </o>
-      <o base="jeo.int">
-        <o base="org.eolang.number">
-          <o base="Q.org.eolang.bytes">00-00-00-00-00-00-00-00</o>
-        </o>
+    </o>
+    <o base="jeo.int">
+      <o base="org.eolang.number">
+        <o base="Q.org.eolang.bytes">00-00-00-00-00-00-00-00</o>
       </o>
-      <o as="a1bb6b1c-cd14-40e0-bb17-3b2727e8037d-215454445" base="jeo.seq.of0"/>
-      <o base="jeo.int">
-        <o base="org.eolang.number">
-          <o base="Q.org.eolang.bytes">3F-F0-00-00-00-00-00-00</o>
-        </o>
+    </o>
+    <o as="a1bb6b1c-cd14-40e0-bb17-3b2727e8037d-215454445" base="jeo.seq.of0"/>
+    <o base="jeo.int">
+      <o base="org.eolang.number">
+        <o base="Q.org.eolang.bytes">3F-F0-00-00-00-00-00-00</o>
       </o>
-      <o as="ff5f00a8-94a9-4cc3-9d55-a75fde44a5a1-674365733" base="jeo.seq.of1">
-        <o base="org.eolang.string">
-          <o base="Q.org.eolang.bytes">
-            6A-61-76-61-2F-69-6F-2F-49-4F-45-78-63-65-70-74-69-6F-6E
-          </o>
+    </o>
+    <o as="ff5f00a8-94a9-4cc3-9d55-a75fde44a5a1-674365733" base="jeo.seq.of1">
+      <o base="org.eolang.string">
+        <o base="Q.org.eolang.bytes">
+          6A-61-76-61-2F-69-6F-2F-49-4F-45-78-63-65-70-74-69-6F-6E
         </o>
       </o>
     </o>
-  </objects>
-</program>
+  </o>
+</object>

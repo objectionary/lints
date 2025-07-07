@@ -1,0 +1,44 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+lints:
+  - inconsistent-args
+asserts:
+  - /defects[count(defect)=0]
+i16.eo: |
+  # The 16 bits signed integer.
+  # Here `as-bytes` must be a `bytes` object.
+  [as-bytes] > i16
+    as-bytes > @
+    $ > as-i16
+    times -1.as-i64.as-i32.as-i16 > neg
+    as-i32.as-i64 > as-i64
+    as-i64.as-number > as-number
+
+    # Times.
+    [x] > times
+      if. > @
+        or.
+          left.eq 00-00
+          left.eq FF-FF
+        i16 right
+        plus.
+          i16 left
+          i16 right
+      (as-i32.times x.as-i16.as-i32).as-bytes > bts
+      bts.slice 0 2 > left
+      bts.slice 2 2 > right
+text.eo: |
+  # Text.
+  [] > text
+    [times] > repeated
+      if. > @
+        0.gt amount
+        error
+          sprintf
+            "Can't repeat text %d times"
+            * amount
+        text
+          string repeated-bytes
+      origin > bts!
+      times > amount!

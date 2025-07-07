@@ -59,7 +59,7 @@ final class MonoLintsTest {
                 "",
                 "# No comments.",
                 "[] > main",
-                "  QQ.io.stdout",
+                "  QQ.io.stdout > @",
                 "    \"Hello world\""
             )
         ).parsed();

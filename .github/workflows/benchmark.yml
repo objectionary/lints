@@ -7,7 +7,7 @@ name: benchmark
   push:
     branches:
       - master
-    paths-ignore: [ 'README.md', '.github' ]
+    paths-ignore: ['README.md', '.github']
 concurrency:
   group: benchmark-${{ github.ref }}
   cancel-in-progress: true
@@ -64,3 +64,12 @@ jobs:
           assignees: yegor256
           base: master
           sign-commits: true
+  report:
+    name: Create issue on failure
+    needs: benchmark
+    if: failure() && github.event.pull_request == null
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: jayqi/failed-build-issue-action@v1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}

@@ -6,9 +6,13 @@ sheets:
 asserts:
   - /defects[count(defect[@severity='warning'])=0]
 input: |
-  +tests
-
-  # No comments.
-  [] > my-super-test
-    assert > @
-      foo.eq 42
+  # Foo.
+  [] > foo
+    # No comments.
+    [] +> my-super-test
+      assert > @
+        foo.eq 42
+    # No comments.
+    [] +> my-test
+      assert > @
+        foo.eq 42

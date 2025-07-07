@@ -12,7 +12,7 @@
     <defects>
       <xsl:for-each select="/object/metas/meta">
         <xsl:variable name="meta-head" select="head"/>
-        <xsl:variable name="predefined" select="('package', 'alias', 'version', 'tests', 'rt', 'architect', 'home', 'unlint', 'probe', 'spdx')"/>
+        <xsl:variable name="predefined" select="('package', 'alias', 'version', 'rt', 'architect', 'home', 'unlint', 'probe', 'spdx')"/>
         <xsl:if test="not($meta-head = $predefined)">
           <xsl:element name="defect">
             <xsl:variable name="line" select="eo:lineno(@line)"/>
