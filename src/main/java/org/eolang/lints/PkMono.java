@@ -6,6 +6,7 @@ package org.eolang.lints;
 
 import com.jcabi.xml.XML;
 import javax.annotation.concurrent.ThreadSafe;
+import org.cactoos.func.Chained;
 import org.cactoos.iterable.IterableEnvelope;
 import org.cactoos.iterable.Joined;
 import org.cactoos.iterable.Mapped;
@@ -47,7 +48,7 @@ final class PkMono extends IterableEnvelope<Lint<XML>> {
         super(
             new Joined<>(
                 new Mapped<Lint<XML>>(
-                    LtUnlint::new,
+                    new Chained<>(LtUnlint::new, LtDfSticky::new),
                     new Joined<Lint<XML>>(
                         lints,
                         new ListOf<>(

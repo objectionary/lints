@@ -1,0 +1,13 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/critical/atom-with-data.xsl
+asserts:
+  - /defects[count(defect)=0]
+input: |
+  # Boom.
+  [] > boom ?
+    # Test.
+    [] +> tests-explosion
+      boom 123 4 > @

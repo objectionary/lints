@@ -2,9 +2,10 @@
 +home https://www.eolang.org
 +package canonical
 +version 0.0.0
-+spdx SPDX-FileCopyrightText Copyright (c) 2016-2025 Objectionary.com
++spdx SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
 +spdx SPDX-License-Identifier: MIT
 +unlint unused-void-attr
++unlint unit-test-missing
 
 # Times table, which is a canonical example of EO program.
 [start] > canonical

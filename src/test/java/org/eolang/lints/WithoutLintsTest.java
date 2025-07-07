@@ -31,10 +31,7 @@ final class WithoutLintsTest {
                 lid
             ),
             new WithoutLints<>(
-                new ListOf<>(
-                    new LtUnitTestMissing(),
-                    new LtUnitTestWithoutLiveFile()
-                ),
+                new ListOf<>(new LtAtomIsNotUnique()),
                 lid
             ).iterator().next().name(),
             Matchers.not(Matchers.equalTo(lid))

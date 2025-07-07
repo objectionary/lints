@@ -18,7 +18,7 @@ import java.util.stream.IntStream;
 import org.cactoos.io.ResourceOf;
 import org.cactoos.text.TextOf;
 import org.cactoos.text.UncheckedText;
-import org.eolang.parser.ObjectName;
+import org.eolang.parser.OnDefault;
 
 /**
  * Object is not unique.
@@ -37,7 +37,7 @@ final class LtObjectIsNotUnique implements Lint<Map<String, XML>> {
         final Collection<Defect> defects = new ArrayList<>(0);
         for (final XML xmir : pkg.values()) {
             final Xnav xml = new Xnav(xmir.inner());
-            final String src = new ObjectName(xmir).get();
+            final String src = new OnDefault(xmir).get();
             for (final XML oth : pkg.values()) {
                 final Xnav second = new Xnav(oth.inner());
                 if (Objects.equals(oth, xmir)) {
@@ -53,7 +53,7 @@ final class LtObjectIsNotUnique implements Lint<Map<String, XML>> {
                             new Defect.Default(
                                 this.name(),
                                 Severity.ERROR,
-                                new ObjectName(oth).get(),
+                                new OnDefault(oth).get(),
                                 Integer.parseInt(object.getValue()),
                                 String.format(
                                     "The object name \"%s\" is not unique, original object was found in \"%s\"",

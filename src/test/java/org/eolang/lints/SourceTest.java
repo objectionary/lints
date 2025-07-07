@@ -79,13 +79,16 @@ final class SourceTest {
                         "+package com.example",
                         "+version 0.0.0",
                         // REUSE-IgnoreStart
-                        "+spdx SPDX-FileCopyrightText Copyright (c) 2016-2025 Objectionary.com",
+                        "+spdx SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com",
                         "+spdx SPDX-License-Identifier: MIT",
                         // REUSE-IgnoreEnd
                         "",
                         "# This is just a test object with no functionality.",
                         "[i] > foo",
-                        "  i > x"
+                        "  i > @",
+                        "  # This is real unit test for object with no functionality.",
+                        "  [] +> does-something",
+                        "    foo 1 > @"
                     )
                 ).parsed()
             ).defects(),
@@ -111,6 +114,8 @@ final class SourceTest {
                             "+unlint unsorted-metas",
                             "+unlint mandatory-spdx",
                             "+unlint no-attribute-formation",
+                            "+unlint unit-test-missing",
+                            "",
                             "# Test.",
                             "[] > foo"
                         )
@@ -176,14 +181,8 @@ final class SourceTest {
                             "",
                             "# комментарий здесь",
                             "[] > foo-bar",
-                            "  (bar 42) > zzz",
-                            "  44 > zzz",
-                            "",
-                            "[] > foo-bar",
-                            "",
-                            "[] > another",
-                            "",
-                            "42 > forty-two"
+                            "  boom > @",
+                            "    bar 42 > zzz"
                         )
                     )
                 ).parsed()
@@ -263,7 +262,8 @@ final class SourceTest {
                 "mandatory-package",
                 "comment-too-short",
                 "mandatory-spdx",
-                "no-attribute-formation"
+                "no-attribute-formation",
+                "unit-test-missing"
             ).defects(),
             Matchers.emptyIterable()
         );
@@ -286,7 +286,9 @@ final class SourceTest {
                         "  QQ.io.stdout > @",
                         "    QQ.txt.sprintf",
                         "      \"Hello %s\"",
-                        "      * c"
+                        "      * c",
+                        "  [] +> starts-correctly",
+                        "    main 42 > @"
                     )
                 ).parsed()
             ).without("mandatory-spdx").defects(),
@@ -318,7 +320,8 @@ final class SourceTest {
                 "mandatory-package",
                 "mandatory-spdx",
                 "comment-too-short",
-                "no-attribute-formation"
+                "no-attribute-formation",
+                "unit-test-missing"
             ).defects(),
             Matchers.allOf(
                 Matchers.iterableWithSize(1),
