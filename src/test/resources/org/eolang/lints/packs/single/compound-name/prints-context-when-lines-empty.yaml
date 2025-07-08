@@ -1,0 +1,13 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/names/compound-name.xsl
+asserts:
+  - /defects[count(defect[@context and @severity='warning'])=1]
+document: |
+  <object>
+    <o>
+      <o base="foo" name="compound-name"/>
+    </o>
+  </object>

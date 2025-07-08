@@ -20,7 +20,8 @@ final class VoidXpathTest {
     @CsvSource(
         {
             "main.$.x.∅, //o[@name='main']/o[@base='$.x']",
-            "foo.foo.foo.$.x.∅, //o[@name='foo']/o[@name='foo']/o[@name='foo']/o[@base='$.x']"
+            "foo.foo.foo.$.x.∅, //o[@name='foo']/o[@name='foo']/o[@name='foo']/o[@base='$.x']",
+            "@.foo.:anonymous.$.x.∅, //o[@name='@']/o[@name='foo']/o/o[@base='$.x']"
         }
     )
     void convertsToXpath(final String fqn, final String xpath) {
