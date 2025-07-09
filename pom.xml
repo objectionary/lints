@@ -354,7 +354,7 @@
           <plugin>
             <groupId>org.eolang</groupId>
             <artifactId>hone-maven-plugin</artifactId>
-            <version>0.0.36</version>
+            <version>0.1.0</version>
             <executions>
               <execution>
                 <goals>
