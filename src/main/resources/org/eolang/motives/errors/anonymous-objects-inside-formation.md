@@ -19,7 +19,7 @@ Correct:
 ```xml
 <object>
   <o line="1" name="li">
-    <o line="2">
+    <o line="2" name="nested">
       <o line="3" base="Q.org.eolang.x" name="somewhat"/>
     </o>
   </o>
