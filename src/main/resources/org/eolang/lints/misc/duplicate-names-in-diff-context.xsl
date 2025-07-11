@@ -10,8 +10,8 @@
   <xsl:output encoding="UTF-8" method="xml"/>
   <xsl:template match="/">
     <defects>
-      <xsl:for-each select="//o[not(eo:special(@name)) and not(@base='∅')]">
-        <xsl:variable name="namesakes" select="//o[@name=current()/@name and not(@base='∅')]"/>
+      <xsl:for-each select="//o[not(ancestor::o[eo:test-attr(.)]) and not(eo:special(@name)) and not(@base='∅')]">
+        <xsl:variable name="namesakes" select="//o[not(ancestor::o[eo:test-attr(.)]) and @name=current()/@name and not(@base='∅')]"/>
         <xsl:if test="count($namesakes)&gt;1">
           <defect>
             <xsl:variable name="line" select="eo:lineno(@line)"/>
