@@ -1,0 +1,16 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/errors/anonymous-objects-inside-formation.xsl
+asserts:
+  - /defects[count(defect[@severity='error'])=1]
+  - /defects/defect[@line='1']
+document: |
+  <object>
+    <o line="1" name="li">
+      <o line="2">
+        <o line="3" base="Q.org.eolang.x" name="somewhat"/>
+      </o>
+    </o>
+  </object>
