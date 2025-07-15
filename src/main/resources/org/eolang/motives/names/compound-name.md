@@ -1,6 +1,6 @@
-# Attribute name should not be compound
+# Attribute name shouldn't be compound
 
-In the code, all objects that are not formations
+In the code, all objects that aren't formations
 should have a single word in their name.
 This is because if the name is compound,
 it means the context in the program is too large,

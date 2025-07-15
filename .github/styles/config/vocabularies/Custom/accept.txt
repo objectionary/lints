@@ -14,3 +14,4 @@ JVM(s)?
 XMIR
 SPDX
 ASCII
+inlined
