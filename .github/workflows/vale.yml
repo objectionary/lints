@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: MIT
 ---
 name: vale
-'on': [ pull_request ]
+'on': [pull_request]
 jobs:
   vale:
     runs-on: ubuntu-latest
