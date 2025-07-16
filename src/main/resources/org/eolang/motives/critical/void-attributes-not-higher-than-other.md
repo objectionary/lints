@@ -1,4 +1,4 @@
-# Void Attributes (`∅`) Not Higher Than Other
+# Void attributes `∅` not higher than other
 
 In [XMIR], all void attributes must be placed on top of other non-void
 attributes.

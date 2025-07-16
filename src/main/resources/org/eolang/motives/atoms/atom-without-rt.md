@@ -1,4 +1,4 @@
-# Atom Without `rt` Meta
+# Atom without `rt` meta
 
 Defined atom must have `+rt` meta.
 

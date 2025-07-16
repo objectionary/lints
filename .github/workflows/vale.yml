@@ -1,0 +1,16 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+name: vale
+'on': [pull_request]
+jobs:
+  vale:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: errata-ai/vale-action@v2.1.1
+        with:
+          files: 'src/main/resources/org/eolang/motives'
+          fail_on_error: 'true'
+          reporter: 'github-pr-review'
+          filter_mode: 'nofilter'

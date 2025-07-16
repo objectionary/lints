@@ -1,4 +1,4 @@
-# Atom With Data
+# Atom with data
 
 Each atom in [XMIR], must not have the text data inside.
 

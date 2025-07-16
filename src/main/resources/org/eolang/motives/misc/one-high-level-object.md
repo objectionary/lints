@@ -1,4 +1,4 @@
-# One High-Level Object
+# One high-level object
 
 Every `.eo` file must have only one high-level object inside.
 

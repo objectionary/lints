@@ -1,4 +1,4 @@
-# Atom and Base
+# Atom and base
 
 In [XMIR], atom object can not have `@base` attribute.
 

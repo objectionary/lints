@@ -1,4 +1,4 @@
-# Comment Too Short
+# Comment too short
 
 Comment must be 32+ characters long.
 

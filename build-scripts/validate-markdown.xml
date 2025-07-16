@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<!--
+ * SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+ * SPDX-License-Identifier: MIT
+-->
+<project name="validate-markdown" default="validate">
+  <target name="validate">
+    <property environment="env"/>
+    <available file="vale" filepath="${env.PATH}" property="vale.present"/>
+    <if>
+      <equals arg1="${vale.present}" arg2="true"/>
+      <then>
+        <condition property="os.windows">
+          <os family="windows"/>
+        </condition>
+        <if>
+          <equals arg1="${os.windows}" arg2="true"/>
+          <then>
+            <exec executable="cmd" failonerror="true">
+              <arg line="/c vale"/>
+              <arg line="sync"/>
+            </exec>
+            <exec executable="cmd" failonerror="true">
+              <arg line="/c vale"/>
+              <arg line="src/main/resources/org/eolang/motives"/>
+            </exec>
+          </then>
+          <else>
+            <exec executable="vale" failonerror="true">
+              <arg line="sync"/>
+            </exec>
+            <exec executable="vale" failonerror="true">
+              <arg line="src/main/resources/org/eolang/motives"/>
+            </exec>
+          </else>
+        </if>
+      </then>
+      <else>
+        <echo message="Vale is not available in PATH"/>
+      </else>
+    </if>
+  </target>
+</project>

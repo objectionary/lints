@@ -1,4 +1,4 @@
-# Unused Void Attr
+# Unused void attr
 
 Declared void attribute should be used inside the formation.
 

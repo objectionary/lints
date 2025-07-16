@@ -1,4 +1,4 @@
-# Architect Duplicate
+# Architect duplicate
 
 Each `.eo` file must have only one architect.
 

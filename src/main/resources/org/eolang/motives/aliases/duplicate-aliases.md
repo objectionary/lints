@@ -1,4 +1,4 @@
-# Duplicate Aliases
+# Duplicate aliases
 
 Object's aliases must not be duplicated.
 

@@ -1,6 +1,6 @@
-# Redundant Object
+# Redundant object
 
-If named object used only once, it's treated as "redundant", and can be
+If named object used only once, it's treated as "redundant" and can be
 inlined.
 
 Incorrect:

@@ -1,6 +1,6 @@
-# Empty `+spdx` Tail
+# Empty `+spdx` tail
 
-The special meta attribute `+spdx` cannot have an empty tail.
+The special meta attribute `+spdx` can't have an empty tail.
 
 Incorrect:
 

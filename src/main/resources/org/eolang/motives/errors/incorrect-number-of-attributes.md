@@ -1,4 +1,4 @@
-# Incorrect Number Of Attributes
+# Incorrect number of attributes
 
 The number of provided attributes to the object should match with the number of
 its declared attributes.
