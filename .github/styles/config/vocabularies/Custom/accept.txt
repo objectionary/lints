@@ -15,4 +15,4 @@ XMIR
 SPDX
 ASCII
 inlined
-application
+[Aa]pplication
