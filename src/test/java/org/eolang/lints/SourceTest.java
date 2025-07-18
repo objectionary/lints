@@ -81,7 +81,8 @@ final class SourceTest {
                         // REUSE-IgnoreStart
                         "+spdx SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com",
                         "+spdx SPDX-License-Identifier: MIT",
-                        // REUSE-IgnoreEnd
+                        // REUSE-IgnoreEnd,
+                        "+unlint application-without-as-attributes",
                         "",
                         "# This is just a test object with no functionality.",
                         "[i] > foo",
@@ -280,6 +281,7 @@ final class SourceTest {
                         "+home https://github.com/objectionary/eo",
                         "+package f",
                         "+version 0.0.0",
+                        "+unlint application-without-as-attributes",
                         "",
                         "# No comments.",
                         "[c] > main",
