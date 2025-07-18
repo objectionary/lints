@@ -1,6 +1,7 @@
 # Application without `@as` attributes
 
-In the [XMIR], in the application, all inners must contain `@as` attributes.
+In the [XMIR], in the application, all inner objects must contain `@as`
+attributes.
 
 Incorrect:
 
