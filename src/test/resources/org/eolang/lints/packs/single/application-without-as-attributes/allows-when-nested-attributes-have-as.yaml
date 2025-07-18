@@ -9,7 +9,7 @@ document: |
   <object>
     <o name="app">
       <o base="Q.org.eolang.start" name="@" line="2">
-        <o base="Q.org.eoang.x" name="i" as="α0" line="3">
+        <o base="Q.org.eolang.x" name="i" as="α0" line="3">
           <o base="Q.org.eolang.nest" as="α1" line="4"/>
         </o>
       </o>
