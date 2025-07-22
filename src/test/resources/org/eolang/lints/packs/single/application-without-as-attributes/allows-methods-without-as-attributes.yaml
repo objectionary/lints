@@ -6,9 +6,11 @@ sheets:
 asserts:
   - /defects[count(defect)=0]
 document: |
-  <o base=".bar">
-    <o base="Q.baz">
-      <o base="Q.x" as="α0"/>
+  <object>
+    <o base=".bar">
+      <o base="Q.baz">
+        <o base="Q.x" as="α0"/>
+      </o>
+      <o base="Q.y" as="α0"/>
     </o>
-    <o base="Q.y" as="α0"/>
-  </o>
+  </object>
