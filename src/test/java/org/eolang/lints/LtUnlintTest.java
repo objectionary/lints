@@ -172,4 +172,56 @@ final class LtUnlintTest {
             Matchers.equalTo(true)
         );
     }
+
+    @Test
+    void supportsLineRanges() throws IOException {
+        MatcherAssert.assertThat(
+            "Defects are not empty, but they should",
+            new LtUnlint(new LtByXsl("comments/comment-without-dot")).defects(
+                new EoSyntax(
+                    String.join(
+                        "\n",
+                        "+unlint comment-without-dot:4-6",
+                        "",
+                        "# No dot here",
+                        "[] > foo",
+                        "  # and here",
+                        "  [] > bar"
+                    )
+                ).parsed()
+            ),
+            Matchers.emptyIterable()
+        );
+    }
+
+    @Test
+    void catchesDefectsIfUnlintsOutOfRange() throws IOException {
+        MatcherAssert.assertThat(
+            "Resulted defects do not match with expected",
+            new LtUnlint(new LtByXsl("comments/comment-without-dot")).defects(
+                new EoSyntax(
+                    String.join(
+                        "\n",
+                        "+unlint comment-without-dot:2-4",
+                        "",
+                        "# No dot here",
+                        "[] > x",
+                        "  # and here",
+                        "  [] > y"
+                    )
+                ).parsed()
+            ),
+            Matchers.allOf(
+                Matchers.iterableWithSize(1),
+                Matchers.hasItem(
+                    Matchers.hasToString(
+                        Matchers.allOf(
+                            Matchers.containsString("comment-without-dot WARNING"),
+                            Matchers.containsString(":6")
+                        )
+                    )
+                )
+            )
+        );
+    }
 }
