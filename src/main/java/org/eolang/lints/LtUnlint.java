@@ -5,14 +5,13 @@
 package org.eolang.lints;
 
 import com.github.lombrozo.xnav.Xnav;
+import com.google.common.base.Splitter;
 import com.jcabi.xml.XML;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import org.cactoos.list.ListOf;
@@ -109,8 +108,10 @@ final class LtUnlint implements Lint<XML> {
      * @return True - if in range, False - if out of range
      */
     private static boolean inRange(final int line, final String unlint, final String lint) {
-        final String[] range = unlint.replace(String.format("%s:", lint), "").split("-");
-        return line >= Integer.parseInt(range[0]) && line <= Integer.parseInt(range[1]);
+        final List<String> range = Splitter.on('-').splitToList(
+            unlint.replace(String.format("%s:", lint), "")
+        );
+        return line >= Integer.parseInt(range.get(0)) && line <= Integer.parseInt(range.get(1));
     }
 
 }

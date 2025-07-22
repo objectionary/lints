@@ -48,17 +48,15 @@ final class LtUnlintTest {
     void unlintsGrainy() throws IOException {
         MatcherAssert.assertThat(
             "Only one defect should be unlinted",
-            new LtUnlint(
-                new LtByXsl("comments/comment-without-dot")
-            ).defects(
+            new LtUnlint(new LtAsciiOnly()).defects(
                 new EoSyntax(
                     String.join(
                         "\n",
-                        "+unlint comment-without-dot:4",
+                        "+unlint ascii-only:4",
                         "",
-                        "# Foo",
+                        "# привет.",
                         "[] > foo",
-                        "  # Bar",
+                        "  # дорогой!",
                         "  [] > bar"
                     )
                 ).parsed()
@@ -68,7 +66,7 @@ final class LtUnlintTest {
                 Matchers.hasItem(
                     Matchers.hasToString(
                         Matchers.allOf(
-                            Matchers.containsString("comment-without-dot WARNING"),
+                            Matchers.containsString("ascii-only ERROR"),
                             Matchers.containsString(":6")
                         )
                     )
@@ -81,18 +79,16 @@ final class LtUnlintTest {
     void unlintsMultipleDefectsWithGranularUnlint() throws IOException {
         MatcherAssert.assertThat(
             "All defects should be unlinted",
-            new LtUnlint(
-                new LtByXsl("comments/comment-without-dot")
-            ).defects(
+            new LtUnlint(new LtAsciiOnly()).defects(
                 new EoSyntax(
                     String.join(
                         "\n",
-                        "+unlint comment-without-dot:5",
-                        "+unlint comment-without-dot:7",
+                        "+unlint ascii-only:5",
+                        "+unlint ascii-only:7",
                         "",
-                        "# Foo",
+                        "# Not ascii text: привет!",
                         "[] > foo",
-                        "  # Bar",
+                        "  # Not ascii text: 你好，杰夫!",
                         "  [] > bar"
                     )
                 ).parsed()
