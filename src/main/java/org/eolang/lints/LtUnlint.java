@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import org.cactoos.list.ListOf;
@@ -65,7 +67,9 @@ final class LtUnlint implements Lint<XML> {
         final AtomicBoolean added = new AtomicBoolean(false);
         granular.forEach(
             unlint -> {
-                if (LtUnlint.LINE_NUMBER.matcher(unlint).matches()) {
+                if (unlint.matches(String.format("%s:\\d+-\\d+", lname))) {
+                    problematic.removeIf(line -> LtUnlint.inRange(line, unlint, lname));
+                } else if (LtUnlint.LINE_NUMBER.matcher(unlint).matches()) {
                     final List<String> split = new ListOf<>(unlint.split(":"));
                     final int lineno = Integer.parseInt(
                         split.get(1)
@@ -95,6 +99,18 @@ final class LtUnlint implements Lint<XML> {
     @Override
     public String motive() throws IOException {
         return this.origin.motive();
+    }
+
+    /**
+     * Is the line in the unlint range?
+     * @param line The line
+     * @param unlint Unlint expression
+     * @param lint Lint name
+     * @return True - if in range, False - if out of range
+     */
+    private static boolean inRange(final int line, final String unlint, final String lint) {
+        final String[] range = unlint.replace(String.format("%s:", lint), "").split("-");
+        return line >= Integer.parseInt(range[0]) && line <= Integer.parseInt(range[1]);
     }
 
 }
