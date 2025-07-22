@@ -6,6 +6,7 @@ sheets:
 asserts:
   - /defects[count(defect[@severity='error'])=1]
   - /defects/defect[@line='2']
+  - /defects/defect[contains(normalize-space(), 'Q.org.eolang.f')]
 document: |
   <object>
     <o name="app">
