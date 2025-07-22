@@ -244,12 +244,6 @@
       <artifactId>language-en</artifactId>
       <version>6.5</version>
       <scope>test</scope>
-      <exclusions>
-        <exclusion>
-          <groupId>org.apache.commons</groupId>
-          <artifactId>commons-lang3</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <dependency>
       <groupId>com.jcabi</groupId>
