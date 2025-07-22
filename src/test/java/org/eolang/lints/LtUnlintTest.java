@@ -224,4 +224,25 @@ final class LtUnlintTest {
             )
         );
     }
+
+    @Test
+    void catchesAllOutOfRangeDefects() throws IOException {
+        MatcherAssert.assertThat(
+            "Size of defects does not match with expected",
+            new LtUnlint(new LtAsciiOnly()).defects(
+                new EoSyntax(
+                    String.join(
+                        "\n",
+                        "+unlint ascii-only:10-55",
+                        "",
+                        "# 致性是关键",
+                        "[] > main",
+                        "  # 大成果是目标",
+                        "  [] > run"
+                    )
+                ).parsed()
+            ),
+            Matchers.iterableWithSize(2)
+        );
+    }
 }
