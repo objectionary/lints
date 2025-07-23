@@ -67,7 +67,7 @@ final class LtUnlint implements Lint<XML> {
         granular.forEach(
             unlint -> {
                 if (unlint.matches(String.format("%s:\\d+-\\d+", lname))) {
-                    problematic.removeIf(line -> LtUnlint.inRange(line, unlint, lname));
+                    problematic.removeIf(new UnlintInRange(unlint));
                 } else if (LtUnlint.LINE_NUMBER.matcher(unlint).matches()) {
                     final List<String> split = new ListOf<>(unlint.split(":"));
                     final int lineno = Integer.parseInt(
@@ -98,20 +98,6 @@ final class LtUnlint implements Lint<XML> {
     @Override
     public String motive() throws IOException {
         return this.origin.motive();
-    }
-
-    /**
-     * Is the line in the unlint range?
-     * @param line The line
-     * @param unlint Unlint expression
-     * @param lint Lint name
-     * @return True - if in range, False - if out of range
-     */
-    private static boolean inRange(final int line, final String unlint, final String lint) {
-        final List<String> range = Splitter.on('-').splitToList(
-            unlint.replace(String.format("%s:", lint), "")
-        );
-        return line >= Integer.parseInt(range.get(0)) && line <= Integer.parseInt(range.get(1));
     }
 
 }
