@@ -39,4 +39,33 @@ final class DefectMissingTest {
             Matchers.equalTo(true)
         );
     }
+
+    @Test
+    void returnsTrueWhenLineOutOfRange() {
+        MatcherAssert.assertThat(
+            "Defect should not be missing, but it was",
+            new DefectMissing(new MapOf<>("app", new ListOf<>(1, 3, 5)), new ListOf<>()).apply(
+                "app:6-15"
+            ),
+            Matchers.equalTo(true)
+        );
+    }
+
+    @Test
+    void returnsFalseWhenLineInTheRange() {
+        MatcherAssert.assertThat(
+            "Defect should be missing, but it was not",
+            new DefectMissing(new MapOf<>("div-by-zero", new ListOf<>(3, 6)), new ListOf<>())
+                .apply("div-by-zero:3-6")
+        );
+    }
+
+    @Test
+    void returnsFalseWhenRangeCoversTheLine() {
+        MatcherAssert.assertThat(
+            "Defect should be missing, but it was not",
+            new DefectMissing(new MapOf<>("something", new ListOf<>(3, 6)), new ListOf<>())
+                .apply("something:3-10")
+        );
+    }
 }
