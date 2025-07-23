@@ -235,4 +235,87 @@ final class LtUnlintNonExistingDefectWpaTest {
             Matchers.hasSize(Matchers.greaterThan(0))
         );
     }
+
+    @Test
+    void allowsUnlintForDefectsInTheLineRange() throws IOException {
+        MatcherAssert.assertThat(
+            "Defects are not empty, but they should",
+            new LtUnlintNonExistingDefectWpa(
+                new ListOf<>(new LtInconsistentArgs()),
+                new ListOf<>()
+            ).defects(
+                new MapOf<>(
+                    "main",
+                    new EoSyntax(
+                        String.join(
+                            "\n",
+                            "+unlint inconsistent-args:5-7",
+                            "",
+                            "# Main.",
+                            "[] > main",
+                            "  fork > parent",
+                            "  fork parent > child",
+                            "  fork child parent > subchild"
+                        )
+                    ).parsed()
+                )
+            ),
+            Matchers.emptyIterable()
+        );
+    }
+
+    @Test
+    void catchesUnlintWithOutOfRangeLines() throws IOException {
+        MatcherAssert.assertThat(
+            "Defects are empty, but they should not",
+            new LtUnlintNonExistingDefectWpa(
+                new ListOf<>(new LtInconsistentArgs()),
+                new ListOf<>()
+            ).defects(
+                new MapOf<>(
+                    "main",
+                    new EoSyntax(
+                        String.join(
+                            "\n",
+                            "+unlint inconsistent-args:12-44",
+                            "",
+                            "# Semaphore.",
+                            "[] > sem",
+                            "  p 1 > lock-one",
+                            "  p 1 1 > lock-more"
+                        )
+                    ).parsed()
+                )
+            ),
+            Matchers.iterableWithSize(1)
+        );
+    }
+
+    @Test
+    void catchesUnlintWithSomeLineOutOfRange() throws IOException {
+        MatcherAssert.assertThat(
+            "Defects are empty, but they should not",
+            new LtUnlintNonExistingDefectWpa(
+                new ListOf<>(new LtInconsistentArgs()),
+                new ListOf<>()
+            ).defects(
+                new MapOf<>(
+                    "main",
+                    new EoSyntax(
+                        String.join(
+                            "\n",
+                            "+unlint inconsistent-args:1-5",
+                            "",
+                            "# Object that represents Jeffrey from a real world.",
+                            "[] > jeff",
+                            "  send 0 > content",
+                            "  send content \"boss@google.com\" > emailed",
+                            "  send emailed > @"
+                        )
+                    ).parsed()
+                )
+            ),
+            Matchers.iterableWithSize(1)
+        );
+    }
 }

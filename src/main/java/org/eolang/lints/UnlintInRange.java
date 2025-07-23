@@ -7,6 +7,7 @@ package org.eolang.lints;
 import com.google.common.base.Splitter;
 import java.util.List;
 import java.util.function.Predicate;
+import org.cactoos.list.ListOf;
 
 /**
  * Does unlint in the range?
@@ -29,7 +30,9 @@ final class UnlintInRange implements Predicate<Integer> {
 
     @Override
     public boolean test(final Integer line) {
-        final String lint = this.unlint.replace("+unlint", "").split(":")[0];
+        final String lint = new ListOf<>(
+            Splitter.on(':').split(this.unlint.replace("+unlint", ""))
+        ).get(0);
         final List<String> range = Splitter.on('-').splitToList(
             this.unlint.replace(String.format("%s:", lint), "")
         );

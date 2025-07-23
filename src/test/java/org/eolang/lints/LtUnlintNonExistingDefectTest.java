@@ -200,7 +200,7 @@ final class LtUnlintNonExistingDefectTest {
     }
 
     @Test
-    void catchesUnlintsWithOutOfRangeLines() throws IOException {
+    void catchesUnlintWithOutOfRangeLines() throws IOException {
         MatcherAssert.assertThat(
             "Defects are empty, but they should not",
             new LtUnlintNonExistingDefect(

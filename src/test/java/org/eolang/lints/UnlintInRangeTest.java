@@ -10,7 +10,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
 /**
- * Tests for {@link UnlintInRange}.l
+ * Tests for {@link UnlintInRange}.
  *
  * @since 0.0.54
  */

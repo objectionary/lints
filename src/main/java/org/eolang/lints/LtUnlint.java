@@ -5,7 +5,6 @@
 package org.eolang.lints;
 
 import com.github.lombrozo.xnav.Xnav;
-import com.google.common.base.Splitter;
 import com.jcabi.xml.XML;
 import java.io.IOException;
 import java.util.ArrayList;
