@@ -186,7 +186,7 @@ final class LtUnlintNonExistingDefectTest {
                 new EoSyntax(
                     String.join(
                         "\n",
-                        "+unlint ascii-only:3-5",
+                        "+unlint ascii-only:4-6",
                         "",
                         "# 应用程序.",
                         "[] > app",
@@ -210,17 +210,16 @@ final class LtUnlintNonExistingDefectTest {
                 new EoSyntax(
                     String.join(
                         "\n",
-                        "+unlint ascii-only:6-10",
-                        // it thinks that [6-10] and lines [4, 6] is not missing, though we are missing 4
+                        "+unlint ascii-only:7-10",
                         "",
                         "# 应用程序.",
-                        "[] > app",
+                        "[] > main",
                         "  # 你好，杰夫!",
                         "  [] > say-hello"
                     )
                 ).parsed()
             ),
-            Matchers.iterableWithSize(2)
+            Matchers.iterableWithSize(1)
         );
     }
 }

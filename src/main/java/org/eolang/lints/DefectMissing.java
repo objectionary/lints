@@ -8,7 +8,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import org.cactoos.set.SetOf;
 
 /**
@@ -49,7 +51,7 @@ final class DefectMissing implements Function<String, Boolean> {
         final String name = split[0];
         final List<Integer> lines = this.defects.get(name);
         if (unlint.matches(String.format("%s:\\d+-\\d+", name))) {
-            missing = lines.stream().noneMatch(new UnlintInRange(unlint));
+            missing = !lines.stream().allMatch(new UnlintInRange(unlint));
         } else {
             final Set<String> names;
             if (this.defects != null) {
