@@ -1,0 +1,17 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/errors/application-without-as-attributes.xsl
+asserts:
+  - /defects[count(defect[@severity='error'])=1]
+  - /defects/defect[@line='2']
+  - /defects/defect[contains(normalize-space(), 'Q.org.eolang.f')]
+document: |
+  <object>
+    <o name="app">
+      <o base="Q.org.eolang.f" name="@" line="2">
+        <o base="Q.org.eoang.stdout" line="3"/>
+      </o>
+    </o>
+  </object>

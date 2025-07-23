@@ -1,0 +1,16 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/errors/application-without-as-attributes.xsl
+asserts:
+  - /defects[count(defect)=0]
+document: |
+  <object>
+    <o base=".bar">
+      <o base="Q.baz">
+        <o base="Q.x" as="α0"/>
+      </o>
+      <o base="Q.y" as="α0"/>
+    </o>
+  </object>
