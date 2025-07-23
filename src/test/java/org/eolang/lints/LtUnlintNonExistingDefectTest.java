@@ -174,4 +174,28 @@ final class LtUnlintNonExistingDefectTest {
             Matchers.hasSize(Matchers.greaterThan(0))
         );
     }
+
+    @Test
+    void allowsUnlintForDefectsInTheLineRange() throws IOException {
+        MatcherAssert.assertThat(
+            "Defects are not empty, but they should",
+            new LtUnlintNonExistingDefect(
+                new ListOf<>(new LtAsciiOnly()),
+                new ListOf<>()
+            ).defects(
+                new EoSyntax(
+                    String.join(
+                        "\n",
+                        "+unlint ascii-only:3-5",
+                        "",
+                        "# 应用程序.",
+                        "[] > app",
+                        "  # 主函数.",
+                        "  [] > main"
+                    )
+                ).parsed()
+            ),
+            Matchers.emptyIterable()
+        );
+    }
 }
