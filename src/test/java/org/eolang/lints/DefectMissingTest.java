@@ -56,7 +56,8 @@ final class DefectMissingTest {
         MatcherAssert.assertThat(
             "Defect should be missing, but it was not",
             new DefectMissing(new MapOf<>("div-by-zero", new ListOf<>(3, 6)), new ListOf<>())
-                .apply("div-by-zero:3-6")
+                .apply("div-by-zero:3-6"),
+            Matchers.equalTo(false)
         );
     }
 
@@ -65,7 +66,8 @@ final class DefectMissingTest {
         MatcherAssert.assertThat(
             "Defect should be missing, but it was not",
             new DefectMissing(new MapOf<>("something", new ListOf<>(3, 6)), new ListOf<>())
-                .apply("something:3-10")
+                .apply("something:3-10"),
+            Matchers.equalTo(false)
         );
     }
 }

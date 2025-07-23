@@ -47,18 +47,22 @@ final class DefectMissing implements Function<String, Boolean> {
         final boolean missing;
         final String[] split = unlint.split(":", -1);
         final String name = split[0];
-        final Set<String> names;
-        if (this.defects != null) {
-            names = this.defects.keySet();
+        final List<Integer> lines = this.defects.get(name);
+        if (unlint.matches(String.format("%s:\\d+-\\d+", name))) {
+            missing = lines.stream().noneMatch(new UnlintInRange(unlint));
         } else {
-            names = new SetOf<>();
-        }
-        if (split.length > 1) {
-            final List<Integer> lines = this.defects.get(name);
-            missing = (!names.contains(name) || !lines.contains(Integer.parseInt(split[1])))
-                && !this.excluded.contains(name);
-        } else {
-            missing = !names.contains(name) && !this.excluded.contains(name);
+            final Set<String> names;
+            if (this.defects != null) {
+                names = this.defects.keySet();
+            } else {
+                names = new SetOf<>();
+            }
+            if (split.length > 1) {
+                missing = (!names.contains(name) || !lines.contains(Integer.parseInt(split[1])))
+                    && !this.excluded.contains(name);
+            } else {
+                missing = !names.contains(name) && !this.excluded.contains(name);
+            }
         }
         return missing;
     }
