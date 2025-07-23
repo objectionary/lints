@@ -12,8 +12,13 @@ import java.util.function.Function;
 import org.cactoos.set.SetOf;
 
 /**
- * Does defect missing.
+ * Is defect missing?
  * @since 0.0.44
+ * @todo #671:45min Adjust `DefectMissing` to handle unlints with line ranges.
+ *  Currently we don't support such line ranges in this and {@link LtUnlintNonExistingDefectWpa}
+ *  lint, but we should, since {@link LtUnlint} supports them. If we will add the support of line
+ *  ranges here, `unlint-non-existing-defect` in both scopes should catch up it. Don't forget to
+ *  add tests for both scopes.
  */
 final class DefectMissing implements Function<String, Boolean> {
 

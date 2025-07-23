@@ -193,6 +193,11 @@
       </exclusions>
     </dependency>
     <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <!-- version from the parent pom -->
+    </dependency>
+    <dependency>
       <groupId>com.yegor256</groupId>
       <artifactId>mktmp</artifactId>
       <version>0.0.5</version>
