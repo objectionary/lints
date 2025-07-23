@@ -198,4 +198,29 @@ final class LtUnlintNonExistingDefectTest {
             Matchers.emptyIterable()
         );
     }
+
+    @Test
+    void catchesUnlintsWithOutOfRangeLines() throws IOException {
+        MatcherAssert.assertThat(
+            "Defects are empty, but they should not",
+            new LtUnlintNonExistingDefect(
+                new ListOf<>(new LtAsciiOnly()),
+                new ListOf<>()
+            ).defects(
+                new EoSyntax(
+                    String.join(
+                        "\n",
+                        "+unlint ascii-only:6-10",
+                        // it thinks that [6-10] and lines [4, 6] is not missing, though we are missing 4
+                        "",
+                        "# 应用程序.",
+                        "[] > app",
+                        "  # 你好，杰夫!",
+                        "  [] > say-hello"
+                    )
+                ).parsed()
+            ),
+            Matchers.iterableWithSize(2)
+        );
+    }
 }
