@@ -8,6 +8,7 @@ asserts:
 ignore-schema: true
 document: |
   <object xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:noNamespaceSchemaLocation="https://www.eolang.org/xsd/XMIR-anything.xsd">
+    xsi:noNamespaceSchemaLocation="https://www.eolang.org/xsd/XMIR-anything.xsd"
+    author="tests">
     <o/>
   </object>

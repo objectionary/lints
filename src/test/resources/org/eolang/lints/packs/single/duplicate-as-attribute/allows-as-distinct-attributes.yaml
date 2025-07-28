@@ -6,7 +6,7 @@ sheets:
 asserts:
   - /defects[count(defect[@severity='warning'])=0]
 document: |
-  <object>
+  <object author="tests">
     <o base="Q.t" name="tee">
       <o base="f1" as="x"/>
       <o base="f2" as="foo"/>

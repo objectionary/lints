@@ -7,6 +7,6 @@ asserts:
   - /defects[count(defect[@severity='warning'])=1]
   - /defects/defect[@line='555']
 document: |
-  <object>
+  <object author="tests">
     <o line="555"/>
   </object>
