@@ -8,11 +8,6 @@
 +unlint unit-test-missing
 
 # Times table, which is a canonical example of EO program.
-#  @todo #676:35min Remove `+unlint application-without-as-attributes`.
-#  Currently, eo-parser does not generate `@as` attributes for applications,
-#  once we will resolve the problem in parser: https://github.com/objectionary/eo/issues/4382,
-#  we should enable it in all the places, including: `SourceTest#returnsEmptyListOfDefects` and
-#  `SourceTest#returnsOnlyOneDefect`.
 [start] > canonical
   malloc.for > @
     start
