@@ -8,7 +8,7 @@ asserts:
   - /defects[count(defect)=0]
 ignore-schema: true
 document: |
-  <object>
+  <object author="tests">
     <listing>first line
       second line
       third line</listing>
