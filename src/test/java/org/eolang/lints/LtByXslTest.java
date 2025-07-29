@@ -270,7 +270,7 @@ final class LtByXslTest {
 
     @Test
     void cutsLargeContext() throws Exception {
-        new LtByXsl("critical/application-duality").defects(
+        new LtByXsl("errors/application-without-as-attributes").defects(
             new XMLDocument(
                 new ResourceOf(
                     "org/eolang/lints/xmir-with-application-duality.xml"

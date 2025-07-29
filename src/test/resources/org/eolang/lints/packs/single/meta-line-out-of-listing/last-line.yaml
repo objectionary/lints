@@ -6,7 +6,7 @@ sheets:
 asserts:
   - /defects[not(defect)]
 document: |
-  <object>
+  <object author="tests">
     <listing>first line
       second line
       third line</listing>

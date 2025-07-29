@@ -6,7 +6,7 @@ sheets:
 asserts:
   - /defects[count(defect[@severity='critical'])=1]
 document: |
-  <object>
+  <object author="tests">
     <o name="foo">
       <o name="inner">
         <o>12-23-FF</o>

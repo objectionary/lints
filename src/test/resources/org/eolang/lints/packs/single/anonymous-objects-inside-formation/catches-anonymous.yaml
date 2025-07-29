@@ -7,7 +7,7 @@ asserts:
   - /defects[count(defect[@severity='error'])=1]
   - /defects/defect[@line='1']
 document: |
-  <object>
+  <object author="tests">
     <o line="1" name="li">
       <o line="2">
         <o line="3" base="Q.org.eolang.x" name="somewhat"/>
