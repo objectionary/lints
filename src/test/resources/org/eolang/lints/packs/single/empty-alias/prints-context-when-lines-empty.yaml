@@ -6,7 +6,7 @@ sheets:
 asserts:
   - /defects[count(defect[@context and @severity='error'])=1]
 document: |
-  <object>
+  <object author="tests">
     <metas>
       <meta>
          <head>alias</head>

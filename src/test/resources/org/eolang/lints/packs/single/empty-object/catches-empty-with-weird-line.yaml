@@ -8,6 +8,6 @@ asserts:
   - /defects/defect[@line='0']
 ignore-schema: true
 document: |
-  <object>
+  <object author="tests">
     <o line="60.50.301"/>
   </object>

@@ -6,7 +6,7 @@ sheets:
 asserts:
   - /defects[count(defect)=0]
 document: |
-  <object>
+  <object author="tests">
     <o name="app">
       <o base="Q.org.eolang.start" name="@" line="2">
         <o base="Q.org.eoang.x" as="α0" line="3"/>
