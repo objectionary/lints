@@ -382,21 +382,24 @@
     <profile>
       <id>hone</id>
       <activation>
-        <activeByDefault>false</activeByDefault>
+        <activeByDefault>true</activeByDefault>
       </activation>
       <build>
         <plugins>
           <plugin>
             <groupId>org.eolang</groupId>
             <artifactId>hone-maven-plugin</artifactId>
-            <version>0.5.8</version>
+            <version>0.7.8</version>
             <executions>
               <execution>
                 <goals>
-                  <goal>build</goal>
+                  <goal>pull</goal>
                   <goal>optimize</goal>
-                  <goal>rmi</goal>
                 </goals>
+                <configuration>
+                  <jeoVersion>0.13.4</jeoVersion>
+                  <rules>streams/*</rules>
+                </configuration>
               </execution>
             </executions>
           </plugin>

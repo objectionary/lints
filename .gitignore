@@ -1,12 +1,13 @@
+*.DS_Store
+*.tgz
 .aidy
 .DS_Store
 .eoc/
+.github/styles/
 .idea
 .idea/
 .mvm/
 .nyc_output
-*.DS_Store
-*.tgz
 coverage.html
 coverage/
 gh-pages/
