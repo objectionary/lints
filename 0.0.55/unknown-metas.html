@@ -1,0 +1,37 @@
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>lints</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="shortcut icon" href="https://www.yegor256.com/images/books/elegant-objects/cactus.png"/><link href="https://cdn.jsdelivr.net/npm/tacit-css@1.8.1/dist/tacit-css.min.css" rel="stylesheet" integrity="sha384-JbsYayq5Otme+gjh/pl7NrA/qMIU0bxbdzKvYqQGHvvag0lHhM62TQnDzz+EyzXj" crossorigin="anonymous"/>
+</head>
+<body><section><article>
+<h1 id="unknown-metas">Unknown metas</h1>
+<p>The following metas are supported:</p>
+<ul>
+<li><code>+package</code></li>
+<li><code>+alias</code></li>
+<li><code>+version</code></li>
+<li><code>+rt</code></li>
+<li><code>+architect</code></li>
+<li><code>+home</code></li>
+<li><code>+unlint</code></li>
+<li><code>+probe</code></li>
+</ul>
+<p>Incorrect:</p>
+<pre class="eo"><code>+foo
++bar
+
+[] &gt; foo</code></pre>
+<p>Correct:</p>
+<pre class="eo"><code>+package com.test
++alias foo
++version 0.0.0
++architect yegor256@gmail.com
++rt jvm
++home https://earth.com
++unlint unsorted-metas
+
+[] &gt; foo</code></pre>
+<p>Published on Tue Aug 12 09:23:32 UTC 2025.</p>
+</article></section></body></html>

@@ -1,0 +1,28 @@
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>lints</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="shortcut icon" href="https://www.yegor256.com/images/books/elegant-objects/cactus.png"/><link href="https://cdn.jsdelivr.net/npm/tacit-css@1.8.1/dist/tacit-css.min.css" rel="stylesheet" integrity="sha384-JbsYayq5Otme+gjh/pl7NrA/qMIU0bxbdzKvYqQGHvvag0lHhM62TQnDzz+EyzXj" crossorigin="anonymous"/>
+</head>
+<body><section><article>
+<h1 id="sparse-decoration">Sparse decoration</h1>
+<p>Sparse decoration of the base object is prohibited.</p>
+<p>Incorrect:</p>
+<pre class="eo"><code>[] &gt; decorates-five
+  five &gt; @</code></pre>
+<p>Correct:</p>
+<pre class="eo"><code>[] &gt; decorates-app
+  if &gt; @
+    true
+    5
+    five</code></pre>
+<pre class="eo"><code>[free] &gt; decorates-with-free-args
+  five &gt; @</code></pre>
+<p>Also, it’s possible to have sparse decoration in tests:</p>
+<pre class="eo"><code># This is my unit test.
+[] &gt; runs-analysis
+  assert &gt; @
+    foo.eq 42</code></pre>
+<p>Published on Tue Aug 12 09:23:33 UTC 2025.</p>
+</article></section></body></html>
