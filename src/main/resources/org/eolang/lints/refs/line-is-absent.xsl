@@ -16,7 +16,7 @@
     <defects>
       <xsl:for-each select="//o[@base and not(starts-with(@base, '.')) and @base!='ξ' and @base!='ρ']">
         <xsl:variable name="self" select="."/>
-        <xsl:variable name="target" select="key('objsNoLineByName', $self/@base)"/>
+        <xsl:variable name="target" select="key('objsNoLineByName', replace($self/@base, 'Φ.', ''))"/>
         <xsl:if test="$target">
           <defect line="0" severity="error">
             The @line attribute is absent at <xsl:value-of select="$target/@name"/>

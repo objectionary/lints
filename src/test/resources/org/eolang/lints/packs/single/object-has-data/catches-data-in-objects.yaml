@@ -6,8 +6,8 @@ sheets:
   - /org/eolang/lints/critical/object-has-data.xsl
 asserts:
   - /defects[count(defect[@severity='critical'])=2]
-  - /defects/defect[1][normalize-space()='Only object that have parent object with @base equal to "Φ.org.eolang.bytes" may contain data, while parent object with @base "x" provided']
-  - /defects/defect[2][normalize-space()='Only object that have parent object with @base equal to "Φ.org.eolang.bytes" may contain data, while parent object with @base "y" provided']
+  - /defects/defect[1][normalize-space()='Only object that have parent object with @base equal to "Φ.org.eolang.bytes" may contain data, while parent object with @base "Φ.x" provided']
+  - /defects/defect[2][normalize-space()='Only object that have parent object with @base equal to "Φ.org.eolang.bytes" may contain data, while parent object with @base "Φ.y" provided']
 document: |
   <object author="tests">
     <o name="a">
