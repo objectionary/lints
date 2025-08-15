@@ -8,9 +8,9 @@ asserts:
 document: |
   <object author="tests">
     <o base="Φ.foo">
-      <o base="f1" as="bar"/>
-      <o base="f2">
-        <o base="f3-nested" as="bar"/>
+      <o base="Φ.f1" as="bar"/>
+      <o base="Φ.f2">
+        <o base="Φ.f3-nested" as="bar"/>
       </o>
     </o>
   </object>

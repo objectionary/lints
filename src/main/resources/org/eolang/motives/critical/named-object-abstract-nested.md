@@ -6,7 +6,7 @@ abstract object.
 Incorrect:
 
 ```xml
-<o base="x" name="@">
+<o base="x" name="φ">
   <o base="y" name="a">
     <o base="z" name="b"/>
   </o>
@@ -17,7 +17,7 @@ Correct:
 
 ```xml
 <o name="f">
-  <o base="x" name="@">
+  <o base="x" name="φ">
     <o base="ξ.a"/>
   </o>
   <o base="y" name="a">

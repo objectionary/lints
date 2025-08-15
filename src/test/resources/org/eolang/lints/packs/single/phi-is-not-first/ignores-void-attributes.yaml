@@ -9,6 +9,6 @@ document: |
   <object author="tests">
     <o name="f">
       <o base="∅" name="i"/>
-      <o base="Φ.org.eolang.seq" name="@"/>
+      <o base="Φ.org.eolang.seq" name="φ"/>
     </o>
   </object>

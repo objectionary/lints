@@ -33,7 +33,7 @@ final class VoidXpath implements Text {
     public String asString() {
         final List<String> parts = new ListOf<>(this.fqn.split("\\."));
         final List<String> normalized = parts.subList(0, parts.size() - 1);
-        final int rstart = normalized.indexOf("$");
+        final int rstart = normalized.indexOf("ξ");
         return String.format(
             "%s/o[@base='%s']",
             IntStream.range(0, rstart)
@@ -41,7 +41,7 @@ final class VoidXpath implements Text {
                 .collect(Collectors.joining("/", "//", "")),
             IntStream.range(rstart + 1, normalized.size())
                 .mapToObj(normalized::get)
-                .collect(Collectors.joining(".", "$.", ""))
+                .collect(Collectors.joining(".", "ξ.", ""))
         ).replace("[@name=':anonymous']", "");
     }
 }

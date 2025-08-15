@@ -6,7 +6,7 @@ attributes.
 Incorrect:
 
 ```xml
-<o base="Φ.org.eolang.start" name="@" line="2">
+<o base="Φ.org.eolang.start" name="φ" line="2">
   <o base="Φ.org.eolang.x" line="3"/>
   <o base="Φ.org.eolang.y" line="4"/>
 </o>
@@ -15,7 +15,7 @@ Incorrect:
 Correct:
 
 ```xml
-<o base="Φ.org.eolang.start" name="@" line="2">
+<o base="Φ.org.eolang.start" name="φ" line="2">
   <o base="Φ.org.eolang.x" as="α0" line="3"/>
   <o base="Φ.org.eolang.y" as="α1" line="4"/>
 </o>

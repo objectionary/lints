@@ -8,7 +8,7 @@ asserts:
 document: |
   <object author="tests">
     <o name="app">
-      <o base="Φ.org.eolang.io.stdout" name="@">
+      <o base="Φ.org.eolang.io.stdout" name="φ">
           <o base="Φ.org.eolang.txt.sprintf">
              <o base="Φ.org.eolang.string">
                 <o base="Φ.org.eolang.bytes">

@@ -6,12 +6,12 @@ sheets:
 asserts:
   - /defects[count(defect[@severity='error'])=1]
   - /defects/defect[@line='2']
-  - /defects/defect[contains(normalize-space(), 'Q.org.eolang.f')]
+  - /defects/defect[contains(normalize-space(), 'Φ.org.eolang.f')]
 document: |
   <object author="tests">
     <o name="app">
-      <o base="Q.org.eolang.f" name="@" line="2">
-        <o base="Q.org.eoang.stdout" line="3"/>
+      <o base="Φ.org.eolang.f" name="φ" line="2">
+        <o base="Φ.org.eoang.stdout" line="3"/>
       </o>
     </o>
   </object>
