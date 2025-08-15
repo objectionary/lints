@@ -18,10 +18,10 @@ Correct:
 ```xml
 <o name="f">
   <o base="x" name="@">
-    <o base="$.a"/>
+    <o base="ξ.a"/>
   </o>
   <o base="y" name="a">
-    <o base="$.b"/>
+    <o base="ξ.b"/>
   </o>
   <o base="z" name="b"/>
 </o>

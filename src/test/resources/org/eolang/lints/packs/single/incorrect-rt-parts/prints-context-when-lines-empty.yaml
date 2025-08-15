@@ -14,5 +14,5 @@ document: |
         <part>hello</part>
       </meta>
     </metas>
-    <o base="Q.org.eolang.foo" pos="5"/>
+    <o base="Φ.org.eolang.foo" pos="5"/>
   </object>

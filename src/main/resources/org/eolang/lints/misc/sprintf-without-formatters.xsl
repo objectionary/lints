@@ -17,8 +17,8 @@
   </xsl:function>
   <xsl:template match="/">
     <defects>
-      <xsl:for-each select="//o[@base='Q.org.eolang.txt.sprintf']">
-        <xsl:variable name="text" select="o[1][@base='Q.org.eolang.string']/o[1][@base='Q.org.eolang.bytes']/o/text()"/>
+      <xsl:for-each select="//o[@base='Φ.org.eolang.txt.sprintf']">
+        <xsl:variable name="text" select="o[1][@base='Φ.org.eolang.string']/o[1][@base='Φ.org.eolang.bytes']/o/text()"/>
         <xsl:variable name="txt" select="translate($text, '-', '')"/>
         <xsl:variable name="formatters">
           <xsl:variable name="txt" select="translate($text, '-', '')"/>
@@ -55,9 +55,9 @@
             <xsl:attribute name="severity">
               <xsl:text>warning</xsl:text>
             </xsl:attribute>
-            <xsl:text>According to the formatting template of the "Q.org.eolang.txt.sprintf" object, </xsl:text>
+            <xsl:text>According to the formatting template of the "Φ.org.eolang.txt.sprintf" object, </xsl:text>
             <xsl:value-of select="eo:escape($placeholder)"/>
-            <xsl:text> does not have any supported formatters ("%s", "%d", "%f", "%x", "%b"), which makes no sense to use "Q.org.eolang.txt.sprintf"</xsl:text>
+            <xsl:text> does not have any supported formatters ("%s", "%d", "%f", "%x", "%b"), which makes no sense to use "Φ.org.eolang.txt.sprintf"</xsl:text>
           </defect>
         </xsl:if>
       </xsl:for-each>

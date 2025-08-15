@@ -8,7 +8,7 @@
   <xsl:import href="/org/eolang/funcs/escape.xsl"/>
   <xsl:import href="/org/eolang/funcs/defect-context.xsl"/>
   <xsl:output encoding="UTF-8" method="xml"/>
-  <xsl:variable name="pattern" select="'^Q\.[a-z]+[^&gt;&lt;.\[\]()!:&quot;@^$#&amp;/\s]*(\.[a-z]+[^&gt;&lt;.\[\]()!:&quot;@^$#&amp;/\s]*)*$'"/>
+  <xsl:variable name="pattern" select="'^Φ\.[a-z]+[^&gt;&lt;.\[\]()!:&quot;@^$#&amp;/\s]*(\.[a-z]+[^&gt;&lt;.\[\]()!:&quot;@^$#&amp;/\s]*)*$'"/>
   <xsl:template match="/">
     <defects>
       <xsl:for-each select="/object/metas/meta[head='alias' and not(matches(part[last()], $pattern))]">
@@ -27,7 +27,7 @@
           </xsl:attribute>
           <xsl:text>The second part of the alias is invalid: </xsl:text>
           <xsl:value-of select="eo:escape(part[last()])"/>
-          <xsl:text> (it may only contain FQN started with 'Q.')</xsl:text>
+          <xsl:text> (it may only contain FQN started with 'Φ.')</xsl:text>
         </xsl:element>
       </xsl:for-each>
     </defects>

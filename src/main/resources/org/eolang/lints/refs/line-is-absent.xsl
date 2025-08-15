@@ -14,7 +14,7 @@
   <xsl:key name="objsNoLineByName" match="o[not(@line)]" use="@name"/>
   <xsl:template match="/">
     <defects>
-      <xsl:for-each select="//o[@base and not(starts-with(@base, '.')) and @base!='$' and @base!='^']">
+      <xsl:for-each select="//o[@base and not(starts-with(@base, '.')) and @base!='ξ' and @base!='ρ']">
         <xsl:variable name="self" select="."/>
         <xsl:variable name="target" select="key('objsNoLineByName', $self/@base)"/>
         <xsl:if test="$target">

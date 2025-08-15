@@ -11,7 +11,7 @@
   <xsl:output encoding="UTF-8" method="xml"/>
   <xsl:template match="/">
     <defects>
-      <xsl:for-each select="//o[eo:has-data(.) and not(parent::o[@base='Q.org.eolang.bytes'])]">
+      <xsl:for-each select="//o[eo:has-data(.) and not(parent::o[@base='Φ.org.eolang.bytes'])]">
         <defect>
           <xsl:variable name="parent" select="parent::o"/>
           <xsl:variable name="line" select="eo:lineno($parent/@line)"/>
@@ -24,7 +24,7 @@
             </xsl:attribute>
           </xsl:if>
           <xsl:attribute name="severity">critical</xsl:attribute>
-          <xsl:text>Only object that have parent object with @base equal to "Q.org.eolang.bytes" may contain data, while</xsl:text>
+          <xsl:text>Only object that have parent object with @base equal to "Φ.org.eolang.bytes" may contain data, while</xsl:text>
           <xsl:choose>
             <xsl:when test="$parent/@base">
               <xsl:text> parent object with @base </xsl:text>
