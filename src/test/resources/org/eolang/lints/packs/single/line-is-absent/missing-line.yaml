@@ -9,6 +9,6 @@ document: |
   <object author="tests">
     <o>
       <o name="foo"/>
-      <o name="bar" base="foo"/>
+      <o name="bar" base="Φ.foo"/>
     </o>
   </object>

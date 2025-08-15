@@ -8,6 +8,6 @@ asserts:
 document: |
   <object author="tests">
     <o name="bar" base="Φ.org.eolang.bytes">
-      <o base="f"/>
+      <o base="Φ.f"/>
     </o>
   </object>

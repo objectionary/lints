@@ -8,7 +8,7 @@ asserts:
 document: |
   <object author="tests">
     <o base="Φ.t" name="tee">
-      <o base="f1" as="x"/>
-      <o base="f2" as="foo"/>
+      <o base="Φ.f1" as="x"/>
+      <o base="Φ.f2" as="foo"/>
     </o>
   </object>

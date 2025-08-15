@@ -9,8 +9,8 @@ asserts:
 document: |
   <object author="tests">
     <o name="foo" line="1">
-      <o base="xyz" line="2">
-        <o base="num" name="abc" line="3"/>
+      <o base="Φ.xyz" line="2">
+        <o base="Φ.num" name="abc" line="3"/>
       </o>
     </o>
   </object>

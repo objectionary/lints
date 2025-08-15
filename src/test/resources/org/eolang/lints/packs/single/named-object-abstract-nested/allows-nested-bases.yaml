@@ -8,12 +8,12 @@ asserts:
 document: |
   <object author="tests">
     <o name="foo">
-      <o base="x" name="φ">
+      <o base="Φ.x" name="φ">
         <o base="ξ.a"/>
       </o>
-      <o base="y" name="a">
+      <o base="Φ.y" name="a">
         <o base="ξ.b"/>
       </o>
-      <o base="z" name="b"/>
+      <o base="Φ.z" name="b"/>
     </o>
   </object>

@@ -10,8 +10,8 @@ asserts:
 document: |
   <object author="tests">
     <o base="Φ.x" name="φ" line="1">
-      <o base="y" name="a" line="2">
-        <o base="z" name="b" line="3"/>
+      <o base="Φ.y" name="a" line="2">
+        <o base="Φ.z" name="b" line="3"/>
       </o>
     </o>
   </object>

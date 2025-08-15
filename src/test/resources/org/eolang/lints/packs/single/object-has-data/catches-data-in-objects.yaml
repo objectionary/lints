@@ -11,10 +11,10 @@ asserts:
 document: |
   <object author="tests">
     <o name="a">
-      <o name="foo" base="x">
+      <o name="foo" base="Φ.x">
         <o>10-20-30-40-50</o>
       </o>
-      <o name="f" base="y">
+      <o name="f" base="Φ.y">
         <o>哈囉世界</o>
       </o>
     </o>
