@@ -10,10 +10,10 @@ document: |
     <metas>
       <meta>
         <head>alias</head>
-        <tail>a b Q.c</tail>
+        <tail>a b Φ.c</tail>
         <part>a</part>
         <part>b</part>
-        <part>Q.c</part>
+        <part>Φ.c</part>
       </meta>
      </metas>
      <o name="foo"/>

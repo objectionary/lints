@@ -8,9 +8,9 @@ asserts:
 document: |
   <object author="tests">
     <o name="app">
-      <o base="Q.org.eolang.start" name="@" line="2">
-        <o base="Q.org.eoang.x" as="α0" line="3"/>
-        <o base="Q.org.eoang.y" as="α1" line="4"/>
+      <o base="Φ.org.eolang.start" name="φ" line="2">
+        <o base="Φ.org.eoang.x" as="α0" line="3"/>
+        <o base="Φ.org.eoang.y" as="α1" line="4"/>
       </o>
     </o>
   </object>

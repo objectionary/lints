@@ -8,7 +8,7 @@ asserts:
 document: |
   <object author="tests">
     <o line="2" name="main" pos="0">
-      <o name="f" base="Q.org.eolang.bytes">
+      <o name="f" base="Φ.org.eolang.bytes">
         <o>F1-01</o>
       </o>
     </o>

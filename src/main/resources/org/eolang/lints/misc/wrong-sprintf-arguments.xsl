@@ -10,10 +10,10 @@
   <!-- Find arguments in tuple -->
   <xsl:template match="o" mode="arguments" as="xs:integer">
     <xsl:choose>
-      <xsl:when test="@base='Q.org.eolang.tuple.empty'">
+      <xsl:when test="@base='Φ.org.eolang.tuple.empty'">
         <xsl:value-of select="0"/>
       </xsl:when>
-      <xsl:when test="@base='Q.org.eolang.tuple'">
+      <xsl:when test="@base='Φ.org.eolang.tuple'">
         <xsl:variable name="nested">
           <xsl:apply-templates select="o[1]" mode="arguments"/>
         </xsl:variable>
@@ -33,8 +33,8 @@
   </xsl:template>
   <xsl:template match="/">
     <defects>
-      <xsl:for-each select="//o[@base='Q.org.eolang.txt.sprintf']">
-        <xsl:variable name="text" select="o[1][@base='Q.org.eolang.string']/o[1][@base='Q.org.eolang.bytes']/o/text()"/>
+      <xsl:for-each select="//o[@base='Φ.org.eolang.txt.sprintf']">
+        <xsl:variable name="text" select="o[1][@base='Φ.org.eolang.string']/o[1][@base='Φ.org.eolang.bytes']/o/text()"/>
         <xsl:choose>
           <xsl:when test="count(o)&gt;2">
             <defect>
@@ -50,7 +50,7 @@
               <xsl:attribute name="severity">
                 <xsl:text>warning</xsl:text>
               </xsl:attribute>
-              <xsl:text>The "Q.org.eolang.txt.sprintf" object expects only 2 arguments, but </xsl:text>
+              <xsl:text>The "Φ.org.eolang.txt.sprintf" object expects only 2 arguments, but </xsl:text>
               <xsl:value-of select="count(o)"/>
               <xsl:text> provided</xsl:text>
             </defect>
@@ -90,11 +90,11 @@
                   <xsl:attribute name="severity">
                     <xsl:text>warning</xsl:text>
                   </xsl:attribute>
-                  <xsl:text>The second argument "Q.org.eolang.txt.sprintf" object must be a right structured "Q.org.eolang.tuple" object</xsl:text>
+                  <xsl:text>The second argument "Φ.org.eolang.txt.sprintf" object must be a right structured "Φ.org.eolang.tuple" object</xsl:text>
                 </defect>
               </xsl:when>
               <xsl:otherwise>
-                <xsl:if test="$declared!=$used and o[1]/@base = 'Q.org.eolang.string'">
+                <xsl:if test="$declared!=$used and o[1]/@base = 'Φ.org.eolang.string'">
                   <defect>
                     <xsl:variable name="line" select="eo:lineno(@line)"/>
                     <xsl:attribute name="line">
@@ -108,7 +108,7 @@
                     <xsl:attribute name="severity">
                       <xsl:text>warning</xsl:text>
                     </xsl:attribute>
-                    <xsl:text>According to the formatting template of the "Q.org.eolang.txt.sprintf" object, a tuple of </xsl:text>
+                    <xsl:text>According to the formatting template of the "Φ.org.eolang.txt.sprintf" object, a tuple of </xsl:text>
                     <xsl:value-of select="$declared"/>
                     <xsl:text> element(s) is expected as the second argument of it, while a tuple of </xsl:text>
                     <xsl:value-of select="$used"/>

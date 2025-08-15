@@ -9,6 +9,6 @@ asserts:
 document: |
   <object author="tests">
     <o line="1" name="number">
-      <o base="f" name="λ"/>
+      <o base="Φ.f" name="λ"/>
     </o>
   </object>

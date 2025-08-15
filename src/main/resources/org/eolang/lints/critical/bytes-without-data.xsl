@@ -11,7 +11,7 @@
   <xsl:output encoding="UTF-8" method="xml"/>
   <xsl:template match="/">
     <defects>
-      <xsl:apply-templates select="//o[not(eo:has-data(.)) and parent::o[@base='Q.org.eolang.bytes'] and eo:abstract(.)]" mode="with-data"/>
+      <xsl:apply-templates select="//o[not(eo:has-data(.)) and parent::o[@base='Φ.org.eolang.bytes'] and eo:abstract(.)]" mode="with-data"/>
     </defects>
   </xsl:template>
   <xsl:template match="o" mode="with-data">
@@ -27,7 +27,7 @@
         </xsl:attribute>
       </xsl:if>
       <xsl:attribute name="severity">critical</xsl:attribute>
-      <xsl:text>Objects with parent @base equal to "Q.org.eolang.bytes" must contain data, while </xsl:text>
+      <xsl:text>Objects with parent @base equal to "Φ.org.eolang.bytes" must contain data, while </xsl:text>
       <xsl:value-of select="eo:escape($parent/@name)"/>
       <xsl:text> object does not</xsl:text>
     </defect>

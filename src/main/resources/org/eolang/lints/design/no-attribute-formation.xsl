@@ -11,7 +11,7 @@
   <xsl:output encoding="UTF-8" method="xml"/>
   <xsl:template match="/">
     <defects>
-      <xsl:for-each select="//o[eo:abstract(.) and @name and not(ancestor::o[eo:abstract(.) and @name and o[@base='∅']]) and not(@name = 'λ' and parent::o[eo:atom(.)]) and not(parent::o[@base='Q.org.eolang.bytes']) and not(o[@base='∅'])]">
+      <xsl:for-each select="//o[eo:abstract(.) and @name and not(ancestor::o[eo:abstract(.) and @name and o[@base='∅']]) and not(@name = 'λ' and parent::o[eo:atom(.)]) and not(parent::o[@base='Φ.org.eolang.bytes']) and not(o[@base='∅'])]">
         <defect>
           <xsl:variable name="line" select="eo:lineno(@line)"/>
           <xsl:attribute name="line">

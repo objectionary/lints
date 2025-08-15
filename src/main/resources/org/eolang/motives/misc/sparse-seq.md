@@ -1,6 +1,6 @@
-# Sparse `Q.org.eolang.seq`
+# Sparse `Φ.org.eolang.seq`
 
-The `Q.org.eolang.seq` object should have more than one object inside.
+The `Φ.org.eolang.seq` object should have more than one object inside.
 
 Incorrect:
 

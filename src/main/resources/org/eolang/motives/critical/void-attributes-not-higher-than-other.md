@@ -8,7 +8,7 @@ Incorrect:
 ```xml
 <o name="foo">
   <o base="∅" name="x"/>
-  <o base="Q.foo" name="z"/>
+  <o base="Φ.foo" name="z"/>
   <o base="∅" name="y"/>
 </o>
 ```
@@ -19,7 +19,7 @@ Correct:
 <o name="foo">
   <o base="∅" name="x"/>
   <o base="∅" name="y"/>
-  <o base="Q.foo" name="z"/>
+  <o base="Φ.foo" name="z"/>
 </o>
 ```
 

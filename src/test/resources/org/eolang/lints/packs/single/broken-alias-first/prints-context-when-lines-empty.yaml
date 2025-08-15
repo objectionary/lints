@@ -10,9 +10,9 @@ document: |
     <metas>
       <meta>
          <head>alias</head>
-         <tail>FirstLetter Q.Capital.Letters.Prohibited.Here</tail>
+         <tail>FirstLetter Φ.Capital.Letters.Prohibited.Here</tail>
          <part>FirstLetter</part>
-         <part>Q.Capital.Letters.Prohibited.Here</part>
+         <part>Φ.Capital.Letters.Prohibited.Here</part>
       </meta>
     </metas>
     <o name="foo"/>

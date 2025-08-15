@@ -6,15 +6,15 @@ sheets:
   - /org/eolang/lints/critical/object-has-data.xsl
 asserts:
   - /defects[count(defect[@severity='critical'])=2]
-  - /defects/defect[1][normalize-space()='Only object that have parent object with @base equal to "Q.org.eolang.bytes" may contain data, while parent object with @base "x" provided']
-  - /defects/defect[2][normalize-space()='Only object that have parent object with @base equal to "Q.org.eolang.bytes" may contain data, while parent object with @base "y" provided']
+  - /defects/defect[1][normalize-space()='Only object that have parent object with @base equal to "Φ.org.eolang.bytes" may contain data, while parent object with @base "Φ.x" provided']
+  - /defects/defect[2][normalize-space()='Only object that have parent object with @base equal to "Φ.org.eolang.bytes" may contain data, while parent object with @base "Φ.y" provided']
 document: |
   <object author="tests">
     <o name="a">
-      <o name="foo" base="x">
+      <o name="foo" base="Φ.x">
         <o>10-20-30-40-50</o>
       </o>
-      <o name="f" base="y">
+      <o name="f" base="Φ.y">
         <o>哈囉世界</o>
       </o>
     </o>

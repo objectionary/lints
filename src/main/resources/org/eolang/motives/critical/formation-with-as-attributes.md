@@ -14,7 +14,7 @@ Incorrect:
 Correct:
 
 ```xml
-<o name="foo" base="Q.org.eolang.f">
+<o name="foo" base="Φ.org.eolang.f">
   <o as='due'/>
 </o>
 ```

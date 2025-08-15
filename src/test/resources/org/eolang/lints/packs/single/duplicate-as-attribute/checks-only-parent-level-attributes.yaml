@@ -7,10 +7,10 @@ asserts:
   - /defects[count(defect[@severity='warning'])=0]
 document: |
   <object author="tests">
-    <o base="Q.foo">
-      <o base="f1" as="bar"/>
-      <o base="f2">
-        <o base="f3-nested" as="bar"/>
+    <o base="Φ.foo">
+      <o base="Φ.f1" as="bar"/>
+      <o base="Φ.f2">
+        <o base="Φ.f3-nested" as="bar"/>
       </o>
     </o>
   </object>

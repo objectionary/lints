@@ -121,6 +121,6 @@ final class LtIncorrectNumberOfAttrs implements Lint<Map<String, XML>> {
         } else {
             pack = packages.get(0).element("tail").text().get();
         }
-        return String.format("Q.%s.%s", pack, oname);
+        return String.format("Φ.%s.%s", pack, oname);
     }
 }

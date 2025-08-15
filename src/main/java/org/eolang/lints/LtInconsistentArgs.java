@@ -25,7 +25,7 @@ import org.eolang.parser.OnDefault;
 import org.w3c.dom.Node;
 
 /**
- * Lint for checking arguments inconsistency provided to the objects.
+ * Lint for checking arguments' inconsistency provided to the objects.
  *
  * @since 0.0.41
  * @todo #259:60min Optimize performance of inconsistent arguments finding.
@@ -124,7 +124,7 @@ final class LtInconsistentArgs implements Lint<Map<String, XML>> {
                         final int args = o.node().getChildNodes().getLength();
                         final String base = o.attribute("base").text().get();
                         final String ref;
-                        if (base.startsWith("$.")) {
+                        if (base.startsWith("ξ.")) {
                             if (LtInconsistentArgs.voidAttribute(base, o)) {
                                 ref = LtInconsistentArgs.voidFqn(base, o);
                             } else {
@@ -250,7 +250,7 @@ final class LtInconsistentArgs implements Lint<Map<String, XML>> {
      */
     private static boolean voidAttribute(final String base, final Xnav object) {
         final Xnav method = LtInconsistentArgs.parentObject(object);
-        return method.path(String.format("o[@name='%s']", base.replace("$.", ""))).anyMatch(
+        return method.path(String.format("o[@name='%s']", base.replace("ξ.", ""))).anyMatch(
             attr -> attr.attribute("base").text().filter("∅"::equals).isPresent()
         );
     }
@@ -263,7 +263,7 @@ final class LtInconsistentArgs implements Lint<Map<String, XML>> {
     private static boolean objectReference(final Xnav object) {
         final Optional<String> base = object.attribute("base").text();
         return object.attribute("name").text().isEmpty() && base.isPresent()
-            && base.get().startsWith("$.");
+            && base.get().startsWith("ξ.");
     }
 
     /**
@@ -338,7 +338,7 @@ final class LtInconsistentArgs implements Lint<Map<String, XML>> {
     private static String relativizeToTopObject(final String base, final Xnav source) {
         final String top = new OnDefault(source).get();
         final String result;
-        if (base.startsWith(String.format("%s.$.", top))) {
+        if (base.startsWith(String.format("%s.ξ.", top))) {
             result = base.replace(String.format("%s.", new OnDefault(source).get()), "");
         } else {
             result = base;

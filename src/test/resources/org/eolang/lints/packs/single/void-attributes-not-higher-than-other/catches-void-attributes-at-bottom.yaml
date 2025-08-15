@@ -10,7 +10,7 @@ asserts:
 document: |
   <object author="tests">
     <o name="foo">
-      <o line="1" base="Q.foo" name="z"/>
+      <o line="1" base="Φ.foo" name="z"/>
       <o line="2" base="∅" name="x"/>
       <o line="3" base="∅" name="y"/>
     </o>

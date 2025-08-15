@@ -1,6 +1,6 @@
-# `Q.org.eolang.txt.sprintf` without formatters
+# `Φ.org.eolang.txt.sprintf` without formatters
 
-The use of `Q.org.eolang.txt.sprintf` object makes no sense if there is no
+The use of `Φ.org.eolang.txt.sprintf` object makes no sense if there is no
 formatters in template string.
 
 Incorrect:

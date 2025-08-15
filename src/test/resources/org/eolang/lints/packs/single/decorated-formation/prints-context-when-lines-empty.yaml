@@ -8,8 +8,8 @@ asserts:
 document: |
   <object author="tests">
     <o name="main">
-      <o name="@">
-        <o base="Q.org.eolang.foo" name="test"/>
+      <o name="φ">
+        <o base="Φ.org.eolang.foo" name="test"/>
       </o>
     </o>
   </object>

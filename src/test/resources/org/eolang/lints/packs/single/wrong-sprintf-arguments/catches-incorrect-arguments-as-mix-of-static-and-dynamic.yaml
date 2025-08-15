@@ -7,7 +7,7 @@ sheets:
 asserts:
   - /defects[count(defect[@severity='warning'])=1]
   - /defects/defect[@line='7']
-  - /defects/defect[1][normalize-space()='According to the formatting template of the "Q.org.eolang.txt.sprintf" object, a tuple of 1 element(s) is expected as the second argument of it, while a tuple of 2 element(s) is provided']
+  - /defects/defect[1][normalize-space()='According to the formatting template of the "Φ.org.eolang.txt.sprintf" object, a tuple of 1 element(s) is expected as the second argument of it, while a tuple of 2 element(s) is provided']
 input: |
   # Log.
   [fmt args kid] > log
