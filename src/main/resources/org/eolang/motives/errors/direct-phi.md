@@ -1,4 +1,4 @@
-# Direct Phi
+# Direct phi
 
 The direct usage of `@` attribute is prohibited.
 
