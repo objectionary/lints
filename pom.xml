@@ -406,7 +406,7 @@
                   <goal>optimize</goal>
                 </goals>
                 <configuration>
-                  <jeoVersion>0.13.4</jeoVersion>
+                  <jeoVersion>0.13.9</jeoVersion>
                   <rules>streams/*</rules>
                 </configuration>
               </execution>
