@@ -1,0 +1,26 @@
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>lints</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="shortcut icon" href="https://www.yegor256.com/images/books/elegant-objects/cactus.png"/><link href="https://cdn.jsdelivr.net/npm/tacit-css@1.8.1/dist/tacit-css.min.css" rel="stylesheet" integrity="sha384-JbsYayq5Otme+gjh/pl7NrA/qMIU0bxbdzKvYqQGHvvag0lHhM62TQnDzz+EyzXj" crossorigin="anonymous"/>
+</head>
+<body><section><article>
+<h1 id="attribute-name-shouldnt-be-compound">Attribute name shouldn’t be
+compound</h1>
+<p>In the code, all objects that aren’t formations should have a single
+word in their name. This is because if the name is compound, it means
+the context in the program is too large, and it needs to be
+decomposed.</p>
+<p>Incorrect:</p>
+<pre class="eo"><code># CSV.
+[csv-file-name] &gt; csv-object
+  parse &gt; read-records
+    read csv-file-name</code></pre>
+<p>Correct:</p>
+<pre class="eo"><code># CSV.
+[file] &gt; csv-object
+  parse &gt; records
+    read file</code></pre>
+<p>Published on Mon Aug 18 18:18:17 UTC 2025.</p>
+</article></section></body></html>
