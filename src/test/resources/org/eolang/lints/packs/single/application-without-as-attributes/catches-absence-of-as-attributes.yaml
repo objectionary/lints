@@ -11,7 +11,7 @@ document: |
   <object author="tests">
     <o name="app">
       <o base="Φ.org.eolang.f" name="φ" line="2">
-        <o base="Φ.org.eoang.stdout" line="3"/>
+        <o base="Φ.org.eolang.stdout" line="3"/>
       </o>
     </o>
   </object>

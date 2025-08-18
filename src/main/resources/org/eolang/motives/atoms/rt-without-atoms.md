@@ -16,5 +16,5 @@ Correct:
 +rt node eo2js-runtime:0.0.0
 
 [attr] > foo
-  [] > test /int
+  [] > test ?
 ```
