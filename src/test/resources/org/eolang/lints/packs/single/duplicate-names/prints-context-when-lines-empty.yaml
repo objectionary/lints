@@ -8,15 +8,15 @@ asserts:
 document: |
   <object author="tests">
     <o name="main">
-      <o base="Q.org.eolang.foo">
-         <o base="Q.name" line="2"/>
-         <o base="Q.name" line="3"/>
+      <o base="Φ.org.eolang.foo">
+         <o base="Φ.name" line="2"/>
+         <o base="Φ.name" line="3"/>
       </o>
-      <o base="Q.org.eolang.number" name="name">
-         <o base="Q.org.eolang.bytes">3F-F0-00-00-00-00-00-00</o>
+      <o base="Φ.org.eolang.number" name="name">
+         <o base="Φ.org.eolang.bytes">3F-F0-00-00-00-00-00-00</o>
       </o>
-      <o base="Q.org.eolang.number" name="name">
-         <o base="Q.org.eolang.bytes">40-00-00-00-00-00-00-00</o>
+      <o base="Φ.org.eolang.number" name="name">
+         <o base="Φ.org.eolang.bytes">40-00-00-00-00-00-00-00</o>
       </o>
     </o>
   </object>

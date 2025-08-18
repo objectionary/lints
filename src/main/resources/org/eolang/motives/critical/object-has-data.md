@@ -17,7 +17,7 @@ Correct:
 
 ```xml
 <object>
-  <o name="bar" base="org.eolang.bytes">
+  <o name="bar" base="Φ.org.eolang.bytes">
     <o>A1-B2-C3-D4-E5</o>
   </o>
 </object>

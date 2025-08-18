@@ -127,7 +127,7 @@
     <dependency>
       <groupId>org.eolang</groupId>
       <artifactId>eo-parser</artifactId>
-      <version>0.58.0</version>
+      <version>0.58.1</version>
       <scope>compile</scope>
       <exclusions>
         <exclusion>
@@ -382,7 +382,16 @@
     <profile>
       <id>hone</id>
       <activation>
-        <activeByDefault>true</activeByDefault>
+        <activeByDefault>false</activeByDefault>
+        <!--
+          @todo #711:45min Enable `hone` profile on all platforms after.
+           For now, `hone-maven-plugin` fails on `macOS` and `Windows` machines.
+           After the issue will be fixed, we should `<os/>` element from the `<activation/>`
+           and keep `activeByDefault=true`.
+        -->
+        <os>
+          <name>Linux</name>
+        </os>
       </activation>
       <build>
         <plugins>
@@ -397,7 +406,7 @@
                   <goal>optimize</goal>
                 </goals>
                 <configuration>
-                  <jeoVersion>0.13.4</jeoVersion>
+                  <jeoVersion>0.13.9</jeoVersion>
                   <rules>streams/*</rules>
                 </configuration>
               </execution>

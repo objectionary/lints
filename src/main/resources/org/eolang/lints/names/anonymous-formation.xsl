@@ -16,18 +16,18 @@
   </xsl:function>
   <xsl:function name="eo:base-to-name" as="xs:string">
     <xsl:param name="base" as="xs:string"/>
-    <xsl:value-of select="replace($base, '^\$(\.\^)+\.', '')"/>
+    <xsl:value-of select="replace($base, '^ξ(\.ρ)+\.', '')"/>
   </xsl:function>
   <xsl:template match="/">
     <defects>
-      <xsl:for-each select="//o[not(@name) and not(@base) and not(eo:has-data(.) and parent::o[@base='Q.org.eolang.bytes'])]">
+      <xsl:for-each select="//o[not(@name) and not(@base) and not(eo:has-data(.) and parent::o[@base='Φ.org.eolang.bytes'])]">
         <xsl:variable name="allowed" as="xs:string*">
           <xsl:for-each select="o[@base='∅']">
-            <xsl:sequence select="concat('\$(\.\^)+\.', @name, '(?:\.\w+)?')"/>
+            <xsl:sequence select="concat('ξ(\.ρ)+\.', @name, '(?:\.\w+)?')"/>
           </xsl:for-each>
         </xsl:variable>
         <xsl:variable name="anonymous" select="."/>
-        <xsl:for-each select=".//o[starts-with(@base, '$.^.') and not(eo:matches-any-void(@base, $allowed))]">
+        <xsl:for-each select=".//o[starts-with(@base, 'ξ.ρ.') and not(eo:matches-any-void(@base, $allowed))]">
           <xsl:variable name="bname" select="eo:base-to-name(@base)"/>
           <xsl:if test="not($anonymous/o[@name = $bname])">
             <defect>

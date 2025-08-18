@@ -7,6 +7,6 @@
   <xsl:import href="/org/eolang/parser/_funcs.xsl"/>
   <xsl:function name="eo:special" as="xs:boolean">
     <xsl:param name="name"/>
-    <xsl:sequence select="$name = '@' or $name = $eo:lambda or contains($name, $eo:cactoos)"/>
+    <xsl:sequence select="$name = '&#x3C6;' or $name = $eo:lambda or contains($name, $eo:cactoos)"/>
   </xsl:function>
 </xsl:stylesheet>

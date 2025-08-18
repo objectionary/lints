@@ -8,7 +8,7 @@ Incorrect:
 <object>
   <o line="1" name="li">
     <o line="2">
-      <o line="3" base="Q.org.eolang.x" name="somewhat"/>
+      <o line="3" base="Φ.org.eolang.x" name="somewhat"/>
     </o>
   </o>
 </object>
@@ -20,7 +20,7 @@ Correct:
 <object>
   <o line="1" name="li">
     <o line="2" name="nested">
-      <o line="3" base="Q.org.eolang.x" name="somewhat"/>
+      <o line="3" base="Φ.org.eolang.x" name="somewhat"/>
     </o>
   </o>
 </object>

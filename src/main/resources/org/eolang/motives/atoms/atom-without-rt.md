@@ -11,9 +11,9 @@ Incorrect:
 +version 0.0.0
 
 [] > bytes
-  [x] > eq /bool
+  [x] > eq ?
 
-  [y] > not /bool
+  [y] > not ?
 ```
 
 Correct:
@@ -26,7 +26,7 @@ Correct:
 +rt jvm org.eolang:eo-runtime:0.43.2
 
 [] > bytes
-  [x] > eq /bool
+  [x] > eq ?
 
-  [y] > not /bool
+  [y] > not ?
 ```

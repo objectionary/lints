@@ -6,8 +6,8 @@ Incorrect:
 
 ```xml
 <o base="foo">
-  <o base="f1" as="bar"/>
-  <o base="f1" as="bar"/>
+  <o base="Φ.f1" as="bar"/>
+  <o base="Φ.f1" as="bar"/>
 </o>
 ```
 
@@ -15,8 +15,8 @@ Correct:
 
 ```xml
 <o base="foo">
-  <o base="f1" as="bar"/>
-  <o base="f1" as="buzz"/>
+  <o base="Φ.f1" as="bar"/>
+  <o base="Φ.f1" as="buzz"/>
 </o>
 ```
 

@@ -11,7 +11,7 @@
   <xsl:output encoding="UTF-8" method="xml"/>
   <xsl:template match="/">
     <defects>
-      <xsl:for-each select="/object//o[starts-with(@name, '+') and eo:abstract(.) and @name and not(o[@name='@'])]">
+      <xsl:for-each select="/object//o[starts-with(@name, '+') and eo:abstract(.) and @name and not(o[@name='φ'])]">
         <xsl:element name="defect">
           <xsl:variable name="line" select="eo:lineno(@line)"/>
           <xsl:attribute name="line">

@@ -10,9 +10,9 @@ document: |
     <o name="foo">
       <o line="1" base="∅" name="x"/>
       <o line="2" base="∅" name="y"/>
-      <o line="3" base="Q.foo" name="z"/>
-      <o line="4" base="Q.foo" name="t"/>
-      <o line="5" base="Q.d" name="a"/>
-      <o line="6" base="Q.x" name="b"/>
+      <o line="3" base="Φ.foo" name="z"/>
+      <o line="4" base="Φ.foo" name="t"/>
+      <o line="5" base="Φ.d" name="a"/>
+      <o line="6" base="Φ.x" name="b"/>
     </o>
   </object>

@@ -15,7 +15,7 @@ asserts:
   - /defects[count(defect[@severity='warning'])=2]
   - /defects/defect[@line='9']
   - /defects/defect[@line='10']
-  - /defects/defect[contains(normalize-space(), 'foo.@.:anonymous.@.:anonymous.@.:anonymous.$.x.∅')]
+  - /defects/defect[contains(normalize-space(), 'foo.@.:anonymous.@.:anonymous.@.:anonymous.ξ.x.∅')]
   - /defects/defect[contains(normalize-space(), 'clashes with [foo:9]')]
   - /defects/defect[contains(normalize-space(), 'clashes with [foo:10]')]
 foo.eo: |

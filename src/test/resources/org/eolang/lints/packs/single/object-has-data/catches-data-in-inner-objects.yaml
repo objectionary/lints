@@ -8,7 +8,7 @@ asserts:
   - /defects/defect[@line='2']
 document: |
   <object author="tests">
-    <o base="Q.foo" name="o" line="1">
+    <o base="Φ.foo" name="o" line="1">
       <o name="i" line="2">
         <o>TEST</o>
       </o>

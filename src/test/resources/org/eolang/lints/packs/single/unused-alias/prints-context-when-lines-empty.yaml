@@ -10,9 +10,9 @@ document: |
     <metas>
       <meta>
          <head>alias</head>
-         <tail>stdout Q.org.eolang.io.stdout</tail>
+         <tail>stdout Φ.org.eolang.io.stdout</tail>
          <part>stdout</part>
-         <part>Q.org.eolang.io.stdout</part>
+         <part>Φ.org.eolang.io.stdout</part>
       </meta>
     </metas>
     <o name="foo"/>

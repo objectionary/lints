@@ -19,9 +19,9 @@ final class VoidXpathTest {
     @ParameterizedTest
     @CsvSource(
         {
-            "main.$.x.∅, //o[@name='main']/o[@base='$.x']",
-            "foo.foo.foo.$.x.∅, //o[@name='foo']/o[@name='foo']/o[@name='foo']/o[@base='$.x']",
-            "@.foo.:anonymous.$.x.∅, //o[@name='@']/o[@name='foo']/o/o[@base='$.x']"
+            "main.ξ.x.∅, //o[@name='main']/o[@base='ξ.x']",
+            "foo.foo.foo.ξ.x.∅, //o[@name='foo']/o[@name='foo']/o[@name='foo']/o[@base='ξ.x']",
+            "@.foo.:anonymous.ξ.x.∅, //o[@name='@']/o[@name='foo']/o/o[@base='ξ.x']"
         }
     )
     void convertsToXpath(final String fqn, final String xpath) {

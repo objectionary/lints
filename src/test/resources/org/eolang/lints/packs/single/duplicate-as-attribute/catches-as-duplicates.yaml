@@ -7,8 +7,8 @@ asserts:
   - /defects[count(defect[@context and @severity='warning'])=1]
 document: |
   <object author="tests">
-    <o base="Q.t" name="tee">
-      <o base="f1" as="foo"/>
-      <o base="f2" as="foo"/>
+    <o base="Φ.t" name="tee">
+      <o base="Φ.f1" as="foo"/>
+      <o base="Φ.f2" as="foo"/>
     </o>
   </object>
