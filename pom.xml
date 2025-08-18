@@ -382,16 +382,7 @@
     <profile>
       <id>hone</id>
       <activation>
-        <activeByDefault>false</activeByDefault>
-        <!--
-          @todo #711:45min Enable `hone` profile on all platforms after.
-           For now, `hone-maven-plugin` fails on `macOS` and `Windows` machines.
-           After the issue will be fixed, we should `<os/>` element from the `<activation/>`
-           and keep `activeByDefault=true`.
-        -->
-        <os>
-          <name>Linux</name>
-        </os>
+        <activeByDefault>true</activeByDefault>
       </activation>
       <build>
         <plugins>
