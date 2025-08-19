@@ -8,8 +8,12 @@ import com.jcabi.xml.XML;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 import com.tngtech.archunit.core.importer.ImportOption;
 import com.tngtech.archunit.lang.syntax.ArchRuleDefinition;
+import java.io.IOException;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import org.cactoos.list.ListOf;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -52,6 +56,28 @@ final class WithoutLintsTest {
     }
 
     @Test
+    void excludesOnlySpecifiedLints() {
+        MatcherAssert.assertThat(
+            "The list of lints does not match with expected",
+            new ListOf<>(
+                new WithoutLints<>(
+                    new ListOf<>(
+                        new WithoutLintsTest.LtFake("foo"),
+                        new WithoutLintsTest.LtFake("bar"),
+                        new WithoutLintsTest.LtFake("jeff")
+                    ),
+                    "foo", "jeff"
+                )
+            ).stream().map(WithoutLintsTest.LtFake::name).collect(Collectors.toList()),
+            Matchers.allOf(
+                Matchers.hasItem("bar"),
+                Matchers.not(Matchers.hasItem("foo")),
+                Matchers.not(Matchers.hasItem("jeff"))
+            )
+        );
+    }
+
+    @Test
     @SuppressWarnings("JTCOP.RuleAssertionMessage")
     void staysPackagePrivate() {
         ArchRuleDefinition.classes()
@@ -61,5 +87,40 @@ final class WithoutLintsTest {
                 .withImportOption(new ImportOption.DoNotIncludeTests())
                 .importPackages("org.eolang.lints")
             );
+    }
+
+    /**
+     * Fake lint.
+     */
+    static final class LtFake implements Lint<XML> {
+
+        /**
+         * The lint name.
+         */
+        private final String name;
+
+        /**
+         * Ctor.
+         *
+         * @param nme The lint name
+         */
+        LtFake(final String nme) {
+            this.name = nme;
+        }
+
+        @Override
+        public String name() {
+            return this.name;
+        }
+
+        @Override
+        public Collection<Defect> defects(final XML xmir) throws IOException {
+            return Collections.emptyList();
+        }
+
+        @Override
+        public String motive() {
+            return "no motive";
+        }
     }
 }
