@@ -462,9 +462,10 @@
                     <class>org.eolang.lints.LtUnlintNonExistingDefectWpaTest</class>
                     <class>org.eolang.lints.LtTestNotVerbTest</class>
                     <class>org.eolang.lints.WpaLintsTest</class>
-                    <class>org.eolang.lints.LtReservedNameTest</class>
                   </excludedTestClasses>
                   <excludedClasses>
+                    <!-- Groovy script. -->
+                    <class>org.eolang.lints.ReserveNames</class>
                     <!-- Used as benchmark resource. -->
                     <class>org.apache.hadoop.hdfs.server.namenode.FSNamesystem</class>
                   </excludedClasses>
