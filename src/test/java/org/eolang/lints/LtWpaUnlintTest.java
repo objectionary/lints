@@ -26,6 +26,7 @@ final class LtWpaUnlintTest {
     @Test
     void throwsWhenDefectIsOutsideOfTheScope() {
         MatcherAssert.assertThat(
+            "Exception should be thrown, but it was not",
             Assertions.assertThrows(
                 Exception.class,
                 () -> new LtWpaUnlint(new LtWpaUnlintTest.LtWpaAlways()).defects(

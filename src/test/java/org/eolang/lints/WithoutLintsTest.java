@@ -68,7 +68,7 @@ final class WithoutLintsTest {
                     ),
                     "foo", "jeff"
                 )
-            ).stream().map(WithoutLintsTest.LtFake::name).collect(Collectors.toList()),
+            ).stream().map(Lint::name).collect(Collectors.toList()),
             Matchers.allOf(
                 Matchers.hasItem("bar"),
                 Matchers.not(Matchers.hasItem("foo")),
@@ -91,13 +91,14 @@ final class WithoutLintsTest {
 
     /**
      * Fake lint.
+     * @since 0.0.57
      */
     static final class LtFake implements Lint<XML> {
 
         /**
          * The lint name.
          */
-        private final String name;
+        private final String lname;
 
         /**
          * Ctor.
@@ -105,12 +106,12 @@ final class WithoutLintsTest {
          * @param nme The lint name
          */
         LtFake(final String nme) {
-            this.name = nme;
+            this.lname = nme;
         }
 
         @Override
         public String name() {
-            return this.name;
+            return this.lname;
         }
 
         @Override
