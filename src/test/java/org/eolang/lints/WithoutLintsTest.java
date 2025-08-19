@@ -4,9 +4,12 @@
  */
 package org.eolang.lints;
 
+import com.jcabi.xml.XML;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 import com.tngtech.archunit.core.importer.ImportOption;
 import com.tngtech.archunit.lang.syntax.ArchRuleDefinition;
+import java.util.List;
+import java.util.Map;
 import org.cactoos.list.ListOf;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -35,6 +38,16 @@ final class WithoutLintsTest {
                 lid
             ).iterator().next().name(),
             Matchers.not(Matchers.equalTo(lid))
+        );
+    }
+
+    @Test
+    void doesNotExcludeNonExistingLints() {
+        final List<Lint<Map<String, XML>>> original = new ListOf<>(new LtInconsistentArgs());
+        MatcherAssert.assertThat(
+            "Lint should not be excluded, since lint by provided name does not exist",
+            new ListOf<>(new WithoutLints<>(original, "计算机科学")),
+            Matchers.hasSize(original.size())
         );
     }
 

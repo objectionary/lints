@@ -186,4 +186,13 @@ final class LtReservedNameTest {
             )
         );
     }
+
+    @Test
+    void allowsAllUnique() throws IOException {
+        MatcherAssert.assertThat(
+            "Object names should not be reported, since they all unique",
+            new LtReservedName(new MapOf<>()).defects(new EoSyntax("[] > foo").parsed()),
+            Matchers.emptyIterable()
+        );
+    }
 }
