@@ -398,6 +398,7 @@
             <version>0.9.1</version>
             <executions>
               <execution>
+                <phase>process-sources</phase>
                 <goals>
                   <goal>pull</goal>
                   <goal>optimize</goal>
