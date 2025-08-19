@@ -26,8 +26,16 @@
             <xsl:text>error</xsl:text>
           </xsl:attribute>
           <xsl:attribute name="experimental">true</xsl:attribute>
-          <xsl:text>The object </xsl:text>
-          <xsl:value-of select="eo:escape(@name)"/>
+          <xsl:text>The </xsl:text>
+          <xsl:choose>
+            <xsl:when test="@name">
+              <xsl:text>object </xsl:text>
+              <xsl:value-of select="eo:escape(@name)"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:text>anonymous object</xsl:text>
+            </xsl:otherwise>
+          </xsl:choose>
           <xsl:text> uses "@" attribute directly, while it is prohibited</xsl:text>
         </xsl:element>
       </xsl:for-each>
