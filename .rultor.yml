@@ -14,16 +14,13 @@ install: |
   pdd --file=/dev/null
 merge:
   script: |
-    pwd
-    ls -al .
-    ls -al ..
-    mvn clean install -Pqulice --errors -Dstyle.color=never
+    mvn clean install -P!hone,qulice --errors -Dstyle.color=never
 release:
   pre: false
   script: |-
     [[ "${tag}" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || exit -1
     mvn versions:set "-DnewVersion=${tag}" -Dstyle.color=never
     git commit -am "${tag}"
-    mvn clean install -Dinvoker.skip
+    mvn clean install -P!hone -Dinvoker.skip
     export MAVEN_OPTS="--add-opens java.base/java.util=ALL-UNNAMED --add-opens java.base/java.lang.reflect=ALL-UNNAMED"
-    mvn clean deploy -Pobjectionary -Psonatype --errors --settings ../settings.xml -Dstyle.color=never
+    mvn clean deploy -P!hone,objectionary,sonatype --errors --settings ../settings.xml -Dstyle.color=never
