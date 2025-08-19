@@ -389,9 +389,6 @@
            After the issue will be fixed, we should `<os/>` element from the `<activation/>`
            and keep `activeByDefault=true`.
         -->
-        <os>
-          <name>Linux</name>
-        </os>
       </activation>
       <build>
         <plugins>
