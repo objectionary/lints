@@ -12,7 +12,7 @@ name: hone
       - master
 jobs:
   deep:
-    timeout-minutes: 20
+    timeout-minutes: 45
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v5
