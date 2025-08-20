@@ -11,7 +11,13 @@ name: hone
     branches:
       - master
 jobs:
-  deep:
+  # @todo #716:35min Enable hone.yml and jmh.yml (hone-dependent workflow) after hone will be fixed.
+  #  At present, the hone is unable to generate the correct optimized byte code for Groovy, see
+  #  this issue: https://github.com/objectionary/hone-maven-plugin/issues/297. Also, the plugin run
+  #  is time-consuming, we should enable it only after the plugin will have stable execution time,
+  #  in order to not disturb the development in this repository.
+  if: false
+  hone:
     timeout-minutes: 45
     runs-on: ubuntu-24.04
     steps:
