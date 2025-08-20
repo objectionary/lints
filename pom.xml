@@ -405,6 +405,8 @@
                 <configuration>
                   <jeoVersion>0.13.9</jeoVersion>
                   <rules>streams/*</rules>
+                  <!-- Used as benchmark resource. -->
+                  <excludes>/target/classes/org/apache/hadoop/hdfs/server/namenode/FSNamesystem.class</excludes>
                 </configuration>
               </execution>
             </executions>
