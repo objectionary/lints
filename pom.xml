@@ -389,16 +389,13 @@
            After the issue will be fixed, we should `<os/>` element from the `<activation/>`
            and keep `activeByDefault=true`.
         -->
-        <os>
-          <name>Linux</name>
-        </os>
       </activation>
       <build>
         <plugins>
           <plugin>
             <groupId>org.eolang</groupId>
             <artifactId>hone-maven-plugin</artifactId>
-            <version>0.9.1</version>
+            <version>0.12.0</version>
             <executions>
               <execution>
                 <goals>
@@ -408,6 +405,8 @@
                 <configuration>
                   <jeoVersion>0.13.9</jeoVersion>
                   <rules>streams/*</rules>
+                  <!-- Used as benchmark resource. -->
+                  <excludes>/target/classes/org/apache/hadoop/hdfs/server/namenode/FSNamesystem.class</excludes>
                 </configuration>
               </execution>
             </executions>
@@ -465,9 +464,10 @@
                     <class>org.eolang.lints.LtUnlintNonExistingDefectWpaTest</class>
                     <class>org.eolang.lints.LtTestNotVerbTest</class>
                     <class>org.eolang.lints.WpaLintsTest</class>
-                    <class>org.eolang.lints.LtReservedNameTest</class>
                   </excludedTestClasses>
                   <excludedClasses>
+                    <!-- Groovy script. -->
+                    <class>org.eolang.lints.ReserveNames</class>
                     <!-- Used as benchmark resource. -->
                     <class>org.apache.hadoop.hdfs.server.namenode.FSNamesystem</class>
                   </excludedClasses>
