@@ -11,6 +11,7 @@ jobs:
   jmh:
     timeout-minutes: 45
     runs-on: ubuntu-24.04
+    if: false
     steps:
       - name: Run JMH Benchmark Action
         uses: volodya-lombrozo/jmh-benchmark-action@v1
