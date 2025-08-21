@@ -1,7 +1,6 @@
 # Void attributes `∅` not higher than other
 
-In [XMIR], all void attributes must be placed above non-void
-attributes.
+In [XMIR], all void attributes must be placed before non-void attributes.
 
 Incorrect:
 
