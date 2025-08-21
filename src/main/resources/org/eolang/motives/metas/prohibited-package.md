@@ -1,7 +1,7 @@
 # Prohibited `+package`
 
-Special package `org.eolang` is reserved for internal object only, and can not
-be used outside.
+The special package `org.eolang` is reserved for internal objects only and cannot
+be used externally.
 
 Incorrect:
 

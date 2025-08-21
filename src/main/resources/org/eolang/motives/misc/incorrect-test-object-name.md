@@ -1,6 +1,6 @@
 # Incorrect test object name
 
-Test object name must follow regexp:
+Test object names must follow this regular expression:
 
 ```regexp
 ^[a-z][a-z]+(-[a-z][a-z]+)*$

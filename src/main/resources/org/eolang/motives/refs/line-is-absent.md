@@ -1,6 +1,6 @@
 # `@line` is absent
 
-In [XMIR], each `<o/>` with it's `@base`, must have `@line` attribute as well.
+In [XMIR], each `<o/>` element with a `@base` attribute must also have a `@line` attribute.
 
 Incorrect:
 

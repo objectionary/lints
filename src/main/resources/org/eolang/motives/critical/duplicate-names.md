@@ -1,6 +1,6 @@
 # Duplicate names
 
-Object's name must not be duplicated.
+Object names must not be duplicated.
 
 Incorrect:
 

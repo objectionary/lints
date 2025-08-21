@@ -1,6 +1,6 @@
 # Mandatory `+package` Meta
 
-Program should have only one `+package` special meta.
+The program must have exactly one `+package` special meta.
 
 Incorrect:
 

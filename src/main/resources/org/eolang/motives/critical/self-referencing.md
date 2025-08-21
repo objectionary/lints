@@ -1,6 +1,6 @@
 # Self referencing
 
-Object must not refer to itself.
+Objects must not reference themselves.
 
 Incorrect:
 

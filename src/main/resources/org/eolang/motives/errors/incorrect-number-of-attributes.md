@@ -1,21 +1,21 @@
 # Incorrect number of attributes
 
-The number of provided attributes to the object should match with the number of
-its declared attributes.
+The number of provided attributes must match the number of
+declared attributes for an object.
 
 Incorrect:
 
 `foo.eo`:
 
 ```eo
-# Its foo with one attribute.
+# Foo with one attribute.
 [at] > foo
 ```
 
 `bar.eo`:
 
 ```eo
-# Its bar.
+# Bar object.
 [args] > bar
   foo 1 2
 ```
@@ -25,14 +25,14 @@ Correct:
 `foo.eo`:
 
 ```eo
-# Its foo with one attribute.
+# Foo with one attribute.
 [at] > foo
 ```
 
 `bar.eo`:
 
 ```eo
-# Its bar.
+# Bar object.
 [args] > bar
   foo 1
 ```

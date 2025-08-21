@@ -1,6 +1,6 @@
 # Atom and base
 
-In [XMIR], atom object can not have `@base` attribute.
+In [XMIR], atom objects cannot have a `@base` attribute.
 
 Incorrect:
 

@@ -1,6 +1,6 @@
-# ASCII-Only characters in comment
+# ASCII-Only Characters in Comments
 
-All comments must include only ASCII characters.
+All comments must contain only ASCII characters.
 
 Incorrect:
 

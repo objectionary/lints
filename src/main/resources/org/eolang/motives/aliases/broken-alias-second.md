@@ -1,8 +1,7 @@
 # Broken alias (second part)
 
-The second part of the `+alias` meta may only contain FQN
-(fully qualified name) of the object. For example, here is how it may look
-in EO:
+The second part of the `+alias` meta must contain only the fully qualified name (FQN)
+of the object. Here is an example in EO:
 
 ```eo
 +alias stdout org.eolang.io.stdout

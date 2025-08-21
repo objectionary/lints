@@ -1,6 +1,6 @@
 # Atom without `rt` meta
 
-Defined atom must have `+rt` meta.
+Defined atoms must have a `+rt` meta.
 
 Incorrect:
 

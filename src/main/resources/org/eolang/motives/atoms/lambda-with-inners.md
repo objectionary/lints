@@ -1,6 +1,6 @@
 # Lambda with inner object
 
-In [XMIR], atom object can't have inner objects inside lambda object.
+In [XMIR], lambda objects cannot contain inner objects.
 
 Incorrect:
 

@@ -55,7 +55,7 @@ final class LtAsciiOnlyTest {
     void explainsMotive() throws Exception {
         MatcherAssert.assertThat(
             "The motive doesn't contain expected string",
-            new LtAsciiOnly().motive().contains("# ASCII-Only characters in comment"),
+            new LtAsciiOnly().motive().contains("# ASCII-Only Characters in Comments"),
             new IsEqual<>(true)
         );
     }

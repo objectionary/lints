@@ -1,6 +1,6 @@
 # Unused void attr
 
-Declared void attribute should be used inside the formation.
+Declared void attributes must be used inside the formation.
 
 Incorrect:
 

@@ -1,6 +1,6 @@
 # Duplicate aliases
 
-Object's aliases must not be duplicated.
+Object aliases must not be duplicated.
 
 Incorrect:
 

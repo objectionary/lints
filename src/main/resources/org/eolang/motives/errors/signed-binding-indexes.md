@@ -1,6 +1,6 @@
 # Signed binding indexes
 
-Binding index of app must not be a signed number.
+Binding indexes must not be signed numbers.
 
 Incorrect:
 

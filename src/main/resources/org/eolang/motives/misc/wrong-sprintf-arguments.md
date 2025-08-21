@@ -1,6 +1,6 @@
 # Wrong `QQ.txt.sprintf` Arguments
 
-The `QQ.txt.sprintf` object must have a match between its placeholder variables
+The `QQ.txt.sprintf` object must have matching placeholder variables
 and passed arguments.
 
 Incorrect:

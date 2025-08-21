@@ -1,6 +1,6 @@
 # Anonymous objects inside formation
 
-In [XMIR], Formation can't contain inner objects without a name.
+In [XMIR], formations cannot contain inner objects without names.
 
 Incorrect:
 

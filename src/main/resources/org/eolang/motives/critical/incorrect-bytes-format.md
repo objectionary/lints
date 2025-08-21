@@ -1,6 +1,6 @@
 # Incorrect bytes format
 
-The format of the bytes inside [XMIR] objects must follow special regexp:
+The byte format inside [XMIR] objects must follow this regular expression:
 
 ```regexp
 ^--|[0-9A-F]{2}(-|(-[0-9A-F]{2})+)$

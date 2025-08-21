@@ -1,7 +1,7 @@
 # Incorrect alias
 
-Special meta `+alias` must point to existing file in the dir, outlined by
-`+package` meta.
+The special meta `+alias` must point to an existing file in the directory specified by
+the `+package` meta.
 
 Incorrect:
 
@@ -14,4 +14,4 @@ Incorrect:
   foo > @
 ```
 
-Since `ttt/foo.xmir` file doesn't exist, `critical` defect will be issued.
+Since the `ttt/foo.xmir` file doesn't exist, a `critical` defect will be issued.

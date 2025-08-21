@@ -1,6 +1,6 @@
 # Duplicate `@as` Attribute
 
-In [XMIR], object shouldn't have `@as` attributes duplicated inside.
+In [XMIR], objects must not have duplicate `@as` attributes.
 
 Incorrect:
 

@@ -1,6 +1,6 @@
-# Comment is too wide
+# Comment Is Too Wide
 
-Each comment should be not wider than 80 characters.
+Each comment should not be wider than 80 characters.
 
 Incorrect:
 
