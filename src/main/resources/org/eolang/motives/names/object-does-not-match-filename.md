@@ -1,7 +1,7 @@
 # Object doesn't match filename
 
-Every `.eo` file shouldn't have different name than object, which may confuse
-the readers.
+Each `.eo` file must have the same name as its contained object to avoid
+confusing readers.
 
 Incorrect:
 

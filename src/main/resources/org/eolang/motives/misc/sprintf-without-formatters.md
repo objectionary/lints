@@ -1,7 +1,7 @@
 # `Φ.org.eolang.txt.sprintf` without formatters
 
-The use of `Φ.org.eolang.txt.sprintf` object makes no sense if there is no
-formatters in template string.
+Using the `Φ.org.eolang.txt.sprintf` object makes no sense if there are no
+format specifiers in the template string.
 
 Incorrect:
 

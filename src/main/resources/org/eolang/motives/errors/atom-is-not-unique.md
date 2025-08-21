@@ -1,6 +1,6 @@
 # Atom isn't unique
 
-All atom FQNs across all `.eo` files must not be duplicated.
+Atom fully qualified names (FQNs) must be unique across all `.eo` files.
 
 Incorrect:
 
@@ -22,4 +22,4 @@ Incorrect:
 [] > a /number
 ```
 
-To fix this, rename duplicated object.
+To fix this, rename the duplicated object.

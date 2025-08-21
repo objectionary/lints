@@ -1,6 +1,6 @@
 # Empty alias
 
-Object's alias must be not empty.
+Object aliases must not be empty.
 
 Incorrect:
 

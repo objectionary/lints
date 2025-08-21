@@ -1,6 +1,6 @@
 # No attribute formation
 
-It's not recommended to have formation without void attributes. Such formations
+Formations without void attributes are not recommended. Such formations
 are similar to [Utility classes] in Java.
 
 Incorrect:
@@ -19,13 +19,13 @@ Correct:
   x > sbp
 ```
 
-It's also correct having an "attribute-free" formation, but only if its parent
+An "attribute-free" formation is also correct, but only if its parent
 is a formation as well:
 
 ```eo
 # Foo.
 [x] > foo
-  # Bar, have an access to `x`.
+  # Bar has access to `x`.
   [] > bar
 ```
 

@@ -1,6 +1,6 @@
 # Void attributes `∅` not higher than other
 
-In [XMIR], all void attributes must be placed on top of other non-void
+In [XMIR], all void attributes must be placed above non-void
 attributes.
 
 Incorrect:

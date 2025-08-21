@@ -1,6 +1,6 @@
 # Alias too long
 
-Object's alias must have **2 parts at max**.
+Object aliases must have **at most 2 parts**.
 
 Incorrect:
 

@@ -1,6 +1,6 @@
 # Many void attributes
 
-Object must have at **max 5** void attributes.
+Objects must have at most **5** void attributes.
 
 Incorrect:
 

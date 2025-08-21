@@ -1,6 +1,6 @@
 # Incorrect `+architect`
 
-Architect's email must follow regular expression:
+Architect email addresses must follow this regular expression:
 
 ```regexp
 ^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$

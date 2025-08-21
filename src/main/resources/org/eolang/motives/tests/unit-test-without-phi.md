@@ -1,6 +1,6 @@
 # Unit test without phi
 
-Unit test must have `@` attribute.
+Unit tests must have a `@` attribute.
 
 Incorrect:
 

@@ -1,10 +1,8 @@
-# Attribute name shouldn't be compound
+# Attribute Names Should Not Be Compound
 
-In the code, all objects that aren't formations
-should have a single word in their name.
-This is because if the name is compound,
-it means the context in the program is too large,
-and it needs to be decomposed.
+All objects that are not formations must have single-word names.
+Compound names indicate that the program context is too large
+and needs to be decomposed.
 
 Incorrect:
 

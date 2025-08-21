@@ -1,7 +1,7 @@
 # Duplicate names
 
-The names of objects in the same file (even if the names are in different
-scopes) should be different so that there is no confusion
+Object names in the same file must be unique, even across different
+scopes, to avoid confusion.
 
 Incorrect:
 

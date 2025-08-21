@@ -1,6 +1,6 @@
 # Mandatory `+version` Meta
 
-Program should have only one `+version` special meta.
+The program must have exactly one `+version` special meta.
 
 Incorrect:
 
@@ -18,7 +18,7 @@ Incorrect:
 Correct:
 
 ```eo
-+package 0.0.1
++version 0.0.1
 
 [] > foo
 ```

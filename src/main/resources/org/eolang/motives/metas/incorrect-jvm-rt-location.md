@@ -1,6 +1,6 @@
 # Incorrect `+rt` JVM location
 
-The location of JVM runtime should follow the regexp:
+The JVM runtime location must follow this regular expression:
 
 ```regexp
 ^([a-zA-Z0-9_.-]+):([a-zA-Z0-9_.-]+):(\d+\.\d+\.\d+)$

@@ -1,6 +1,6 @@
 # Incorrect `+version`
 
-Tail of the special `+version` meta must follow [SemVer] format.
+The value of the special `+version` meta must follow the [SemVer] format.
 
 Incorrect:
 

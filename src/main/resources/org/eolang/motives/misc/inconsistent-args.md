@@ -1,7 +1,7 @@
 # Inconsistent args
 
-Objects with the same `@base` should have the same amount of arguments passed
-in it.
+Objects with the same `@base` must have the same number of arguments passed
+to them.
 
 Incorrect:
 

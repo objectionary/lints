@@ -1,7 +1,6 @@
 # `@pos` without `@line`
 
-In [XMIR], each `<o/>` that has `@pos` attribute, must have `@line` attribute
-as well.
+In [XMIR], each `<o/>` element with a `@pos` attribute must also have a `@line` attribute.
 
 Incorrect:
 

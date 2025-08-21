@@ -1,6 +1,6 @@
-# Comment too short
+# Comment Too Short
 
-Comment must be 32+ characters long.
+Comments must be at least 32 characters long.
 
 Incorrect:
 
