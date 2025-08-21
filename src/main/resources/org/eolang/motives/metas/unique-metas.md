@@ -1,6 +1,6 @@
-# Unique metas
+# Unique Metas
 
-The following metas must be unique in the `.eo` source file:
+The following metas must be unique in an `.eo` source file:
 
 * `+version`
 * `+architect`

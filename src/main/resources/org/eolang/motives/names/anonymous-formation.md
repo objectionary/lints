@@ -1,6 +1,6 @@
 # Anonymous formation
 
-Anonymous formation shouldn't access object, undefined inside the formation.
+Anonymous formations should not access objects that are undefined within the formation.
 
 Incorrect:
 

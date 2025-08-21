@@ -1,6 +1,6 @@
 # Test object isn't verb in singular
 
-Test object name should start with verb in singular form.
+Test object names must start with a verb in singular form.
 
 Incorrect:
 

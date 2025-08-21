@@ -1,7 +1,7 @@
 # Incorrect `+rt` parts
 
-Special `+rt` meta must have exactly two parts, which is the name of the
-runtime, and the location of the runtime.
+The special `+rt` meta must have exactly two parts: the runtime name
+and the runtime location.
 
 Incorrect:
 

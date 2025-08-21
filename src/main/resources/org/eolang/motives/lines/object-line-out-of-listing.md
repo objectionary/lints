@@ -1,6 +1,6 @@
 # Object line out of listing
 
-Line number inside `<o/>` in [XMIR] can't be bigger than amount of lines
+In [XMIR], the line number inside `<o/>` cannot exceed the total number of lines
 in the listing.
 
 Incorrect:

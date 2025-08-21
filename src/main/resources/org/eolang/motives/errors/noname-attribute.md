@@ -1,6 +1,6 @@
 # No name attribute
 
-Each object's attribute must have a name.
+Each object attribute must have a name.
 
 Incorrect:
 

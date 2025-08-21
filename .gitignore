@@ -1,6 +1,7 @@
 *.DS_Store
 *.tgz
 .aidy
+.claude/
 .DS_Store
 .eoc/
 .github/styles/

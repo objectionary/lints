@@ -1,6 +1,6 @@
 # Bytes without data
 
-Each object `<o/>` in [XMIR], with its parent base containing
+In [XMIR], each `<o/>` object whose parent base contains
 `Φ.org.eolang.bytes` must have text data inside.
 
 Incorrect:

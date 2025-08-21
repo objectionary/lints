@@ -1,6 +1,6 @@
 # Incorrect `+rt` node location
 
-The location of NodeJS runtime should follow the regexp:
+The Node.js runtime location must follow this regular expression:
 
 ```regexp
 ^([a-zA-Z0-9_.-]+):(\d+\.\d+\.\d+)$

@@ -1,6 +1,6 @@
 # Mandatory `+home` Meta
 
-Program should have only one `+home` special meta.
+The program must have exactly one `+home` special meta.
 
 Incorrect:
 

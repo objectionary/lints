@@ -1,6 +1,6 @@
 # `+package` contains multiple parts
 
-Special `+package` meta must be constructed from exact one part.
+The special `+package` meta must contain exactly one value.
 
 Incorrect:
 

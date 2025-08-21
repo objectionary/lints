@@ -1,11 +1,11 @@
-# Comment without dot
+# Comment Without Dot
 
-Comment must end with a dot.
+Comments must end with a period.
 
 Incorrect:
 
 ```eo
-# This comment doesn't end with a dot
+# This comment doesn't end with a period
 [] > foo
   42 > @
 ```
@@ -13,7 +13,7 @@ Incorrect:
 Correct:
 
 ```eo
-# This does end with a dot.
+# This does end with a period.
 [] > foo
   42 > @
 ```

@@ -1,6 +1,6 @@
 # Correct `+package` Meta
 
-Special meta `+package` must have a correct tail.
+The special meta `+package` must have a valid value.
 
 Incorrect:
 

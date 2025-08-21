@@ -1,6 +1,6 @@
 # Incorrect `+spdx`
 
-Tail of special meta `+spdx` should be [SPDX]-compliant headers.
+The value of the special meta `+spdx` must be [SPDX]-compliant headers.
 
 Incorrect:
 
@@ -42,7 +42,7 @@ In [XMIR], `spdx` meta should look like this:
 </metas>
 ```
 
-Please note, that these two contain valid SPDX headers. Thus, you can use any
+Please note that these two contain valid SPDX headers. You can use any
 number of SPDX-compliant headers.
 
 [SPDX]: https://en.wikipedia.org/wiki/Software_Package_Data_Exchange

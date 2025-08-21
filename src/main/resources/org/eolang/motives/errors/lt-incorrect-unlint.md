@@ -1,7 +1,7 @@
 # Incorrect unlints
 
-The meta part of the object shouldn't contain +unlint point on non-existent
-lint, as it's useless
+The meta part of the object should not contain +unlint directives for non-existent
+lints, as they are useless.
 
 Incorrect:
 
@@ -9,8 +9,8 @@ Incorrect:
 +unlint abracadabra
 ```
 
-Because lint with name "abracadabra" doesn't exist(perhaps at some
-point this lint will be added and this example will become correct :) )
+Because a lint named "abracadabra" doesn't exist (perhaps at some
+point this lint will be added and this example will become correct).
 
 Correct:
 
@@ -18,4 +18,4 @@ Correct:
 +unlint ascii-only
 ```
 
-Because lint with name `ascii-only` exist
+Because a lint named `ascii-only` exists.

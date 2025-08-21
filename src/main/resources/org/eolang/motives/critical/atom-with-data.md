@@ -1,6 +1,6 @@
 # Atom with data
 
-Each atom in [XMIR], must not have the text data inside.
+In [XMIR], atoms must not contain text data.
 
 Incorrect:
 

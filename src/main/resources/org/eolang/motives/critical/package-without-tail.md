@@ -1,6 +1,6 @@
 # `+package` without tail
 
-Special `+package` meta must have a tail.
+The special `+package` meta must have a value.
 
 Incorrect:
 

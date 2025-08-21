@@ -1,6 +1,6 @@
 # Schema is absent
 
-[XMIR] document must have `xsi:noNamespaceSchemaLocation` inside it.
+The [XMIR] document must contain the `xsi:noNamespaceSchemaLocation` attribute.
 
 Incorrect:
 
