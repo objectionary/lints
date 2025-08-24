@@ -8,5 +8,6 @@ asserts:
 input: |
   # Top object.
   [args] > main
-    []
-      42 > @
+    start > @
+      []
+        42 > i
