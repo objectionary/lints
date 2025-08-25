@@ -12,7 +12,7 @@
   <xsl:template match="/">
     <xsl:variable name="min" select="32"/>
     <defects>
-      <xsl:for-each select="//o[eo:abstract(.) and @name and not(contains(@name, 'a🌵')) and not(eo:test-attr(.)) and @line]">
+      <xsl:for-each select="//o[eo:abstract(.) and @name and not(starts-with(@name, 'a🌵')) and not(eo:test-attr(.)) and @line]">
         <xsl:variable name="line" select="eo:lineno(@line)"/>
         <xsl:if test="not(/object/comments/comment[@line = $line])">
           <xsl:element name="defect">
