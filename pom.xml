@@ -404,7 +404,7 @@
                 </goals>
                 <configuration>
                   <rules>streams/*</rules>
-                  <timeout>15</timeout>
+                  <timeout>60</timeout>
                   <threads>0</threads>
                   <grepIn>(66-69-6C-74-65-72|6D-61-70)</grepIn>
                   <!-- Used as benchmark resource. -->
