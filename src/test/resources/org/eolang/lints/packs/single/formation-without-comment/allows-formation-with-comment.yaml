@@ -1,0 +1,13 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/comments/formation-without-comment.xsl
+asserts:
+  - /defects[count(defect)=0]
+input: |
+  # Top object.
+  [args] > main
+    # Nested object.
+    [] > f
+      42 > @

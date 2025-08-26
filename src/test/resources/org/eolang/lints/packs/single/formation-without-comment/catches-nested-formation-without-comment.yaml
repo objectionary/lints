@@ -1,0 +1,19 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+# yamllint disable rule:line-length
+sheets:
+  - /org/eolang/lints/comments/formation-without-comment.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=1]
+  - /defects/defect[@line='7']
+  - /defects/defect[normalize-space()='The formation "s" does not have a comment']
+input: |
+  # Top object.
+  [args] > main
+    # Nested object.
+    [] > f
+      # One more nested object.
+      [] > a
+        [] > s
+          42 > @
