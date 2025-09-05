@@ -11,7 +11,7 @@
   <xsl:output encoding="UTF-8" method="xml"/>
   <xsl:template match="/">
     <defects>
-      <xsl:apply-templates select="//o[eo:abstract(.) and not(o[1][@base='ξ' and @name='xi🌵'])]" mode="unordered"/>
+      <xsl:apply-templates select="//o[eo:abstract(.) and not(eo:has-data(.)) and not(o[1][@base='ξ' and @name='xi🌵'])]" mode="unordered"/>
     </defects>
   </xsl:template>
   <xsl:template match="o" mode="unordered">
