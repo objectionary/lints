@@ -10,7 +10,7 @@
   <xsl:output encoding="UTF-8" method="xml"/>
   <xsl:template match="/">
     <defects>
-      <xsl:for-each select="//o[eo:abstract(.) and not(starts-with(@name, '+')) and count(o)=1 and o[1][@name='φ']]">
+      <xsl:for-each select="//o[eo:abstract(.) and not(starts-with(@name, '+')) and count(o[not(@base='ξ' and @name='xi🌵')])=1 and o[not(@base='ξ' and @name='xi🌵')][1][@name='φ']]">
         <xsl:element name="defect">
           <xsl:variable name="line" select="eo:lineno(@line)"/>
           <xsl:attribute name="line">
