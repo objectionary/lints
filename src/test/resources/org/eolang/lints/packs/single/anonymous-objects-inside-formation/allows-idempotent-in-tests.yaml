@@ -1,0 +1,15 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/errors/anonymous-objects-inside-formation.xsl
+asserts:
+  - /defects[count(defect)=0]
+input: |
+  [] > foo
+    [] +> tests-slice-foreign-literals
+      eq. > @
+        "hello, 大家!".slice
+          7
+          1
+        "大"

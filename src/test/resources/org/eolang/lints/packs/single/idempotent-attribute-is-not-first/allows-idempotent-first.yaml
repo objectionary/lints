@@ -1,0 +1,14 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/critical/idempotent-attribute-is-not-first.xsl
+asserts:
+  - /defects[count(defect)=0]
+document: |
+  <object author="tests">
+    <o name="foo">
+      <o base="ξ" name="xi🌵"/>
+      <o base="∅" name="x"/>
+    </o>
+  </object>
