@@ -1,6 +1,6 @@
 # Idempotent attribute is not first
 
-The idempotent attribute (object with `@name="ξ"` and `@name="xi🌵"`) must be
+The idempotent attribute (object with `@base="ξ"` and `@name="xi🌵"`) must be
 declared first in the formation.
 
 Incorrect:
