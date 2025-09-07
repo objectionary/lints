@@ -22,4 +22,4 @@ jobs:
         with:
           branch: gh-pages
           folder: gh-pages
-          clean: true
+          clean: false
