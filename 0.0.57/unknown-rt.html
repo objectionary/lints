@@ -1,0 +1,27 @@
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>lints</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="shortcut icon" href="https://www.yegor256.com/images/books/elegant-objects/cactus.png"/><link href="https://cdn.jsdelivr.net/npm/tacit-css@1.8.1/dist/tacit-css.min.css" rel="stylesheet" integrity="sha384-JbsYayq5Otme+gjh/pl7NrA/qMIU0bxbdzKvYqQGHvvag0lHhM62TQnDzz+EyzXj" crossorigin="anonymous"/>
+</head>
+<body><section><article>
+<h1 id="unknown-rt">Unknown <code>+rt</code></h1>
+<p>The special <code>+rt</code> meta must use only allowed values in its
+first part. Currently, the following runtimes are supported:</p>
+<ul>
+<li><a href="https://github.com/objectionary/eo">JVM</a></li>
+<li><a href="https://github.com/objectionary/eo2js">node</a></li>
+</ul>
+<p>Incorrect:</p>
+<pre class="eo"><code>+rt test
++rt foo bar
+
+[] &gt; foo</code></pre>
+<p>Correct:</p>
+<pre class="eo"><code>+rt jvm org.eolang:eo-runtime:0.0.0
++rt node eo2js-runtime:0.0.0
+
+[] &gt; foo</code></pre>
+<p>Published on Sun Sep  7 09:57:37 UTC 2025.</p>
+</article></section></body></html>
