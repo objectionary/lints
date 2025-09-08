@@ -73,4 +73,17 @@ final class LtAsciiOnlyTest {
         );
     }
 
+    @Test
+    void complainsAsWarning() throws IOException {
+        MatcherAssert.assertThat(
+            "The lint should complain as warning",
+            new LtAsciiOnly().defects(
+                new EoSyntax(
+                    "# 计算机编程是我的生活!\n[] > a"
+                ).parsed()
+            ).iterator().next().severity(),
+            Matchers.equalTo(Severity.WARNING)
+        );
+    }
+
 }

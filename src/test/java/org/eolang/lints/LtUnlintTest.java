@@ -66,7 +66,7 @@ final class LtUnlintTest {
                 Matchers.hasItem(
                     Matchers.hasToString(
                         Matchers.allOf(
-                            Matchers.containsString("ascii-only ERROR"),
+                            Matchers.containsString("ascii-only WARNING"),
                             Matchers.containsString(":6")
                         )
                     )

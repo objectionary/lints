@@ -55,7 +55,7 @@ final class LtAsciiOnly implements Lint<XML> {
             defects.add(
                 new Defect.Default(
                     "ascii-only",
-                    Severity.ERROR,
+                    Severity.WARNING,
                     new OnDefault(xmir).get(),
                     Integer.parseInt(line),
                     String.format(
