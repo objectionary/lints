@@ -1,0 +1,22 @@
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>lints</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="shortcut icon" href="https://www.yegor256.com/images/books/elegant-objects/cactus.png"/><link href="https://cdn.jsdelivr.net/npm/tacit-css@1.8.1/dist/tacit-css.min.css" rel="stylesheet" integrity="sha384-JbsYayq5Otme+gjh/pl7NrA/qMIU0bxbdzKvYqQGHvvag0lHhM62TQnDzz+EyzXj" crossorigin="anonymous"/>
+</head>
+<body><section><article>
+<h1 id="package-without-tail"><code>+package</code> without tail</h1>
+<p>The special <code>+package</code> meta must have a value.</p>
+<p>Incorrect:</p>
+<pre class="eo"><code>+package
+
+# Foo.
+[] &gt; foo</code></pre>
+<p>Correct:</p>
+<pre class="eo"><code>+package foo
+
+# Foo.
+[] &gt; foo</code></pre>
+<p>Published on Tue Sep  9 03:06:00 UTC 2025.</p>
+</article></section></body></html>
