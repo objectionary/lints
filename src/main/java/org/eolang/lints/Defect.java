@@ -160,6 +160,21 @@ public interface Defect {
 
         /**
          * Ctor.
+         * @param rule Rule name
+         * @param severity Severity level
+         * @param line Line number
+         * @param text Description of the defect
+         * @checkstyle ParameterNumberCheck (5 lines)
+         */
+        Default(
+            final String rule, final Severity severity,
+            final int line, final String text
+        ) {
+            this(rule, severity, "", line, text);
+        }
+
+        /**
+         * Ctor.
          * <p>
          * Constructs a defect with all required information.
          * </p>
