@@ -23,11 +23,11 @@ final class LtTestComment implements Lint<XML> {
         final Collection<Defect> defects = new ArrayList<>(0);
         final Xnav xml = new Xnav(xmir.inner());
         final List<Xnav> objects = xml
-            .path("/object//o[@name and starts-with(@name, '+')]")
+            .path("//o[@name and starts-with(@name, '+')]")
             .collect(Collectors.toList());
         for (final Xnav object : objects) {
             final List<Xnav> comments = object
-                .path("meta[@key='comment']")
+                .path(".//meta[@key='comment']")
                 .collect(Collectors.toList());
             if (!comments.isEmpty()) {
                 defects.add(
