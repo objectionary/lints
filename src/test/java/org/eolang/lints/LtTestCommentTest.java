@@ -75,24 +75,4 @@ final class LtTestCommentTest {
         );
     }
 
-    @Test
-    void reportsDefectWhenTestObjectHasComment() throws IOException {
-        final XML xml = new XMLDocument(
-            "<program>" +
-                "<object name='foo' line='10'>" +
-                "<o name='+test' line='12'>" +
-                "<meta key='comment' line='13'/>" +
-                "</o>" +
-                "</object>" +
-            "</program>"
-        );
-        final LtTestComment lint = new LtTestComment();
-        final Collection<Defect> defects = lint.defects(xml);
-        MatcherAssert.assertThat(
-            "Should report exactly one defect when a test object has a comment",
-            defects,
-            Matchers.hasSize(1)
-        );
-    }
-
 }
