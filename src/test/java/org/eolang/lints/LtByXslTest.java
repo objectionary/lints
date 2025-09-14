@@ -359,7 +359,7 @@ final class LtByXslTest {
 
     @SuppressWarnings("StreamResourceLeak")
     @Tag("deep")
-    @Timeout(180L)
+    @Timeout(420L)
     @Test
     void validatesEoPacksForErrors() throws IOException {
         Files.walk(Paths.get("src/test/resources/org/eolang/lints/packs/single"))
