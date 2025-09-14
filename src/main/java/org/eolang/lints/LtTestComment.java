@@ -36,7 +36,7 @@ final class LtTestComment implements Lint<XML> {
                         Severity.WARNING,
                         new OnDefault(xmir).get(),
                         Integer.parseInt(object.attribute("line").text().orElse("0")),
-                        "Test object contains a comment. Prefer short, self-explanatory test names instead of documenting them."
+                        "Test object contains a comment. Prefer self-explanatory test names."
                     )
                 );
             }
@@ -46,7 +46,7 @@ final class LtTestComment implements Lint<XML> {
 
     @Override
     public String motive() throws IOException {
-        return "Comments in test objects are discouraged as they often duplicate the test name. Prefer short, clear test names.";
+        return "Avoid comments in test objects; use clear test names.";
     }
 
     @Override
@@ -54,4 +54,3 @@ final class LtTestComment implements Lint<XML> {
         return "test-has-comment";
     }
 }
-
