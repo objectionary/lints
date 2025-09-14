@@ -47,6 +47,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.xembly.Directives;
 import org.xembly.Xembler;
 import org.yaml.snakeyaml.Yaml;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Test for {@link LtByXsl}.
@@ -359,7 +360,7 @@ final class LtByXslTest {
 
     @SuppressWarnings("StreamResourceLeak")
     @Tag("deep")
-    @Timeout(420L)
+    @Timeout(value = 6, unit = TimeUnit.MINUTES)
     @Test
     void validatesEoPacksForErrors() throws IOException {
         Files.walk(Paths.get("src/test/resources/org/eolang/lints/packs/single"))
