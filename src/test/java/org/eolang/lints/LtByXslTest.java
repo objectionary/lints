@@ -21,6 +21,7 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.concurrent.TimeUnit;
 import matchers.DefectsMatcher;
 import org.cactoos.io.ReaderOf;
 import org.cactoos.io.ResourceOf;
@@ -47,7 +48,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.xembly.Directives;
 import org.xembly.Xembler;
 import org.yaml.snakeyaml.Yaml;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Test for {@link LtByXsl}.
