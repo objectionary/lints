@@ -53,7 +53,7 @@ final class LtTestCommentTest {
         MatcherAssert.assertThat(
             "Motive must discourage comments in test objects",
             lint.motive(),
-            Matchers.containsString("Comments in test objects are discouraged")
+            Matchers.containsString("Avoid comments in test objects; use clear test names")
         );
     }
 
