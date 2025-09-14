@@ -6,11 +6,11 @@ package org.eolang.lints;
 
 import com.jcabi.xml.XML;
 import com.jcabi.xml.XMLDocument;
+import java.io.IOException;
+import java.util.Collection;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
-import java.io.IOException;
-import java.util.Collection;
 
 /**
  * Test for {@link LtTestComment}.
@@ -22,12 +22,7 @@ final class LtTestCommentTest {
     @Test
     void reportsNoDefectsWhenNoCommentPresent() throws IOException {
         final XML xml = new XMLDocument(
-            "<program>"
-                + "<object name='foo' line='10'>"
-                + "<o name='+test' line='12'>"
-                + "</o>"
-                + "</object>"
-                + "</program>"
+            "<program><object name='foo' line='10'><o name='+test' line='12'></o></object></program>"
         );
         final LtTestComment lint = new LtTestComment();
         final Collection<Defect> defects = lint.defects(xml);
@@ -41,12 +36,7 @@ final class LtTestCommentTest {
     @Test
     void reportsNoDefectsWhenNoObjectPresent() throws IOException {
         final XML xml = new XMLDocument(
-            "<program>"
-                + "<object name='foo' line='10'>"
-                + "<o name='bar' line='12'>"
-                + "</o>"
-                + "</object>"
-                + "</program>"
+            "<program><object name='foo' line='10'><o name='bar' line='12'></o></object></program>"
         );
         final LtTestComment lint = new LtTestComment();
         final Collection<Defect> defects = lint.defects(xml);
