@@ -18,7 +18,7 @@ import java.util.Collection;
 final class LtTestCommentTest {
 
     @Test
-    void reportNoDefectsWithoutComment() throws IOException {
+    void reportNoDefectsWhenNoCommentPresent() throws IOException {
         XML xml = new XMLDocument(
                 "<program>" +
                         "<object name='foo' line='10'>" +
@@ -37,7 +37,7 @@ final class LtTestCommentTest {
     }
 
     @Test
-    void reportNoDefectsWithoutTestObject() throws IOException {
+    void reportNoDefectsWhenNoObjectPresent() throws IOException {
         XML xml = new XMLDocument(
                 "<program>" +
                         "<object name='foo' line='10'>" +
@@ -56,7 +56,7 @@ final class LtTestCommentTest {
     }
 
     @Test
-    void containGuidanceInMotive() throws IOException {
+    void containGuidanceInMotiveText() throws IOException {
         LtTestComment lint = new LtTestComment();
         MatcherAssert.assertThat(
                 "Motive must discourage comments in test objects",
@@ -66,7 +66,7 @@ final class LtTestCommentTest {
     }
 
     @Test
-    void returnStableId() {
+    void returnStableIdConsistently() {
         LtTestComment lint = new LtTestComment();
         MatcherAssert.assertThat(
                 "Rule id must be 'test-has-comment'",
