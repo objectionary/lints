@@ -53,4 +53,31 @@ final class LtRedundantHatTest {
         );
     }
 
+    @Test
+    void doesNotReportDefectWhenCaretIsNecessary() throws IOException {
+        final String xml = "<object><o name='bar' line='13'></o></object>";
+        final XML doc = new XMLDocument(xml);
+        final LtRedundantHat lint = new LtRedundantHat();
+        final Collection<Defect> defects = lint.defects(doc);
+        MatcherAssert.assertThat(
+            "Should not report a defect when '^' is necessary due to ambiguity",
+            defects,
+            Matchers.empty()
+        );
+    }
+
+    @Test
+    void reportsDefectWhenCaretIsRedundantWithMultipleMatches() throws IOException {
+        final String xml =
+            "<object><o name='foo' base='^' line='12'></o></object>";
+        final XML doc = new XMLDocument(xml);
+        final LtRedundantHat lint = new LtRedundantHat();
+        final Collection<Defect> defects = lint.defects(doc);
+        MatcherAssert.assertThat(
+            "Should report a defect when '^' is redundant among multiple matches",
+            defects,
+                Matchers.hasSize(1)
+        );
+    }
+
 }
