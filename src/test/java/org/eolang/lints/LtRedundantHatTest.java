@@ -13,23 +13,23 @@ import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 
 /**
- * Test case for {@link LtRedundantHat}.
+ * Test for {@link LtRedundantHat}.
  *
- * @since 0.0.60
+ * @since 0.0.1
  */
 final class LtRedundantHatTest {
 
     @Test
     void reportsNoDefectsForNecessaryHat() throws IOException {
         final XML xml = new XMLDocument(
-                        "<program><object name='foo' line='10'><o name='+test' line='12'></o></object></program>"
+            "<program><object name='foo' line='10'><o name='+test' line='12'></o></object></program>"
         );
         final LtRedundantHat lint = new LtRedundantHat();
         final Collection<Defect> defects = lint.defects(xml);
         MatcherAssert.assertThat(
-                "Should not report a defect when '^' is necessary to resolve ambiguity",
-                defects,
-                Matchers.empty()
+            "Should not report a defect when '^' is necessary to resolve ambiguity",
+            defects,
+            Matchers.empty()
         );
     }
 
@@ -37,9 +37,9 @@ final class LtRedundantHatTest {
     void containsGuidanceInMotive() throws IOException {
         final LtRedundantHat lint = new LtRedundantHat();
         MatcherAssert.assertThat(
-                "Motive must explain when to omit redundant '^'",
-                lint.motive(),
-                Matchers.containsString("notation is used when there are no naming conflicts")
+            "Motive must explain when to omit redundant '^'",
+            lint.motive(),
+            Matchers.containsString("notation is redundant and can be omitted for brevity")
         );
     }
 
@@ -47,9 +47,10 @@ final class LtRedundantHatTest {
     void namesStableId() {
         final LtRedundantHat lint = new LtRedundantHat();
         MatcherAssert.assertThat(
-                "Rule id must be 'redundant-hat'",
-                lint.name(),
-                Matchers.equalTo("redundant-hat")
+            "Rule id must be 'redundant-hat'",
+            lint.name(),
+            Matchers.equalTo("redundant-hat")
         );
     }
+
 }
