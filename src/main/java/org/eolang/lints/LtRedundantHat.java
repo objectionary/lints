@@ -22,29 +22,49 @@ final class LtRedundantHat implements Lint<XML> {
     public Collection<Defect> defects(final XML xmir) throws IOException {
         final Collection<Defect> defects = new ArrayList<>(0);
         final Xnav xml = new Xnav(xmir.inner());
-        final List<Xnav> objects = xml
+        final List<Xnav> objs = xml
             .path("//o[@base='^']")
             .collect(Collectors.toList());
-        for (final Xnav object : objects) {
-            final String name = object.attribute("name").text().get();
-            final List<Xnav> parents = object
-                .path(
-                    String.format("ancestor::o[.//o[@name='%s']]", name)
-                )
+        for (final Xnav obj : objs) {
+            final String name = obj.attribute("name").text().orElse("");
+            final List<Xnav> matches = xml
+                .path(String.format("//o[@name='%s']", name))
                 .collect(Collectors.toList());
-            if (parents.isEmpty()) {
+            final List<Xnav> ancestors = obj
+                .path(String.format("ancestor::o[@name='%s']", name))
+                .collect(Collectors.toList());
+            if (matches.size() == 1) {
                 defects.add(
                     new Defect.Default(
                         this.name(),
                         Severity.WARNING,
                         new OnDefault(xmir).get(),
-                        Integer.parseInt(object.attribute("line").text().orElse("0")),
+                        Integer.parseInt(obj.attribute("line").text().orElse("0")),
                         String.format(
                             "Redundant '^' notation: '%s' can be accessed without it",
                             name
                         )
                     )
                 );
+            } else if (!ancestors.isEmpty() && matches.size() > 1) {
+                final Xnav target = ancestors.get(0);
+                for (final Xnav match : matches) {
+                    if (match.equals(target)) {
+                        defects.add(
+                            new Defect.Default(
+                                this.name(),
+                                Severity.WARNING,
+                                new OnDefault(xmir).get(),
+                                Integer.parseInt(obj.attribute("line").text().orElse("0")),
+                                String.format(
+                                    "Redundant '^' notation: '%s' resolves to the same object without it",
+                                    name
+                                )
+                            )
+                        );
+                        break;
+                    }
+                }
             }
         }
         return defects;
