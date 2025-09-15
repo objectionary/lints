@@ -34,7 +34,7 @@ final class LtRedundantHatTest {
     }
 
     @Test
-    void motiveContainsGuidance() throws IOException {
+    void containsGuidanceInMotive() throws IOException {
         final LtRedundantHat lint = new LtRedundantHat();
         MatcherAssert.assertThat(
                 "Motive must explain when to omit redundant '^'",
@@ -44,7 +44,7 @@ final class LtRedundantHatTest {
     }
 
     @Test
-    void nameIsStableId() {
+    void namesStableId() {
         final LtRedundantHat lint = new LtRedundantHat();
         MatcherAssert.assertThat(
                 "Rule id must be 'redundant-hat'",
