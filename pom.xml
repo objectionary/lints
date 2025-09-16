@@ -327,7 +327,7 @@
           <plugin>
             <groupId>com.qulice</groupId>
             <artifactId>qulice-maven-plugin</artifactId>
-            <version>0.24.0</version>
+            <version>0.24.2</version>
             <configuration>
               <excludes>
                 <exclude>pmd:/src/it/.*</exclude>
@@ -655,7 +655,7 @@
         <plugin>
           <groupId>com.qulice</groupId>
           <artifactId>qulice-maven-plugin</artifactId>
-          <version>0.24.0</version>
+          <version>0.24.2</version>
           <configuration>
             <excludes>
               <exclude>dependencies:.*</exclude>
