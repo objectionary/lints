@@ -11,19 +11,22 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.cactoos.io.ResourceOf;
+import org.cactoos.text.TextOf;
+import org.cactoos.text.UncheckedText;
 import org.eolang.parser.OnDefault;
 
 /**
  * Lint that warns if a redundant {@code ^} is used.
  * @since 0.0.59
  */
-final class LtRedundantHat implements Lint<XML> {
+final class LtRedundantRho implements Lint<XML> {
     @Override
     public Collection<Defect> defects(final XML xmir) throws IOException {
         final Collection<Defect> defects = new ArrayList<>(0);
         final Xnav xml = new Xnav(xmir.inner());
         final List<Xnav> objs = xml
-            .path("//o[@base='^']")
+            .path("//o[starts-with(@base,'ξ.ρ')]")
             .collect(Collectors.toList());
         for (final Xnav obj : objs) {
             final String name = obj.attribute("name").text().orElse("");
@@ -41,7 +44,7 @@ final class LtRedundantHat implements Lint<XML> {
                         new OnDefault(xmir).get(),
                         Integer.parseInt(obj.attribute("line").text().orElse("0")),
                         String.format(
-                            "Redundant '^' notation: '%s' can be accessed without it",
+                            "Redundant 'ξ.ρ' notation: '%s' can be accessed without it",
                             name
                         )
                     )
@@ -57,7 +60,7 @@ final class LtRedundantHat implements Lint<XML> {
                                 new OnDefault(xmir).get(),
                                 Integer.parseInt(obj.attribute("line").text().orElse("0")),
                                 String.format(
-                                    "Redundant '^' notation: '%s' resolves to the same object without it",
+                                    "Redundant 'ξ.ρ' notation: '%s' resolves to the same object without it",
                                     name
                                 )
                             )
@@ -72,7 +75,15 @@ final class LtRedundantHat implements Lint<XML> {
 
     @Override
     public String motive() throws IOException {
-        return "The '^' notation is redundant and can be omitted for brevity.";
+        return new UncheckedText(
+            new TextOf(
+                new ResourceOf(
+                    String.format(
+                        "org/eolang/motives/errors/%s.md", this.name()
+                    )
+                )
+            )
+        ).asString();
     }
 
     @Override
