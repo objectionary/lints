@@ -23,4 +23,4 @@ release:
     git commit -am "${tag}"
     mvn clean install -P!hone -Dinvoker.skip
     export MAVEN_OPTS="--add-opens java.base/java.util=ALL-UNNAMED --add-opens java.base/java.lang.reflect=ALL-UNNAMED"
-    mvn clean deploy -P!hone,objectionary,sonatype --errors --settings ../settings.xml -Dstyle.color=never
+    mvn clean deploy -P!hone,objectionary,sonatype --errors --settings ../settings.xml -Dstyle.color=never -DskipReservation=false
