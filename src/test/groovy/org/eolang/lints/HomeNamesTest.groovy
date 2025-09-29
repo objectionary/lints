@@ -20,7 +20,7 @@ import org.junit.jupiter.api.io.TempDir
  * @since 0.0.49
  */
 @Timeout(90L)
-@Tag("deep")
+@Tag("reserved")
 @ExtendWith(MayBeSlow)
 final class HomeNamesTest {
 

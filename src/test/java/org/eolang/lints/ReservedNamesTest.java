@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test;
  * happens only in that profile.
  * @since 0.0.49
  */
-@Tag("deep")
+@Tag("reserved")
 final class ReservedNamesTest {
 
     @Test
