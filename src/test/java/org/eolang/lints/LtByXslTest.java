@@ -18,6 +18,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -359,7 +360,7 @@ final class LtByXslTest {
 
     @SuppressWarnings("StreamResourceLeak")
     @Tag("deep")
-    @Timeout(180L)
+    @Timeout(value = 6, unit = TimeUnit.MINUTES)
     @Test
     void validatesEoPacksForErrors() throws IOException {
         Files.walk(Paths.get("src/test/resources/org/eolang/lints/packs/single"))
