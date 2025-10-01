@@ -1,0 +1,15 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/refs/base-must-be-merged.xsl
+asserts:
+  - /defects/defect[contains(text(), 'abracadabra')]
+document: |
+  <object>
+    <o base=".foo">
+      <o base=".bar">
+        <o base="x" name="abracadabra"/>
+      </o>
+    </o>
+  </object>
