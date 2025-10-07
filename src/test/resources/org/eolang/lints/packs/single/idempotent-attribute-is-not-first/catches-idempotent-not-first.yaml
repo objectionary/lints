@@ -2,9 +2,9 @@
 # SPDX-License-Identifier: MIT
 ---
 sheets:
-  - /org/eolang/lints/critical/idempotent-attribute-is-not-first.xsl
+  - /org/eolang/lints/design/idempotent-attribute-is-not-first.xsl
 asserts:
-  - /defects[count(defect[@severity='critical'])=1]
+  - /defects[count(defect[@severity='warning'])=1]
 document: |
   <object author="tests">
     <o name="foo">
