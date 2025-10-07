@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: MIT
 ---
 sheets:
-  - /org/eolang/lints/critical/idempotent-attribute-is-not-first.xsl
+  - /org/eolang/lints/design/idempotent-attribute-is-not-first.xsl
 asserts:
   - /defects[count(defect)=0]
 document: |
