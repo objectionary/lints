@@ -1,0 +1,26 @@
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>lints</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="shortcut icon" href="https://www.yegor256.com/images/books/elegant-objects/cactus.png"/><link href="https://cdn.jsdelivr.net/npm/tacit-css@1.8.1/dist/tacit-css.min.css" rel="stylesheet" integrity="sha384-JbsYayq5Otme+gjh/pl7NrA/qMIU0bxbdzKvYqQGHvvag0lHhM62TQnDzz+EyzXj" crossorigin="anonymous"/>
+</head>
+<body><section><article>
+<h1 id="wrong-qq.txt.sprintf-arguments">Wrong
+<code>QQ.txt.sprintf</code> Arguments</h1>
+<p>The <code>QQ.txt.sprintf</code> object must have matching placeholder
+variables and passed arguments.</p>
+<p>Incorrect:</p>
+<pre class="eo"><code>[] &gt; app
+  QQ.io.stdout &gt; @
+    QQ.txt.sprintf
+      &quot;Hello, %s! Your account is %d.&quot;
+      * name</code></pre>
+<p>Correct:</p>
+<pre class="eo"><code>[] &gt; app
+  QQ.io.stdout &gt; @
+    QQ.txt.sprintf
+      &quot;Hello, %s! Your account is %d.&quot;
+      * name acc</code></pre>
+<p>Published on Fri Oct 10 22:54:10 UTC 2025.</p>
+</article></section></body></html>
