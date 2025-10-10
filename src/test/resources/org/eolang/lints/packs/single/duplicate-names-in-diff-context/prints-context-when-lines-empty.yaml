@@ -4,7 +4,7 @@
 sheets:
   - /org/eolang/lints/misc/duplicate-names-in-diff-context.xsl
 asserts:
-  - /defects[count(defect[@context and @severity='warning'])=2]
+  - /defects[count(defect[@context and @severity='warning'])=1]
 document: |
   <object author="tests">
     <o>

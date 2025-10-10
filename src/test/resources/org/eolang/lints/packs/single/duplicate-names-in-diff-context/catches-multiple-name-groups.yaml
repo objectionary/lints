@@ -1,0 +1,23 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+# yamllint disable rule:line-length
+sheets:
+  - /org/eolang/lints/misc/duplicate-names-in-diff-context.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=2]
+  - /defects/defect[@line='4']
+  - /defects/defect[@line='8']
+  - /defects/defect[normalize-space()='Object "foo" has the same name as the objects on the lines 6']
+  - /defects/defect[normalize-space()='Object "arc" has the same name as the objects on the lines 10']
+input: |
+  # No comments.
+  [] > app
+    [] > f1
+      42 > foo
+    [] > f2
+      33 > foo
+    [] > f3
+      -8819 > arc
+    [] > f4
+      -1 > arc

@@ -10,9 +10,8 @@
   <xsl:output encoding="UTF-8" method="xml"/>
   <xsl:template match="/">
     <defects>
-      <xsl:for-each select="//o[not(ancestor::o[eo:test-attr(.)]) and not(eo:special(@name)) and not(@base='∅')]">
-        <xsl:variable name="namesakes" select="//o[not(ancestor::o[eo:test-attr(.)]) and @name=current()/@name and not(@base='∅')]"/>
-        <xsl:if test="count($namesakes)&gt;1">
+      <xsl:for-each-group select="//o[not(ancestor::o[eo:test-attr(.)]) and not(eo:special(@name)) and not(@base='∅')]" group-by="@name">
+        <xsl:if test="count(current-group())&gt;1">
           <defect>
             <xsl:variable name="line" select="eo:lineno(@line)"/>
             <xsl:attribute name="line">
@@ -27,8 +26,8 @@
             <xsl:text>Object "</xsl:text>
             <xsl:value-of select="@name"/>
             <xsl:text>" has the same name as </xsl:text>
-            <xsl:variable name="lines" select="$namesakes[@line and (not(current()/@line) or @line != current()/@line)]/@line"/>
-            <xsl:variable name="empty" select="count($lines) != count($namesakes) - 1"/>
+            <xsl:variable name="lines" select="current-group()/@line[. and . != current()/@line]"/>
+            <xsl:variable name="empty" select="count($lines) != count(current-group()) - 1"/>
             <xsl:if test="count($lines) &gt; 0">
               <xsl:text>the objects on the lines </xsl:text>
               <xsl:value-of select="string-join($lines, ', ')"/>
@@ -41,7 +40,7 @@
             </xsl:if>
           </defect>
         </xsl:if>
-      </xsl:for-each>
+      </xsl:for-each-group>
     </defects>
   </xsl:template>
 </xsl:stylesheet>
