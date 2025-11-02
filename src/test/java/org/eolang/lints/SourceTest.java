@@ -383,7 +383,7 @@ final class SourceTest {
             Matchers.hasItem(
                 Matchers.hasToString(
                     Matchers.allOf(
-                        Matchers.containsString("comment-without-dot (Single) WARNING"),
+                        Matchers.containsString("comment-without-dot/S WARNING"),
                         Matchers.containsString(":2")
                     )
                 )

@@ -92,7 +92,8 @@ final class LtIncorrectNumberOfAttrs implements Lint<Map<String, XML>> {
                             xob.path("o[@base='∅']").forEach(attrs::add);
                             final String name = xob.attribute("name").text().orElse("unknown");
                             definitions.put(
-                                LtIncorrectNumberOfAttrs.packagedFqn(name, xml), attrs.size()
+                                LtIncorrectNumberOfAttrs.packagedFqn(name, xml),
+                                attrs.size()
                             );
                         }
                     );

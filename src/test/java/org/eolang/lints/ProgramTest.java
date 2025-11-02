@@ -205,7 +205,7 @@ final class ProgramTest {
             ).defects(),
             Matchers.hasItem(
                 Matchers.hasToString(
-                    Matchers.containsString("incorrect-alias (WPA) CRITICAL")
+                    Matchers.containsString("incorrect-alias/W CRITICAL")
                 )
             )
         );
