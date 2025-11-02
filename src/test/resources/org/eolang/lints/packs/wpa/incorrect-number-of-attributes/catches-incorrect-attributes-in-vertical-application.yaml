@@ -7,7 +7,7 @@ lints:
 asserts:
   - /defects[count(defect[@severity='error'])=1]
   - /defects/defect[@object='usage' and @line='5']
-  - /defects/defect[1][normalize-space()='The object "Φ.org.eolang.a" expects 2 arguments, while 1 provided']
+  - /defects/defect[1][normalize-space()='The object "Φ.org.eolang.a" usually expects 2 arguments, while 1 provided here']
 foo.eo: |
   # A.
   [pos sigma] > a
