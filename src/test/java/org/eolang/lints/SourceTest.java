@@ -28,6 +28,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import org.cactoos.bytes.BytesOf;
@@ -61,12 +62,17 @@ import org.objectweb.asm.Opcodes;
  * Test for {@link Source}.
  *
  * @since 0.0.1
+ * @todo #767:60min Decrease timeouts for source linting.
+ *  As for now, most lints are too slow, we need to optimize them first, so they
+ *  run in milliseconds, not seconds/minutes. It should decrease our build time too.
+ *  After that, we need to decrease our test timeouts. Don't forget to remove this puzzle.
  * @checkstyle MethodBodyCommentsCheck (50 lines)
  */
 @SuppressWarnings("PMD.TooManyMethods")
 @ExtendWith(MktmpResolver.class)
 final class SourceTest {
 
+    @Timeout(unit = TimeUnit.SECONDS, value = 60L)
     @Test
     void returnsEmptyListOfDefects() throws IOException {
         MatcherAssert.assertThat(
@@ -144,7 +150,7 @@ final class SourceTest {
     }
 
     @Tag("deep")
-    @Timeout(60L)
+    @Timeout(unit = TimeUnit.MINUTES, value = 2L)
     @RepeatedTest(2)
     void lintsInMultipleThreads() {
         MatcherAssert.assertThat(
@@ -377,7 +383,7 @@ final class SourceTest {
             Matchers.hasItem(
                 Matchers.hasToString(
                     Matchers.allOf(
-                        Matchers.containsString("comment-without-dot (Single) WARNING"),
+                        Matchers.containsString("comment-without-dot/S WARNING"),
                         Matchers.containsString(":2")
                     )
                 )

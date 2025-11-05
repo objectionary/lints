@@ -123,7 +123,7 @@ public final class Program {
         final Collection<Defect> messages = new ArrayList<>(0);
         for (final Lint<Map<String, XML>> lint : this.lints) {
             try {
-                messages.addAll(new ScopedDefects(lint.defects(this.pkg), "WPA"));
+                messages.addAll(new ScopedDefects(lint.defects(this.pkg), "W"));
             } catch (final IOException exception) {
                 throw new IllegalStateException(
                     String.format(

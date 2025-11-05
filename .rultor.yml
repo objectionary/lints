@@ -4,6 +4,8 @@
 # yamllint disable rule:line-length
 architect:
   - yegor256
+ec2:
+  type: t2.2xlarge
 docker:
   image: yegor256/java
 assets:
@@ -23,4 +25,4 @@ release:
     git commit -am "${tag}"
     mvn clean install -P!hone -Dinvoker.skip
     export MAVEN_OPTS="--add-opens java.base/java.util=ALL-UNNAMED --add-opens java.base/java.lang.reflect=ALL-UNNAMED"
-    mvn clean deploy -P!hone,objectionary,sonatype --errors --settings ../settings.xml -Dstyle.color=never
+    mvn clean deploy -P!hone,reserved,objectionary,sonatype --errors --settings ../settings.xml -Dstyle.color=never

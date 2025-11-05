@@ -1,0 +1,21 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+# yamllint disable rule:line-length
+sheets:
+  - /org/eolang/lints/misc/duplicate-names-in-diff-context.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=1]
+  - /defects/defect[@line='4']
+  - /defects/defect[normalize-space()='Object "hello" has the same name as the objects on the lines 6, 8, 10']
+input: |
+  # No comments.
+  [] > main
+    [] > f1
+      "Hello world" > hello
+    [] > f2
+      "Привет мир" > hello
+    [] > f3
+      "你好，世界" > hello
+    [] > f4
+      "こんにちは、世界" > hello

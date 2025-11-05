@@ -26,7 +26,7 @@ final class ScopedDefects extends CollectionEnvelope<Defect> {
                 new Mapped<>(
                     defect -> new DfContext(
                         new Defect.Default(
-                            String.format("%s (%s)", defect.rule(), marker),
+                            String.format("%s/%s", defect.rule(), marker),
                             defect.severity(),
                             defect.object(),
                             defect.line(),

@@ -45,7 +45,7 @@ final class LtIncorrectNumberOfAttrs implements Lint<Map<String, XML>> {
                                     program,
                                     Integer.parseInt(xnav.attribute("line").text().orElse("0")),
                                     String.format(
-                                        "The object \"%s\" expects %d arguments, while %d provided",
+                                        "The object \"%s\" usually expects %d arguments, while %d provided here",
                                         object, expected, provided
                                     )
                                 )
@@ -92,7 +92,8 @@ final class LtIncorrectNumberOfAttrs implements Lint<Map<String, XML>> {
                             xob.path("o[@base='∅']").forEach(attrs::add);
                             final String name = xob.attribute("name").text().orElse("unknown");
                             definitions.put(
-                                LtIncorrectNumberOfAttrs.packagedFqn(name, xml), attrs.size()
+                                LtIncorrectNumberOfAttrs.packagedFqn(name, xml),
+                                attrs.size()
                             );
                         }
                     );

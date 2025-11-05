@@ -25,7 +25,7 @@
           <xsl:value-of select="eo:defect-context(.)"/>
         </xsl:attribute>
       </xsl:if>
-      <xsl:attribute name="severity">critical</xsl:attribute>
+      <xsl:attribute name="severity">warning</xsl:attribute>
       <xsl:text>The idempotent object must go first inside formation</xsl:text>
     </defect>
   </xsl:template>

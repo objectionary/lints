@@ -38,7 +38,10 @@ final class ScopedDefectsTest {
             ),
             Matchers.hasItem(
                 Matchers.hasToString(
-                    "[foo boom-lint (X!) ERROR]:42 Foo bar!"
+                    String.format(
+                        "[foo boom-lint/%s ERROR]:42 Foo bar!",
+                        marker
+                    )
                 )
             )
         );

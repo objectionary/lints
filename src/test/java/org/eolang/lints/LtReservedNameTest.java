@@ -159,7 +159,7 @@ final class LtReservedNameTest {
         );
     }
 
-    @Tag("deep")
+    @Tag("reserved")
     @Test
     void scansReservedFromHome() throws Exception {
         final Lint<XML> lint = new LtReservedName();

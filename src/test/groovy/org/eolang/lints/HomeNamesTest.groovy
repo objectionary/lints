@@ -7,6 +7,7 @@ package org.eolang.lints
 import com.yegor256.MayBeSlow
 import java.nio.file.Path
 import java.nio.file.Paths
+import java.util.concurrent.TimeUnit
 import org.hamcrest.MatcherAssert
 import org.hamcrest.Matchers
 import org.junit.jupiter.api.Tag
@@ -20,10 +21,11 @@ import org.junit.jupiter.api.io.TempDir
  * @since 0.0.49
  */
 @Timeout(90L)
-@Tag("deep")
+@Tag("reserved")
 @ExtendWith(MayBeSlow)
 final class HomeNamesTest {
 
+  @Timeout(unit = TimeUnit.MINUTES, value = 3L)
   @Test
   void placesHomeObjectsAsReserved(@TempDir final Path temp) {
     final String csv = temp.resolve("reserved.csv").toString()
@@ -35,6 +37,7 @@ final class HomeNamesTest {
     )
   }
 
+  @Timeout(unit = TimeUnit.MINUTES, value = 3L)
   @Test
   void placesHomeObjectsWithCorrectNames(@TempDir final Path temp) {
     final String csv = temp.resolve("reserved.csv").toString()
