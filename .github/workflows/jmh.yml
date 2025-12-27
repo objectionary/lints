@@ -7,11 +7,13 @@ name: jmh
   pull_request:
     branches:
       - master
+env:
+  RUN_WORKFLOW: false
 jobs:
   jmh:
     timeout-minutes: 45
     runs-on: ubuntu-24.04
-    if: false
+    if: ${{ vars.RUN_WORKFLOW == 'true' }}
     steps:
       - name: Run JMH Benchmark Action
         uses: volodya-lombrozo/jmh-benchmark-action@v1
