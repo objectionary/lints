@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+ * SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
  * SPDX-License-Identifier: MIT
  */
 package org.eolang.lints;
@@ -85,7 +85,7 @@ final class SourceTest {
                         "+package com.example",
                         "+version 0.0.0",
                         // REUSE-IgnoreStart
-                        "+spdx SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com",
+                        "+spdx SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com",
                         "+spdx SPDX-License-Identifier: MIT",
                         // REUSE-IgnoreEnd,
                         "",

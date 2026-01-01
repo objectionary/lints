@@ -32,7 +32,7 @@ In [XMIR], `spdx` meta should look like this:
   </meta>
   <meta>
     <head>spdx</head>
-    <tail>SPDX-FileCopyrightText Copyright (c) 2016-2025 Objectionary.com</tail>
+    <tail>SPDX-FileCopyrightText Copyright (c) 2016-2026 Objectionary.com</tail>
     <part>SPDX-FileCopyrightText</part>
     <part>Copyright</part>
     <part>(c)</part>
