@@ -172,27 +172,6 @@
       </exclusions>
     </dependency>
     <dependency>
-      <groupId>org.codehaus.groovy</groupId>
-      <artifactId>groovy-all</artifactId>
-      <version>3.0.25</version>
-      <type>pom</type>
-      <exclusions>
-        <exclusion>
-          <!--
-            We need to exclude it, since its dependency `Maven:jline:jline:2.14.6` has no license
-            information. Exclusion will work only under project dependencies section. Don't move it
-            to `gmavenplus-plugin` dependencies.
-          -->
-          <groupId>org.codehaus.groovy</groupId>
-          <artifactId>groovy-groovysh</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.junit.platform</groupId>
-          <artifactId>junit-platform-launcher</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
       <!-- version from the parent pom -->
