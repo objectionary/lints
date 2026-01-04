@@ -107,7 +107,6 @@
       <groupId>com.yegor256</groupId>
       <artifactId>xsline</artifactId>
       <version>0.23.1</version>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.jcabi</groupId>
@@ -326,20 +325,13 @@
             <artifactId>qulice-maven-plugin</artifactId>
             <version>0.24.2</version>
             <configuration>
-              <excludes>
+              <excludes combine.children="append">
                 <exclude>pmd:/src/it/.*</exclude>
                 <exclude>checkstyle:/src/it/.*</exclude>
                 <exclude>duplicatefinder:.*</exclude>
                 <exclude>dependencies:.*</exclude>
               </excludes>
             </configuration>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>check</goal>
-                </goals>
-              </execution>
-            </executions>
           </plugin>
           <plugin>
             <groupId>com.github.volodya-lombrozo</groupId>
@@ -671,21 +663,46 @@
     </profile>
   </profiles>
   <build>
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <groupId>com.qulice</groupId>
-          <artifactId>qulice-maven-plugin</artifactId>
-          <version>0.24.2</version>
-          <configuration>
-            <excludes>
-              <exclude>dependencies:.*</exclude>
-            </excludes>
-          </configuration>
-        </plugin>
-      </plugins>
-    </pluginManagement>
     <plugins>
+      <plugin>
+        <groupId>com.github.wvengen</groupId>
+        <artifactId>proguard-maven-plugin</artifactId>
+        <version>2.6.1</version>
+        <executions>
+          <execution>
+            <phase>verify</phase>
+            <goals>
+              <goal>proguard</goal>
+            </goals>
+            <configuration>
+              <exclusions>
+                <exclusion>
+                  <groupId>org.projectlombok</groupId>
+                  <artifactId>lombok</artifactId>
+                </exclusion>
+                <exclusion>
+                  <groupId>xml-apis</groupId>
+                  <artifactId>xml-apis</artifactId>
+                </exclusion>
+              </exclusions>
+              <libs>
+                <lib>${java.home}/jmods/java.base.jmod</lib>
+                <lib>${java.home}/jmods/java.logging.jmod</lib>
+                <lib>${java.home}/jmods/java.xml.jmod</lib>
+                <lib>${java.home}/jmods/java.sql.jmod</lib>
+              </libs>
+              <options>
+                <option>-keep public class org.eolang.** { *; }</option>
+                <option>-dontnote **</option>
+                <option>-dontwarn lombok.Generated</option>
+              </options>
+              <injar>${project.build.finalName}.jar</injar>
+              <includeDependencyInjar>true</includeDependencyInjar>
+              <obfuscate>false</obfuscate>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
       <plugin>
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
