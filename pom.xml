@@ -101,7 +101,6 @@
       <groupId>org.yaml</groupId>
       <artifactId>snakeyaml</artifactId>
       <version>2.5</version>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.yegor256</groupId>
@@ -724,8 +723,6 @@
                 <option>-dontwarn com.ibm.icu.**</option>
                 <option>-dontwarn jdk.internal.**</option>
                 <option>-dontwarn javax.json.**</option>
-                <option>-dontwarn com.yegor256.tojos.**</option>
-                <option>-dontwarn org.yaml.snakeyaml.**</option>
                 <option>-dontwarn com.opencsv.**</option>
                 <option>-dontwarn org.apache.commons.lang3.**</option>
                 <option>-dontwarn net.sf.saxon.**</option>
