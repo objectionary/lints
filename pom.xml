@@ -541,6 +541,91 @@
       </build>
     </profile>
     <profile>
+      <id>proguard</id>
+      <activation>
+        <jdk>[,22)</jdk>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.github.wvengen</groupId>
+            <artifactId>proguard-maven-plugin</artifactId>
+            <version>2.6.1</version>
+            <executions>
+              <execution>
+                <phase>verify</phase>
+                <goals>
+                  <goal>proguard</goal>
+                </goals>
+                <configuration>
+                  <exclusions>
+                    <exclusion>
+                      <groupId>org.projectlombok</groupId>
+                      <artifactId>lombok</artifactId>
+                    </exclusion>
+                    <exclusion>
+                      <groupId>xml-apis</groupId>
+                      <artifactId>xml-apis</artifactId>
+                    </exclusion>
+                  </exclusions>
+                  <libs>
+                    <lib>${java.home}/jmods/java.base.jmod</lib>
+                    <lib>${java.home}/jmods/java.logging.jmod</lib>
+                    <lib>${java.home}/jmods/java.xml.jmod</lib>
+                    <lib>${java.home}/jmods/java.sql.jmod</lib>
+                    <lib>${java.home}/jmods/java.desktop.jmod</lib>
+                    <lib>${java.home}/jmods/java.prefs.jmod</lib>
+                    <lib>${java.home}/jmods/java.compiler.jmod</lib>
+                    <lib>${java.home}/jmods/java.management.jmod</lib>
+                    <lib>${java.home}/jmods/java.naming.jmod</lib>
+                  </libs>
+                  <options>
+                    <option>-keep public class org.eolang.** { *; }</option>
+                    <option>-dontnote **</option>
+                    <option>-dontwarn lombok.Generated</option>
+                    <option>-dontwarn org.apache.ivy.**</option>
+                    <option>-dontwarn org.fusesource.jansi.**</option>
+                    <option>-dontwarn com.thoughtworks.xstream.**</option>
+                    <option>-dontwarn picocli.**</option>
+                    <option>-dontwarn org.jline.**</option>
+                    <option>-dontwarn javax.mail.**</option>
+                    <option>-dontwarn javax.jms.**</option>
+                    <option>-dontwarn edu.umd.cs.findbugs.annotations.**</option>
+                    <option>-dontwarn org.apache.hadoop.**</option>
+                    <option>-dontwarn org.apache.log4j.**</option>
+                    <option>-dontwarn org.apache.commons.text.**</option>
+                    <option>-dontwarn org.apache.groovy.**</option>
+                    <option>-dontwarn org.apache.commons.logging.**</option>
+                    <option>-dontwarn javax.servlet.**</option>
+                    <option>-dontwarn org.apache.log.**</option>
+                    <option>-dontwarn org.jetbrains.annotations.**</option>
+                    <option>-dontwarn org.codehaus.groovy.**</option>
+                    <option>-dontwarn groovy.**</option>
+                    <option>-dontwarn groovyjarjarantlr4.**</option>
+                    <option>-dontwarn groovyjarjarasm.**</option>
+                    <option>-dontwarn io.github.secretx33.**</option>
+                    <option>-dontwarn com.ibm.icu.**</option>
+                    <option>-dontwarn jdk.internal.**</option>
+                    <option>-dontwarn javax.json.**</option>
+                    <option>-dontwarn com.opencsv.**</option>
+                    <option>-dontwarn org.apache.commons.lang3.**</option>
+                    <option>-dontwarn net.sf.saxon.**</option>
+                    <option>-dontwarn com.jcabi.xml.**</option>
+                    <option>-dontwarn jakarta.servlet.**</option>
+                    <option>-dontwarn com.google.common.**</option>
+                    <option>-dontwarn com.jcabi.manifests.**</option>
+                  </options>
+                  <injar>${project.build.finalName}.jar</injar>
+                  <includeDependencyInjar>true</includeDependencyInjar>
+                  <obfuscate>false</obfuscate>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
       <id>reserved</id>
       <activation>
         <activeByDefault>false</activeByDefault>
@@ -663,81 +748,6 @@
   </profiles>
   <build>
     <plugins>
-      <plugin>
-        <groupId>com.github.wvengen</groupId>
-        <artifactId>proguard-maven-plugin</artifactId>
-        <version>2.6.1</version>
-        <executions>
-          <execution>
-            <phase>verify</phase>
-            <goals>
-              <goal>proguard</goal>
-            </goals>
-            <configuration>
-              <exclusions>
-                <exclusion>
-                  <groupId>org.projectlombok</groupId>
-                  <artifactId>lombok</artifactId>
-                </exclusion>
-                <exclusion>
-                  <groupId>xml-apis</groupId>
-                  <artifactId>xml-apis</artifactId>
-                </exclusion>
-              </exclusions>
-              <libs>
-                <lib>${java.home}/jmods/java.base.jmod</lib>
-                <lib>${java.home}/jmods/java.logging.jmod</lib>
-                <lib>${java.home}/jmods/java.xml.jmod</lib>
-                <lib>${java.home}/jmods/java.sql.jmod</lib>
-                <lib>${java.home}/jmods/java.desktop.jmod</lib>
-                <lib>${java.home}/jmods/java.prefs.jmod</lib>
-                <lib>${java.home}/jmods/java.compiler.jmod</lib>
-                <lib>${java.home}/jmods/java.management.jmod</lib>
-                <lib>${java.home}/jmods/java.naming.jmod</lib>
-              </libs>
-              <options>
-                <option>-keep public class org.eolang.** { *; }</option>
-                <option>-dontnote **</option>
-                <option>-dontwarn lombok.Generated</option>
-                <option>-dontwarn org.apache.ivy.**</option>
-                <option>-dontwarn org.fusesource.jansi.**</option>
-                <option>-dontwarn com.thoughtworks.xstream.**</option>
-                <option>-dontwarn picocli.**</option>
-                <option>-dontwarn org.jline.**</option>
-                <option>-dontwarn javax.mail.**</option>
-                <option>-dontwarn javax.jms.**</option>
-                <option>-dontwarn edu.umd.cs.findbugs.annotations.**</option>
-                <option>-dontwarn org.apache.hadoop.**</option>
-                <option>-dontwarn org.apache.log4j.**</option>
-                <option>-dontwarn org.apache.commons.text.**</option>
-                <option>-dontwarn org.apache.groovy.**</option>
-                <option>-dontwarn org.apache.commons.logging.**</option>
-                <option>-dontwarn javax.servlet.**</option>
-                <option>-dontwarn org.apache.log.**</option>
-                <option>-dontwarn org.jetbrains.annotations.**</option>
-                <option>-dontwarn org.codehaus.groovy.**</option>
-                <option>-dontwarn groovy.**</option>
-                <option>-dontwarn groovyjarjarantlr4.**</option>
-                <option>-dontwarn groovyjarjarasm.**</option>
-                <option>-dontwarn io.github.secretx33.**</option>
-                <option>-dontwarn com.ibm.icu.**</option>
-                <option>-dontwarn jdk.internal.**</option>
-                <option>-dontwarn javax.json.**</option>
-                <option>-dontwarn com.opencsv.**</option>
-                <option>-dontwarn org.apache.commons.lang3.**</option>
-                <option>-dontwarn net.sf.saxon.**</option>
-                <option>-dontwarn com.jcabi.xml.**</option>
-                <option>-dontwarn jakarta.servlet.**</option>
-                <option>-dontwarn com.google.common.**</option>
-                <option>-dontwarn com.jcabi.manifests.**</option>
-              </options>
-              <injar>${project.build.finalName}.jar</injar>
-              <includeDependencyInjar>true</includeDependencyInjar>
-              <obfuscate>false</obfuscate>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
       <plugin>
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
