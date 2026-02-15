@@ -153,12 +153,12 @@ final class LtSyntaxVersion implements Lint<XML> {
         final int minor = Integer.compare(left[1], right[1]);
         final int patch = Integer.compare(left[2], right[2]);
         final boolean result;
-        if (major != 0) {
-            result = major < 0;
-        } else if (minor != 0) {
+        if (major == 0 && minor == 0) {
+            result = patch < 0;
+        } else if (major == 0) {
             result = minor < 0;
         } else {
-            result = patch < 0;
+            result = major < 0;
         }
         return result;
     }
