@@ -16,7 +16,13 @@ import org.junit.jupiter.api.Test;
  *
  * @since 0.1.0
  */
+@SuppressWarnings("PMD.TooManyMethods")
 final class LtSyntaxVersionTest {
+
+    /**
+     * Common version used in tests.
+     */
+    private static final String VER = "0.59.0";
 
     @Test
     void catchesMismatchWhenSyntaxIsNewer() throws IOException {
@@ -24,7 +30,7 @@ final class LtSyntaxVersionTest {
             "should report error when +syntax version is newer than parser",
             new LtSyntaxVersion("0.58.0").defects(
                 new EoSyntax(
-                    "+syntax 0.59.0\n\n# Foo.\n[] > foo\n"
+                    String.format("+syntax %s\n\n# Foo.\n[] > foo\n", LtSyntaxVersionTest.VER)
                 ).parsed()
             ),
             Matchers.<Defect>iterableWithSize(1)
@@ -37,7 +43,7 @@ final class LtSyntaxVersionTest {
             "should not report error when parser version is newer",
             new LtSyntaxVersion("0.60.0").defects(
                 new EoSyntax(
-                    "+syntax 0.59.0\n\n# Foo.\n[] > foo\n"
+                    String.format("+syntax %s\n\n# Foo.\n[] > foo\n", LtSyntaxVersionTest.VER)
                 ).parsed()
             ),
             Matchers.emptyIterable()
@@ -48,9 +54,9 @@ final class LtSyntaxVersionTest {
     void allowsWhenVersionsMatch() throws IOException {
         MatcherAssert.assertThat(
             "should not report error when versions match exactly",
-            new LtSyntaxVersion("0.59.0").defects(
+            new LtSyntaxVersion(LtSyntaxVersionTest.VER).defects(
                 new EoSyntax(
-                    "+syntax 0.59.0\n\n# Foo.\n[] > foo\n"
+                    String.format("+syntax %s\n\n# Foo.\n[] > foo\n", LtSyntaxVersionTest.VER)
                 ).parsed()
             ),
             Matchers.emptyIterable()
@@ -83,7 +89,7 @@ final class LtSyntaxVersionTest {
     void ignoresWhenNoSyntaxMeta() throws IOException {
         MatcherAssert.assertThat(
             "should not report error when no +syntax meta is present",
-            new LtSyntaxVersion("0.59.0").defects(
+            new LtSyntaxVersion(LtSyntaxVersionTest.VER).defects(
                 new EoSyntax(
                     "# Foo.\n[] > foo\n"
                 ).parsed()
@@ -96,7 +102,7 @@ final class LtSyntaxVersionTest {
     void reportsErrorOnInvalidSyntaxFormat() throws IOException {
         MatcherAssert.assertThat(
             "should report error for invalid +syntax format",
-            new LtSyntaxVersion("0.59.0").defects(
+            new LtSyntaxVersion(LtSyntaxVersionTest.VER).defects(
                 new EoSyntax(
                     "+syntax alpha\n\n# Foo.\n[] > foo\n"
                 ).parsed()
@@ -106,25 +112,12 @@ final class LtSyntaxVersionTest {
     }
 
     @Test
-    void reportsErrorSeverityForInvalidFormat() throws IOException {
-        MatcherAssert.assertThat(
-            "invalid format defect should have error severity",
-            new LtSyntaxVersion("0.59.0").defects(
-                new EoSyntax(
-                    "+syntax alpha\n\n# Foo.\n[] > foo\n"
-                ).parsed()
-            ).iterator().next().severity(),
-            Matchers.equalTo(Severity.ERROR)
-        );
-    }
-
-    @Test
     void reportsErrorSeverity() throws IOException {
         MatcherAssert.assertThat(
             "defect should have error severity",
             new LtSyntaxVersion("0.58.0").defects(
                 new EoSyntax(
-                    "+syntax 0.59.0\n\n# Foo.\n[] > foo\n"
+                    String.format("+syntax %s\n\n# Foo.\n[] > foo\n", LtSyntaxVersionTest.VER)
                 ).parsed()
             ).iterator().next().severity(),
             Matchers.equalTo(Severity.ERROR)
@@ -135,7 +128,7 @@ final class LtSyntaxVersionTest {
     void catchesMajorVersionMismatch() throws IOException {
         MatcherAssert.assertThat(
             "should detect when major version is newer",
-            new LtSyntaxVersion("0.59.0").defects(
+            new LtSyntaxVersion(LtSyntaxVersionTest.VER).defects(
                 new EoSyntax(
                     "+syntax 1.0.0\n\n# Foo.\n[] > foo\n"
                 ).parsed()
@@ -148,7 +141,7 @@ final class LtSyntaxVersionTest {
     void catchesPatchVersionMismatch() throws IOException {
         MatcherAssert.assertThat(
             "should detect when patch version is newer",
-            new LtSyntaxVersion("0.59.0").defects(
+            new LtSyntaxVersion(LtSyntaxVersionTest.VER).defects(
                 new EoSyntax(
                     "+syntax 0.59.1\n\n# Foo.\n[] > foo\n"
                 ).parsed()

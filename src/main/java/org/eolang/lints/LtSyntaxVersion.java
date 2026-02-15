@@ -22,7 +22,7 @@ import org.eolang.parser.OnDefault;
  * newer than the current parser version.
  *
  * <p>If the +syntax meta specifies a version higher than the parser's
- * version, it means the code requires a newer parser, and this 
+ * version, it means the code requires a newer parser, and this
  * lint reports an error.</p>
  *
  * @since 0.1.0
@@ -32,30 +32,30 @@ final class LtSyntaxVersion implements Lint<XML> {
     /**
      * The parser version.
      */
-    private final String parserVersion;
+    private final String parser;
 
     /**
      * Default ctor.
      */
     LtSyntaxVersion() {
-        this.parserVersion = "0.0.0";
+        this("0.0.0");
     }
 
     /**
      * Ctor.
-     * @param parserVersion The parser version (must be valid SemVer, e.g. 1.2.3).
-     * @throws IllegalArgumentException If parserVersion is not valid SemVer.
+     * @param ver The parser version (must be valid SemVer).
      */
-    LtSyntaxVersion(final String parserVersion) {
-        if (parserVersion == null || !LtSyntaxVersion.valid(parserVersion)) {
+    @SuppressWarnings("PMD.ConstructorOnlyInitializesOrCallOtherConstructors")
+    LtSyntaxVersion(final String ver) {
+        if (ver == null || !LtSyntaxVersion.valid(ver)) {
             throw new IllegalArgumentException(
                 String.format(
                     "parser version must be valid SemVer (e.g. 1.2.3), got: %s",
-                    parserVersion == null ? "null" : String.format("\"%s\"", parserVersion)
+                    LtSyntaxVersion.display(ver)
                 )
             );
         }
-        this.parserVersion = parserVersion;
+        this.parser = ver;
     }
 
     @Override
@@ -82,7 +82,7 @@ final class LtSyntaxVersion implements Lint<XML> {
                 );
                 continue;
             }
-            if (this.compareVersions(tail) < 0) {
+            if (this.newer(tail)) {
                 defects.add(
                     new Defect.Default(
                         this.name(),
@@ -92,7 +92,7 @@ final class LtSyntaxVersion implements Lint<XML> {
                         String.format(
                             "The +syntax meta requires version %s, but the current parser version is %s (older)",
                             tail,
-                            this.parserVersion
+                            this.parser
                         )
                     )
                 );
@@ -118,44 +118,64 @@ final class LtSyntaxVersion implements Lint<XML> {
     }
 
     /**
-     * Check if the version string is a valid SemVer.
-     * @param version The version to validate.
-     * @return True if valid.
+     * Display a version value for error messages.
+     * @param ver The version value, possibly null.
+     * @return Formatted display string.
      */
-    private static boolean valid(final String version) {
-        return version.matches("^\\d+\\.\\d+\\.\\d+(-[a-zA-Z0-9-]+)?$");
+    private static String display(final String ver) {
+        final String result;
+        if (ver == null) {
+            result = "null";
+        } else {
+            result = String.format("\"%s\"", ver);
+        }
+        return result;
     }
 
     /**
-     * Compare parser version to the given syntax version.
-     * @param syntaxVersion The version from +syntax meta.
-     * @return -1 if parser is older, 0 if equal, 1 if parser is newer.
+     * Check if the version string is a valid SemVer.
+     * @param ver The version to validate.
+     * @return True if valid.
      */
-    private int compareVersions(final String syntaxVersion) {
-        final int[] syntaxVer = LtSyntaxVersion.parts(syntaxVersion);
-        final int[] parserVer = LtSyntaxVersion.parts(this.parserVersion);
-        for (int i = 0; i < syntaxVer.length; i++) {
-            if (parserVer[i] < syntaxVer[i]) {
-                return -1;
-            }
-            if (parserVer[i] > syntaxVer[i]) {
-                return 1;
-            }
+    private static boolean valid(final String ver) {
+        return ver.matches("^\\d+\\.\\d+\\.\\d+(-[a-zA-Z0-9-]+)?$");
+    }
+
+    /**
+     * Check if the syntax version is newer than the parser version.
+     * @param syntax The version from +syntax meta.
+     * @return True if parser version is older than syntax version.
+     */
+    private boolean newer(final String syntax) {
+        final int[] left = LtSyntaxVersion.parts(this.parser);
+        final int[] right = LtSyntaxVersion.parts(syntax);
+        final int major = Integer.compare(left[0], right[0]);
+        final int minor = Integer.compare(left[1], right[1]);
+        final int patch = Integer.compare(left[2], right[2]);
+        final boolean result;
+        if (major != 0) {
+            result = major < 0;
+        } else if (minor != 0) {
+            result = minor < 0;
+        } else {
+            result = patch < 0;
         }
-        return 0;
+        return result;
     }
 
     /**
      * Parse the numeric parts of a SemVer string.
-     * @param version The version string.
-     * @return Array of [major, minor, patch].
+     * @param ver The version string.
+     * @return Array of major, minor, patch.
      */
-    private static int[] parts(final String version) {
-        final List<String> segments = Splitter.on('.').splitToList(version.split("-", 2)[0]);
-        return new int[] {
-            segments.size() > 0 ? Integer.parseInt(segments.get(0)) : 0,
-            segments.size() > 1 ? Integer.parseInt(segments.get(1)) : 0,
-            segments.size() > 2 ? Integer.parseInt(segments.get(2)) : 0
+    private static int[] parts(final String ver) {
+        final List<String> segments = Splitter.on('.').splitToList(
+            ver.split("-", 2)[0]
+        );
+        return new int[]{
+            Integer.parseInt(segments.get(0)),
+            Integer.parseInt(segments.get(1)),
+            Integer.parseInt(segments.get(2)),
         };
     }
 }
