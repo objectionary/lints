@@ -161,15 +161,18 @@ final class LtSyntaxVersionTest {
     void rejectsInvalidParserVersion() {
         Assertions.assertThrows(
             IllegalArgumentException.class,
-            () -> new LtSyntaxVersion("latest")
+            () -> new LtSyntaxVersion("latest"),
+            "should reject non-semver parser version 'latest'"
         );
         Assertions.assertThrows(
             IllegalArgumentException.class,
-            () -> new LtSyntaxVersion("")
+            () -> new LtSyntaxVersion(""),
+            "should reject empty string as parser version"
         );
         Assertions.assertThrows(
             IllegalArgumentException.class,
-            () -> new LtSyntaxVersion(null)
+            () -> new LtSyntaxVersion(null),
+            "should reject null as parser version"
         );
     }
 }
