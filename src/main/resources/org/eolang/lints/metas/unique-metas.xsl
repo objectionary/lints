@@ -7,7 +7,7 @@
   <xsl:import href="/org/eolang/funcs/lineno.xsl"/>
   <xsl:import href="/org/eolang/funcs/defect-context.xsl"/>
   <xsl:output encoding="UTF-8"/>
-  <xsl:variable name="unique" select="('version', 'architect', 'home', 'package')"/>
+  <xsl:variable name="unique" select="('version', 'architect', 'home', 'package', 'syntax')"/>
   <xsl:variable name="metas" select="/object/metas/meta"/>
   <xsl:variable name="heads" select="/object/metas/meta/head"/>
   <xsl:template match="/">
