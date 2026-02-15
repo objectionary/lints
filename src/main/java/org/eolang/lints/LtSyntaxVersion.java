@@ -43,9 +43,18 @@ final class LtSyntaxVersion implements Lint<XML> {
 
     /**
      * Ctor.
-     * @param parserVersion The parser version.
+     * @param parserVersion The parser version (must be valid SemVer, e.g. 1.2.3).
+     * @throws IllegalArgumentException If parserVersion is not valid SemVer.
      */
     LtSyntaxVersion(final String parserVersion) {
+        if (parserVersion == null || !LtSyntaxVersion.valid(parserVersion)) {
+            throw new IllegalArgumentException(
+                String.format(
+                    "parser version must be valid SemVer (e.g. 1.2.3), got: %s",
+                    parserVersion == null ? "null" : String.format("\"%s\"", parserVersion)
+                )
+            );
+        }
         this.parserVersion = parserVersion;
     }
 

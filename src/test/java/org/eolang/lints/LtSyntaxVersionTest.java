@@ -8,6 +8,7 @@ import java.io.IOException;
 import org.eolang.parser.EoSyntax;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -153,6 +154,22 @@ final class LtSyntaxVersionTest {
                 ).parsed()
             ),
             Matchers.<Defect>iterableWithSize(1)
+        );
+    }
+
+    @Test
+    void rejectsInvalidParserVersion() {
+        Assertions.assertThrows(
+            IllegalArgumentException.class,
+            () -> new LtSyntaxVersion("latest")
+        );
+        Assertions.assertThrows(
+            IllegalArgumentException.class,
+            () -> new LtSyntaxVersion("")
+        );
+        Assertions.assertThrows(
+            IllegalArgumentException.class,
+            () -> new LtSyntaxVersion(null)
         );
     }
 }
