@@ -5,6 +5,7 @@
 package org.eolang.lints;
 
 import com.github.lombrozo.xnav.Xnav;
+import com.google.common.base.Splitter;
 import com.jcabi.xml.XML;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -141,11 +142,11 @@ final class LtSyntaxVersion implements Lint<XML> {
      * @return Array of [major, minor, patch].
      */
     private static int[] parts(final String version) {
-        final String[] segments = version.split("-", 2)[0].split("\\.");
+        final List<String> segments = Splitter.on('.').splitToList(version.split("-", 2)[0]);
         return new int[] {
-            segments.length > 0 ? Integer.parseInt(segments[0]) : 0,
-            segments.length > 1 ? Integer.parseInt(segments[1]) : 0,
-            segments.length > 2 ? Integer.parseInt(segments[2]) : 0
+            segments.size() > 0 ? Integer.parseInt(segments.get(0)) : 0,
+            segments.size() > 1 ? Integer.parseInt(segments.get(1)) : 0,
+            segments.size() > 2 ? Integer.parseInt(segments.get(2)) : 0
         };
     }
 }
