@@ -64,7 +64,7 @@ final class LtSyntaxVersionTest {
     }
 
     @Test
-    void usesDefaultVersionWhenNoArgCtor() throws IOException {
+    void allowsMatchingDefaultVersion() throws IOException {
         MatcherAssert.assertThat(
             "with default ctor (0.0.0), +syntax 0.0.0 should not report error",
             new LtSyntaxVersion().defects(
@@ -74,6 +74,10 @@ final class LtSyntaxVersionTest {
             ),
             Matchers.emptyIterable()
         );
+    }
+
+    @Test
+    void catchesNewerThanDefaultVersion() throws IOException {
         MatcherAssert.assertThat(
             "with default ctor (0.0.0), +syntax 0.0.1 should report error",
             new LtSyntaxVersion().defects(

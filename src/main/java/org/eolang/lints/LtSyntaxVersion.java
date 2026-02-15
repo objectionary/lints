@@ -9,8 +9,10 @@ import com.google.common.base.Splitter;
 import com.jcabi.xml.XML;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import org.cactoos.io.ResourceOf;
 import org.cactoos.text.IoCheckedText;
@@ -51,7 +53,9 @@ final class LtSyntaxVersion implements Lint<XML> {
             throw new IllegalArgumentException(
                 String.format(
                     "parser version must be valid SemVer (e.g. 1.2.3), got: %s",
-                    LtSyntaxVersion.display(ver)
+                    Optional.ofNullable(ver)
+                        .map(v -> String.format("\"%s\"", v))
+                        .orElse("null")
                 )
             );
         }
@@ -67,7 +71,23 @@ final class LtSyntaxVersion implements Lint<XML> {
         for (final Xnav meta : metas) {
             final String tail = meta.element("tail").text().orElse("");
             final String line = meta.attribute("line").text().orElse("0");
-            if (!LtSyntaxVersion.valid(tail)) {
+            if (LtSyntaxVersion.valid(tail)) {
+                if (this.newer(tail)) {
+                    defects.add(
+                        new Defect.Default(
+                            this.name(),
+                            Severity.ERROR,
+                            new OnDefault(xmir).get(),
+                            Integer.parseInt(line),
+                            String.format(
+                                "The +syntax meta requires version %s, but the current parser version is %s (older)",
+                                tail,
+                                this.parser
+                            )
+                        )
+                    );
+                }
+            } else {
                 defects.add(
                     new Defect.Default(
                         this.name(),
@@ -77,22 +97,6 @@ final class LtSyntaxVersion implements Lint<XML> {
                         String.format(
                             "The format of the +syntax meta is wrong: %s (SemVer expected instead)",
                             tail
-                        )
-                    )
-                );
-                continue;
-            }
-            if (this.newer(tail)) {
-                defects.add(
-                    new Defect.Default(
-                        this.name(),
-                        Severity.ERROR,
-                        new OnDefault(xmir).get(),
-                        Integer.parseInt(line),
-                        String.format(
-                            "The +syntax meta requires version %s, but the current parser version is %s (older)",
-                            tail,
-                            this.parser
                         )
                     )
                 );
@@ -118,21 +122,6 @@ final class LtSyntaxVersion implements Lint<XML> {
     }
 
     /**
-     * Display a version value for error messages.
-     * @param ver The version value, possibly null.
-     * @return Formatted display string.
-     */
-    private static String display(final String ver) {
-        final String result;
-        if (ver == null) {
-            result = "null";
-        } else {
-            result = String.format("\"%s\"", ver);
-        }
-        return result;
-    }
-
-    /**
      * Check if the version string is a valid SemVer.
      * @param ver The version to validate.
      * @return True if valid.
@@ -147,20 +136,10 @@ final class LtSyntaxVersion implements Lint<XML> {
      * @return True if parser version is older than syntax version.
      */
     private boolean newer(final String syntax) {
-        final int[] left = LtSyntaxVersion.parts(this.parser);
-        final int[] right = LtSyntaxVersion.parts(syntax);
-        final int major = Integer.compare(left[0], right[0]);
-        final int minor = Integer.compare(left[1], right[1]);
-        final int patch = Integer.compare(left[2], right[2]);
-        final boolean result;
-        if (major == 0 && minor == 0) {
-            result = patch < 0;
-        } else if (major == 0) {
-            result = minor < 0;
-        } else {
-            result = major < 0;
-        }
-        return result;
+        return Arrays.compare(
+            LtSyntaxVersion.parts(this.parser),
+            LtSyntaxVersion.parts(syntax)
+        ) < 0;
     }
 
     /**
