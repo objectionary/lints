@@ -101,19 +101,28 @@ public final class SemVer implements Comparable<SemVer> {
      * @param major Major version
      * @param minor Minor version
      * @param patch Patch version
-     * @param prerelease Pre-release identifiers
-     * @param meta Build metadata
+     * @param prerelease Pre-release identifiers (may be null, normalized to empty string)
+     * @param meta Build metadata (may be null, normalized to empty string)
      * @checkstyle ParameterNumberCheck (5 lines)
      */
     public SemVer(
         final int major, final int minor, final int patch,
         final String prerelease, final String meta
     ) {
+        if (major < 0) {
+            throw new IllegalArgumentException("Major version must be non-negative");
+        }
+        if (minor < 0) {
+            throw new IllegalArgumentException("Minor version must be non-negative");
+        }
+        if (patch < 0) {
+            throw new IllegalArgumentException("Patch version must be non-negative");
+        }
         this.mjr = major;
         this.mnr = minor;
         this.ptch = patch;
-        this.pre = prerelease;
-        this.build = meta;
+        this.pre = prerelease == null ? "" : prerelease;
+        this.build = meta == null ? "" : meta;
     }
 
     /**
@@ -328,10 +337,11 @@ public final class SemVer implements Comparable<SemVer> {
         final boolean rnum = SemVer.isNumericIdentifier(right);
         final int result;
         if (lnum && rnum) {
-            result = Integer.compare(
-                Integer.parseInt(left),
-                Integer.parseInt(right)
-            );
+            if (left.length() != right.length()) {
+                result = Integer.compare(left.length(), right.length());
+            } else {
+                result = left.compareTo(right);
+            }
         } else if (lnum) {
             result = -1;
         } else if (rnum) {
