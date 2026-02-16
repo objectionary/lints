@@ -21,7 +21,7 @@ import java.util.regex.Pattern;
  * @see <a href="https://semver.org/">Semantic Versioning 2.0.0</a>
  * @since 1.0
  */
-@SuppressWarnings("PMD.TooManyMethods")
+@SuppressWarnings({"PMD.TooManyMethods", "PMD.GodClass"})
 public final class SemVer implements Comparable<SemVer> {
 
     /**
@@ -105,6 +105,7 @@ public final class SemVer implements Comparable<SemVer> {
      * @param meta Build metadata (may be null, normalized to empty string)
      * @checkstyle ParameterNumberCheck (5 lines)
      */
+    @SuppressWarnings("PMD.ConstructorOnlyInitializesOrCallOtherConstructors")
     public SemVer(
         final int major, final int minor, final int patch,
         final String prerelease, final String meta
@@ -121,8 +122,16 @@ public final class SemVer implements Comparable<SemVer> {
         this.mjr = major;
         this.mnr = minor;
         this.ptch = patch;
-        this.pre = prerelease == null ? "" : prerelease;
-        this.build = meta == null ? "" : meta;
+        if (prerelease == null) {
+            this.pre = "";
+        } else {
+            this.pre = prerelease;
+        }
+        if (meta == null) {
+            this.build = "";
+        } else {
+            this.build = meta;
+        }
     }
 
     /**
@@ -337,17 +346,31 @@ public final class SemVer implements Comparable<SemVer> {
         final boolean rnum = SemVer.isNumericIdentifier(right);
         final int result;
         if (lnum && rnum) {
-            if (left.length() != right.length()) {
-                result = Integer.compare(left.length(), right.length());
-            } else {
-                result = left.compareTo(right);
-            }
+            result = SemVer.compareNumericStrings(left, right);
         } else if (lnum) {
             result = -1;
         } else if (rnum) {
             result = 1;
         } else {
             result = left.compareTo(right);
+        }
+        return result;
+    }
+
+    /**
+     * Compare two numeric strings by length first, then lexically.
+     * @param left Left numeric string
+     * @param right Right numeric string
+     * @return Comparison result
+     */
+    private static int compareNumericStrings(
+        final String left, final String right
+    ) {
+        final int result;
+        if (left.length() == right.length()) {
+            result = left.compareTo(right);
+        } else {
+            result = Integer.compare(left.length(), right.length());
         }
         return result;
     }
