@@ -32,6 +32,20 @@ public final class SemVer implements Comparable<SemVer> {
     );
 
     /**
+     * Pre-release identifier pattern (without leading hyphen).
+     */
+    private static final Pattern PRE_PATTERN = Pattern.compile(
+        "^(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*$"
+    );
+
+    /**
+     * Build metadata pattern (without leading plus).
+     */
+    private static final Pattern BUILD_PATTERN = Pattern.compile(
+        "^[0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*$"
+    );
+
+    /**
      * Major version number.
      */
     private final int mjr;
@@ -112,8 +126,12 @@ public final class SemVer implements Comparable<SemVer> {
         this.mjr = SemVer.validated(major, "Major");
         this.mnr = SemVer.validated(minor, "Minor");
         this.ptch = SemVer.validated(patch, "Patch");
-        this.pre = SemVer.defaulted(prerelease);
-        this.build = SemVer.defaulted(meta);
+        this.pre = SemVer.validatedIdentifier(
+            prerelease, "pre-release", SemVer.PRE_PATTERN
+        );
+        this.build = SemVer.validatedIdentifier(
+            meta, "build metadata", SemVer.BUILD_PATTERN
+        );
     }
 
     /**
@@ -250,6 +268,26 @@ public final class SemVer implements Comparable<SemVer> {
             result = "";
         } else {
             result = value;
+        }
+        return result;
+    }
+
+    /**
+     * Validates optional identifier (prerelease or build) against SemVer pattern.
+     * @param value Identifier string, null or empty allowed
+     * @param name Component name for error message
+     * @param pattern Pattern to match non-empty values
+     * @return Empty string if null/empty, otherwise validated value
+     * @throws IllegalArgumentException If non-empty value does not match pattern
+     */
+    private static String validatedIdentifier(
+        final String value, final String name, final Pattern pattern
+    ) {
+        final String result = SemVer.defaulted(value);
+        if (!result.isEmpty() && !pattern.matcher(result).matches()) {
+            throw new IllegalArgumentException(
+                String.format("Invalid SemVer %s: '%s'", name, value)
+            );
         }
         return result;
     }
