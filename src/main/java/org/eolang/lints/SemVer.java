@@ -305,20 +305,8 @@ public final class SemVer implements Comparable<SemVer> {
                 String.format("Invalid SemVer: '%s'", version)
             );
         }
-        final String prerelease = matcher.group("prerelease");
-        final String meta = matcher.group("buildmetadata");
-        final String pre;
-        if (prerelease == null) {
-            pre = "";
-        } else {
-            pre = prerelease;
-        }
-        final String bld;
-        if (meta == null) {
-            bld = "";
-        } else {
-            bld = meta;
-        }
+        final String pre = SemVer.defaulted(matcher.group("prerelease"));
+        final String bld = SemVer.defaulted(matcher.group("buildmetadata"));
         final int major;
         final int minor;
         final int patch;
