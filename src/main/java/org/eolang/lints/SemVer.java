@@ -105,33 +105,15 @@ public final class SemVer implements Comparable<SemVer> {
      * @param meta Build metadata (may be null, normalized to empty string)
      * @checkstyle ParameterNumberCheck (5 lines)
      */
-    @SuppressWarnings("PMD.ConstructorOnlyInitializesOrCallOtherConstructors")
     public SemVer(
         final int major, final int minor, final int patch,
         final String prerelease, final String meta
     ) {
-        if (major < 0) {
-            throw new IllegalArgumentException("Major version must be non-negative");
-        }
-        if (minor < 0) {
-            throw new IllegalArgumentException("Minor version must be non-negative");
-        }
-        if (patch < 0) {
-            throw new IllegalArgumentException("Patch version must be non-negative");
-        }
-        this.mjr = major;
-        this.mnr = minor;
-        this.ptch = patch;
-        if (prerelease == null) {
-            this.pre = "";
-        } else {
-            this.pre = prerelease;
-        }
-        if (meta == null) {
-            this.build = "";
-        } else {
-            this.build = meta;
-        }
+        this.mjr = SemVer.validated(major, "Major");
+        this.mnr = SemVer.validated(minor, "Minor");
+        this.ptch = SemVer.validated(patch, "Patch");
+        this.pre = SemVer.defaulted(prerelease);
+        this.build = SemVer.defaulted(meta);
     }
 
     /**
@@ -242,6 +224,37 @@ public final class SemVer implements Comparable<SemVer> {
     }
 
     /**
+     * Validates that a version component is non-negative.
+     * @param value Version component value
+     * @param name Component name for error message
+     * @return The value if valid
+     * @throws IllegalArgumentException If value is negative
+     */
+    private static int validated(final int value, final String name) {
+        if (value < 0) {
+            throw new IllegalArgumentException(
+                String.format("%s version must be non-negative", name)
+            );
+        }
+        return value;
+    }
+
+    /**
+     * Returns empty string when null.
+     * @param value String value
+     * @return Value or empty string if null
+     */
+    private static String defaulted(final String value) {
+        final String result;
+        if (value == null) {
+            result = "";
+        } else {
+            result = value;
+        }
+        return result;
+    }
+
+    /**
      * Parse version string into a SemVer instance.
      * @param version Version string
      * @return Parsed SemVer
@@ -268,9 +281,19 @@ public final class SemVer implements Comparable<SemVer> {
         } else {
             bld = meta;
         }
-        final int major = Integer.parseInt(matcher.group("major"));
-        final int minor = Integer.parseInt(matcher.group("minor"));
-        final int patch = Integer.parseInt(matcher.group("patch"));
+        final int major;
+        final int minor;
+        final int patch;
+        try {
+            major = Integer.parseInt(matcher.group("major"));
+            minor = Integer.parseInt(matcher.group("minor"));
+            patch = Integer.parseInt(matcher.group("patch"));
+        } catch (final NumberFormatException ex) {
+            throw new IllegalArgumentException(
+                String.format("Invalid SemVer: '%s'", version),
+                ex
+            );
+        }
         return new SemVer(major, minor, patch, pre, bld);
     }
 
