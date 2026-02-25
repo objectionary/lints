@@ -10,6 +10,7 @@ The following metas are supported:
 * `+home`
 * `+unlint`
 * `+probe`
+* `+syntax`
 
 Incorrect:
 
@@ -29,6 +30,7 @@ Correct:
 +architect yegor256@gmail.com
 +rt jvm
 +home https://earth.com
++syntax 0.59.0
 +unlint unsorted-metas
 
 [] > foo
