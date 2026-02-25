@@ -63,6 +63,8 @@
     </site>
   </distributionManagement>
   <properties>
+    <!-- Default empty so surefire works when JaCoCo is skipped; jacoco-maven-plugin:prepare-agent sets it when coverage is enabled -->
+    <argLine/>
     <!-- This is the flag that allows to skip unit tests run by maven-surefire-plugin -->
     <skipUTs/>
     <!-- This is the flag that allows to skip integration tests run by maven-invoker-plugin -->
@@ -767,6 +769,7 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <!-- version from the parent pom -->
         <configuration>
+          <argLine>@{argLine} -Djdk.xml.totalEntitySizeLimit=0</argLine>
           <skipTests>${skipUTs}</skipTests>
           <excludedGroups>benchmark,deep,reserved</excludedGroups>
           <excludes>
@@ -834,6 +837,8 @@
         <!-- version from the parent pom -->
         <executions>
           <execution>
+            <id>unpack-hadoop-fsnamesystem</id>
+            <phase>process-classes</phase>
             <goals>
               <goal>unpack</goal>
             </goals>
