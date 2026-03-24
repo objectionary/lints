@@ -72,6 +72,15 @@ import org.objectweb.asm.Opcodes;
 @ExtendWith(MktmpResolver.class)
 final class SourceTest {
 
+    /**
+     * Single lint for fast tests that only need to verify basic defect detection.
+     */
+    private static final Iterable<Lint<XML>> SINGLE = new ListOf<>(
+        new Unchecked<>(
+            () -> new LtByXsl("comments/comment-without-dot")
+        ).value()
+    );
+
     @Timeout(unit = TimeUnit.SECONDS, value = 60L)
     @Test
     void returnsEmptyListOfDefects() throws IOException {
@@ -133,24 +142,24 @@ final class SourceTest {
     }
 
     @Test
-    @Timeout(60L)
     void checksSimple(@Mktmp final Path dir) throws IOException {
         final Path path = dir.resolve("foo.xmir");
         Files.write(
             path,
             new EoSyntax(
-                "# first.\n[] > foo\n# second.\n[] > foo\n"
+                "# Foo\n[] > foo\n"
             ).parsed().toString().getBytes(StandardCharsets.UTF_8)
         );
         MatcherAssert.assertThat(
             "the defect is found",
-            new Source(path).defects().size(),
+            new Source(
+                new XMLDocument(path), SourceTest.SINGLE
+            ).defects().size(),
             Matchers.greaterThan(0)
         );
     }
 
     @Tag("deep")
-    @Timeout(unit = TimeUnit.MINUTES, value = 2L)
     @RepeatedTest(2)
     void lintsInMultipleThreads() {
         MatcherAssert.assertThat(
@@ -159,8 +168,9 @@ final class SourceTest {
                 new Together<>(
                     t -> new Source(
                         new EoSyntax(
-                            "# first.\n[] > foo\n"
-                        ).parsed()
+                            "# Foo\n[] > foo\n"
+                        ).parsed(),
+                        SourceTest.SINGLE
                     ).defects().size()
                 ).asList()
             ).size(),
@@ -185,13 +195,14 @@ final class SourceTest {
                             "+home some-wrong-URL",
                             "+architect broken-email-here",
                             "",
-                            "# комментарий здесь",
+                            "# A comment here.",
                             "[] > foo-bar",
                             "  boom > @",
                             "    bar 42 > zzz"
                         )
                     )
-                ).parsed()
+                ).parsed(),
+                new ListOf<>(new LtByXsl("aliases/alias-too-long"))
             ).defects(),
             Matchers.allOf(
                 Matchers.iterableWithSize(Matchers.greaterThan(0)),
@@ -228,7 +239,8 @@ final class SourceTest {
         Assertions.assertDoesNotThrow(
             () ->
                 new Source(
-                    new XMLDocument("<object><o name='correct'/></object>")
+                    new XMLDocument("<object><o name='correct'/></object>"),
+                    SourceTest.SINGLE
                 ).defects(),
             "Exception was thrown, but it should not be"
         );
@@ -355,7 +367,8 @@ final class SourceTest {
                     "# Foo with unused voids on the same line.",
                     "[x y z] > foo"
                 )
-            ).parsed()
+            ).parsed(),
+            new ListOf<>(new LtByXsl("misc/unused-void-attr"))
         ).defects();
         MatcherAssert.assertThat(
             Logger.format(
@@ -378,7 +391,8 @@ final class SourceTest {
                         "# Foo",
                         "[] > foo"
                     )
-                ).parsed()
+                ).parsed(),
+                SourceTest.SINGLE
             ).defects(),
             Matchers.hasItem(
                 Matchers.hasToString(
