@@ -29,6 +29,11 @@ final class PkWpa extends IterableEnvelope<Lint<Map<String, XML>>> {
     private static final Iterable<Lint<Map<String, XML>>> WPA = new WpaLints();
 
     /**
+     * Cached mono lint names.
+     */
+    private static final ListOf<String> MONO_NAMES = new ListOf<>(new MonoLintNames());
+
+    /**
      * Default ctor.
      */
     PkWpa() {
@@ -51,7 +56,7 @@ final class PkWpa extends IterableEnvelope<Lint<Map<String, XML>>> {
                         lints,
                         new ListOf<>(
                             new LtUnlintNonExistingDefectWpa(
-                                lints, new ListOf<>(new MonoLintNames())
+                                lints, PkWpa.MONO_NAMES
                             )
                         )
                     )
