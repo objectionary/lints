@@ -4,10 +4,6 @@ All objects that are not formations must have single-word names.
 Compound names indicate that the program context is too large
 and needs to be decomposed.
 
-There are two exceptions for idiomatic prefixes used in EO standard library:
-the `as-` prefix for type conversions (such as `as-bytes`, `as-i64`, `as-number`)
-and the `is-` prefix for boolean predicates (such as `is-empty`, `is-nan`, `is-finite`).
-
 Incorrect:
 
 ```eo
@@ -25,3 +21,8 @@ Correct:
   parse > records
     read file
 ```
+
+There are two exceptions for idiomatic prefixes used in EO standard library:
+the `as-` prefix for type conversions (such as `as-bytes`, `as-i64`,
+and `as-number`) and the `is-` prefix for predicates
+(such as `is-empty`, `is-nan`, and `is-finite`).
