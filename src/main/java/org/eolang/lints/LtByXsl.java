@@ -11,7 +11,9 @@ import com.jcabi.xml.XML;
 import com.jcabi.xml.XMLDocument;
 import com.jcabi.xml.XSL;
 import com.jcabi.xml.XSLDocument;
+import io.github.secretx33.resourceresolver.DefaultResourceLoader;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
@@ -40,9 +42,9 @@ final class LtByXsl implements Lint<XML> {
     private final XSL sheet;
 
     /**
-     * Motive document.
+     * Path to motive document.
      */
-    private final Input doc;
+    private final String doc;
 
     /**
      * Ctor.
@@ -54,20 +56,18 @@ final class LtByXsl implements Lint<XML> {
             new ResourceOf(
                 String.format("org/eolang/lints/%s.xsl", xsl)
             ),
-            new ResourceOf(
-                String.format("org/eolang/motives/%s.md", xsl)
-            )
+            String.format("org/eolang/motives/%s.md", xsl)
         );
     }
 
     /**
      * Ctor.
-     * @param xsl Relative path of XSL
-     * @param motive Relative path of a motive document
+     * @param xsl Absolute path of XSL
+     * @param motive Absolute path of a motive document
      * @throws IOException If fails
      */
     @SuppressWarnings("PMD.ConstructorOnlyInitializesOrCallOtherConstructors")
-    LtByXsl(final Input xsl, final Input motive) throws IOException {
+    LtByXsl(final Input xsl, final String motive) throws IOException {
         final XML xml = new XMLDocument(new IoCheckedText(new TextOf(xsl)).asString());
         this.rule = new Xnav(xml.toString())
             .element("xsl:stylesheet")
@@ -117,7 +117,9 @@ final class LtByXsl implements Lint<XML> {
 
     @Override
     public String motive() throws IOException {
-        return new IoCheckedText(new TextOf(this.doc)).asString();
+        return new DefaultResourceLoader()
+            .getResource(this.doc)
+            .getContentAsString(StandardCharsets.UTF_8);
     }
 
     /**
