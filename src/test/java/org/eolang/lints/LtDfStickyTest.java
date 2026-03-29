@@ -83,7 +83,7 @@ final class LtDfStickyTest {
             return Collections.emptyList();
         }
 
-        public int count() {
+        int count() {
             return this.cnt;
         }
     }
