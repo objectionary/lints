@@ -7,7 +7,6 @@ package org.eolang.lints;
 import com.github.lombrozo.xnav.Xnav;
 import com.jcabi.xml.XML;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -33,37 +32,13 @@ final class LtObjectIsNotUnique implements Lint<Map<String, XML>> {
 
     @Override
     public Collection<Defect> defects(final Map<String, XML> pkg) {
-        final Collection<Defect> defects = new ArrayList<>(0);
-        for (final XML xmir : pkg.values()) {
-            final Xnav xml = new Xnav(xmir.inner());
-            final String src = new ProgramName(xmir).get();
-            for (final XML oth : pkg.values()) {
-                final Xnav second = new Xnav(oth.inner());
-                if (Objects.equals(oth, xmir)) {
-                    continue;
-                }
-                LtObjectIsNotUnique.sourceObjects(second).entrySet().stream()
-                    .filter(
-                        object ->
-                            LtObjectIsNotUnique.containsDuplicate(xml, second, object.getKey())
-                    )
-                    .map(
-                        (Function<Map.Entry<String, String>, Defect>) object ->
-                            new Defect.Default(
-                                this.name(),
-                                Severity.ERROR,
-                                new ProgramName(oth).get(),
-                                Integer.parseInt(object.getValue()),
-                                String.format(
-                                    "The object name \"%s\" is not unique, original object was found in \"%s\"",
-                                    object.getKey(), src
-                                )
-                            )
-                    )
-                    .forEach(defects::add);
-            }
-        }
-        return defects;
+        return pkg.values().stream()
+            .flatMap(
+                xmir -> pkg.values().stream()
+                    .filter(oth -> !Objects.equals(oth, xmir))
+                    .flatMap(oth -> this.duplicateDefects(xmir, oth).stream())
+            )
+            .collect(Collectors.toList());
     }
 
     @Override
@@ -77,6 +52,38 @@ final class LtObjectIsNotUnique implements Lint<Map<String, XML>> {
                 )
             )
         ).asString();
+    }
+
+    /**
+     * Find duplicate defects between two sources.
+     * @param xmir Original source
+     * @param oth Other source
+     * @return Defects found
+     */
+    private Collection<Defect> duplicateDefects(final XML xmir, final XML oth) {
+        return LtObjectIsNotUnique.sourceObjects(new Xnav(oth.inner())).entrySet().stream()
+            .filter(
+                object -> LtObjectIsNotUnique.containsDuplicate(
+                    new Xnav(xmir.inner()),
+                    new Xnav(oth.inner()),
+                    object.getKey()
+                )
+            )
+            .map(
+                (Function<Map.Entry<String, String>, Defect>) object ->
+                    new Defect.Default(
+                        this.name(),
+                        Severity.ERROR,
+                        new ProgramName(oth).get(),
+                        Integer.parseInt(object.getValue()),
+                        String.format(
+                            "The object name \"%s\" is not unique, original object was found in \"%s\"",
+                            object.getKey(),
+                            new ProgramName(xmir).get()
+                        )
+                    )
+            )
+            .collect(Collectors.toList());
     }
 
     private static boolean containsDuplicate(

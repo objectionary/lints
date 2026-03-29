@@ -59,18 +59,19 @@ final class MeasuredXsl implements XSL {
     @Override
     public XML transform(final XML xml) {
         final long start = System.currentTimeMillis();
-        final XML res = this.origin.transform(xml);
-        final long end = System.currentTimeMillis();
-        if (end - start > this.threshold) {
-            Logger.warn(
-                this,
-                "XSL transformation '%s' took %[ms]s, whereas threshold is %[ms]s\n",
-                this.rule,
-                end - start,
-                this.threshold
-            );
+        try {
+            return this.origin.transform(xml);
+        } finally {
+            if (System.currentTimeMillis() - start > this.threshold) {
+                Logger.warn(
+                    this,
+                    "XSL transformation '%s' took %[ms]s, whereas threshold is %[ms]s\n",
+                    this.rule,
+                    System.currentTimeMillis() - start,
+                    this.threshold
+                );
+            }
         }
-        return res;
     }
 
     @Override
