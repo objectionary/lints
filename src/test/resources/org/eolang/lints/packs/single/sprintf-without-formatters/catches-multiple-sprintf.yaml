@@ -10,10 +10,10 @@ asserts:
 input: |
   # App.
   [] > app
-    QQ.io.stdout > @
-      QQ.txt.sprintf
+    io.stdout > @
+      txt.sprintf
         "Hello, Jeff Your account is $200"
         *
-      QQ.txt.sprintf
+      txt.sprintf
         "We are good"
         * f

@@ -20,7 +20,7 @@
   </xsl:function>
   <xsl:template match="/">
     <defects>
-      <xsl:for-each select="//o[not(@name) and not(@base) and not(eo:has-data(.) and parent::o[@base='Φ.org.eolang.bytes'])]">
+      <xsl:for-each select="//o[not(@name) and not(@base) and not(eo:has-data(.) and parent::o[@base='Φ.bytes'])]">
         <xsl:variable name="allowed" as="xs:string*">
           <xsl:for-each select="o[@base='∅']">
             <xsl:sequence select="concat('ξ(\.ρ)+\.', @name, '(?:\.\w+)?')"/>

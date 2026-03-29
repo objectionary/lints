@@ -1,13 +1,13 @@
 # Bytes without data
 
 In [XMIR], each `<o/>` object whose parent base contains
-`Φ.org.eolang.bytes` must have text data inside.
+`Φ.bytes` must have text data inside.
 
 Incorrect:
 
 ```xml
 <object>
-  <o name="bar" base="Φ.org.eolang.bytes">
+  <o name="bar" base="Φ.bytes">
     <o/>
   </o>
 </object>
@@ -17,7 +17,7 @@ Correct:
 
 ```xml
 <object>
-  <o name="bar" base="Φ.org.eolang.bytes">
+  <o name="bar" base="Φ.bytes">
     <o>A1-B2-C3-D4-E5</o>
   </o>
 </object>
