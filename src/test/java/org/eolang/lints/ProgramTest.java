@@ -104,7 +104,6 @@ final class ProgramTest {
 
     @Test
     void createsProgramWithoutOneLint(@Mktmp final Path dir) throws IOException {
-        final String disabled = "incorrect-alias";
         MatcherAssert.assertThat(
             "Defects for disabled lint are not empty, but should be",
             new Program(
@@ -113,8 +112,8 @@ final class ProgramTest {
                     "bar.xmir",
                     "+alias x.y.ta\n\n# first.\n# second.\n[] > bar\n"
                 )
-            ).without(disabled).defects().stream()
-                .filter(defect -> defect.rule().equals(disabled))
+            ).without("incorrect-alias").defects().stream()
+                .filter(defect -> defect.rule().equals("incorrect-alias"))
                 .collect(Collectors.toList()),
             Matchers.emptyIterable()
         );

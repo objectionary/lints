@@ -10,15 +10,16 @@ import com.jcabi.xml.XML;
 import com.jcabi.xml.XMLDocument;
 import com.jcabi.xml.XSL;
 import com.jcabi.xml.XSLDocument;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 import org.cactoos.io.ResourceOf;
 import org.cactoos.io.UncheckedInput;
 import org.cactoos.list.ListOf;
@@ -68,47 +69,14 @@ final class LtAtomIsNotUnique implements Lint<Map<String, XML>> {
 
     @Override
     public Collection<Defect> defects(final Map<String, XML> pkg) {
-        final Collection<Defect> defects = new ArrayList<>(0);
         final Map<Xnav, List<String>> index = pkg.values().stream()
             .map(this.pre::transform)
             .map(xmir -> new Xnav(xmir.inner()))
             .collect(Collectors.toMap(Function.identity(), LtAtomIsNotUnique::fqns));
-        final Collection<String> checked = new HashSet<>(0);
-        index.forEach(
-            (xmir, fqns) -> {
-                fqns.stream()
-                    .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
-                    .entrySet()
-                    .stream()
-                    .filter(entry -> entry.getValue() > 1L)
-                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue))
-                    .forEach(
-                        (aname, count) ->
-                            IntStream.range(0, Math.toIntExact(count)).forEach(
-                                pos -> defects.add(this.singleDefect(xmir, aname, pos))
-                            )
-                    );
-                index.forEach(
-                    (next, names) -> {
-                        if (!Objects.equals(next, xmir)) {
-                            final String pair = LtAtomIsNotUnique.pairHash(xmir, next);
-                            if (!checked.contains(pair)) {
-                                checked.add(pair);
-                                names.stream()
-                                    .filter(fqns::contains)
-                                    .forEach(
-                                        aname -> {
-                                            defects.add(this.sharedDefect(next, xmir, aname));
-                                            defects.add(this.sharedDefect(xmir, next, aname));
-                                        }
-                                    );
-                            }
-                        }
-                    }
-                );
-            }
-        );
-        return defects;
+        return Stream.concat(
+            this.duplicateDefects(index),
+            this.sharedDefects(index)
+        ).collect(Collectors.toList());
     }
 
     @Override
@@ -122,6 +90,55 @@ final class LtAtomIsNotUnique implements Lint<Map<String, XML>> {
                 )
             )
         ).asString();
+    }
+
+    /**
+     * Find duplicate defects within single source.
+     * @param index Index of FQNs by source
+     * @return Stream of defects
+     */
+    private Stream<Defect> duplicateDefects(final Map<Xnav, List<String>> index) {
+        return index.entrySet().stream()
+            .flatMap(
+                entry -> entry.getValue().stream()
+                    .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+                    .entrySet()
+                    .stream()
+                    .filter(e -> e.getValue() > 1L)
+                    .flatMap(
+                        e -> IntStream.range(0, Math.toIntExact(e.getValue()))
+                            .mapToObj(pos -> this.singleDefect(entry.getKey(), e.getKey(), pos))
+                    )
+            );
+    }
+
+    /**
+     * Find shared defects between sources.
+     * @param index Index of FQNs by source
+     * @return Stream of defects
+     */
+    private Stream<Defect> sharedDefects(final Map<Xnav, List<String>> index) {
+        final Set<String> checked = ConcurrentHashMap.newKeySet();
+        return index.entrySet().stream()
+            .flatMap(
+                entry -> index.entrySet().stream()
+                    .filter(other -> !Objects.equals(other.getKey(), entry.getKey()))
+                    .filter(
+                        other -> checked.add(
+                            LtAtomIsNotUnique.pairHash(entry.getKey(), other.getKey())
+                        )
+                    )
+                    .flatMap(
+                        other -> other.getValue().stream()
+                            .filter(entry.getValue()::contains)
+                            .flatMap(
+                                aname -> Stream.of(
+                                    this.sharedDefect(other.getKey(), entry.getKey(), aname),
+                                    this.sharedDefect(entry.getKey(), other.getKey(), aname)
+                                )
+                            )
+                    )
+            );
     }
 
     private Defect singleDefect(final Xnav xml, final String fqn, final int pos) {
