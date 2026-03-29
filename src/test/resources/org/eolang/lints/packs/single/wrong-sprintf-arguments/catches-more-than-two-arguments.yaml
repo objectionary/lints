@@ -9,8 +9,8 @@ asserts:
 input: |
   # App.
   [] > app
-    QQ.io.stdout > @
-      QQ.txt.sprintf
+    io.stdout > @
+      txt.sprintf
         "Hey, Jeff"
         *
         unnecessary

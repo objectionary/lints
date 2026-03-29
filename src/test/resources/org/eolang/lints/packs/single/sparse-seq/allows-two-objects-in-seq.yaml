@@ -8,7 +8,7 @@ asserts:
 input: |
   # App.
   [] > app
-    QQ.seq > @
+    seq > @
       *
         52
         true

@@ -127,7 +127,7 @@
     <dependency>
       <groupId>org.eolang</groupId>
       <artifactId>eo-parser</artifactId>
-      <version>0.59.0</version>
+      <version>0.60.0</version>
       <scope>compile</scope>
       <exclusions>
         <exclusion>
@@ -365,13 +365,6 @@
                 </goals>
               </execution>
             </executions>
-          </plugin>
-          <plugin>
-            <groupId>org.codehaus.gmavenplus</groupId>
-            <artifactId>gmavenplus-plugin</artifactId>
-            <configuration>
-              <targetBytecode>11</targetBytecode>
-            </configuration>
           </plugin>
         </plugins>
       </build>
@@ -771,6 +764,13 @@
             <version>4.9.8</version>
           </dependency>
         </dependencies>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.gmavenplus</groupId>
+        <artifactId>gmavenplus-plugin</artifactId>
+        <configuration>
+          <targetBytecode>11</targetBytecode>
+        </configuration>
       </plugin>
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>

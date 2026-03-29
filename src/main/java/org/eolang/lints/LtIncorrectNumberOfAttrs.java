@@ -109,7 +109,6 @@ final class LtIncorrectNumberOfAttrs implements Lint<Map<String, XML>> {
      * @return Packaged FQN of object name
      */
     private static String packagedFqn(final String oname, final Xnav xml) {
-        final String pack;
         final List<Xnav> packages = xml.element("object")
             .element("metas")
             .elements(Filter.withName("meta"))
@@ -117,11 +116,12 @@ final class LtIncorrectNumberOfAttrs implements Lint<Map<String, XML>> {
                 meta -> "package".equals(meta.element("head").text().get())
             )
             .collect(Collectors.toList());
+        final String result;
         if (packages.isEmpty()) {
-            pack = "org.eolang";
+            result = String.format("Φ.%s", oname);
         } else {
-            pack = packages.get(0).element("tail").text().get();
+            result = String.format("Φ.%s.%s", packages.get(0).element("tail").text().get(), oname);
         }
-        return String.format("Φ.%s.%s", pack, oname);
+        return result;
     }
 }

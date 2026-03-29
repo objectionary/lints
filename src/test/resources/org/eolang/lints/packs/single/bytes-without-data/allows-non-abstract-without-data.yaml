@@ -7,7 +7,7 @@ asserts:
   - /defects[count(defect)=0]
 document: |
   <object author="tests">
-    <o name="bar" base="Φ.org.eolang.bytes">
+    <o name="bar" base="Φ.bytes">
       <o base="Φ.f"/>
     </o>
   </object>
