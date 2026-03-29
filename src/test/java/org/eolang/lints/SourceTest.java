@@ -67,6 +67,7 @@ import org.objectweb.asm.Opcodes;
  *  run in milliseconds, not seconds/minutes. It should decrease our build time too.
  *  After that, we need to decrease our test timeouts. Don't forget to remove this puzzle.
  * @checkstyle MethodBodyCommentsCheck (50 lines)
+ * @checkstyle ClassFanOutComplexityCheck (500 lines)
  */
 @SuppressWarnings("PMD.TooManyMethods")
 @ExtendWith(MktmpResolver.class)
