@@ -13,7 +13,7 @@
       <xsl:variable name="top" select="/object/o/generate-id()"/>
       <xsl:for-each select="//o[generate-id() != $top and @name and @name != 'φ' and @base and @base != '∅' and not(@base='ξ' and @name='xi🌵')]">
         <xsl:variable name="usage" select="concat('^ξ(?:\.ρ)*\.', @name, '(?:\.[\w-]+)*$')"/>
-        <xsl:if test="count(//o[matches(@base, $usage)])&lt;=1 and not(@name and o[1]/@base = 'Φ.org.eolang.dataized')">
+        <xsl:if test="count(//o[matches(@base, $usage)])&lt;=1 and not(@name and o[1]/@base = 'Φ.dataized')">
           <xsl:element name="defect">
             <xsl:variable name="line" select="eo:lineno(@line)"/>
             <xsl:attribute name="line">

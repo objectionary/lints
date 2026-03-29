@@ -24,7 +24,6 @@ import org.cactoos.io.UncheckedInput;
 import org.cactoos.list.ListOf;
 import org.cactoos.text.TextOf;
 import org.cactoos.text.UncheckedText;
-import org.eolang.parser.OnDefault;
 
 /**
  * All atom FQNs in the entire scope of EO program must be unique.
@@ -129,7 +128,7 @@ final class LtAtomIsNotUnique implements Lint<Map<String, XML>> {
         return new Defect.Default(
             this.name(),
             Severity.ERROR,
-            new OnDefault(new XMLDocument(xml.node())).get(),
+            new ProgramName(new XMLDocument(xml.node())).get(),
             Integer.parseInt(
                 xml.path(
                     String.format("//o[@name='%s' and o[@name='λ']]", LtAtomIsNotUnique.oname(fqn))
@@ -145,7 +144,7 @@ final class LtAtomIsNotUnique implements Lint<Map<String, XML>> {
         return new Defect.Default(
             this.name(),
             Severity.ERROR,
-            new OnDefault(new XMLDocument(xml.node())).get(),
+            new ProgramName(new XMLDocument(xml.node())).get(),
             Integer.parseInt(
                 xml.path(
                     String.format("//o[@name='%s' and o[@name='λ']]", LtAtomIsNotUnique.oname(fqn))
@@ -156,7 +155,7 @@ final class LtAtomIsNotUnique implements Lint<Map<String, XML>> {
             String.format(
                 "Atom with FQN \"%s\" is duplicated, original was found in \"%s\"",
                 fqn,
-                new OnDefault(new XMLDocument(original.node())).get()
+                new ProgramName(new XMLDocument(original.node())).get()
             )
         );
     }

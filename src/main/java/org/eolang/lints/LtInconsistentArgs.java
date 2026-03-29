@@ -21,7 +21,6 @@ import org.cactoos.list.ListOf;
 import org.cactoos.map.MapOf;
 import org.cactoos.text.TextOf;
 import org.cactoos.text.UncheckedText;
-import org.eolang.parser.OnDefault;
 import org.w3c.dom.Node;
 
 /**
@@ -64,7 +63,7 @@ final class LtInconsistentArgs implements Lint<Map<String, XML>> {
                                 .filter(search.get(xpath))
                                 .forEach(
                                     o -> {
-                                        final String current = new OnDefault(
+                                        final String current = new ProgramName(
                                             new XMLDocument(src.node())
                                         ).get();
                                         final int cline = Integer.parseInt(
@@ -128,7 +127,11 @@ final class LtInconsistentArgs implements Lint<Map<String, XML>> {
                             if (LtInconsistentArgs.voidAttribute(base, o)) {
                                 ref = LtInconsistentArgs.voidFqn(base, o);
                             } else {
-                                ref = String.format("%s.%s", new OnDefault(source).get(), base);
+                                ref = String.format(
+                                    "%s.%s",
+                                    new ProgramName(new XMLDocument(source.node())).get(),
+                                    base
+                                );
                             }
                         } else {
                             ref = base;
@@ -204,7 +207,7 @@ final class LtInconsistentArgs implements Lint<Map<String, XML>> {
                     .filter(search.get(xpath))
                     .forEach(
                         o -> {
-                            final String program = new OnDefault(
+                            final String program = new ProgramName(
                                 new XMLDocument(src.node())
                             ).get();
                             final int line = Integer.parseInt(
@@ -336,10 +339,10 @@ final class LtInconsistentArgs implements Lint<Map<String, XML>> {
      * @return Relativized object base
      */
     private static String relativizeToTopObject(final String base, final Xnav source) {
-        final String top = new OnDefault(source).get();
+        final String top = new ProgramName(new XMLDocument(source.node())).get();
         final String result;
         if (base.startsWith(String.format("%s.ξ.", top))) {
-            result = base.replace(String.format("%s.", new OnDefault(source).get()), "");
+            result = base.replace(String.format("%s.", top), "");
         } else {
             result = base;
         }

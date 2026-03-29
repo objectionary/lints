@@ -9,10 +9,10 @@ asserts:
 input: |
   # App.
   [] > app
-    QQ.io.stdout > @
-      QQ.txt.sprintf
+    io.stdout > @
+      txt.sprintf
         "Hello, %s! Your account is %d."
         * name acc
-      QQ.txt.sprintf
+      txt.sprintf
         "Hello, %s! Your account is %f."
         * f

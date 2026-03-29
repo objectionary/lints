@@ -8,11 +8,11 @@ asserts:
 input: |
   # Log.
   [fmt args kid] > log
-    QQ.seq > @
+    seq > @
       *
-        QQ.stdout
+        stdout
           magenta
-            QQ.txt.sprintf
+            txt.sprintf
               foo
               * 1 2 3
         kid
