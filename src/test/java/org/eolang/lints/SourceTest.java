@@ -249,15 +249,14 @@ final class SourceTest {
 
     @Test
     void createsSourceWithoutOneLint() throws IOException {
-        final String disabled = "ascii-only";
         MatcherAssert.assertThat(
             "Defects for disabled lint are not empty, but should be",
             new Source(
                 new EoSyntax(
                     "# привет\n# как дела?\n[] > foo\n"
                 ).parsed()
-            ).without(disabled).defects().stream()
-                .filter(defect -> defect.rule().equals(disabled))
+            ).without("ascii-only").defects().stream()
+                .filter(defect -> defect.rule().equals("ascii-only"))
                 .collect(Collectors.toList()),
             Matchers.emptyIterable()
         );
@@ -414,18 +413,12 @@ final class SourceTest {
     void lintsBenchmarkSourcesFromJava() throws Exception {
         final Map<Map<SourceSize, Collection<Defect>>, String> result =
             SourceTest.benchmarkResults();
-        result.keySet().forEach(
-            defects -> {
-                final SourceSize source = defects.keySet().iterator().next();
-                MatcherAssert.assertThat(
-                    String.format(
-                        "Defects for source '%s' are empty, but they should not be",
-                        source.java()
-                    ),
-                    defects.get(source),
-                    Matchers.hasSize(Matchers.greaterThan(0))
-                );
-            }
+        MatcherAssert.assertThat(
+            "All benchmark sources must produce at least one defect",
+            result.keySet().stream().allMatch(
+                defects -> !defects.get(defects.keySet().iterator().next()).isEmpty()
+            ),
+            Matchers.equalTo(true)
         );
         Files.write(
             Paths.get("target").resolve("lint-summary.txt"),
@@ -441,65 +434,41 @@ final class SourceTest {
         final Pattern tpattern = Pattern.compile(
             "^Lint time: (\\d+(?:\\.\\d+)?)(ms|s|min|h) \\(\\d+ ms\\)$"
         );
-        final Pattern nlines = Pattern.compile("\\R");
-        Arrays.stream(
-            nlines.split(SourceTest.benchmarkResults().values().iterator().next())
+        MatcherAssert.assertThat(
+            "All lint time entries must match the expected format",
+            Arrays.stream(
+                Pattern.compile("\\R").split(
+                    SourceTest.benchmarkResults().values().iterator().next()
+                )
             )
-            .filter(line -> line.startsWith("Lint time:"))
-            .forEach(
-                text ->
-                    MatcherAssert.assertThat(
-                        String.format(
-                            "Lint time '%s' does not match '%s' regex, but it should",
-                            text, tpattern
-                        ),
-                        tpattern.matcher(text).matches(),
-                        Matchers.equalTo(true)
-                    )
-            );
+                .filter(line -> line.startsWith("Lint time:"))
+                .allMatch(text -> tpattern.matcher(text).matches()),
+            Matchers.equalTo(true)
+        );
     }
 
     @Test
     void checksJavaSourcesForBenchmarking() {
-        new ListOf<>(SourceSize.values()).forEach(
-            src -> {
-                final LineCountVisitor visitor = new LineCountVisitor();
-                new ClassReader(
-                    new UncheckedBytes(
-                        new BytesOf(
-                            new ResourceOf(
-                                src.java()
-                            )
-                        )
-                    ).asBytes()
-                ).accept(visitor, 0);
-                final int lines = visitor.total();
-                final int min = src.minAllowed();
-                final int max = src.maxAllowed();
-                MatcherAssert.assertThat(
-                    String.join(
-                        ", ",
-                        String.format(
-                            "Java source \"%s\" was supplied with incorrect size marker (\"%s\")",
-                            src, src.type()
-                        ),
-                        String.format(
-                            "since it has %d executable lines inside",
-                            lines
-                        ),
-                        String.format(
-                            "while it is expected to have between %d and %d line numbers",
-                            min, max
-                        )
-                    ),
-                    lines,
-                    Matchers.allOf(
-                        Matchers.greaterThanOrEqualTo(min),
-                        Matchers.lessThanOrEqualTo(max)
-                    )
-                );
-            }
+        MatcherAssert.assertThat(
+            "All Java sources must have line counts within expected bounds",
+            Arrays.stream(SourceSize.values()).allMatch(SourceTest::lineCountWithinBounds),
+            Matchers.equalTo(true)
         );
+    }
+
+    private static boolean lineCountWithinBounds(final SourceSize src) {
+        final LineCountVisitor visitor = new LineCountVisitor();
+        new ClassReader(
+            new UncheckedBytes(
+                new BytesOf(
+                    new ResourceOf(
+                        src.java()
+                    )
+                )
+            ).asBytes()
+        ).accept(visitor, 0);
+        final int lines = visitor.total();
+        return lines >= src.minAllowed() && lines <= src.maxAllowed();
     }
 
     /**
@@ -507,32 +476,29 @@ final class SourceTest {
      * @return Benchmark results
      */
     private static Map<Map<SourceSize, Collection<Defect>>, String> benchmarkResults() {
-        final List<Map<SourceSize, Collection<Defect>>> runs = new ListOf<>();
+        final List<Map<SourceSize, Collection<Defect>>> results = new ArrayList<>(0);
         final StringBuilder sum = new StringBuilder();
-        new ListOf<>(SourceSize.values()).forEach(
-            source -> {
-                final XML xmir = new Unchecked<>(new BytecodeClass(source)).value();
-                final long start = System.currentTimeMillis();
-                final Collection<Defect> defects = new BcSource(
-                    xmir, source.type()
-                ).defects();
-                final long msec = System.currentTimeMillis() - start;
-                runs.add(new MapOf<>(source, defects));
-                sum.append(
-                    String.join(
-                        "\n",
-                        String.format(
-                            "Input: %s (%s source)", source.java(), source.type()
-                        ),
-                        Logger.format(
-                            "Lint time: %[ms]s (%d ms)",
-                            msec, msec
-                        )
+        for (final SourceSize source : SourceSize.values()) {
+            final long before = System.currentTimeMillis();
+            final Collection<Defect> defects = new BcSource(
+                new Unchecked<>(new BytecodeClass(source)).value(), source.type()
+            ).defects();
+            final long msec = System.currentTimeMillis() - before;
+            results.add(new MapOf<>(source, defects));
+            sum.append(
+                String.join(
+                    "\n",
+                    String.format(
+                        "Input: %s (%s source)", source.java(), source.type()
+                    ),
+                    Logger.format(
+                        "Lint time: %[ms]s (%d ms)",
+                        msec, msec
                     )
-                ).append("\n\n");
-            }
-        );
-        return runs.stream().collect(
+                )
+            ).append("\n\n");
+        }
+        return results.stream().collect(
             Collectors.toMap(run -> run, run -> sum.toString())
         );
     }
@@ -610,12 +576,7 @@ final class SourceTest {
             try {
                 final Collection<Defect> messages = new ArrayList<>(0);
                 for (final Lint<XML> lint : this.lints) {
-                    final long start = System.currentTimeMillis();
-                    final Collection<Defect> defects = lint.defects(this.xmir);
-                    final long done = System.currentTimeMillis() - start;
-                    this.timings.add(String.format("%s (%s)", lint.name(), this.marker))
-                        .set("ms", done);
-                    messages.addAll(defects);
+                    messages.addAll(this.timed(lint));
                 }
                 return messages;
             } catch (final IOException ex) {
@@ -623,6 +584,74 @@ final class SourceTest {
                     "Failed to find defects in the XMIR file",
                     ex
                 );
+            }
+        }
+
+        /**
+         * Execute lint and record timing.
+         * @param lint Lint to execute
+         * @return Defects found
+         * @throws IOException If fails
+         */
+        private Collection<Defect> timed(final Lint<XML> lint) throws IOException {
+            return new TimedLint(lint, this.xmir, this.timings, this.marker).defects();
+        }
+    }
+
+    /**
+     * Wrapper for timed lint execution.
+     * @since 0.0.45
+     */
+    private static final class TimedLint {
+
+        /**
+         * Lint to execute.
+         */
+        private final Lint<XML> lint;
+
+        /**
+         * XML to check.
+         */
+        private final XML xml;
+
+        /**
+         * Timings recorder.
+         */
+        private final Tojos timings;
+
+        /**
+         * Size marker.
+         */
+        private final String marker;
+
+        /**
+         * Ctor.
+         * @param lnt Lint
+         * @param xmr XML
+         * @param tmngs Timings
+         * @param mrkr Marker
+         * @checkstyle ParameterNumberCheck (5 lines)
+         */
+        TimedLint(final Lint<XML> lnt, final XML xmr, final Tojos tmngs, final String mrkr) {
+            this.lint = lnt;
+            this.xml = xmr;
+            this.timings = tmngs;
+            this.marker = mrkr;
+        }
+
+        /**
+         * Get defects with timing.
+         * @return Defects
+         * @throws IOException If fails
+         */
+        @SuppressWarnings("PMD.UnnecessaryLocalRule")
+        Collection<Defect> defects() throws IOException {
+            final long before = System.currentTimeMillis();
+            try {
+                return this.lint.defects(this.xml);
+            } finally {
+                this.timings.add(String.format("%s (%s)", this.lint.name(), this.marker))
+                    .set("ms", System.currentTimeMillis() - before);
             }
         }
     }

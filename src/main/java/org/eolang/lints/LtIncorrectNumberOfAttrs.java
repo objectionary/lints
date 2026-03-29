@@ -8,14 +8,11 @@ import com.github.lombrozo.xnav.Filter;
 import com.github.lombrozo.xnav.Xnav;
 import com.jcabi.xml.XML;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import org.cactoos.io.ResourceOf;
-import org.cactoos.list.ListOf;
 import org.cactoos.text.TextOf;
 import org.cactoos.text.UncheckedText;
 
@@ -28,33 +25,65 @@ final class LtIncorrectNumberOfAttrs implements Lint<Map<String, XML>> {
 
     @Override
     public Collection<Defect> defects(final Map<String, XML> pkg) throws IOException {
-        final Collection<Defect> defects = new ArrayList<>(0);
-        final Map<String, Integer> definitions = LtIncorrectNumberOfAttrs.objectDefinitions(pkg);
-        pkg.forEach(
-            (program, xmir) -> new Xnav(xmir.inner()).path("//o[@base and not(@base='∅')]")
-                .forEach(
-                    xnav -> {
-                        final int provided = (int) xnav.elements(Filter.withName("o")).count();
-                        final String object = xnav.attribute("base").text().orElse("unknown");
-                        final Integer expected = definitions.get(object);
-                        if (expected != null && provided != expected) {
-                            defects.add(
-                                new Defect.Default(
-                                    this.name(),
-                                    Severity.ERROR,
-                                    program,
-                                    Integer.parseInt(xnav.attribute("line").text().orElse("0")),
-                                    String.format(
-                                        "The object \"%s\" usually expects %d arguments, while %d provided here",
-                                        object, expected, provided
-                                    )
-                                )
-                            );
-                        }
-                    }
-                )
+        return pkg.entrySet().stream()
+            .flatMap(
+                entry -> this.sourceDefects(
+                    entry.getKey(),
+                    entry.getValue(),
+                    LtIncorrectNumberOfAttrs.objectDefinitions(pkg)
+                ).stream()
+            )
+            .collect(Collectors.toList());
+    }
+
+    /**
+     * Find defects for single source.
+     * @param program Program name
+     * @param xmir Source XML
+     * @param definitions Object definitions
+     * @return Defects found
+     */
+    private Collection<Defect> sourceDefects(
+        final String program,
+        final XML xmir,
+        final Map<String, Integer> definitions
+    ) {
+        return new Xnav(xmir.inner()).path("//o[@base and not(@base='∅')]")
+            .filter(
+                xnav -> {
+                    final Integer expected = definitions.get(
+                        xnav.attribute("base").text().orElse("unknown")
+                    );
+                    return expected != null
+                        && (int) xnav.elements(Filter.withName("o")).count() != expected;
+                }
+            )
+            .map(xnav -> this.objectDefect(program, xnav, definitions))
+            .collect(Collectors.toList());
+    }
+
+    /**
+     * Create defect for incorrect number of attributes.
+     * @param program Program name
+     * @param xnav Object navigator
+     * @param definitions Object definitions
+     * @return Defect
+     */
+    private Defect objectDefect(
+        final String program, final Xnav xnav, final Map<String, Integer> definitions
+    ) {
+        return new Defect.Default(
+            this.name(),
+            Severity.ERROR,
+            program,
+            Integer.parseInt(xnav.attribute("line").text().orElse("0")),
+            String.format(
+                "The object \"%s\" usually expects %d arguments, while %d provided here",
+                xnav.attribute("base").text().orElse("unknown"),
+                definitions.get(xnav.attribute("base").text().orElse("unknown")),
+                (int) xnav.elements(Filter.withName("o")).count()
+            )
         );
-        return defects;
     }
 
     @Override
@@ -81,25 +110,54 @@ final class LtIncorrectNumberOfAttrs implements Lint<Map<String, XML>> {
      * @return Map of object name and attributes count
      */
     private static Map<String, Integer> objectDefinitions(final Map<String, XML> pkg) {
-        final Map<String, Integer> definitions = new HashMap<>(0);
-        pkg.forEach(
-            (program, xmir) -> {
-                final Xnav xml = new Xnav(xmir.inner());
-                xml.element("object")
-                    .elements(Filter.withName("o")).forEach(
-                        xob -> {
-                            final List<Xnav> attrs = new ListOf<>();
-                            xob.path("o[@base='∅']").forEach(attrs::add);
-                            final String name = xob.attribute("name").text().orElse("unknown");
-                            definitions.put(
-                                LtIncorrectNumberOfAttrs.packagedFqn(name, xml),
-                                attrs.size()
-                            );
-                        }
-                    );
-            }
-        );
-        return definitions;
+        return pkg.values().stream()
+            .flatMap(
+                xmir -> new Xnav(xmir.inner()).element("object")
+                    .elements(Filter.withName("o"))
+                    .map(xob -> new ObjectDef(xmir, xob))
+            )
+            .collect(Collectors.toMap(ObjectDef::fqn, ObjectDef::attrCount, (a, b) -> a));
+    }
+
+    /**
+     * Object definition helper.
+     * @since 0.0.43
+     */
+    private static final class ObjectDef {
+        /**
+         * Source XMIR.
+         */
+        private final XML xmir;
+        /**
+         * Object navigator.
+         */
+        private final Xnav xob;
+        /**
+         * Ctor.
+         * @param xmr XMIR source
+         * @param obj Object navigator
+         */
+        ObjectDef(final XML xmr, final Xnav obj) {
+            this.xmir = xmr;
+            this.xob = obj;
+        }
+        /**
+         * Get fully qualified name.
+         * @return FQN
+         */
+        String fqn() {
+            return LtIncorrectNumberOfAttrs.packagedFqn(
+                this.xob.attribute("name").text().orElse("unknown"),
+                new Xnav(this.xmir.inner())
+            );
+        }
+        /**
+         * Count attributes.
+         * @return Attribute count
+         */
+        int attrCount() {
+            return (int) this.xob.path("o[@base='∅']").count();
+        }
     }
 
     /**

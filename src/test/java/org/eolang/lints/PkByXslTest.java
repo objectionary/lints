@@ -15,7 +15,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import org.cactoos.io.InputOf;
 import org.cactoos.list.ListOf;
-import org.cactoos.proc.ForEach;
 import org.cactoos.text.TextOf;
 import org.eolang.parser.EoSyntax;
 import org.hamcrest.MatcherAssert;
@@ -31,11 +30,10 @@ final class PkByXslTest {
 
     @Test
     void passesOnSimpleXmir() throws IOException {
-        final XML xmir = new XMLDocument("<object><o name='no-exceptions'/></object>");
         for (final Lint<XML> lint : new PkByXsl()) {
             MatcherAssert.assertThat(
                 "passes with no exceptions",
-                lint.defects(xmir),
+                lint.defects(new XMLDocument("<object><o name='no-exceptions'/></object>")),
                 Matchers.notNullValue()
             );
         }
@@ -43,24 +41,31 @@ final class PkByXslTest {
 
     @Test
     void checksIdsOfEveryXslStylesheet() throws Exception {
-        new ForEach<Resource>(
-            res -> {
-                final XML sheet = new XMLDocument(
-                    new TextOf(new InputOf(res.getInputStream())).asString()
-                );
-                MatcherAssert.assertThat(
-                    "the @id is equal to the basename of the file",
-                    sheet.xpath("/xsl:stylesheet/@id").get(0),
-                    Matchers.equalTo(res.getFilename().replaceAll(".xsl$", ""))
-                );
-            }
-        ).exec(
-            Arrays.asList(
+        MatcherAssert.assertThat(
+            "All XSL stylesheets must have @id matching their filename",
+            Arrays.stream(
                 new PathMatchingResourcePatternResolver().getResources(
                     "classpath*:org/eolang/lints/**/*.xsl"
                 )
-            )
+            ).allMatch(new IdChecker()),
+            Matchers.equalTo(true)
         );
+    }
+
+    @SuppressWarnings("PMD.AvoidCatchingGenericException")
+    private static final class IdChecker implements java.util.function.Predicate<Resource> {
+        @Override
+        public boolean test(final Resource res) {
+            try {
+                return new XMLDocument(
+                    new TextOf(new InputOf(res.getInputStream())).asString()
+                ).xpath("/xsl:stylesheet/@id").get(0).equals(
+                    res.getFilename().replaceAll(".xsl$", "")
+                );
+            } catch (final Exception ex) {
+                throw new IllegalStateException(ex);
+            }
+        }
     }
 
     @Test

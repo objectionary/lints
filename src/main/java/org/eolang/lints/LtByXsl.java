@@ -87,9 +87,8 @@ final class LtByXsl implements Lint<XML> {
 
     @Override
     public Collection<Defect> defects(final XML xmir) {
-        final XML report = this.sheet.transform(xmir);
         final Collection<Defect> defects = new ArrayList<>(0);
-        for (final XML defect : LtByXsl.findDefects(report)) {
+        for (final XML defect : LtByXsl.findDefects(this.sheet.transform(xmir))) {
             final Xnav xml = new Xnav(defect.inner());
             final Optional<String> sever = xml.attribute("severity").text();
             if (sever.isEmpty()) {

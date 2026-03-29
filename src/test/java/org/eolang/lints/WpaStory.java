@@ -87,8 +87,7 @@ final class WpaStory {
         }
         final Collection<Defect> found = new ArrayList<>(0);
         for (final String lint : (Iterable<String>) lints) {
-            final Lint<Map<String, XML>> wpl = this.wpa.get(lint);
-            found.addAll(wpl.defects(programs));
+            found.addAll(this.wpa.get(lint).defects(programs));
         }
         return new MapOf<>(
             new MapEntry<>(
@@ -99,18 +98,18 @@ final class WpaStory {
     }
 
     private static XML defectsAsXml(final Collection<Defect> defects) {
-        final Directives directives = new Directives().add("defects");
-        defects.forEach(
-            d -> directives.add("defect")
-                .attr("object", d.object())
-                .attr("line", d.line())
-                .attr("severity", d.severity().toString().toLowerCase(Locale.ROOT))
-                .attr("context", d.context())
-                .set(d.text())
-                .up()
-        );
+        final Directives dirs = new Directives().add("defects");
+        for (final Defect dfct : defects) {
+            dirs.add("defect")
+                .attr("object", dfct.object())
+                .attr("line", dfct.line())
+                .attr("severity", dfct.severity().toString().toLowerCase(Locale.ROOT))
+                .attr("context", dfct.context())
+                .set(dfct.text())
+                .up();
+        }
         try {
-            return new XMLDocument(new Xembler(directives).xml());
+            return new XMLDocument(new Xembler(dirs).xml());
         } catch (final ImpossibleModificationException exception) {
             throw new IllegalStateException(
                 "Failed to create XML document from defects", exception

@@ -24,24 +24,48 @@ import org.junit.jupiter.api.Test;
 final class LtWpaUnlintTest {
 
     @Test
-    void throwsWhenDefectIsOutsideOfTheScope() {
-        MatcherAssert.assertThat(
-            "Exception should be thrown, but it was not",
-            Assertions.assertThrows(
-                Exception.class,
-                () -> new LtWpaUnlint(new LtWpaUnlintTest.LtWpaAlways()).defects(
-                    new MapOf<>(
-                        "x",
-                        new EoSyntax(
-                            "[] > x"
-                        ).parsed()
-                    )
+    void throwsWhenDefectIsOutsideOfTheScope() throws IOException {
+        Assertions.assertThrows(
+            Exception.class,
+            () -> new LtWpaUnlint(new LtWpaUnlintTest.LtWpaAlways()).defects(
+                new MapOf<>(
+                    "x",
+                    new EoSyntax(
+                        "[] > x"
+                    ).parsed()
                 )
-            ).getMessage(),
+            ),
+            "Exception should be thrown, but it was not"
+        );
+    }
+
+    @Test
+    void throwsCorrectMessageWhenDefectIsOutsideOfTheScope() throws IOException {
+        MatcherAssert.assertThat(
+            "Thrown exception message should contain expected text",
+            LtWpaUnlintTest.exceptionMessage(),
             Matchers.containsString(
                 "defect was found in \"stdin\", but this source is not in scope"
             )
         );
+    }
+
+    private static String exceptionMessage() {
+        try {
+            new LtWpaUnlint(new LtWpaUnlintTest.LtWpaAlways()).defects(
+                new MapOf<>(
+                    "x",
+                    new EoSyntax(
+                        "[] > x"
+                    ).parsed()
+                )
+            );
+        } catch (final IllegalArgumentException ex) {
+            return ex.getMessage();
+        } catch (final IOException ex) {
+            throw new IllegalStateException("Unexpected IOException", ex);
+        }
+        throw new IllegalStateException("Exception was expected but not thrown");
     }
 
     @Test
