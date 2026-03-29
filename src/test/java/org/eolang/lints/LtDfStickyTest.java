@@ -7,7 +7,6 @@ package org.eolang.lints;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import org.hamcrest.MatcherAssert;
@@ -23,35 +22,25 @@ final class LtDfStickyTest {
 
     @Test
     void loadsDefectsOnlyOnce() throws IOException {
-        final AtomicInteger count = new AtomicInteger();
+        final LtCounter counter = new LtCounter();
         final Lint<Integer> lint = new LtDfSticky<>(
-            new LtFake<>(
-                entity -> {
-                    count.set(count.get() + 1);
-                    return Collections.emptyList();
-                }
-            )
+            new LtFake<>(counter)
         );
         lint.defects(0);
         lint.defects(0);
         lint.defects(0);
         MatcherAssert.assertThat(
             "Lint.defects() calls amount differs from 1",
-            count.get(),
+            counter.count(),
             Matchers.equalTo(1)
         );
     }
 
     @Test
     void loadsDefectsOnlyOnceForEachEntity() throws IOException {
-        final AtomicInteger count = new AtomicInteger();
+        final LtCounter counter = new LtCounter();
         final Lint<Integer> lint = new LtDfSticky<>(
-            new LtFake<>(
-                entity -> {
-                    count.set(count.get() + 1);
-                    return Collections.emptyList();
-                }
-            )
+            new LtFake<>(counter)
         );
         lint.defects(0);
         lint.defects(0);
@@ -60,27 +49,43 @@ final class LtDfStickyTest {
         lint.defects(2);
         MatcherAssert.assertThat(
             "Lint.defects() calls amount differs from 3",
-            count.get(),
+            counter.count(),
             Matchers.equalTo(3)
         );
     }
 
     @Test
     void preventsDefectsLoadingBeforeMethodCall() {
-        final AtomicInteger count = new AtomicInteger();
+        final LtCounter counter = new LtCounter();
         new LtDfSticky<>(
-            new LtFake<>(
-                entity -> {
-                    count.set(count.get() + 1);
-                    return Collections.emptyList();
-                }
-            )
+            new LtFake<>(counter)
         );
         MatcherAssert.assertThat(
             "Lt.defects() was called",
-            count.get(),
+            counter.count(),
             Matchers.equalTo(0)
         );
+    }
+
+    /**
+     * Counter for lint calls.
+     * @since 0.0.42
+     */
+    private static final class LtCounter implements Function<Object, Collection<Defect>> {
+        /**
+         * Counter value.
+         */
+        private int cnt;
+
+        @Override
+        public Collection<Defect> apply(final Object entity) {
+            this.cnt = this.cnt + 1;
+            return Collections.emptyList();
+        }
+
+        int count() {
+            return this.cnt;
+        }
     }
 
     /**
@@ -124,8 +129,9 @@ final class LtDfStickyTest {
          * Constructor. Name and motive are hardcoded.
          * @param defects Lint defects supplier.
          */
-        LtFake(final Function<T, Collection<Defect>> defects) {
-            this("Lint", defects, "Motive");
+        @SuppressWarnings("unchecked")
+        LtFake(final Function<?, Collection<Defect>> defects) {
+            this("Lint", (Function<T, Collection<Defect>>) defects, "Motive");
         }
 
         /**

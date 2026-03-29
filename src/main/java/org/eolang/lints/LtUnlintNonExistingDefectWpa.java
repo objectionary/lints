@@ -7,18 +7,15 @@ package org.eolang.lints;
 import com.github.lombrozo.xnav.Xnav;
 import com.jcabi.xml.XML;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import org.cactoos.io.ResourceOf;
 import org.cactoos.list.ListOf;
 import org.cactoos.text.IoCheckedText;
 import org.cactoos.text.TextOf;
-import org.eolang.parser.OnDefault;
 
 /**
  * Lint for checking `+unlint` meta to suppress non-existing defects in WPA scope.
@@ -70,46 +67,9 @@ final class LtUnlintNonExistingDefectWpa implements Lint<Map<String, XML>> {
 
     @Override
     public Collection<Defect> defects(final Map<String, XML> pkg) {
-        final Collection<Defect> defects = new ArrayList<>(0);
-        final Map<XML, Map<String, List<Integer>>> existing = this.existingDefects(pkg);
-        pkg.values().forEach(
-            xmir -> {
-                final Xnav xml = new Xnav(xmir.inner());
-                final Function<String, Boolean> missing = new DefectMissing(
-                    existing.get(xmir), this.excluded
-                );
-                xml.path("/object/metas/meta[head='unlint']/tail")
-                    .map(xnav -> xnav.text().get())
-                    .collect(Collectors.toSet())
-                    .stream()
-                    .filter(missing::apply)
-                    .forEach(
-                        unlint -> xml
-                            .path(
-                                String.format(
-                                    "object/metas/meta[head='unlint' and tail='%s']/@line", unlint
-                                )
-                            )
-                            .map(xnav -> xnav.text().get())
-                            .collect(Collectors.toList())
-                            .forEach(
-                                line -> defects.add(
-                                    new Defect.Default(
-                                        this.name(),
-                                        Severity.WARNING,
-                                        new OnDefault(xmir).get(),
-                                        Integer.parseInt(line),
-                                        String.format(
-                                            "Unlinting rule '%s' doesn't make sense, since there are no defects with it",
-                                            unlint
-                                        )
-                                    )
-                                )
-                            )
-                    );
-            }
-        );
-        return defects;
+        return pkg.values().stream()
+            .flatMap(xmir -> this.sourceDefects(xmir, this.existingDefects(pkg)).stream())
+            .collect(Collectors.toList());
     }
 
     @Override
@@ -126,38 +86,72 @@ final class LtUnlintNonExistingDefectWpa implements Lint<Map<String, XML>> {
     }
 
     /**
+     * Find defects for single source.
+     * @param xmir Source XML
+     * @param existing Existing defects map
+     * @return Defects found
+     */
+    private Collection<Defect> sourceDefects(
+        final XML xmir, final Map<XML, Map<String, List<Integer>>> existing
+    ) {
+        return new Xnav(xmir.inner()).path("/object/metas/meta[head='unlint']/tail")
+            .map(xnav -> xnav.text().get())
+            .distinct()
+            .filter(new DefectMissing(existing.get(xmir), this.excluded)::apply)
+            .flatMap(
+                unlint -> new Xnav(xmir.inner()).path(
+                    String.format(
+                        "object/metas/meta[head='unlint' and tail='%s']/@line", unlint
+                    )
+                ).map(
+                    xnav -> new Defect.Default(
+                        this.name(),
+                        Severity.WARNING,
+                        new ProgramName(xmir).get(),
+                        Integer.parseInt(xnav.text().get()),
+                        String.format(
+                            "Unlinting rule '%s' doesn't make sense, since there are no defects with it",
+                            unlint
+                        )
+                    )
+                )
+            )
+            .collect(Collectors.toList());
+    }
+
+    /**
      * Find existing defects.
      *
      * @param pkg Program package to scan
      * @return Map of existing defects
      */
     private Map<XML, Map<String, List<Integer>>> existingDefects(final Map<String, XML> pkg) {
-        final Map<XML, Map<String, List<Integer>>> aggregated = new HashMap<>(0);
-        pkg.values().forEach(xml -> aggregated.put(xml, new HashMap<>(0)));
-        this.lints.forEach(
-            wpl -> {
-                try {
-                    final Collection<Defect> defects = wpl.defects(pkg);
-                    defects.forEach(
-                        defect -> pkg.values().forEach(
-                            program ->
-                                aggregated
-                                    .computeIfAbsent(program, k -> new HashMap<>())
-                                    .computeIfAbsent(defect.rule(), k -> new ListOf<>())
-                                    .add(defect.line())
+        return pkg.values().stream().collect(
+            Collectors.toMap(
+                xml -> xml,
+                xml -> StreamSupport.stream(this.lints.spliterator(), false)
+                    .flatMap(
+                        wpl -> {
+                            try {
+                                return wpl.defects(pkg).stream();
+                            } catch (final IOException exception) {
+                                throw new IllegalStateException(
+                                    String.format(
+                                        "IO operation failed while linting program with %s",
+                                        wpl.name()
+                                    ),
+                                    exception
+                                );
+                            }
+                        }
+                    )
+                    .collect(
+                        Collectors.groupingBy(
+                            Defect::rule,
+                            Collectors.mapping(Defect::line, Collectors.toList())
                         )
-                    );
-                } catch (final IOException exception) {
-                    throw new IllegalStateException(
-                        String.format(
-                            "IO operation failed while linting program with %s",
-                            wpl.name()
-                        ),
-                        exception
-                    );
-                }
-            }
+                    )
+            )
         );
-        return aggregated;
     }
 }

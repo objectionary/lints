@@ -8,14 +8,17 @@ import com.jcabi.xml.XML;
 import io.github.secretx33.resourceresolver.PathMatchingResourcePatternResolver;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import org.cactoos.io.InputOf;
 import org.cactoos.iterable.IterableEnvelope;
-import org.cactoos.iterable.Mapped;
 import org.cactoos.iterable.Shuffled;
 
 /**
  * All lints defined by XSLs.
+ * Caches all XSL-based lint instances statically to avoid repeated
+ * expensive parsing of XSL files during Program instantiation.
  *
  * @since 0.1.0
  */
@@ -36,23 +39,32 @@ final class PkByXsl extends IterableEnvelope<Lint<XML>> {
     );
 
     /**
+     * Cached lint instances.
+     */
+    private static final List<Lint<XML>> LINTS = PkByXsl.load();
+
+    /**
      * Ctor.
      */
     PkByXsl() {
-        super(PkByXsl.all());
+        super(new Shuffled<>(PkByXsl.LINTS));
     }
 
     /**
-     * All lints.
+     * Load all lints once.
      *
      * @return List of all lints
      */
-    private static Iterable<Lint<XML>> all() {
+    private static List<Lint<XML>> load() {
         try {
-            return new Shuffled<Lint<XML>>(
-                new Mapped<>(
-                    res ->
-                        new LtByXsl(
+            return Arrays.stream(
+                new PathMatchingResourcePatternResolver().getResources(
+                    "classpath*:org/eolang/lints/**/*.xsl"
+                )
+            ).map(
+                res -> {
+                    try {
+                        return new LtByXsl(
                             new InputOf(res.getInputStream()),
                             new InputOf(
                                 PkByXsl.XSL_PATTERN.matcher(
@@ -61,14 +73,12 @@ final class PkByXsl extends IterableEnvelope<Lint<XML>> {
                                     ).replaceAll("eolang/motives")
                                 ).replaceAll(".md")
                             )
-                        ),
-                    Arrays.asList(
-                        new PathMatchingResourcePatternResolver().getResources(
-                            "classpath*:org/eolang/lints/**/*.xsl"
-                        )
-                    )
-                )
-            );
+                        );
+                    } catch (final IOException ex) {
+                        throw new IllegalArgumentException(ex);
+                    }
+                }
+            ).collect(Collectors.toList());
         } catch (final IOException ex) {
             throw new IllegalArgumentException(ex);
         }
