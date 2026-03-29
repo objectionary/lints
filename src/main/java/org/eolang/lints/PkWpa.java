@@ -5,6 +5,7 @@
 package org.eolang.lints;
 
 import com.jcabi.xml.XML;
+import java.util.List;
 import java.util.Map;
 import org.cactoos.func.Chained;
 import org.cactoos.iterable.IterableEnvelope;
@@ -31,7 +32,7 @@ final class PkWpa extends IterableEnvelope<Lint<Map<String, XML>>> {
     /**
      * Cached mono lint names.
      */
-    private static final ListOf<String> MONO_NAMES = new ListOf<>(new MonoLintNames());
+    private static final List<String> MONO_NAMES = new ListOf<>(new MonoLintNames());
 
     /**
      * Default ctor.

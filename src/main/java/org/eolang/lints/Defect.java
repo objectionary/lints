@@ -187,7 +187,7 @@ public interface Defect {
 
         @Override
         public String toString() {
-            final StringBuilder text = new StringBuilder(0)
+            final StringBuilder text = new StringBuilder(64)
                 .append('[').append(this.oname).append(' ')
                 .append(this.rle).append(' ')
                 .append(this.sev).append(']');
