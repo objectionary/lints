@@ -19,6 +19,7 @@ import org.cactoos.iterable.Mapped;
 import org.cactoos.list.ListOf;
 import org.cactoos.map.MapEntry;
 import org.cactoos.map.MapOf;
+import org.cactoos.map.Sticky;
 import org.eolang.jucs.ClasspathSource;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -37,10 +38,12 @@ final class WpaLintsTest {
      * WPA lints mapped to their names.
      */
     private static final Map<String, Lint<Map<String, XML>>> WPA =
-        new MapOf<String, Lint<Map<String, XML>>>(
-            new Mapped<>(
-                wpl -> new MapEntry<>(wpl.name(), wpl),
-                new WpaLints()
+        new Sticky<>(
+            new MapOf<String, Lint<Map<String, XML>>>(
+                new Mapped<>(
+                    wpl -> new MapEntry<>(wpl.name(), wpl),
+                    new WpaLints()
+                )
             )
         );
 
