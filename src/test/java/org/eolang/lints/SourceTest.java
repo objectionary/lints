@@ -73,15 +73,6 @@ import org.objectweb.asm.Opcodes;
 @ExtendWith(MktmpResolver.class)
 final class SourceTest {
 
-    /**
-     * Single lint for fast tests that only need to verify basic defect detection.
-     */
-    private static final Iterable<Lint<XML>> SINGLE = new ListOf<>(
-        new Unchecked<>(
-            () -> new LtByXsl("comments/comment-without-dot")
-        ).value()
-    );
-
     @Timeout(unit = TimeUnit.SECONDS, value = 60L)
     @Test
     void returnsEmptyListOfDefects() throws IOException {
@@ -154,7 +145,7 @@ final class SourceTest {
         MatcherAssert.assertThat(
             "the defect is found",
             new Source(
-                new XMLDocument(path), SourceTest.SINGLE
+                new XMLDocument(path), new ListOf<>(new LtByXsl("comments/comment-without-dot"))
             ).defects().size(),
             Matchers.greaterThan(0)
         );
@@ -171,7 +162,7 @@ final class SourceTest {
                         new EoSyntax(
                             "# Foo\n[] > foo\n"
                         ).parsed(),
-                        SourceTest.SINGLE
+                        new ListOf<>(new LtByXsl("comments/comment-without-dot"))
                     ).defects().size()
                 ).asList()
             ).size(),
@@ -241,7 +232,7 @@ final class SourceTest {
             () ->
                 new Source(
                     new XMLDocument("<object><o name='correct'/></object>"),
-                    SourceTest.SINGLE
+                    new ListOf<>(new LtByXsl("comments/comment-without-dot"))
                 ).defects(),
             "Exception was thrown, but it should not be"
         );
@@ -392,7 +383,7 @@ final class SourceTest {
                         "[] > foo"
                     )
                 ).parsed(),
-                SourceTest.SINGLE
+                new ListOf<>(new LtByXsl("comments/comment-without-dot"))
             ).defects(),
             Matchers.hasItem(
                 Matchers.hasToString(
