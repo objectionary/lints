@@ -22,7 +22,6 @@ import org.cactoos.io.UncheckedInput;
 import org.cactoos.list.ListOf;
 import org.cactoos.text.TextOf;
 import org.cactoos.text.UncheckedText;
-import org.eolang.parser.OnDefault;
 
 /**
  * Lint that checks test object name is a verb in singular.
@@ -91,7 +90,7 @@ final class LtTestNotVerb implements Lint<XML> {
                     new Defect.Default(
                         "unit-test-is-not-verb",
                         Severity.WARNING,
-                        new OnDefault(xmir).get(),
+                        new ProgramName(xmir).get(),
                         Integer.parseInt(object.attribute("line").text().orElse("0")),
                         String.format(
                             "Test object name: \"%s\" doesn't start with verb in singular form",
