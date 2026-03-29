@@ -8,7 +8,7 @@ asserts:
 input: |
   # App.
   [] > app
-    QQ.io.stdout > @
+    io.stdout > @
       org.eolang.txt.sprintf
         "Hello, %s! Your account is %d."
         * name acc

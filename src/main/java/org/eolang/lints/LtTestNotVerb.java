@@ -7,10 +7,8 @@ package org.eolang.lints;
 import com.github.lombrozo.xnav.Xnav;
 import com.jcabi.xml.XML;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 import java.util.Locale;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -19,10 +17,8 @@ import opennlp.tools.postag.POSModel;
 import opennlp.tools.postag.POSTaggerME;
 import org.cactoos.io.ResourceOf;
 import org.cactoos.io.UncheckedInput;
-import org.cactoos.list.ListOf;
 import org.cactoos.text.TextOf;
 import org.cactoos.text.UncheckedText;
-import org.eolang.parser.OnDefault;
 
 /**
  * Lint that checks test object name is a verb in singular.
@@ -67,41 +63,17 @@ final class LtTestNotVerb implements Lint<XML> {
     }
 
     @Override
+    public String name() {
+        return "unit-test-is-not-verb";
+    }
+
+    @Override
     public Collection<Defect> defects(final XML xmir) throws IOException {
-        final Collection<Defect> defects = new ArrayList<>(0);
-        final Xnav xml = new Xnav(xmir.inner());
-        final List<Xnav> objects = xml
+        return new Xnav(xmir.inner())
             .path("/object//o[@name and starts-with(@name, '+')]")
+            .filter(object -> !this.isVerbInSingular(object))
+            .map(object -> LtTestNotVerb.verbDefect(xmir, object))
             .collect(Collectors.toList());
-        for (final Xnav object : objects) {
-            final String name = object.attribute("name").text().get().replace("+", "");
-            final String first = new ListOf<>(
-                this.model.tag(
-                    Stream
-                        .concat(
-                            Stream.of("It"),
-                            Arrays.stream(LtTestNotVerb.KEBAB.split(name))
-                        )
-                        .map(s -> s.toLowerCase(Locale.ROOT))
-                        .toArray(String[]::new)
-                )
-            ).get(1);
-            if (!"VBZ".equals(first)) {
-                defects.add(
-                    new Defect.Default(
-                        "unit-test-is-not-verb",
-                        Severity.WARNING,
-                        new OnDefault(xmir).get(),
-                        Integer.parseInt(object.attribute("line").text().orElse("0")),
-                        String.format(
-                            "Test object name: \"%s\" doesn't start with verb in singular form",
-                            name
-                        )
-                    )
-                );
-            }
-        }
-        return defects;
     }
 
     @Override
@@ -115,9 +87,46 @@ final class LtTestNotVerb implements Lint<XML> {
         ).asString();
     }
 
-    @Override
-    public String name() {
-        return "unit-test-is-not-verb";
+    /**
+     * Check if object name is verb in singular.
+     * @param object Object navigator
+     * @return True if first word is a verb in singular form
+     */
+    private boolean isVerbInSingular(final Xnav object) {
+        return "VBZ".equals(
+            this.model.tag(
+                Stream
+                    .concat(
+                        Stream.of("It"),
+                        Arrays.stream(
+                            LtTestNotVerb.KEBAB.split(
+                                object.attribute("name").text().get().replace("+", "")
+                            )
+                        )
+                    )
+                    .map(s -> s.toLowerCase(Locale.ROOT))
+                    .toArray(String[]::new)
+            )[1]
+        );
+    }
+
+    /**
+     * Create defect for non-verb test name.
+     * @param xmir Source XML
+     * @param object Object navigator
+     * @return Defect
+     */
+    private static Defect verbDefect(final XML xmir, final Xnav object) {
+        return new Defect.Default(
+            "unit-test-is-not-verb",
+            Severity.WARNING,
+            new ProgramName(xmir).get(),
+            Integer.parseInt(object.attribute("line").text().orElse("0")),
+            String.format(
+                "Test object name: \"%s\" doesn't start with verb in singular form",
+                object.attribute("name").text().get().replace("+", "")
+            )
+        );
     }
 
     private static POSModel defaultPosModel() {
