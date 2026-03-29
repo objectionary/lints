@@ -9,14 +9,24 @@
   <xsl:import href="/org/eolang/funcs/special-name.xsl"/>
   <xsl:import href="/org/eolang/funcs/escape.xsl"/>
   <xsl:output encoding="UTF-8" method="xml"/>
-  <!--Since developers might decide not to use kebab-case, it’s better to catch all such cases.-->
+  <!--Since developers might decide not to use kebab-case, it's better to catch all such cases.-->
   <xsl:function name="eo:compound" as="xs:boolean">
     <xsl:param name="name"/>
     <xsl:sequence select="contains($name, '-') or contains($name, '_') or matches($name, '[A-Z]')"/>
   </xsl:function>
+  <!--
+    These prefixes/suffixes are idiomatic in EO standard library:
+    - 'as-' for type conversions (as-bytes, as-i64, as-number, etc.)
+    - 'is-' for boolean predicates (is-empty, is-nan, is-finite, etc.)
+    - '-of' for extracting parts (slice-of, value-of, length-of, etc.)
+  -->
+  <xsl:function name="eo:idiomatic" as="xs:boolean">
+    <xsl:param name="name"/>
+    <xsl:sequence select="starts-with($name, 'as-') or starts-with($name, 'is-') or ends-with($name, '-of')"/>
+  </xsl:function>
   <xsl:template match="/">
     <defects>
-      <xsl:for-each select="//o[@base and @name and not(eo:special(@name)) and eo:compound(@name)]">
+      <xsl:for-each select="//o[@base and @name and not(eo:special(@name)) and eo:compound(@name) and not(eo:idiomatic(@name))]">
         <defect>
           <xsl:variable name="line" select="eo:lineno(@line)"/>
           <xsl:attribute name="line">

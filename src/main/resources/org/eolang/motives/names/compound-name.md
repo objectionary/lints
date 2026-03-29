@@ -21,3 +21,8 @@ Correct:
   parse > records
     read file
 ```
+
+There are exceptions for idiomatic prefixes and suffixes.
+The `as-` prefix is for type conversions: `as-bytes`, `as-i64`, `as-number`.
+The `is-` prefix is for predicates: `is-empty`, `is-nan`, `is-finite`.
+The `-of` suffix is for extracting parts: `slice-of`, `value-of`, `length-of`.

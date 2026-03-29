@@ -1,0 +1,16 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/names/compound-name.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=0]
+input: |
+  # No comments.
+  [] > main
+    x.as-bytes > as-bytes
+    y.as-i64 > as-i64
+    z.is-empty > is-empty
+    w.is-nan > is-nan
+    a.slice-of > slice-of
+    b.value-of > value-of
