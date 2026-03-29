@@ -24,6 +24,11 @@ import org.cactoos.text.UncheckedText;
 final class LtIncorrectNumberOfAttrs implements Lint<Map<String, XML>> {
 
     @Override
+    public String name() {
+        return "incorrect-number-of-attributes";
+    }
+
+    @Override
     public Collection<Defect> defects(final Map<String, XML> pkg) throws IOException {
         return pkg.entrySet().stream()
             .flatMap(
@@ -34,6 +39,19 @@ final class LtIncorrectNumberOfAttrs implements Lint<Map<String, XML>> {
                 ).stream()
             )
             .collect(Collectors.toList());
+    }
+
+    @Override
+    public String motive() throws IOException {
+        return new UncheckedText(
+            new TextOf(
+                new ResourceOf(
+                    String.format(
+                        "org/eolang/motives/errors/%s.md", this.name()
+                    )
+                )
+            )
+        ).asString();
     }
 
     /**
@@ -86,24 +104,6 @@ final class LtIncorrectNumberOfAttrs implements Lint<Map<String, XML>> {
         );
     }
 
-    @Override
-    public String name() {
-        return "incorrect-number-of-attributes";
-    }
-
-    @Override
-    public String motive() throws IOException {
-        return new UncheckedText(
-            new TextOf(
-                new ResourceOf(
-                    String.format(
-                        "org/eolang/motives/errors/%s.md", this.name()
-                    )
-                )
-            )
-        ).asString();
-    }
-
     /**
      * Build object definitions.
      * @param pkg Package to scan
@@ -117,47 +117,6 @@ final class LtIncorrectNumberOfAttrs implements Lint<Map<String, XML>> {
                     .map(xob -> new ObjectDef(xmir, xob))
             )
             .collect(Collectors.toMap(ObjectDef::fqn, ObjectDef::attrCount, (a, b) -> a));
-    }
-
-    /**
-     * Object definition helper.
-     * @since 0.0.43
-     */
-    private static final class ObjectDef {
-        /**
-         * Source XMIR.
-         */
-        private final XML xmir;
-        /**
-         * Object navigator.
-         */
-        private final Xnav xob;
-        /**
-         * Ctor.
-         * @param xmr XMIR source
-         * @param obj Object navigator
-         */
-        ObjectDef(final XML xmr, final Xnav obj) {
-            this.xmir = xmr;
-            this.xob = obj;
-        }
-        /**
-         * Get fully qualified name.
-         * @return FQN
-         */
-        String fqn() {
-            return LtIncorrectNumberOfAttrs.packagedFqn(
-                this.xob.attribute("name").text().orElse("unknown"),
-                new Xnav(this.xmir.inner())
-            );
-        }
-        /**
-         * Count attributes.
-         * @return Attribute count
-         */
-        int attrCount() {
-            return (int) this.xob.path("o[@base='∅']").count();
-        }
     }
 
     /**
@@ -181,5 +140,51 @@ final class LtIncorrectNumberOfAttrs implements Lint<Map<String, XML>> {
             result = String.format("Φ.%s.%s", packages.get(0).element("tail").text().get(), oname);
         }
         return result;
+    }
+
+    /**
+     * Object definition helper.
+     * @since 0.0.43
+     */
+    private static final class ObjectDef {
+
+        /**
+         * Source XMIR.
+         */
+        private final XML xmir;
+
+        /**
+         * Object navigator.
+         */
+        private final Xnav xob;
+
+        /**
+         * Ctor.
+         * @param xmr XMIR source
+         * @param obj Object navigator
+         */
+        ObjectDef(final XML xmr, final Xnav obj) {
+            this.xmir = xmr;
+            this.xob = obj;
+        }
+
+        /**
+         * Get fully qualified name.
+         * @return FQN
+         */
+        String fqn() {
+            return LtIncorrectNumberOfAttrs.packagedFqn(
+                this.xob.attribute("name").text().orElse("unknown"),
+                new Xnav(this.xmir.inner())
+            );
+        }
+
+        /**
+         * Count attributes.
+         * @return Attribute count
+         */
+        int attrCount() {
+            return (int) this.xob.path("o[@base='∅']").count();
+        }
     }
 }

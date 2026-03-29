@@ -63,12 +63,28 @@ final class LtTestNotVerb implements Lint<XML> {
     }
 
     @Override
+    public String name() {
+        return "unit-test-is-not-verb";
+    }
+
+    @Override
     public Collection<Defect> defects(final XML xmir) throws IOException {
         return new Xnav(xmir.inner())
             .path("/object//o[@name and starts-with(@name, '+')]")
             .filter(object -> !this.isVerbInSingular(object))
-            .map(object -> this.verbDefect(xmir, object))
+            .map(object -> LtTestNotVerb.verbDefect(xmir, object))
             .collect(Collectors.toList());
+    }
+
+    @Override
+    public String motive() throws IOException {
+        return new UncheckedText(
+            new TextOf(
+                new ResourceOf(
+                    "org/eolang/motives/misc/test-object-is-not-verb-in-singular.md"
+                )
+            )
+        ).asString();
     }
 
     /**
@@ -100,7 +116,7 @@ final class LtTestNotVerb implements Lint<XML> {
      * @param object Object navigator
      * @return Defect
      */
-    private Defect verbDefect(final XML xmir, final Xnav object) {
+    private static Defect verbDefect(final XML xmir, final Xnav object) {
         return new Defect.Default(
             "unit-test-is-not-verb",
             Severity.WARNING,
@@ -111,22 +127,6 @@ final class LtTestNotVerb implements Lint<XML> {
                 object.attribute("name").text().get().replace("+", "")
             )
         );
-    }
-
-    @Override
-    public String motive() throws IOException {
-        return new UncheckedText(
-            new TextOf(
-                new ResourceOf(
-                    "org/eolang/motives/misc/test-object-is-not-verb-in-singular.md"
-                )
-            )
-        ).asString();
-    }
-
-    @Override
-    public String name() {
-        return "unit-test-is-not-verb";
     }
 
     private static POSModel defaultPosModel() {

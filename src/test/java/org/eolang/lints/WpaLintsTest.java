@@ -72,7 +72,7 @@ final class WpaLintsTest {
     @Test
     @SuppressWarnings("StreamResourceLeak")
     void checksLocationOfYamlPacks() throws IOException {
-        final List<String> lintNames = new ListOf<>(new WpaLints()).stream()
+        final List<String> names = new ListOf<>(new WpaLints()).stream()
             .map(Lint::name)
             .collect(Collectors.toList());
         MatcherAssert.assertThat(
@@ -80,7 +80,7 @@ final class WpaLintsTest {
             Files.walk(Paths.get("src/test/resources/org/eolang/lints/packs/wpa"))
                 .filter(Files::isRegularFile)
                 .allMatch(
-                    path -> lintNames.contains(path.getParent().getFileName().toString())
+                    path -> names.contains(path.getParent().getFileName().toString())
                 ),
             new IsEqual<>(true)
         );

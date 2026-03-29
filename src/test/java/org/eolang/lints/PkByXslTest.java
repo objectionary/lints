@@ -16,6 +16,7 @@ import java.util.HashSet;
 import org.cactoos.io.InputOf;
 import org.cactoos.list.ListOf;
 import org.cactoos.text.TextOf;
+import org.cactoos.text.UncheckedText;
 import org.eolang.parser.EoSyntax;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -50,22 +51,6 @@ final class PkByXslTest {
             ).allMatch(new IdChecker()),
             Matchers.equalTo(true)
         );
-    }
-
-    @SuppressWarnings("PMD.AvoidCatchingGenericException")
-    private static final class IdChecker implements java.util.function.Predicate<Resource> {
-        @Override
-        public boolean test(final Resource res) {
-            try {
-                return new XMLDocument(
-                    new TextOf(new InputOf(res.getInputStream())).asString()
-                ).xpath("/xsl:stylesheet/@id").get(0).equals(
-                    res.getFilename().replaceAll(".xsl$", "")
-                );
-            } catch (final Exception ex) {
-                throw new IllegalStateException(ex);
-            }
-        }
     }
 
     @Test
@@ -111,4 +96,22 @@ final class PkByXslTest {
         );
     }
 
+    /**
+     * Checks that XSL stylesheet ID matches filename.
+     * @since 0.0.1
+     */
+    private static final class IdChecker implements java.util.function.Predicate<Resource> {
+        @Override
+        public boolean test(final Resource res) {
+            try {
+                return new XMLDocument(
+                    new UncheckedText(new TextOf(new InputOf(res.getInputStream()))).asString()
+                ).xpath("/xsl:stylesheet/@id").get(0).equals(
+                    res.getFilename().replaceAll(".xsl$", "")
+                );
+            } catch (final IOException ex) {
+                throw new IllegalStateException(ex);
+            }
+        }
+    }
 }

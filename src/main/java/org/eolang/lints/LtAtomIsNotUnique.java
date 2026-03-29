@@ -79,6 +79,19 @@ final class LtAtomIsNotUnique implements Lint<Map<String, XML>> {
         ).collect(Collectors.toList());
     }
 
+    @Override
+    public String motive() {
+        return new UncheckedText(
+            new TextOf(
+                new ResourceOf(
+                    String.format(
+                        "org/eolang/motives/errors/%s.md", this.name()
+                    )
+                )
+            )
+        ).asString();
+    }
+
     /**
      * Find duplicate defects within single source.
      * @param index Index of FQNs by source
@@ -110,7 +123,11 @@ final class LtAtomIsNotUnique implements Lint<Map<String, XML>> {
             .flatMap(
                 entry -> index.entrySet().stream()
                     .filter(other -> !Objects.equals(other.getKey(), entry.getKey()))
-                    .filter(other -> checked.add(LtAtomIsNotUnique.pairHash(entry.getKey(), other.getKey())))
+                    .filter(
+                        other -> checked.add(
+                            LtAtomIsNotUnique.pairHash(entry.getKey(), other.getKey())
+                        )
+                    )
                     .flatMap(
                         other -> other.getValue().stream()
                             .filter(entry.getValue()::contains)
@@ -122,19 +139,6 @@ final class LtAtomIsNotUnique implements Lint<Map<String, XML>> {
                             )
                     )
             );
-    }
-
-    @Override
-    public String motive() {
-        return new UncheckedText(
-            new TextOf(
-                new ResourceOf(
-                    String.format(
-                        "org/eolang/motives/errors/%s.md", this.name()
-                    )
-                )
-            )
-        ).asString();
     }
 
     private Defect singleDefect(final Xnav xml, final String fqn, final int pos) {

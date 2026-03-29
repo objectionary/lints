@@ -81,48 +81,32 @@ final class LtInconsistentArgs implements Lint<Map<String, XML>> {
         final Xnav src,
         final List<Xnav> sources
     ) {
+        final Map<String, List<Integer>> clashes = LtInconsistentArgs.clashes(sources, base);
+        final String program = new ProgramName(new XMLDocument(src.node())).get();
         return LtInconsistentArgs.fqnToSearch(base, src).entrySet().stream()
             .flatMap(
                 entry -> src.path(entry.getKey())
                     .filter(o -> !LtInconsistentArgs.objectReference(o))
                     .filter(entry.getValue())
                     .map(
-                        o -> this.clashDefect(
-                            base, src, o, LtInconsistentArgs.clashes(sources, base)
-                        )
+                        o -> {
+                            final int line = Integer.parseInt(
+                                o.attribute("line").text().orElse("0")
+                            );
+                            return new Defect.Default(
+                                this.name(),
+                                Severity.WARNING,
+                                program,
+                                line,
+                                String.format(
+                                    "Object '%s' has arguments inconsistency (clashes with [%s])",
+                                    base,
+                                    LtInconsistentArgs.objectClashes(clashes, program, line)
+                                )
+                            );
+                        }
                     )
             );
-    }
-
-    /**
-     * Create a single clash defect.
-     * @param base Base object name
-     * @param src Source XMIR navigator
-     * @param obj Object with clash
-     * @param clashes All clashes map
-     * @return New defect
-     */
-    private Defect clashDefect(
-        final String base,
-        final Xnav src,
-        final Xnav obj,
-        final Map<String, List<Integer>> clashes
-    ) {
-        return new Defect.Default(
-            this.name(),
-            Severity.WARNING,
-            new ProgramName(new XMLDocument(src.node())).get(),
-            Integer.parseInt(obj.attribute("line").text().orElse("0")),
-            String.format(
-                "Object '%s' has arguments inconsistency (the usage clashes with [%s])",
-                base,
-                LtInconsistentArgs.objectClashes(
-                    clashes,
-                    new ProgramName(new XMLDocument(src.node())).get(),
-                    Integer.parseInt(obj.attribute("line").text().orElse("0"))
-                )
-            )
-        );
     }
 
     /**

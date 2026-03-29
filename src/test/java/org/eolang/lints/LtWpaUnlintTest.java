@@ -50,24 +50,6 @@ final class LtWpaUnlintTest {
         );
     }
 
-    private static String exceptionMessage() {
-        try {
-            new LtWpaUnlint(new LtWpaUnlintTest.LtWpaAlways()).defects(
-                new MapOf<>(
-                    "x",
-                    new EoSyntax(
-                        "[] > x"
-                    ).parsed()
-                )
-            );
-        } catch (final IllegalArgumentException ex) {
-            return ex.getMessage();
-        } catch (final IOException ex) {
-            throw new IllegalStateException("Unexpected IOException", ex);
-        }
-        throw new IllegalStateException("Exception was expected but not thrown");
-    }
-
     @Test
     void returnsDefectsWithoutUnlints() throws IOException {
         MatcherAssert.assertThat(
@@ -87,6 +69,24 @@ final class LtWpaUnlintTest {
                 )
             )
         );
+    }
+
+    private static String exceptionMessage() {
+        try {
+            new LtWpaUnlint(new LtWpaUnlintTest.LtWpaAlways()).defects(
+                new MapOf<>(
+                    "x",
+                    new EoSyntax(
+                        "[] > x"
+                    ).parsed()
+                )
+            );
+        } catch (final IllegalArgumentException ex) {
+            return ex.getMessage();
+        } catch (final IOException ex) {
+            throw new IllegalStateException("Unexpected IOException", ex);
+        }
+        throw new IllegalStateException("Exception was expected but not thrown");
     }
 
     /**

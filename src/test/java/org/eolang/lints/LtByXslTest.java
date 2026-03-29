@@ -18,7 +18,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -37,7 +36,6 @@ import org.eolang.xax.XtYaml;
 import org.eolang.xax.XtoryMatcher;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.hamcrest.core.IsEqual;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -98,7 +96,7 @@ final class LtByXslTest {
         MatcherAssert.assertThat(
             "The motive was not found or empty",
             new LtByXsl("critical/duplicate-names").motive().isEmpty(),
-            new IsEqual<>(false)
+            Matchers.equalTo(false)
         );
     }
 
@@ -125,7 +123,7 @@ final class LtByXslTest {
                         );
                     }
                 ),
-            new IsEqual<>(true)
+            Matchers.equalTo(true)
         );
     }
 
@@ -144,7 +142,7 @@ final class LtByXslTest {
                         path.endsWith("org/eolang/lints/packs/single")
                             || path.endsWith("org/eolang/lints/packs/wpa")
                 ),
-            new IsEqual<>(true)
+            Matchers.equalTo(true)
         );
     }
 
@@ -156,7 +154,7 @@ final class LtByXslTest {
             Files.walk(Paths.get("src/test/resources/org/eolang/lints/packs"))
                 .filter(Files::isRegularFile)
                 .allMatch(path -> path.toAbsolutePath().toString().endsWith(".yaml")),
-            new IsEqual<>(true)
+            Matchers.equalTo(true)
         );
     }
 
@@ -168,7 +166,7 @@ final class LtByXslTest {
             Files.walk(Paths.get("src/test/resources/org/eolang/lints/packs"))
                 .filter(Files::isRegularFile)
                 .allMatch(path -> path.toFile().toString().endsWith(".yaml")),
-            new IsEqual<>(true)
+            Matchers.equalTo(true)
         );
     }
 
@@ -192,7 +190,7 @@ final class LtByXslTest {
                         )
                     )
                 ),
-            new IsEqual<>(true)
+            Matchers.equalTo(true)
         );
     }
 
@@ -213,7 +211,7 @@ final class LtByXslTest {
                         )
                     )
                 ),
-            new IsEqual<>(true)
+            Matchers.equalTo(true)
         );
     }
 
@@ -258,7 +256,7 @@ final class LtByXslTest {
                     ).stream()
                 )
             ).stream().allMatch(defect -> defect.context().length() <= 300),
-            new IsEqual<>(true)
+            Matchers.equalTo(true)
         );
     }
 
@@ -281,7 +279,48 @@ final class LtByXslTest {
                     }
                 )
                 .allMatch(LtByXslTest::schemaValid),
-            new IsEqual<>(true)
+            Matchers.equalTo(true)
+        );
+    }
+
+    @Test
+    void doesNotDuplicateDefectsWhenMultipleDefectsOnTheSameLine() throws Exception {
+        final Collection<Defect> defects = new LtByXsl("misc/unused-void-attr").defects(
+            new EoSyntax(
+                String.join(
+                    "\n",
+                    "# Foo with unused voids on the same line.",
+                    "[x y z] > foo"
+                )
+            ).parsed()
+        );
+        MatcherAssert.assertThat(
+            Logger.format(
+                "Found defects (%[list]s) should not contain duplicates",
+                defects
+            ),
+            new HashSet<>(defects).size() == defects.size(),
+            Matchers.equalTo(true)
+        );
+    }
+
+    @SuppressWarnings("StreamResourceLeak")
+    @Tag("deep")
+    @Timeout(300L)
+    @Test
+    void validatesEoPacksForErrors() throws IOException {
+        MatcherAssert.assertThat(
+            "All EO snippets in packs must parse without errors",
+            Files.walk(Paths.get("src/test/resources/org/eolang/lints/packs/single"))
+                .filter(Files::isRegularFile)
+                .filter(LtByXslTest.yamls())
+                .map(
+                    (Function<Path, Map<Path, Map<String, Object>>>)
+                        p -> new MapOf<>(p, new Yaml().load(new ReaderOf(p.toFile())))
+                )
+                .filter(pack -> pack.values().stream().findFirst().get().containsKey("input"))
+                .allMatch(LtByXslTest::eoErrorFree),
+            Matchers.equalTo(true)
         );
     }
 
@@ -312,47 +351,6 @@ final class LtByXslTest {
             valid = false;
         }
         return valid;
-    }
-
-    @Test
-    void doesNotDuplicateDefectsWhenMultipleDefectsOnTheSameLine() throws Exception {
-        final Collection<Defect> defects = new LtByXsl("misc/unused-void-attr").defects(
-            new EoSyntax(
-                String.join(
-                    "\n",
-                    "# Foo with unused voids on the same line.",
-                    "[x y z] > foo"
-                )
-            ).parsed()
-        );
-        MatcherAssert.assertThat(
-            Logger.format(
-                "Found defects (%[list]s) should not contain duplicates",
-                defects
-            ),
-            new HashSet<>(defects).size() == defects.size(),
-            Matchers.equalTo(true)
-        );
-    }
-
-    @SuppressWarnings("StreamResourceLeak")
-    @Tag("deep")
-    @Timeout(unit = TimeUnit.MINUTES, value = 5L)
-    @Test
-    void validatesEoPacksForErrors() throws IOException {
-        MatcherAssert.assertThat(
-            "All EO snippets in packs must parse without errors",
-            Files.walk(Paths.get("src/test/resources/org/eolang/lints/packs/single"))
-                .filter(Files::isRegularFile)
-                .filter(LtByXslTest.yamls())
-                .map(
-                    (Function<Path, Map<Path, Map<String, Object>>>)
-                        p -> new MapOf<>(p, new Yaml().load(new ReaderOf(p.toFile())))
-                )
-                .filter(pack -> pack.values().stream().findFirst().get().containsKey("input"))
-                .allMatch(LtByXslTest::eoErrorFree),
-            new IsEqual<>(true)
-        );
     }
 
     private static boolean eoErrorFree(final Map<Path, Map<String, Object>> pack) {

@@ -41,6 +41,19 @@ final class LtObjectIsNotUnique implements Lint<Map<String, XML>> {
             .collect(Collectors.toList());
     }
 
+    @Override
+    public String motive() throws IOException {
+        return new UncheckedText(
+            new TextOf(
+                new ResourceOf(
+                    String.format(
+                        "org/eolang/motives/errors/%s.md", this.name()
+                    )
+                )
+            )
+        ).asString();
+    }
+
     /**
      * Find duplicate defects between two sources.
      * @param xmir Original source
@@ -71,19 +84,6 @@ final class LtObjectIsNotUnique implements Lint<Map<String, XML>> {
                     )
             )
             .collect(Collectors.toList());
-    }
-
-    @Override
-    public String motive() throws IOException {
-        return new UncheckedText(
-            new TextOf(
-                new ResourceOf(
-                    String.format(
-                        "org/eolang/motives/errors/%s.md", this.name()
-                    )
-                )
-            )
-        ).asString();
     }
 
     private static boolean containsDuplicate(

@@ -35,10 +35,21 @@ final class LtIncorrectAlias implements Lint<Map<String, XML>> {
             .flatMap(
                 xmir -> new Xnav(xmir.inner())
                     .path("/object/metas/meta[head='alias']")
-                    .filter(alias -> !pkg.containsKey(this.lookupName(alias)))
-                    .map(alias -> this.aliasDefect(alias, xmir, pkg))
+                    .filter(alias -> !pkg.containsKey(LtIncorrectAlias.lookupName(alias)))
+                    .map(alias -> LtIncorrectAlias.aliasDefect(alias, xmir, pkg))
             )
             .collect(Collectors.toList());
+    }
+
+    @Override
+    public String motive() throws IOException {
+        return new UncheckedText(
+            new TextOf(
+                new ResourceOf(
+                    "org/eolang/motives/critical/incorrect-alias.md"
+                )
+            )
+        ).asString();
     }
 
     /**
@@ -46,7 +57,7 @@ final class LtIncorrectAlias implements Lint<Map<String, XML>> {
      * @param alias Alias navigator
      * @return Lookup name
      */
-    private String lookupName(final Xnav alias) {
+    private static String lookupName(final Xnav alias) {
         final List<Xnav> parts = alias.elements(Filter.withName("part"))
             .collect(Collectors.toList());
         return parts.get(parts.size() - 1).text().get().substring(2);
@@ -59,7 +70,9 @@ final class LtIncorrectAlias implements Lint<Map<String, XML>> {
      * @param pkg Package map
      * @return Defect
      */
-    private Defect aliasDefect(final Xnav alias, final XML xmir, final Map<String, XML> pkg) {
+    private static Defect aliasDefect(
+        final Xnav alias, final XML xmir, final Map<String, XML> pkg
+    ) {
         return new Defect.Default(
             "incorrect-alias",
             Severity.CRITICAL,
@@ -68,21 +81,10 @@ final class LtIncorrectAlias implements Lint<Map<String, XML>> {
             Logger.format(
                 "Alias \"%s\" points to \"%s\", but it's not in scope (%d): %[list]s",
                 alias.element("tail").text().get(),
-                this.lookupName(alias),
+                LtIncorrectAlias.lookupName(alias),
                 pkg.size(),
                 pkg.keySet()
             )
         );
-    }
-
-    @Override
-    public String motive() throws IOException {
-        return new UncheckedText(
-            new TextOf(
-                new ResourceOf(
-                    "org/eolang/motives/critical/incorrect-alias.md"
-                )
-            )
-        ).asString();
     }
 }

@@ -72,6 +72,19 @@ final class LtUnlintNonExistingDefectWpa implements Lint<Map<String, XML>> {
             .collect(Collectors.toList());
     }
 
+    @Override
+    public String motive() throws IOException {
+        return new IoCheckedText(
+            new TextOf(
+                new ResourceOf(
+                    String.format(
+                        "org/eolang/motives/misc/%s.md", this.name()
+                    )
+                )
+            )
+        ).asString();
+    }
+
     /**
      * Find defects for single source.
      * @param xmir Source XML
@@ -104,19 +117,6 @@ final class LtUnlintNonExistingDefectWpa implements Lint<Map<String, XML>> {
                 )
             )
             .collect(Collectors.toList());
-    }
-
-    @Override
-    public String motive() throws IOException {
-        return new IoCheckedText(
-            new TextOf(
-                new ResourceOf(
-                    String.format(
-                        "org/eolang/motives/misc/%s.md", this.name()
-                    )
-                )
-            )
-        ).asString();
     }
 
     /**
