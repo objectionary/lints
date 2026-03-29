@@ -15,10 +15,10 @@ input: |
     malloc.of > fi
       64 > i
       [m]
-        QQ.io.stdout > @
+        io.stdout > @
           t
     malloc.of > sec
       52 > xa
       [o]
-        QQ.io.stdout > @
+        io.stdout > @
           f

@@ -48,9 +48,13 @@ while IFS= read -r f; do
   echo "${n} -> $(du -b "${html}" | cut -f1) bytes"
 done < <(find src/main/resources/org/eolang/motives -name '*.md' | sort)
 
+repo=objectionary/lints
+
 (
   head
-  printf '<p>Latest version: <a href="/lints/%s/index.html">%s</a></p>\n' "${tag}" "${tag}"
+  printf '<p>Latest version of <a href="https://github.com/%s">%s</a>:' "${repo}" "${repo}"
+  printf '<a href="/lints/%s/index.html">%s</a></p>\n' "${tag}" "${tag}"
+  printf '<p>Latest version of <a href="https://github.com/objectionary/lints">objectionary/lints</a>: <a href="/lints/%s/index.html">%s</a></p>\n' "${tag}" "${tag}"
   printf '<p>List of lints in this version:<p>'
   list_them
   tail
@@ -58,7 +62,7 @@ done < <(find src/main/resources/org/eolang/motives -name '*.md' | sort)
 
 (
   head
-  printf "<p>List of lints in %s:<p>" "${tag}"
+  printf '<p>List of lints in <a href="https://github.com/%s">%s</a> %s:<p>' "${repo}" "${repo}" "${tag}"
   list_them
   tail
 ) > "gh-pages/${tag}/index.html"
