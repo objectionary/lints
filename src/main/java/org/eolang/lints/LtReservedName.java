@@ -7,9 +7,9 @@ package org.eolang.lints;
 import com.github.lombrozo.xnav.Xnav;
 import com.jcabi.xml.XML;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
+import java.util.stream.Collectors;
 import org.cactoos.io.ResourceOf;
 import org.cactoos.text.TextOf;
 import org.cactoos.text.UncheckedText;
@@ -50,29 +50,24 @@ final class LtReservedName implements Lint<XML> {
 
     @Override
     public Collection<Defect> defects(final XML xmir) throws IOException {
-        final Collection<Defect> defects = new ArrayList<>(0);
-        final Xnav source = new Xnav(xmir.inner());
-        source.path("//o[@name]")
-            .forEach(
-                object -> {
-                    final String oname = object.attribute("name").text().get();
-                    if (this.reserved.keySet().contains(oname)) {
-                        defects.add(
-                            new Defect.Default(
-                                this.name(),
-                                Severity.WARNING,
-                                new ProgramName(xmir).get(),
-                                Integer.parseInt(object.attribute("line").text().orElse("0")),
-                                String.format(
-                                    "Object name \"%s\" is already reserved by object in the \"%s\"",
-                                    oname, this.reserved.get(oname)
-                                )
-                            )
-                        );
-                    }
-                }
-            );
-        return defects;
+        return new Xnav(xmir.inner()).path("//o[@name]")
+            .filter(
+                object -> this.reserved.containsKey(object.attribute("name").text().get())
+            )
+            .map(
+                object -> new Defect.Default(
+                    this.name(),
+                    Severity.WARNING,
+                    new ProgramName(xmir).get(),
+                    Integer.parseInt(object.attribute("line").text().orElse("0")),
+                    String.format(
+                        "Object name \"%s\" is already reserved by object in the \"%s\"",
+                        object.attribute("name").text().get(),
+                        this.reserved.get(object.attribute("name").text().get())
+                    )
+                )
+            )
+            .collect(Collectors.toList());
     }
 
     @Override

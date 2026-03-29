@@ -30,12 +30,25 @@ final class UnlintInRange implements Predicate<Integer> {
 
     @Override
     public boolean test(final Integer line) {
-        final String lint = new ListOf<>(
-            Splitter.on(':').split(this.unlint.replace("+unlint", ""))
-        ).get(0);
-        final List<String> range = Splitter.on('-').splitToList(
-            this.unlint.replace(String.format("%s:", lint), "")
+        return line >= Integer.parseInt(this.range().get(0))
+            && line <= Integer.parseInt(this.range().get(1));
+    }
+
+    /**
+     * Extract range from unlint expression.
+     * @return List with two elements: start and end of range
+     */
+    private List<String> range() {
+        return Splitter.on('-').splitToList(
+            this.unlint.replace(
+                String.format(
+                    "%s:",
+                    new ListOf<>(
+                        Splitter.on(':').split(this.unlint.replace("+unlint", ""))
+                    ).get(0)
+                ),
+                ""
+            )
         );
-        return line >= Integer.parseInt(range.get(0)) && line <= Integer.parseInt(range.get(1));
     }
 }

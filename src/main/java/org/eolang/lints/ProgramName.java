@@ -44,30 +44,36 @@ final class ProgramName {
      * @return Program name or "unknown" if not found
      */
     String get() {
-        final String obj = this.objectName().orElse("unknown");
         return this.xnav.element("object")
             .elements(Filter.withName("metas"))
             .findFirst()
-            .map(
-                metas -> metas.elements(
-                    Filter.all(
-                        Filter.withName("meta"),
-                        meta -> new Xnav(meta)
-                            .element("head")
-                            .text()
-                            .map("package"::equals)
-                            .orElse(false)
-                    )
-                )
-                .findFirst()
-                .map(
-                    meta -> meta.element("tail").text().map(
-                        pckg -> String.join(".", pckg, obj)
-                    ).orElse(obj)
-                )
-                .orElse(obj)
+            .map(this::packagedName)
+            .orElseGet(() -> this.objectName().orElse("unknown"));
+    }
+
+    /**
+     * Extract packaged name from metas element.
+     * @param metas Metas element navigator
+     * @return Full packaged name or just object name
+     */
+    private String packagedName(final Xnav metas) {
+        return metas.elements(
+            Filter.all(
+                Filter.withName("meta"),
+                meta -> new Xnav(meta)
+                    .element("head")
+                    .text()
+                    .map("package"::equals)
+                    .orElse(false)
             )
-            .orElse(obj);
+        )
+        .findFirst()
+        .map(
+            meta -> meta.element("tail").text().map(
+                pckg -> String.join(".", pckg, this.objectName().orElse("unknown"))
+            ).orElseGet(() -> this.objectName().orElse("unknown"))
+        )
+        .orElseGet(() -> this.objectName().orElse("unknown"));
     }
 
     /**
