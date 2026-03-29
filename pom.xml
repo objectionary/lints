@@ -517,6 +517,7 @@
               <failOnWarning>true</failOnWarning>
               <compilerArgs>
                 <arg>-XDcompilePolicy=simple</arg>
+                <arg>-XDaddTypeAnnotationsToSymbol=true</arg>
                 <arg>--should-stop=ifError=FLOW</arg>
                 <arg>-Xplugin:ErrorProne -XepAllErrorsAsWarnings -Xep:InvalidBlockTag:OFF -Xep:StringConcatToTextBlock:OFF</arg>
                 <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED</arg>
