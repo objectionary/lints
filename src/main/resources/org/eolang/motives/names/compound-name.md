@@ -22,7 +22,8 @@ Correct:
     read file
 ```
 
-There are two exceptions for idiomatic prefixes used in EO standard library:
+There are exceptions for idiomatic prefixes and suffixes used in EO standard library:
 the `as-` prefix for type conversions (such as `as-bytes`, `as-i64`,
-and `as-number`) and the `is-` prefix for predicates
-(such as `is-empty`, `is-nan`, and `is-finite`).
+and `as-number`), the `is-` prefix for predicates
+(such as `is-empty`, `is-nan`, and `is-finite`), and the `-of` suffix
+for extracting parts (such as `slice-of`, `value-of`, and `length-of`).

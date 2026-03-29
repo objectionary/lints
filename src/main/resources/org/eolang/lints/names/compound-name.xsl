@@ -15,13 +15,14 @@
     <xsl:sequence select="contains($name, '-') or contains($name, '_') or matches($name, '[A-Z]')"/>
   </xsl:function>
   <!--
-    These prefixes are idiomatic in EO standard library:
+    These prefixes/suffixes are idiomatic in EO standard library:
     - 'as-' for type conversions (as-bytes, as-i64, as-number, etc.)
     - 'is-' for boolean predicates (is-empty, is-nan, is-finite, etc.)
+    - '-of' for extracting parts (slice-of, value-of, length-of, etc.)
   -->
   <xsl:function name="eo:idiomatic" as="xs:boolean">
     <xsl:param name="name"/>
-    <xsl:sequence select="starts-with($name, 'as-') or starts-with($name, 'is-')"/>
+    <xsl:sequence select="starts-with($name, 'as-') or starts-with($name, 'is-') or ends-with($name, '-of')"/>
   </xsl:function>
   <xsl:template match="/">
     <defects>

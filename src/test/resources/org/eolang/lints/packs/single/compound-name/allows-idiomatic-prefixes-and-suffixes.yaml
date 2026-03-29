@@ -12,3 +12,5 @@ input: |
     y.as-i64 > as-i64
     z.is-empty > is-empty
     w.is-nan > is-nan
+    a.slice-of > slice-of
+    b.value-of > value-of
