@@ -9,10 +9,8 @@ import com.yegor256.tojos.TjCached;
 import com.yegor256.tojos.TjDefault;
 import com.yegor256.tojos.TjSynchronized;
 import com.yegor256.tojos.Tojo;
-import java.util.List;
 import java.util.Map;
 import org.cactoos.map.MapEnvelope;
-import org.cactoos.map.MapOf;
 
 /**
  * Reserved EO top object names.
@@ -41,15 +39,14 @@ final class ReservedNames extends MapEnvelope<String, String> {
      * @return Map of object names, key is name, value is path
      */
     private static Map<String, String> names(final String path) {
-        final Map<String, String> result = new MapOf<>();
-        final List<Tojo> selected = new TjCached(
+        return new TjCached(
             new TjSynchronized(
                 new TjDefault(
                     new MnCsv(path)
                 )
             )
-        ).select(tojo -> true);
-        selected.forEach(tojo -> result.put(tojo.toString(), tojo.get("path")));
-        return result;
+        ).select(tojo -> true).stream().collect(
+            java.util.stream.Collectors.toMap(Tojo::toString, tojo -> tojo.get("path"))
+        );
     }
 }

@@ -15,5 +15,5 @@ input: |
     malloc.of > a
       64
       [m]
-        QQ.io.stdout > @
+        io.stdout > @
           t

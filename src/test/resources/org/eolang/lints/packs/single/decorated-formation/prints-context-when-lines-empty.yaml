@@ -9,7 +9,7 @@ document: |
   <object author="tests">
     <o name="main">
       <o name="φ">
-        <o base="Φ.org.eolang.foo" name="test"/>
+        <o base="Φ.foo" name="test"/>
       </o>
     </o>
   </object>

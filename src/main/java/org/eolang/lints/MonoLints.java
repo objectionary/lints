@@ -37,6 +37,22 @@ final class MonoLints extends IterableEnvelope<Lint<XML>> {
     );
 
     /**
+     * Cached all lint names for LtIncorrectUnlint validation.
+     */
+    private static final List<String> ALL_NAMES = new ListOf<>(
+        new Joined<>(
+            MonoLints.LINTS, new WpaLints(),
+            new ListOf<>(
+                new LtUnlintNonExistingDefect(
+                    MonoLints.LINTS, new ListOf<>(new WpaLintNames())
+                )
+            )
+        )
+    ).stream()
+        .map(Lint::name)
+        .collect(Collectors.toList());
+
+    /**
      * Ctor.
      */
     MonoLints() {
@@ -44,20 +60,7 @@ final class MonoLints extends IterableEnvelope<Lint<XML>> {
             new Joined<Lint<XML>>(
                 MonoLints.LINTS,
                 List.of(
-                    new LtIncorrectUnlint(
-                        new ListOf<>(
-                            new Joined<>(
-                                MonoLints.LINTS, new WpaLints(),
-                                new ListOf<>(
-                                    new LtUnlintNonExistingDefect(
-                                        MonoLints.LINTS, new ListOf<>(new WpaLintNames())
-                                    )
-                                )
-                            )
-                        ).stream()
-                            .map(Lint::name)
-                            .collect(Collectors.toList())
-                    )
+                    new LtIncorrectUnlint(MonoLints.ALL_NAMES)
                 )
             )
         );

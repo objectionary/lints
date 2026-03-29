@@ -19,9 +19,9 @@ import org.cactoos.iterable.Mapped;
 import org.cactoos.list.ListOf;
 import org.cactoos.map.MapEntry;
 import org.cactoos.map.MapOf;
+import org.cactoos.map.Sticky;
 import org.eolang.jucs.ClasspathSource;
 import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
 import org.hamcrest.core.IsEqual;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -37,10 +37,12 @@ final class WpaLintsTest {
      * WPA lints mapped to their names.
      */
     private static final Map<String, Lint<Map<String, XML>>> WPA =
-        new MapOf<String, Lint<Map<String, XML>>>(
-            new Mapped<>(
-                wpl -> new MapEntry<>(wpl.name(), wpl),
-                new WpaLints()
+        new Sticky<>(
+            new MapOf<String, Lint<Map<String, XML>>>(
+                new Mapped<>(
+                    wpl -> new MapEntry<>(wpl.name(), wpl),
+                    new WpaLints()
+                )
             )
         );
 
@@ -70,48 +72,34 @@ final class WpaLintsTest {
     @Test
     @SuppressWarnings("StreamResourceLeak")
     void checksLocationOfYamlPacks() throws IOException {
-        final List<String> groups = new ListOf<>(new WpaLints()).stream()
+        final List<String> names = new ListOf<>(new WpaLints()).stream()
             .map(Lint::name)
             .collect(Collectors.toList());
-        Files.walk(Paths.get("src/test/resources/org/eolang/lints/packs/wpa"))
-            .filter(Files::isRegularFile)
-            .forEach(
-                path -> {
-                    final String lint = path.getParent().getFileName().toString();
-                    MatcherAssert.assertThat(
-                        String.format(
-                            "Can't find lint for %s/%s, which must have name '%s'",
-                            lint, path.getFileName(), lint
-                        ),
-                        groups.contains(lint),
-                        new IsEqual<>(true)
-                    );
-                }
-            );
+        MatcherAssert.assertThat(
+            "All YAML pack files must correspond to WPA lints",
+            Files.walk(Paths.get("src/test/resources/org/eolang/lints/packs/wpa"))
+                .filter(Files::isRegularFile)
+                .allMatch(
+                    path -> names.contains(path.getParent().getFileName().toString())
+                ),
+            new IsEqual<>(true)
+        );
     }
 
     @Test
-    void checksMotivesForPresence() {
-        new WpaLints().forEach(
-            wpl -> {
-                try {
-                    MatcherAssert.assertThat(
-                        String.format(
-                            "Motive is missing for lint '%s'",
-                            wpl.name()
-                        ),
-                        wpl.motive(),
-                        Matchers.not(Matchers.emptyString())
-                    );
-                } catch (final IOException exception) {
-                    throw new IllegalStateException(
-                        String.format(
-                            "Failed to read motive for '%s' lint", wpl.name()
-                        ),
-                        exception
-                    );
+    void checksMotivesForPresence() throws IOException {
+        MatcherAssert.assertThat(
+            "All WPA lints must have non-empty motives",
+            new ListOf<>(new WpaLints()).stream().allMatch(
+                wpl -> {
+                    try {
+                        return !wpl.motive().isEmpty();
+                    } catch (final IOException ex) {
+                        throw new IllegalStateException(ex);
+                    }
                 }
-            }
+            ),
+            new IsEqual<>(true)
         );
     }
 }

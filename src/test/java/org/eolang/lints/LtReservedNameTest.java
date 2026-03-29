@@ -4,7 +4,6 @@
  */
 package org.eolang.lints;
 
-import com.jcabi.xml.XML;
 import java.io.IOException;
 import java.util.Collection;
 import org.cactoos.list.ListOf;
@@ -32,8 +31,8 @@ final class LtReservedNameTest {
                     new EoSyntax(
                         String.join(
                             "\n",
-                            "# Foo.",
-                            "[] > foo",
+                            "# Qqq.",
+                            "[] > qqq",
                             "  42 > true"
                         )
                     ).parsed()
@@ -129,30 +128,42 @@ final class LtReservedNameTest {
 
     @Test
     void reportsReservedNameInTopObject() throws IOException {
-        final String target = "foo";
-        final Collection<Defect> defects = new LtReservedName(
-            new MapOf<>("foo", "org.eolang.foo.eo")
-        ).defects(
-            new EoSyntax(
-                String.join(
-                    "\n",
-                    "# Foo.",
-                    String.format("[] > %s", target),
-                    "  52 > spb"
-                )
-            ).parsed()
-        );
         MatcherAssert.assertThat(
             "Defects size does not match with expected",
-            defects,
+            new LtReservedName(
+                new MapOf<>("foo", "org.eolang.foo.eo")
+            ).defects(
+                new EoSyntax(
+                    String.join(
+                        "\n",
+                        "# Foo.",
+                        "[] > foo",
+                        "  52 > spb"
+                    )
+                ).parsed()
+            ),
             Matchers.hasSize(1)
         );
+    }
+
+    @Test
+    void reportsCorrectMessageForReservedNameInTopObject() throws IOException {
         MatcherAssert.assertThat(
-            String.format(
-                "The name of high-level object \"%s\" should be reported",
-                target
-            ),
-            new ListOf<>(defects).get(0).text(),
+            "The name of high-level object 'foo' should be reported",
+            new ListOf<>(
+                new LtReservedName(
+                    new MapOf<>("foo", "org.eolang.foo.eo")
+                ).defects(
+                    new EoSyntax(
+                        String.join(
+                            "\n",
+                            "# Foo.",
+                            "[] > foo",
+                            "  52 > spb"
+                        )
+                    ).parsed()
+                )
+            ).get(0).text(),
             Matchers.equalTo(
                 "Object name \"foo\" is already reserved by object in the \"org.eolang.foo.eo\""
             )
@@ -162,25 +173,39 @@ final class LtReservedNameTest {
     @Tag("reserved")
     @Test
     void scansReservedFromHome() throws Exception {
-        final Lint<XML> lint = new LtReservedName();
-        final Collection<Defect> defects = lint.defects(
-            new EoSyntax(
-                String.join(
-                    "\n",
-                    "# Foo",
-                    "[] > foo",
-                    "  52 > stdout"
-                )
-            ).parsed()
-        );
         MatcherAssert.assertThat(
             "Defects size does not match with expected",
-            defects,
+            new LtReservedName().defects(
+                new EoSyntax(
+                    String.join(
+                        "\n",
+                        "# Bar.",
+                        "[] > bar",
+                        "  52 > stdout"
+                    )
+                ).parsed()
+            ),
             Matchers.hasSize(1)
         );
+    }
+
+    @Tag("reserved")
+    @Test
+    void scansReservedFromHomeWithCorrectMessage() throws Exception {
         MatcherAssert.assertThat(
             "Defect message does not match with expected",
-            new ListOf<>(defects).get(0).text(),
+            new ListOf<>(
+                new LtReservedName().defects(
+                    new EoSyntax(
+                        String.join(
+                            "\n",
+                            "# Baz.",
+                            "[] > baz",
+                            "  52 > stdout"
+                        )
+                    ).parsed()
+                )
+            ).get(0).text(),
             Matchers.equalTo(
                 "Object name \"stdout\" is already reserved by object in the \"org.eolang.io.stdout.eo\""
             )
@@ -191,7 +216,7 @@ final class LtReservedNameTest {
     void allowsAllUnique() throws IOException {
         MatcherAssert.assertThat(
             "Object names should not be reported, since they all unique",
-            new LtReservedName(new MapOf<>()).defects(new EoSyntax("[] > foo").parsed()),
+            new LtReservedName(new MapOf<>()).defects(new EoSyntax("[] > qux").parsed()),
             Matchers.emptyIterable()
         );
     }
