@@ -366,13 +366,6 @@
               </execution>
             </executions>
           </plugin>
-          <plugin>
-            <groupId>org.codehaus.gmavenplus</groupId>
-            <artifactId>gmavenplus-plugin</artifactId>
-            <configuration>
-              <targetBytecode>11</targetBytecode>
-            </configuration>
-          </plugin>
         </plugins>
       </build>
     </profile>
@@ -771,6 +764,13 @@
             <version>4.9.8</version>
           </dependency>
         </dependencies>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.gmavenplus</groupId>
+        <artifactId>gmavenplus-plugin</artifactId>
+        <configuration>
+          <targetBytecode>11</targetBytecode>
+        </configuration>
       </plugin>
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
