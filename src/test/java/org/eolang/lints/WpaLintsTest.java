@@ -33,19 +33,6 @@ import org.junit.jupiter.params.ParameterizedTest;
  */
 final class WpaLintsTest {
 
-    /**
-     * WPA lints mapped to their names.
-     */
-    private static final Map<String, Lint<Map<String, XML>>> WPA =
-        new Sticky<>(
-            new MapOf<String, Lint<Map<String, XML>>>(
-                new Mapped<>(
-                    wpl -> new MapEntry<>(wpl.name(), wpl),
-                    new WpaLints()
-                )
-            )
-        );
-
     @Test
     @SuppressWarnings("JTCOP.RuleAssertionMessage")
     void staysPackagePrivate() {
@@ -64,7 +51,17 @@ final class WpaLintsTest {
     void testsAllLintsByEo(final String yaml) throws IOException {
         MatcherAssert.assertThat(
             "Story failures are not empty, but they should.",
-            new WpaStory(yaml, WpaLintsTest.WPA).execute(),
+            new WpaStory(
+                yaml,
+                new Sticky<>(
+                    new MapOf<String, Lint<Map<String, XML>>>(
+                        new Mapped<>(
+                            wpl -> new MapEntry<>(wpl.name(), wpl),
+                            new WpaLints()
+                        )
+                    )
+                )
+            ).execute(),
             new WpaStoryMatcher()
         );
     }
