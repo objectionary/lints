@@ -13,5 +13,5 @@ input: |
       64
       [m]
         "boom" > x
-        QQ.io.stdout > @
+        io.stdout > @
           x

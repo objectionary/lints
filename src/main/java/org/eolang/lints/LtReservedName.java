@@ -13,7 +13,6 @@ import java.util.Map;
 import org.cactoos.io.ResourceOf;
 import org.cactoos.text.TextOf;
 import org.cactoos.text.UncheckedText;
-import org.eolang.parser.OnDefault;
 
 /**
  * Lint for reserved names.
@@ -62,7 +61,7 @@ final class LtReservedName implements Lint<XML> {
                             new Defect.Default(
                                 this.name(),
                                 Severity.WARNING,
-                                new OnDefault(xmir).get(),
+                                new ProgramName(xmir).get(),
                                 Integer.parseInt(object.attribute("line").text().orElse("0")),
                                 String.format(
                                     "Object name \"%s\" is already reserved by object in the \"%s\"",

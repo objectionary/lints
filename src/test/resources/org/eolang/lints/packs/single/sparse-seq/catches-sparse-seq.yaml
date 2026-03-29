@@ -9,6 +9,6 @@ asserts:
 input: |
   # App.
   [] > app
-    QQ.seq > @
+    seq > @
       *
         true

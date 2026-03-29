@@ -13,7 +13,6 @@ import org.cactoos.io.ResourceOf;
 import org.cactoos.set.SetOf;
 import org.cactoos.text.TextOf;
 import org.cactoos.text.UncheckedText;
-import org.eolang.parser.OnDefault;
 
 /**
  * Lint that all unlint metas point to existing lint.
@@ -55,7 +54,7 @@ final class LtIncorrectUnlint implements Lint<XML> {
                     new Defect.Default(
                         this.name(),
                         Severity.ERROR,
-                        new OnDefault(xmir).get(),
+                        new ProgramName(xmir).get(),
                         Integer.parseInt(u.attribute("line").text().orElse("0")),
                         String.format(
                             "Suppressing \"%s\" does not make sense, because there is no lint with that name",

@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
 import org.cactoos.io.ResourceOf;
 import org.cactoos.text.TextOf;
 import org.cactoos.text.UncheckedText;
-import org.eolang.parser.OnDefault;
 
 /**
  * Checks that `+alias` is pointing to existing `.xmir` files.
@@ -49,7 +48,7 @@ final class LtIncorrectAlias implements Lint<Map<String, XML>> {
                             new Defect.Default(
                                 "incorrect-alias",
                                 Severity.CRITICAL,
-                                new OnDefault(xmir).get(),
+                                new ProgramName(xmir).get(),
                                 Integer.parseInt(
                                     alias.attribute("line").text().orElse("0")
                                 ),

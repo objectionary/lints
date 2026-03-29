@@ -10,9 +10,9 @@ asserts:
 input: |
   # App.
   [] > app
-    QQ.seq > first
+    seq > first
       *
         "f"
-    QQ.seq > second
+    seq > second
       *
         "x"
