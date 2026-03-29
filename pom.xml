@@ -8,7 +8,7 @@
   <parent>
     <groupId>com.jcabi</groupId>
     <artifactId>parent</artifactId>
-    <version>0.71.1</version>
+    <version>0.73.1</version>
   </parent>
   <groupId>org.eolang</groupId>
   <artifactId>lints</artifactId>
@@ -366,6 +366,13 @@
               </execution>
             </executions>
           </plugin>
+          <plugin>
+            <groupId>org.codehaus.gmavenplus</groupId>
+            <artifactId>gmavenplus-plugin</artifactId>
+            <configuration>
+              <targetBytecode>11</targetBytecode>
+            </configuration>
+          </plugin>
         </plugins>
       </build>
     </profile>
@@ -698,9 +705,9 @@
           <plugin>
             <groupId>org.codehaus.gmavenplus</groupId>
             <artifactId>gmavenplus-plugin</artifactId>
-            <version>4.2.1</version>
             <configuration>
               <verbose>true</verbose>
+              <targetBytecode>11</targetBytecode>
             </configuration>
             <executions>
               <execution>
