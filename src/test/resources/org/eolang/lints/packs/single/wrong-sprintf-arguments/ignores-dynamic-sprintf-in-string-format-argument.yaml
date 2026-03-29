@@ -8,14 +8,14 @@ asserts:
 input: |
   # Log.
   [fmt args kid] > log
-    QQ.seq > @
+    seq > @
       *
-        QQ.stdout
+        stdout
           magenta
-            QQ.txt.sprintf
+            txt.sprintf
               "\033[90m%s\033[0m\n"
               *
-                QQ.txt.sprintf
+                txt.sprintf
                   fmt
                   * args
         kid

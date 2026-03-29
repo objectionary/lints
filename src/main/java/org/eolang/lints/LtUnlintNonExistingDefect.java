@@ -7,19 +7,15 @@ package org.eolang.lints;
 import com.github.lombrozo.xnav.Xnav;
 import com.jcabi.xml.XML;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import org.cactoos.io.ResourceOf;
 import org.cactoos.list.ListOf;
 import org.cactoos.text.IoCheckedText;
 import org.cactoos.text.TextOf;
-import org.eolang.parser.OnDefault;
 
 /**
  * Lint for checking `+unlint` meta to suppress non-existing defects in single XMIR scope.
@@ -65,41 +61,29 @@ final class LtUnlintNonExistingDefect implements Lint<XML> {
 
     @Override
     public Collection<Defect> defects(final XML xmir) throws IOException {
-        final Collection<Defect> defects = new ArrayList<>(0);
-        final Map<String, List<Integer>> present = this.existingDefects(xmir);
-        final Xnav xml = new Xnav(xmir.inner());
-        final Set<String> unlints = xml.path("/object/metas/meta[head='unlint']/tail")
+        return new Xnav(xmir.inner()).path("/object/metas/meta[head='unlint']/tail")
             .map(xnav -> xnav.text().get())
-            .collect(Collectors.toSet());
-        final Function<String, Boolean> missing = new DefectMissing(present, this.excluded);
-        unlints.stream()
-            .filter(missing::apply)
-            .forEach(
-                unlint ->
-                    xml.path(
+            .distinct()
+            .filter(new DefectMissing(this.existingDefects(xmir), this.excluded)::apply)
+            .flatMap(
+                unlint -> new Xnav(xmir.inner()).path(
+                    String.format(
+                        "object/metas/meta[head='unlint' and tail='%s']/@line", unlint
+                    )
+                ).map(
+                    xnav -> new Defect.Default(
+                        this.name(),
+                        Severity.WARNING,
+                        new ProgramName(xmir).get(),
+                        Integer.parseInt(xnav.text().get()),
                         String.format(
-                            "object/metas/meta[head='unlint' and tail='%s']/@line", unlint
+                            "Unlinting rule '%s' doesn't make sense, since there are no defects with it",
+                            unlint
                         )
-                        )
-                        .map(xnav -> xnav.text().get())
-                        .collect(Collectors.toList())
-                        .forEach(
-                            line ->
-                                defects.add(
-                                    new Defect.Default(
-                                        this.name(),
-                                        Severity.WARNING,
-                                        new OnDefault(xmir).get(),
-                                        Integer.parseInt(line),
-                                        String.format(
-                                            "Unlinting rule '%s' doesn't make sense, since there are no defects with it",
-                                            unlint
-                                        )
-                                    )
-                                )
-                        )
-            );
-        return defects;
+                    )
+                )
+            )
+            .collect(Collectors.toList());
     }
 
     @Override
@@ -116,20 +100,21 @@ final class LtUnlintNonExistingDefect implements Lint<XML> {
     }
 
     private Map<String, List<Integer>> existingDefects(final XML xmir) {
-        final Map<String, List<Integer>> existing = new HashMap<>(0);
-        this.lints.forEach(
-            lint -> {
-                try {
-                    lint.defects(xmir).forEach(
-                        defect ->
-                            existing.computeIfAbsent(defect.rule(), key -> new ListOf<>())
-                                .add(defect.line())
-                    );
-                } catch (final IOException exception) {
-                    throw new IllegalStateException(exception);
+        return StreamSupport.stream(this.lints.spliterator(), false)
+            .flatMap(
+                lint -> {
+                    try {
+                        return lint.defects(xmir).stream();
+                    } catch (final IOException exception) {
+                        throw new IllegalStateException(exception);
+                    }
                 }
-            }
-        );
-        return existing;
+            )
+            .collect(
+                Collectors.groupingBy(
+                    Defect::rule,
+                    Collectors.mapping(Defect::line, Collectors.toList())
+                )
+            );
     }
 }

@@ -34,10 +34,10 @@ document: |
       </o>
       <o name="correct-inners" line="42">
         <o base="Φ.first">
-          <o base="Φ.org.eolang.bytes">3F-F0-00-00-00-00-00-00</o>
+          <o base="Φ.bytes">3F-F0-00-00-00-00-00-00</o>
         </o>
         <o base="Φ.second">
-          <o base="Φ.org.eolang.bytes">00-00-00-00-00-00-00-00</o>
+          <o base="Φ.bytes">00-00-00-00-00-00-00-00</o>
         </o>
       </o>
     </o>
