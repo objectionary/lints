@@ -572,7 +572,7 @@ final class SourceTest {
          *  it use the original Source.java, so they will stay synced. Don't forget
          *  to remove this puzzle.
          */
-        public Collection<Defect> defects() {
+        Collection<Defect> defects() {
             try {
                 final Collection<Defect> messages = new ArrayList<>(0);
                 for (final Lint<XML> lint : this.lints) {
@@ -697,7 +697,7 @@ final class SourceTest {
          * Total found.
          * @return Lines count
          */
-        public int total() {
+        int total() {
             return this.count;
         }
     }
