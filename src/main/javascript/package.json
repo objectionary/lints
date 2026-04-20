@@ -1,0 +1,15 @@
+{
+  "type": "module",
+  "name": "markdownlint",
+  "version": "1.0.0",
+  "main": "markdownlint.js",
+  "scripts": {
+    "postinstall": "npx webpack"
+  },
+  "dependencies": {
+    "markdownlint": "^0.37.4"
+  },
+  "devDependencies": {
+    "webpack-cli": "^6.0.1"
+  }
+}
