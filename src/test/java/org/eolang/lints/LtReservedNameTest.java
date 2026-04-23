@@ -207,7 +207,7 @@ final class LtReservedNameTest {
                 )
             ).get(0).text(),
             Matchers.equalTo(
-                "Object name \"stdout\" is already reserved by object in the \"org.eolang.io.stdout.eo\""
+                "Object name \"stdout\" is already reserved by object in the \"io.stdout.eo\""
             )
         );
     }
