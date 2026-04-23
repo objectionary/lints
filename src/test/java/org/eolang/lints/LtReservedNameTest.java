@@ -26,7 +26,7 @@ final class LtReservedNameTest {
     void catchesReservedName() throws IOException {
         MatcherAssert.assertThat(
             "It is expected to catch only one defect here",
-            new LtReservedName(new MapOf<>("true", "org.eolang.true.eo"))
+            new LtReservedName(new MapOf<>("true", "true.eo"))
                 .defects(
                     new EoSyntax(
                         String.join(
@@ -45,7 +45,7 @@ final class LtReservedNameTest {
     void allowsNonReservedName() throws IOException {
         MatcherAssert.assertThat(
             "Defects are not empty, but they should",
-            new LtReservedName(new MapOf<>("true", "org.eolang.true.eo"))
+            new LtReservedName(new MapOf<>("true", "true.eo"))
                 .defects(
                     new EoSyntax(
                         String.join(
@@ -63,7 +63,7 @@ final class LtReservedNameTest {
     void allowsUniqueNameInTopSourceObject() throws IOException {
         MatcherAssert.assertThat(
             "Defects are not empty, but they should",
-            new LtReservedName(new MapOf<>("f", "org.eolang.f.eo"))
+            new LtReservedName(new MapOf<>("f", "f.eo"))
                 .defects(
                     new EoSyntax(
                         String.join(
@@ -80,7 +80,7 @@ final class LtReservedNameTest {
     @Test
     void catchesReservedNameWithPackage() throws IOException {
         final Collection<Defect> found = new LtReservedName(
-            new MapOf<>("stdout", "org.eolang.stdout.eo")
+            new MapOf<>("stdout", "stdout.eo")
         ).defects(
             new EoSyntax(
                 String.join(
@@ -109,8 +109,8 @@ final class LtReservedNameTest {
             "Defects size does not match with expected",
             new LtReservedName(
                 new MapOf<String, String>(
-                    new MapEntry<>("ja", "org.eolang.ja.eo"),
-                    new MapEntry<>("spb", "org.eolang.spb.eo")
+                    new MapEntry<>("ja", "ja.eo"),
+                    new MapEntry<>("spb", "spb.eo")
                 )
             ).defects(
                 new EoSyntax(
@@ -131,7 +131,7 @@ final class LtReservedNameTest {
         MatcherAssert.assertThat(
             "Defects size does not match with expected",
             new LtReservedName(
-                new MapOf<>("foo", "org.eolang.foo.eo")
+                new MapOf<>("foo", "foo.eo")
             ).defects(
                 new EoSyntax(
                     String.join(
@@ -152,7 +152,7 @@ final class LtReservedNameTest {
             "The name of high-level object 'foo' should be reported",
             new ListOf<>(
                 new LtReservedName(
-                    new MapOf<>("foo", "org.eolang.foo.eo")
+                    new MapOf<>("foo", "foo.eo")
                 ).defects(
                     new EoSyntax(
                         String.join(
@@ -165,7 +165,7 @@ final class LtReservedNameTest {
                 )
             ).get(0).text(),
             Matchers.equalTo(
-                "Object name \"foo\" is already reserved by object in the \"org.eolang.foo.eo\""
+                "Object name \"foo\" is already reserved by object in the \"foo.eo\""
             )
         );
     }
