@@ -22,7 +22,7 @@ public final class DefectMatcher extends BaseMatcher<Defect> {
     /**
      * Synthetic matcher that is built when input arrives.
      */
-    private final List<Matcher<?>> matchers = new ArrayList<>();
+    private final List<Matcher<?>> matchers = new ArrayList<>(0);
 
     @Override
     public boolean matches(final Object input) {

@@ -21,13 +21,17 @@ import java.util.stream.Collectors;
  *  For now we just reusing object line number (via @line), which is not correct
  *  for specifying on which line of the program comment is located. This issue
  *  can be solved after <a href="https://github.com/objectionary/eo/issues/3536">this one</a>.
+ * @todo #402:15min Replace the creation of new ArrayList<>(0) with the creation of
+ *  ArrayList<>() without a constructor argument in whole project. Add ignore warning
+ *  ConditionalRegexpMultilineCheck from Checkstyle (it doesn't seem to be possible at the moment
+ *  <a href="https://github.com/yegor256/qulice/issues/1328">issue 1328</a>)
  * @checkstyle StringLiteralsConcatenationCheck (30 lines)
  */
 final class LtAsciiOnly implements Lint {
 
     @Override
     public Collection<Defect> defects(final XML xmir) throws IOException {
-        final Collection<Defect> defects = new ArrayList<>();
+        final Collection<Defect> defects = new ArrayList<>(0);
         final Xnav xml = new Xnav(xmir.inner());
         final List<Xnav> comments = xml.path("/object/comments/comment")
             .collect(Collectors.toList());

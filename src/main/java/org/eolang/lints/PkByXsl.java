@@ -4,7 +4,6 @@
  */
 package org.eolang.lints;
 
-import com.jcabi.xml.XML;
 import io.github.secretx33.resourceresolver.PathMatchingResourcePatternResolver;
 import java.io.IOException;
 import java.util.Arrays;

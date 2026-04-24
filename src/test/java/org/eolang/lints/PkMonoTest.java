@@ -4,7 +4,6 @@
  */
 package org.eolang.lints;
 
-import com.jcabi.xml.XML;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 import com.tngtech.archunit.core.importer.ImportOption;
 import com.tngtech.archunit.lang.syntax.ArchRuleDefinition;
