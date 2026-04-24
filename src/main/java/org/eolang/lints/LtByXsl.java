@@ -87,7 +87,7 @@ final class LtByXsl implements Lint {
 
     @Override
     public Collection<Defect> defects(final XML xmir) {
-        final Collection<Defect> defects = new ArrayList<>(0);
+        final Collection<Defect> defects = new ArrayList<>();
         for (final XML defect : LtByXsl.findDefects(this.sheet.transform(xmir))) {
             final Xnav xml = new Xnav(defect.inner());
             final Optional<String> sever = xml.attribute("severity").text();
@@ -114,7 +114,7 @@ final class LtByXsl implements Lint {
 
     @Override
     public String motive() throws IOException {
-        return new IoCheckedText(new TextOf(this.doc)).asString();
+        return new MotiveFrom(this.doc).asString();
     }
 
     /**

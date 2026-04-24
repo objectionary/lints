@@ -28,7 +28,7 @@ public final class DefectsMatcher extends BaseMatcher<XML> {
 
     @Override
     public boolean matches(final Object xml) {
-        final Collection<Defect> defects = new ArrayList<>(0);
+        final Collection<Defect> defects = new ArrayList<>();
         for (final XML defect : ((XML) xml).nodes("/defects/defect")) {
             defects.add(
                 new Defect.Default(

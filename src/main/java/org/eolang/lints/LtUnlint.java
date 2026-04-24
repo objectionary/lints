@@ -47,7 +47,7 @@ final class LtUnlint implements Lint {
 
     @Override
     public Collection<Defect> defects(final XML xmir) throws IOException {
-        final Collection<Defect> defects = new ArrayList<>(0);
+        final Collection<Defect> defects = new ArrayList<>();
         final String lname = this.origin.name();
         final Collection<Defect> found = this.origin.defects(xmir);
         final List<Integer> problematic = found.stream()
