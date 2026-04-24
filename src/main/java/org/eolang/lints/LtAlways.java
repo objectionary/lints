@@ -26,7 +26,6 @@ final class LtAlways implements Lint {
             new Defect.Default(
                 this.name(),
                 Severity.ERROR,
-                "noname",
                 0,
                 "always complains"
             )

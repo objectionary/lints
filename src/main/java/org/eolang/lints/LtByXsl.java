@@ -101,7 +101,6 @@ final class LtByXsl implements Lint {
                     new Defect.Default(
                         this.rule,
                         Severity.parsed(sever.get()),
-                        new ProgramName(xmir).get(),
                         this.lineno(xml),
                         xml.text().get(),
                         LtByXsl.experimental(xml)

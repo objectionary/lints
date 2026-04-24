@@ -51,7 +51,6 @@ final class LtIncorrectUnlint implements Lint {
                 u -> new Defect.Default(
                     this.name(),
                     Severity.ERROR,
-                    new ProgramName(xmir).get(),
                     Integer.parseInt(u.attribute("line").text().orElse("0")),
                     String.format(
                         "Suppressing \"%s\" does not make sense, because there is no lint with that name",

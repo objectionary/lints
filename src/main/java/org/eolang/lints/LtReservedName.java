@@ -58,7 +58,6 @@ final class LtReservedName implements Lint {
                 object -> new Defect.Default(
                     this.name(),
                     Severity.WARNING,
-                    new ProgramName(xmir).get(),
                     Integer.parseInt(object.attribute("line").text().orElse("0")),
                     String.format(
                         "Object name \"%s\" is already reserved by object in the \"%s\"",

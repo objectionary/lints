@@ -29,7 +29,6 @@ final class ScopedDefectsTest {
                     new Defect.Default(
                         "boom-lint",
                         Severity.ERROR,
-                        "foo",
                         42,
                         "Foo bar!"
                     )
@@ -39,7 +38,7 @@ final class ScopedDefectsTest {
             Matchers.hasItem(
                 Matchers.hasToString(
                     String.format(
-                        "[foo boom-lint/%s ERROR]:42 Foo bar!",
+                        "[boom-lint/%s ERROR]:42 Foo bar!",
                         marker
                     )
                 )

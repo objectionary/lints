@@ -23,7 +23,6 @@ final class DfContextTest {
                 new Defect.Default(
                     "foo",
                     Severity.ERROR,
-                    "app.main",
                     0,
                     "Boom!"
                 ),

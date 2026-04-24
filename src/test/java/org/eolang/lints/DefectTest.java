@@ -20,7 +20,6 @@ final class DefectTest {
         final String version = new Defect.Default(
             "metas/incorrect-architect",
             Severity.WARNING,
-            "",
             3,
             "Something went wrong with an architect"
         ).version();
@@ -32,29 +31,12 @@ final class DefectTest {
     }
 
     @Test
-    void printsObjectName() {
-        final String program = "a.b.c.bar";
-        MatcherAssert.assertThat(
-            "toString() doesn't show program name",
-            new Defect.Default(
-                "foo",
-                Severity.WARNING,
-                program,
-                3,
-                "the message"
-            ),
-            Matchers.hasToString(Matchers.containsString(program))
-        );
-    }
-
-    @Test
     void printsWithoutZeroLineNumber() {
         MatcherAssert.assertThat(
             "toString() prints zero for line number",
             new Defect.Default(
                 "foo",
                 Severity.WARNING,
-                "foo.bar",
                 0,
                 "the message"
             ),
@@ -69,7 +51,6 @@ final class DefectTest {
             new Defect.Default(
                 "f12",
                 Severity.ERROR,
-                "f.12",
                 42,
                 "This is wrong",
                 true

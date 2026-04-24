@@ -41,11 +41,6 @@ final class DfContext implements Defect {
     }
 
     @Override
-    public String object() {
-        return this.origin.object();
-    }
-
-    @Override
     public int line() {
         return this.origin.line();
     }

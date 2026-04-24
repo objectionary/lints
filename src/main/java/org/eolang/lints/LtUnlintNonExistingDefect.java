@@ -74,7 +74,6 @@ final class LtUnlintNonExistingDefect implements Lint {
                     xnav -> new Defect.Default(
                         this.name(),
                         Severity.WARNING,
-                        new ProgramName(xmir).get(),
                         Integer.parseInt(xnav.text().get()),
                         String.format(
                             "Unlinting rule '%s' doesn't make sense, since there are no defects with it",

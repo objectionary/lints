@@ -72,7 +72,7 @@ final class LtTestNotVerb implements Lint {
         return new Xnav(xmir.inner())
             .path("/object//o[@name and starts-with(@name, '+')]")
             .filter(object -> !this.isVerbInSingular(object))
-            .map(object -> LtTestNotVerb.verbDefect(xmir, object))
+            .map(LtTestNotVerb::verbDefect)
             .collect(Collectors.toList());
     }
 
@@ -112,15 +112,13 @@ final class LtTestNotVerb implements Lint {
 
     /**
      * Create defect for non-verb test name.
-     * @param xmir Source XML
      * @param object Object navigator
      * @return Defect
      */
-    private static Defect verbDefect(final XML xmir, final Xnav object) {
+    private static Defect verbDefect(final Xnav object) {
         return new Defect.Default(
             "unit-test-is-not-verb",
             Severity.WARNING,
-            new ProgramName(xmir).get(),
             Integer.parseInt(object.attribute("line").text().orElse("0")),
             String.format(
                 "Test object name: \"%s\" doesn't start with verb in singular form",

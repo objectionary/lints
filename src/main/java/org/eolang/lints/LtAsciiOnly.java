@@ -55,7 +55,6 @@ final class LtAsciiOnly implements Lint {
                 new Defect.Default(
                     "ascii-only",
                     Severity.WARNING,
-                    new ProgramName(xmir).get(),
                     Integer.parseInt(line),
                     String.format(
                         "Only ASCII characters are allowed in comments, while \"%s\" is used at the line no.%s at the position no.%s",

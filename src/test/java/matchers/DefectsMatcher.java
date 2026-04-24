@@ -34,7 +34,6 @@ public final class DefectsMatcher extends BaseMatcher<XML> {
                 new Defect.Default(
                     "unknown",
                     Severity.parsed(defect.xpath("@severity").get(0)),
-                    "unknown",
                     Integer.parseInt(defect.xpath("@line").get(0)),
                     defect.xpath("text()").get(0)
                 )
