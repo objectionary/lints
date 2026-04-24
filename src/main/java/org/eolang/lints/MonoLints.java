@@ -4,7 +4,6 @@
  */
 package org.eolang.lints;
 
-import com.jcabi.xml.XML;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.cactoos.iterable.IterableEnvelope;

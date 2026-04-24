@@ -12,10 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
-import org.cactoos.io.ResourceOf;
 import org.cactoos.list.ListOf;
-import org.cactoos.text.IoCheckedText;
-import org.cactoos.text.TextOf;
 
 /**
  * Lint for checking `+unlint` meta to suppress non-existing defects in single XMIR scope.
@@ -87,15 +84,7 @@ final class LtUnlintNonExistingDefect implements Lint {
 
     @Override
     public String motive() throws IOException {
-        return new IoCheckedText(
-            new TextOf(
-                new ResourceOf(
-                    String.format(
-                        "org/eolang/motives/misc/%s.md", this.name()
-                    )
-                )
-            )
-        ).asString();
+        return new MotiveFrom("misc", this.name()).asString();
     }
 
     private Map<String, List<Integer>> existingDefects(final XML xmir) {

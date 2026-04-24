@@ -12,9 +12,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import org.cactoos.io.ResourceOf;
-import org.cactoos.text.IoCheckedText;
-import org.cactoos.text.TextOf;
 
 /**
  * A comment must include only ASCII characters.
@@ -24,9 +21,6 @@ import org.cactoos.text.TextOf;
  *  For now we just reusing object line number (via @line), which is not correct
  *  for specifying on which line of the program comment is located. This issue
  *  can be solved after <a href="https://github.com/objectionary/eo/issues/3536">this one</a>.
- * @todo #19:45min Create Lint envelope called `JavaLint` that will fetch motive from
- *  Markdown file based on the lint's name (Java class name) and lint's dimension
- *  (Java package name, e.g. `comments`).
  * @todo #402:15min Replace the creation of new ArrayList<>(0) with the creation of
  *  ArrayList<>() without a constructor argument in whole project. Add ignore warning
  *  ConditionalRegexpMultilineCheck from Checkstyle (it doesn't seem to be possible at the moment
@@ -49,13 +43,13 @@ final class LtAsciiOnly implements Lint {
             if (!abusive.isPresent()) {
                 continue;
             }
-            final String line = comment.attribute("line").text().orElse("0");
+            final int line = new LineOf(comment).value();
             final Character chr = abusive.get();
             defects.add(
                 new Defect.Default(
                     "ascii-only",
                     Severity.WARNING,
-                    Integer.parseInt(line),
+                    line,
                     String.format(
                         "Only ASCII characters are allowed in comments, while \"%s\" is used at the line no.%s at the position no.%s",
                         chr,
@@ -75,10 +69,6 @@ final class LtAsciiOnly implements Lint {
 
     @Override
     public String motive() throws IOException {
-        return new IoCheckedText(
-            new TextOf(
-                new ResourceOf("org/eolang/motives/comments/ascii-only.md")
-            )
-        ).asString();
+        return new MotiveFrom("comments", this.name()).asString();
     }
 }

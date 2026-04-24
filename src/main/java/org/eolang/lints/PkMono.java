@@ -4,7 +4,6 @@
  */
 package org.eolang.lints;
 
-import com.jcabi.xml.XML;
 import javax.annotation.concurrent.ThreadSafe;
 import org.cactoos.func.Chained;
 import org.cactoos.iterable.IterableEnvelope;

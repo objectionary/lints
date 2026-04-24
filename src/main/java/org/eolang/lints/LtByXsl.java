@@ -114,7 +114,7 @@ final class LtByXsl implements Lint {
 
     @Override
     public String motive() throws IOException {
-        return new IoCheckedText(new TextOf(this.doc)).asString();
+        return new MotiveFrom(this.doc).asString();
     }
 
     /**

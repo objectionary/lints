@@ -42,11 +42,10 @@ final class LtDfStickyTest {
         final LtCounter counter = new LtCounter();
         final Lint lint = new LtDfSticky(new LtFake(counter));
         final XML one = new XMLDocument("<o id='1'/>");
-        final XML two = new XMLDocument("<o id='2'/>");
         final XML three = new XMLDocument("<o id='3'/>");
         lint.defects(one);
         lint.defects(one);
-        lint.defects(two);
+        lint.defects(new XMLDocument("<o id='2'/>"));
         lint.defects(three);
         lint.defects(three);
         MatcherAssert.assertThat(
