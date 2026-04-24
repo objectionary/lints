@@ -110,28 +110,6 @@ final class LtUnlintNonExistingDefectTest {
     }
 
     @Test
-    void ignoresWpaUnlint() throws IOException {
-        MatcherAssert.assertThat(
-            "WPA unlints should be ignored",
-            new LtUnlintNonExistingDefect(
-                new ListOf<>(new LtAsciiOnly()),
-                new ListOf<>(new WpaLintNames())
-            ).defects(
-                new EoSyntax(
-                    String.join(
-                        "\n",
-                        "+unlint object-is-not-unique",
-                        "",
-                        "# Buzz",
-                        "[] > buzz"
-                    )
-                ).parsed()
-            ),
-            Matchers.emptyIterable()
-        );
-    }
-
-    @Test
     void allowsExistingUnlintWithLineNumber() throws IOException {
         MatcherAssert.assertThat(
             "An existing defect should be able to be unlinted with line number",
@@ -216,6 +194,28 @@ final class LtUnlintNonExistingDefectTest {
                         "[] > main",
                         "  # 你好，杰夫!",
                         "  [] > say-hello"
+                    )
+                ).parsed()
+            ),
+            Matchers.iterableWithSize(1)
+        );
+    }
+
+    @Test
+    void catchesUnlintWithRangeForAbsentLint() throws IOException {
+        MatcherAssert.assertThat(
+            "Non-existing unlint with range should be reported, not crash with NPE",
+            new LtUnlintNonExistingDefect(
+                new ListOf<>(new LtAsciiOnly()),
+                new ListOf<>()
+            ).defects(
+                new EoSyntax(
+                    String.join(
+                        "\n",
+                        "+unlint ascii-only:1-5",
+                        "[] > main",
+                        "  QQ.io.stdout > @",
+                        "    \"Hello\""
                     )
                 ).parsed()
             ),

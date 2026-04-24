@@ -10,16 +10,13 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Map;
 import java.util.stream.Collectors;
-import org.cactoos.io.ResourceOf;
-import org.cactoos.text.TextOf;
-import org.cactoos.text.UncheckedText;
 
 /**
  * Lint for reserved names.
  *
  * @since 0.0.44
  */
-final class LtReservedName implements Lint<XML> {
+final class LtReservedName implements Lint {
 
     /**
      * Reserved names.
@@ -58,8 +55,7 @@ final class LtReservedName implements Lint<XML> {
                 object -> new Defect.Default(
                     this.name(),
                     Severity.WARNING,
-                    new ProgramName(xmir).get(),
-                    Integer.parseInt(object.attribute("line").text().orElse("0")),
+                    new LineOf(object).value(),
                     String.format(
                         "Object name \"%s\" is already reserved by object in the \"%s\"",
                         object.attribute("name").text().get(),
@@ -72,14 +68,6 @@ final class LtReservedName implements Lint<XML> {
 
     @Override
     public String motive() throws IOException {
-        return new UncheckedText(
-            new TextOf(
-                new ResourceOf(
-                    String.format(
-                        "org/eolang/motives/names/%s.md", this.name()
-                    )
-                )
-            )
-        ).asString();
+        return new MotiveFrom("names", this.name()).asString();
     }
 }

@@ -45,17 +45,6 @@ public interface Defect {
     Severity severity();
 
     /**
-     * Name of the object with defect.
-     * <p>
-     * Returns the name of the object where the defect was found.
-     * </p>
-     *
-     * @return Name of it, taken from the {@code @name} attribute of
-     *  the {@code object} element in XMIR
-     */
-    String object();
-
-    /**
      * Line where the defect was found.
      * <p>
      * Returns the line number in the source code where the defect was detected.
@@ -110,7 +99,6 @@ public interface Defect {
      *
      * @since 0.0.1
      */
-    @SuppressWarnings("PMD.TooManyMethods")
     final class Default implements Defect {
         /**
          * Rule.
@@ -121,11 +109,6 @@ public interface Defect {
          * Severity.
          */
         private final Severity sev;
-
-        /**
-         * Name of the object.
-         */
-        private final String oname;
 
         /**
          * Line number with the defect.
@@ -146,16 +129,15 @@ public interface Defect {
          * Ctor.
          * @param rule Rule name
          * @param severity Severity level
-         * @param object Name of the object
          * @param line Line number
          * @param text Description of the defect
          * @checkstyle ParameterNumberCheck (5 lines)
          */
         public Default(
             final String rule, final Severity severity,
-            final String object, final int line, final String text
+            final int line, final String text
         ) {
-            this(rule, severity, object, line, text, false);
+            this(rule, severity, line, text, false);
         }
 
         /**
@@ -166,7 +148,6 @@ public interface Defect {
          *
          * @param rule Rule name
          * @param severity Severity level
-         * @param object Name of the object
          * @param line Line number
          * @param text Description of the defect
          * @param exprmnt Experimental?
@@ -174,12 +155,11 @@ public interface Defect {
          */
         public Default(
             final String rule, final Severity severity,
-            final String object, final int line, final String text,
+            final int line, final String text,
             final boolean exprmnt
         ) {
             this.rle = rule;
             this.sev = severity;
-            this.oname = object;
             this.lineno = line;
             this.txt = text;
             this.experiment = exprmnt;
@@ -188,8 +168,7 @@ public interface Defect {
         @Override
         public String toString() {
             final StringBuilder text = new StringBuilder(64)
-                .append('[').append(this.oname).append(' ')
-                .append(this.rle).append(' ')
+                .append('[').append(this.rle).append(' ')
                 .append(this.sev).append(']');
             if (this.lineno > 0) {
                 text.append(':').append(this.lineno);
@@ -205,11 +184,6 @@ public interface Defect {
         @Override
         public Severity severity() {
             return this.sev;
-        }
-
-        @Override
-        public String object() {
-            return this.oname;
         }
 
         @Override
@@ -247,7 +221,6 @@ public interface Defect {
                 result = this.lineno == defect.lineno
                     && Objects.equals(this.rle, defect.rle)
                     && this.sev == defect.sev
-                    && Objects.equals(this.oname, defect.oname)
                     && Objects.equals(this.txt, defect.txt);
             }
             return result;
@@ -255,7 +228,7 @@ public interface Defect {
 
         @Override
         public int hashCode() {
-            return Objects.hash(this.rle, this.sev, this.oname, this.lineno, this.txt);
+            return Objects.hash(this.rle, this.sev, this.lineno, this.txt);
         }
     }
 

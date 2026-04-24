@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import org.cactoos.list.ListOf;
 import org.hamcrest.MatcherAssert;
@@ -37,8 +36,8 @@ final class WithoutLintsTest {
                 "Lint with name '%s' was not excluded, but it should",
                 lid
             ),
-            new WithoutLints<>(
-                new ListOf<>(new LtAtomIsNotUnique()),
+            new WithoutLints(
+                new ListOf<>(new WithoutLintsTest.LtFake("ascii-only")),
                 lid
             ).iterator().next().name(),
             Matchers.not(Matchers.equalTo(lid))
@@ -47,10 +46,10 @@ final class WithoutLintsTest {
 
     @Test
     void doesNotExcludeNonExistingLints() {
-        final List<Lint<Map<String, XML>>> original = new ListOf<>(new LtInconsistentArgs());
+        final List<Lint> original = new ListOf<>(new WithoutLintsTest.LtFake("one"));
         MatcherAssert.assertThat(
             "Lint should not be excluded, since lint by provided name does not exist",
-            new ListOf<>(new WithoutLints<>(original, "计算机科学")),
+            new ListOf<>(new WithoutLints(original, "计算机科学")),
             Matchers.hasSize(original.size())
         );
     }
@@ -60,7 +59,7 @@ final class WithoutLintsTest {
         MatcherAssert.assertThat(
             "The list of lints does not match with expected",
             new ListOf<>(
-                new WithoutLints<>(
+                new WithoutLints(
                     new ListOf<>(
                         new WithoutLintsTest.LtFake("foo"),
                         new WithoutLintsTest.LtFake("bar"),
@@ -93,7 +92,7 @@ final class WithoutLintsTest {
      * Fake lint.
      * @since 0.0.57
      */
-    static final class LtFake implements Lint<XML> {
+    static final class LtFake implements Lint {
 
         /**
          * The lint name.

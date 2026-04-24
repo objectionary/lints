@@ -11,10 +11,9 @@ import java.util.Collection;
 /**
  * A single checker for an {@code .xmir} file.
  *
- * @param <T> The type of entity to analyze
  * @since 0.0.1
  */
-public interface Lint<T> {
+public interface Lint {
 
     /**
      * Name of the lint.
@@ -24,11 +23,10 @@ public interface Lint<T> {
 
     /**
      * Find and return defects.
-     * @param entity The entity to analyze (could be {@link XML}
-     *  or {@link java.nio.file.Path})
+     * @param xmir The XMIR to analyze
      * @return Defects
      */
-    Collection<Defect> defects(T entity) throws IOException;
+    Collection<Defect> defects(XML xmir) throws IOException;
 
     /**
      * Returns motive for a lint, explaining why this lint exists.

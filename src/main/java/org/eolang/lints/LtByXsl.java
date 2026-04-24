@@ -26,7 +26,7 @@ import org.cactoos.text.TextOf;
  *
  * @since 0.0.1
  */
-final class LtByXsl implements Lint<XML> {
+final class LtByXsl implements Lint {
 
     /**
      * The name of the rule.
@@ -101,7 +101,6 @@ final class LtByXsl implements Lint<XML> {
                     new Defect.Default(
                         this.rule,
                         Severity.parsed(sever.get()),
-                        new ProgramName(xmir).get(),
                         this.lineno(xml),
                         xml.text().get(),
                         LtByXsl.experimental(xml)
@@ -115,7 +114,7 @@ final class LtByXsl implements Lint<XML> {
 
     @Override
     public String motive() throws IOException {
-        return new IoCheckedText(new TextOf(this.doc)).asString();
+        return new MotiveFrom(this.doc).asString();
     }
 
     /**

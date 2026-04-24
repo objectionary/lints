@@ -118,8 +118,6 @@ final class HomeNames {
         && file.contains(
         Path.of(this.location)
           .resolve("objects")
-          .resolve("org")
-          .resolve("eolang")
           .toString().replace("\\", "/")
       )
     }

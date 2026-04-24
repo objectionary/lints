@@ -4,7 +4,6 @@
  */
 package org.eolang.lints;
 
-import com.jcabi.xml.XML;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.cactoos.iterable.IterableEnvelope;
@@ -14,20 +13,16 @@ import org.cactoos.list.ListOf;
 
 /**
  * Mono lints.
- * Mono lints represent a list of lints for single XMIR scope. This class is required
- * in order to provide more fine-grained access and be reused by other classes, including
- * {@link PkMono} and {@link PkWpa} via {@link MonoLintNames}, to mutually ignore other
- * scope lints in both: {@link LtUnlintNonExistingDefect} and {@link LtUnlintNonExistingDefectWpa}
- * without causing recursion errors.
+ * Mono lints represent a list of lints for single XMIR scope.
  * @since 0.0.43
  */
-final class MonoLints extends IterableEnvelope<Lint<XML>> {
+final class MonoLints extends IterableEnvelope<Lint> {
 
     /**
      * All XML-based lints.
      */
-    private static final Iterable<Lint<XML>> LINTS = new Shuffled<>(
-        new Joined<Lint<XML>>(
+    private static final Iterable<Lint> LINTS = new Shuffled<>(
+        new Joined<Lint>(
             new PkByXsl(),
             List.of(
                 new LtAsciiOnly(),
@@ -40,12 +35,10 @@ final class MonoLints extends IterableEnvelope<Lint<XML>> {
      * Cached all lint names for LtIncorrectUnlint validation.
      */
     private static final List<String> ALL_NAMES = new ListOf<>(
-        new Joined<>(
-            MonoLints.LINTS, new WpaLints(),
+        new Joined<Lint>(
+            MonoLints.LINTS,
             new ListOf<>(
-                new LtUnlintNonExistingDefect(
-                    MonoLints.LINTS, new ListOf<>(new WpaLintNames())
-                )
+                new LtUnlintNonExistingDefect(MonoLints.LINTS)
             )
         )
     ).stream()
@@ -57,7 +50,7 @@ final class MonoLints extends IterableEnvelope<Lint<XML>> {
      */
     MonoLints() {
         super(
-            new Joined<Lint<XML>>(
+            new Joined<Lint>(
                 MonoLints.LINTS,
                 List.of(
                     new LtIncorrectUnlint(MonoLints.ALL_NAMES)

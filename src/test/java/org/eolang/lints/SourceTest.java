@@ -508,7 +508,7 @@ final class SourceTest {
         /**
          * Lints to apply.
          */
-        private final Iterable<Lint<XML>> lints;
+        private final Iterable<Lint> lints;
 
         /**
          * Timings.
@@ -547,7 +547,7 @@ final class SourceTest {
          * @checkstyle ParameterNumberCheck (5 lines)
          */
         BcSource(
-            final XML source, final Iterable<Lint<XML>> lnts, final Tojos tmngs, final String size
+            final XML source, final Iterable<Lint> lnts, final Tojos tmngs, final String size
         ) {
             this.xmir = source;
             this.lints = lnts;
@@ -566,7 +566,7 @@ final class SourceTest {
         Collection<Defect> defects() {
             try {
                 final Collection<Defect> messages = new ArrayList<>(0);
-                for (final Lint<XML> lint : this.lints) {
+                for (final Lint lint : this.lints) {
                     messages.addAll(this.timed(lint));
                 }
                 return messages;
@@ -584,7 +584,7 @@ final class SourceTest {
          * @return Defects found
          * @throws IOException If fails
          */
-        private Collection<Defect> timed(final Lint<XML> lint) throws IOException {
+        private Collection<Defect> timed(final Lint lint) throws IOException {
             return new TimedLint(lint, this.xmir, this.timings, this.marker).defects();
         }
     }
@@ -598,7 +598,7 @@ final class SourceTest {
         /**
          * Lint to execute.
          */
-        private final Lint<XML> lint;
+        private final Lint lint;
 
         /**
          * XML to check.
@@ -623,7 +623,7 @@ final class SourceTest {
          * @param mrkr Marker
          * @checkstyle ParameterNumberCheck (5 lines)
          */
-        TimedLint(final Lint<XML> lnt, final XML xmr, final Tojos tmngs, final String mrkr) {
+        TimedLint(final Lint lnt, final XML xmr, final Tojos tmngs, final String mrkr) {
             this.lint = lnt;
             this.xml = xmr;
             this.timings = tmngs;

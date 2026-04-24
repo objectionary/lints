@@ -13,7 +13,7 @@ import java.util.Collections;
  *
  * @since 0.0.35
  */
-final class LtMono implements Lint<XML> {
+final class LtMono implements Lint {
     /**
      * The defect to return.
      */

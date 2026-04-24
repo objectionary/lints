@@ -12,22 +12,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
-import org.cactoos.io.ResourceOf;
 import org.cactoos.list.ListOf;
-import org.cactoos.text.IoCheckedText;
-import org.cactoos.text.TextOf;
 
 /**
  * Lint for checking `+unlint` meta to suppress non-existing defects in single XMIR scope.
  *
  * @since 0.0.40
  */
-final class LtUnlintNonExistingDefect implements Lint<XML> {
+final class LtUnlintNonExistingDefect implements Lint {
 
     /**
      * Lints.
      */
-    private final Iterable<Lint<XML>> lints;
+    private final Iterable<Lint> lints;
 
     /**
      * Lints to exclude.
@@ -39,7 +36,7 @@ final class LtUnlintNonExistingDefect implements Lint<XML> {
      *
      * @param lnts Lints
      */
-    LtUnlintNonExistingDefect(final Iterable<Lint<XML>> lnts) {
+    LtUnlintNonExistingDefect(final Iterable<Lint> lnts) {
         this(lnts, new ListOf<>());
     }
 
@@ -49,7 +46,7 @@ final class LtUnlintNonExistingDefect implements Lint<XML> {
      * @param lnts Lints
      * @param exld Lint names to exclude
      */
-    LtUnlintNonExistingDefect(final Iterable<Lint<XML>> lnts, final Collection<String> exld) {
+    LtUnlintNonExistingDefect(final Iterable<Lint> lnts, final Collection<String> exld) {
         this.lints = lnts;
         this.excluded = exld;
     }
@@ -74,7 +71,6 @@ final class LtUnlintNonExistingDefect implements Lint<XML> {
                     xnav -> new Defect.Default(
                         this.name(),
                         Severity.WARNING,
-                        new ProgramName(xmir).get(),
                         Integer.parseInt(xnav.text().get()),
                         String.format(
                             "Unlinting rule '%s' doesn't make sense, since there are no defects with it",
@@ -88,15 +84,7 @@ final class LtUnlintNonExistingDefect implements Lint<XML> {
 
     @Override
     public String motive() throws IOException {
-        return new IoCheckedText(
-            new TextOf(
-                new ResourceOf(
-                    String.format(
-                        "org/eolang/motives/misc/%s.md", this.name()
-                    )
-                )
-            )
-        ).asString();
+        return new MotiveFrom("misc", this.name()).asString();
     }
 
     private Map<String, List<Integer>> existingDefects(final XML xmir) {

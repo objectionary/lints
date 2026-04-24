@@ -48,7 +48,7 @@ final class HomeNamesTest {
       Matchers.everyItem(
         Matchers.hasToString(
           Matchers.matchesRegex(
-            "org\\.eolang(?:\\.[a-zA-Z_][a-zA-Z0-9_-]*)+\\.eo"
+            "(?:[a-zA-Z_][a-zA-Z0-9_-]*\\.)*[a-zA-Z_][a-zA-Z0-9_-]*\\.eo"
           )
         )
       )

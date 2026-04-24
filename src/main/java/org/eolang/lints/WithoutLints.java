@@ -11,17 +11,16 @@ import org.cactoos.list.ListOf;
 
 /**
  * Lints without some lints.
- * @param <X> Lint generic type
  * @since 0.0.46
  */
-final class WithoutLints<X extends Lint<?>> extends IterableEnvelope<X> {
+final class WithoutLints extends IterableEnvelope<Lint> {
 
     /**
      * Ctor.
      * @param origin Origin
      * @param names Lint names to exclude
      */
-    WithoutLints(final Iterable<X> origin, final String... names) {
+    WithoutLints(final Iterable<Lint> origin, final String... names) {
         this(origin, new ListOf<>(names));
     }
 
@@ -31,7 +30,7 @@ final class WithoutLints<X extends Lint<?>> extends IterableEnvelope<X> {
      * @param origin Origin lints
      * @param names Lint names to exclude
      */
-    WithoutLints(final Iterable<X> origin, final Collection<String> names) {
+    WithoutLints(final Iterable<Lint> origin, final Collection<String> names) {
         super(
             new Filtered<>(
                 origin,

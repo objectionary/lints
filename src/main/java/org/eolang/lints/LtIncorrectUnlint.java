@@ -9,17 +9,14 @@ import com.jcabi.xml.XML;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.stream.Collectors;
-import org.cactoos.io.ResourceOf;
 import org.cactoos.set.SetOf;
-import org.cactoos.text.TextOf;
-import org.cactoos.text.UncheckedText;
 
 /**
  * Lint that all unlint metas point to existing lint.
  *
  * @since 0.0.38
  */
-final class LtIncorrectUnlint implements Lint<XML> {
+final class LtIncorrectUnlint implements Lint {
 
     /**
      * All possible names.
@@ -51,8 +48,7 @@ final class LtIncorrectUnlint implements Lint<XML> {
                 u -> new Defect.Default(
                     this.name(),
                     Severity.ERROR,
-                    new ProgramName(xmir).get(),
-                    Integer.parseInt(u.attribute("line").text().orElse("0")),
+                    new LineOf(u).value(),
                     String.format(
                         "Suppressing \"%s\" does not make sense, because there is no lint with that name",
                         u.element("tail").text().orElse("unknown")
@@ -64,12 +60,6 @@ final class LtIncorrectUnlint implements Lint<XML> {
 
     @Override
     public String motive() throws IOException {
-        return new UncheckedText(
-            new TextOf(
-                new ResourceOf(
-                    "org/eolang/motives/errors/lt-incorrect-unlint.md"
-                )
-            )
-        ).asString();
+        return new MotiveFrom("errors", "lt-incorrect-unlint").asString();
     }
 }

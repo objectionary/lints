@@ -4,7 +4,6 @@
  */
 package org.eolang.lints;
 
-import com.jcabi.xml.XML;
 import javax.annotation.concurrent.ThreadSafe;
 import org.cactoos.func.Chained;
 import org.cactoos.iterable.IterableEnvelope;
@@ -26,12 +25,12 @@ import org.cactoos.list.ListOf;
  *  the root cause of the problem.
  */
 @ThreadSafe
-final class PkMono extends IterableEnvelope<Lint<XML>> {
+final class PkMono extends IterableEnvelope<Lint> {
 
     /**
      * All XML-based lints.
      */
-    private static final Iterable<Lint<XML>> LINTS = new MonoLints();
+    private static final Iterable<Lint> LINTS = new MonoLints();
 
     /**
      * Default ctor.
@@ -44,17 +43,15 @@ final class PkMono extends IterableEnvelope<Lint<XML>> {
      * Ctor.
      * @param lints Lints
      */
-    PkMono(final Iterable<Lint<XML>> lints) {
+    PkMono(final Iterable<Lint> lints) {
         super(
             new Joined<>(
-                new Mapped<Lint<XML>>(
+                new Mapped<Lint>(
                     new Chained<>(LtUnlint::new, LtDfSticky::new),
-                    new Joined<Lint<XML>>(
+                    new Joined<Lint>(
                         lints,
                         new ListOf<>(
-                            new LtUnlintNonExistingDefect(
-                                lints, new ListOf<>(new WpaLintNames())
-                            )
+                            new LtUnlintNonExistingDefect(lints)
                         )
                     )
                 )

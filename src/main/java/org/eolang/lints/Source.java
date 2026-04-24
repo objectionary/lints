@@ -25,7 +25,7 @@ public final class Source {
     /**
      * Collection of mono lints, preloaded on JVM start.
      */
-    private static final Iterable<Lint<XML>> MONO = new Synced<>(
+    private static final Iterable<Lint> MONO = new Synced<>(
         new Sticky<>(
             new PkMono()
         )
@@ -39,7 +39,7 @@ public final class Source {
     /**
      * Lint to use.
      */
-    private final Iterable<Lint<XML>> lints;
+    private final Iterable<Lint> lints;
 
     /**
      * Ctor.
@@ -67,7 +67,7 @@ public final class Source {
      * @param xml The XMIR
      * @param list The lints
      */
-    Source(final XML xml, final Iterable<Lint<XML>> list) {
+    Source(final XML xml, final Iterable<Lint> list) {
         this.xmir = xml;
         this.lints = list;
     }
@@ -91,7 +91,7 @@ public final class Source {
     public Collection<Defect> defects() {
         try {
             final Collection<Defect> messages = new ArrayList<>(0);
-            for (final Lint<XML> lint : this.lints) {
+            for (final Lint lint : this.lints) {
                 messages.addAll(new ScopedDefects(lint.defects(this.xmir), "S"));
             }
             return messages;

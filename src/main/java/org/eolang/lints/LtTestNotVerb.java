@@ -17,8 +17,6 @@ import opennlp.tools.postag.POSModel;
 import opennlp.tools.postag.POSTaggerME;
 import org.cactoos.io.ResourceOf;
 import org.cactoos.io.UncheckedInput;
-import org.cactoos.text.TextOf;
-import org.cactoos.text.UncheckedText;
 
 /**
  * Lint that checks test object name is a verb in singular.
@@ -27,7 +25,7 @@ import org.cactoos.text.UncheckedText;
  * tense for test object name.
  * @since 0.0.22
  */
-final class LtTestNotVerb implements Lint<XML> {
+final class LtTestNotVerb implements Lint {
 
     /**
      * The pattern to split kebab case.
@@ -72,19 +70,13 @@ final class LtTestNotVerb implements Lint<XML> {
         return new Xnav(xmir.inner())
             .path("/object//o[@name and starts-with(@name, '+')]")
             .filter(object -> !this.isVerbInSingular(object))
-            .map(object -> LtTestNotVerb.verbDefect(xmir, object))
+            .map(LtTestNotVerb::verbDefect)
             .collect(Collectors.toList());
     }
 
     @Override
     public String motive() throws IOException {
-        return new UncheckedText(
-            new TextOf(
-                new ResourceOf(
-                    "org/eolang/motives/misc/test-object-is-not-verb-in-singular.md"
-                )
-            )
-        ).asString();
+        return new MotiveFrom("misc", "test-object-is-not-verb-in-singular").asString();
     }
 
     /**
@@ -112,16 +104,14 @@ final class LtTestNotVerb implements Lint<XML> {
 
     /**
      * Create defect for non-verb test name.
-     * @param xmir Source XML
      * @param object Object navigator
      * @return Defect
      */
-    private static Defect verbDefect(final XML xmir, final Xnav object) {
+    private static Defect verbDefect(final Xnav object) {
         return new Defect.Default(
             "unit-test-is-not-verb",
             Severity.WARNING,
-            new ProgramName(xmir).get(),
-            Integer.parseInt(object.attribute("line").text().orElse("0")),
+            new LineOf(object).value(),
             String.format(
                 "Test object name: \"%s\" doesn't start with verb in singular form",
                 object.attribute("name").text().get().replace("+", "")
