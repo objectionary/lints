@@ -80,4 +80,23 @@ final class DefectMissingTest {
             Matchers.equalTo(true)
         );
     }
+
+    @Test
+    void returnsTrueWhenRangeReferencesAbsentLint() {
+        MatcherAssert.assertThat(
+            "Defect should be missing when referenced lint is absent from map",
+            new DefectMissing(new MapOf<>("other-lint", new ListOf<>(1, 2)), new ListOf<>())
+                .apply("ascii-only:1-5"),
+            Matchers.equalTo(true)
+        );
+    }
+
+    @Test
+    void returnsTrueWhenRangeReferencesLintInEmptyMap() {
+        MatcherAssert.assertThat(
+            "Defect should be missing when defects map is empty",
+            new DefectMissing(new MapOf<>(), new ListOf<>()).apply("ascii-only:1-5"),
+            Matchers.equalTo(true)
+        );
+    }
 }
