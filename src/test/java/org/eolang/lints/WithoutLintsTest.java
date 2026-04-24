@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import org.cactoos.list.ListOf;
 import org.hamcrest.MatcherAssert;
@@ -38,7 +37,7 @@ final class WithoutLintsTest {
                 lid
             ),
             new WithoutLints<>(
-                new ListOf<>(new LtAtomIsNotUnique()),
+                new ListOf<>(new WithoutLintsTest.LtFake("ascii-only")),
                 lid
             ).iterator().next().name(),
             Matchers.not(Matchers.equalTo(lid))
@@ -47,7 +46,7 @@ final class WithoutLintsTest {
 
     @Test
     void doesNotExcludeNonExistingLints() {
-        final List<Lint<Map<String, XML>>> original = new ListOf<>(new LtInconsistentArgs());
+        final List<Lint<XML>> original = new ListOf<>(new WithoutLintsTest.LtFake("one"));
         MatcherAssert.assertThat(
             "Lint should not be excluded, since lint by provided name does not exist",
             new ListOf<>(new WithoutLints<>(original, "计算机科学")),

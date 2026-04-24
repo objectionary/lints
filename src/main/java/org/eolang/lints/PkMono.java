@@ -52,9 +52,7 @@ final class PkMono extends IterableEnvelope<Lint<XML>> {
                     new Joined<Lint<XML>>(
                         lints,
                         new ListOf<>(
-                            new LtUnlintNonExistingDefect(
-                                lints, new ListOf<>(new WpaLintNames())
-                            )
+                            new LtUnlintNonExistingDefect(lints)
                         )
                     )
                 )

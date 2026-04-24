@@ -49,30 +49,12 @@ final class Foo {
 }
 ```
 
-Then, you can run a whole-program analysis of XMIR files
-in your project, using the `Program` class (there is a
-different set of lints to be executed here!):
-
-```java
-import java.nio.file.Paths;
-import org.eolang.lints.Program;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
-final class Foo {
-    @Test
-    void testProgram() {
-        Assertions.assertTrue(
-            new Program(
-                Paths.get("xmir-files") // directory with XMIR files
-            ).defects().isEmpty()
-        );
-    }
-}
-```
-
 It is possible to disable any particular linter in a program,
 with the help of the `+unlint` meta.
+
+Whole-program analysis (running lints across a set of XMIR files
+instead of one at a time) lives in a separate package,
+[`org.eolang:wpa`](https://github.com/objectionary/wpa).
 
 ## Design of This Library
 
@@ -81,19 +63,16 @@ is a separate class implementing the `Lint` interface.
 Each lint is responsible for checking one particular aspect
 of the [XMIR] document. The `Source` class is responsible for
 running all lints and collecting defects for a single XMIR file.
-The `Program` class is responsible for running all lints and
-collecting defects for whole EO program, as set of XMIR files. All in all,
-there are only four classes and interfaces that are supposed to
-be exposed to a user of the library:
+All in all, there are only three classes and interfaces that
+are supposed to be exposed to a user of the library:
 
 * `Source` - checker of a single [XMIR]
-* `Program` - checker of a set of [XMIR]
 * `Defect` - a single defect discovered
 * `Severity` - a severity of a defect
 
 There are also a few classes that implement `Iterable<Lint>`:
-`PkMono`, `PkWpa`, and `PkByXsl`.
-They are supposed to be used only by the `Source` and `Program`,
+`PkMono` and `PkByXsl`.
+They are supposed to be used only by the `Source`,
 and are not supposed to be exposed to the user of the library.
 They are responsible for providing a set of lints to be executed,
 building them from the information in classpath.

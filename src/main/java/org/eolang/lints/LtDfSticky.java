@@ -18,12 +18,6 @@ import org.cactoos.func.SyncFunc;
  *
  * @param <T> The type of entity to analyze
  * @since 0.0.42
- *
- * @todo #393:30min DEV Introduce LfDfSticky integration tests. LfDfSticky is used in PkMono and
- *  PkWpa, which in turn are used in Program and Programs. Run Program::defects and
- *  Programs::defects separately and check that caching works correct. Important to note that
- *  specific Lint implementation is highly coupled with PkMono class, which in turn is used in
- *  Program's most used constructor, so probably Program(s) refactoring is required.
  */
 final class LtDfSticky<T> implements Lint<T> {
 

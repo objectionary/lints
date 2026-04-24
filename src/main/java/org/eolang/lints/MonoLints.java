@@ -14,11 +14,7 @@ import org.cactoos.list.ListOf;
 
 /**
  * Mono lints.
- * Mono lints represent a list of lints for single XMIR scope. This class is required
- * in order to provide more fine-grained access and be reused by other classes, including
- * {@link PkMono} and {@link PkWpa} via {@link MonoLintNames}, to mutually ignore other
- * scope lints in both: {@link LtUnlintNonExistingDefect} and {@link LtUnlintNonExistingDefectWpa}
- * without causing recursion errors.
+ * Mono lints represent a list of lints for single XMIR scope.
  * @since 0.0.43
  */
 final class MonoLints extends IterableEnvelope<Lint<XML>> {
@@ -40,12 +36,10 @@ final class MonoLints extends IterableEnvelope<Lint<XML>> {
      * Cached all lint names for LtIncorrectUnlint validation.
      */
     private static final List<String> ALL_NAMES = new ListOf<>(
-        new Joined<>(
-            MonoLints.LINTS, new WpaLints(),
+        new Joined<Lint<XML>>(
+            MonoLints.LINTS,
             new ListOf<>(
-                new LtUnlintNonExistingDefect(
-                    MonoLints.LINTS, new ListOf<>(new WpaLintNames())
-                )
+                new LtUnlintNonExistingDefect(MonoLints.LINTS)
             )
         )
     ).stream()

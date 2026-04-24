@@ -451,11 +451,7 @@
                     <class>org.eolang.lints.SourceTest</class>
                     <class>org.eolang.lints.PkMonoTest</class>
                     <class>org.eolang.lints.LtByXslTest</class>
-                    <class>org.eolang.lints.PkWpaTest</class>
-                    <class>org.eolang.lints.ProgramTest</class>
-                    <class>org.eolang.lints.LtUnlintNonExistingDefectWpaTest</class>
                     <class>org.eolang.lints.LtTestNotVerbTest</class>
-                    <class>org.eolang.lints.WpaLintsTest</class>
                   </excludedTestClasses>
                   <excludedClasses>
                     <!-- Groovy script. -->
