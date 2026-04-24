@@ -222,4 +222,26 @@ final class LtUnlintNonExistingDefectTest {
             Matchers.iterableWithSize(1)
         );
     }
+
+    @Test
+    void catchesUnlintWithRangeForAbsentLint() throws IOException {
+        MatcherAssert.assertThat(
+            "Non-existing unlint with range should be reported, not crash with NPE",
+            new LtUnlintNonExistingDefect(
+                new ListOf<>(new LtAsciiOnly()),
+                new ListOf<>()
+            ).defects(
+                new EoSyntax(
+                    String.join(
+                        "\n",
+                        "+unlint ascii-only:1-5",
+                        "[] > main",
+                        "  QQ.io.stdout > @",
+                        "    \"Hello\""
+                    )
+                ).parsed()
+            ),
+            Matchers.iterableWithSize(1)
+        );
+    }
 }
