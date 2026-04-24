@@ -19,7 +19,7 @@ import org.cactoos.text.UncheckedText;
  *
  * @since 0.0.38
  */
-final class LtIncorrectUnlint implements Lint<XML> {
+final class LtIncorrectUnlint implements Lint {
 
     /**
      * All possible names.

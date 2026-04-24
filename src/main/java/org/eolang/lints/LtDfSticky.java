@@ -4,6 +4,7 @@
  */
 package org.eolang.lints;
 
+import com.jcabi.xml.XML;
 import java.io.IOException;
 import java.util.Collection;
 import org.cactoos.Func;
@@ -16,26 +17,25 @@ import org.cactoos.func.SyncFunc;
  *
  * <p>This class is thread-safe.</p>
  *
- * @param <T> The type of entity to analyze
  * @since 0.0.42
  */
-final class LtDfSticky<T> implements Lint<T> {
+final class LtDfSticky implements Lint {
 
     /**
      * Object wrapped by a decorator.
      */
-    private final Lint<T> origin;
+    private final Lint origin;
 
     /**
      * Function that caches result of origin.defects().
      */
-    private final Func<T, Collection<Defect>> cache;
+    private final Func<XML, Collection<Defect>> cache;
 
     /**
      * Ctor.
      * @param origin Object wrapped by a decorator.
      */
-    LtDfSticky(final Lint<T> origin) {
+    LtDfSticky(final Lint origin) {
         this(
             origin,
             new SyncFunc<>(new StickyFunc<>(origin::defects))
@@ -47,7 +47,7 @@ final class LtDfSticky<T> implements Lint<T> {
      * @param origin Object wrapped by a decorator.
      * @param cache Defects cache.
      */
-    LtDfSticky(final Lint<T> origin, final Func<T, Collection<Defect>> cache) {
+    LtDfSticky(final Lint origin, final Func<XML, Collection<Defect>> cache) {
         this.origin = origin;
         this.cache = cache;
     }
@@ -58,8 +58,8 @@ final class LtDfSticky<T> implements Lint<T> {
     }
 
     @Override
-    public Collection<Defect> defects(final T entity) throws IOException {
-        return new IoCheckedFunc<>(this.cache).apply(entity);
+    public Collection<Defect> defects(final XML xmir) throws IOException {
+        return new IoCheckedFunc<>(this.cache).apply(xmir);
     }
 
     @Override

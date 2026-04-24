@@ -93,8 +93,8 @@ final class PkMonoTest {
      * @return Decorated lint
      */
     @SuppressWarnings("PMD.AvoidAccessibilityAlteration")
-    private static Lint<?> decoratee(final Lint<XML> decorate) {
-        Lint<?> result = decorate;
+    private static Lint decoratee(final Lint decorate) {
+        Lint result = decorate;
         while (result.getClass().equals(LtDfSticky.class)) {
             final Field[] fields = decorate.getClass().getDeclaredFields();
             for (final Field field : fields) {
@@ -106,7 +106,7 @@ final class PkMonoTest {
                     throw new IllegalStateException("Failed to get decorated field", exception);
                 }
                 if (value instanceof Lint) {
-                    result = (Lint<?>) value;
+                    result = (Lint) value;
                     break;
                 }
             }

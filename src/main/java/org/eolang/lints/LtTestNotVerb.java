@@ -27,7 +27,7 @@ import org.cactoos.text.UncheckedText;
  * tense for test object name.
  * @since 0.0.22
  */
-final class LtTestNotVerb implements Lint<XML> {
+final class LtTestNotVerb implements Lint {
 
     /**
      * The pattern to split kebab case.

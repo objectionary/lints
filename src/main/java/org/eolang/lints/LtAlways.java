@@ -13,7 +13,7 @@ import java.util.Collections;
  *
  * @since 0.0.1
  */
-final class LtAlways implements Lint<XML> {
+final class LtAlways implements Lint {
 
     @Override
     public String name() {

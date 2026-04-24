@@ -17,13 +17,13 @@ import org.cactoos.list.ListOf;
  * Mono lints represent a list of lints for single XMIR scope.
  * @since 0.0.43
  */
-final class MonoLints extends IterableEnvelope<Lint<XML>> {
+final class MonoLints extends IterableEnvelope<Lint> {
 
     /**
      * All XML-based lints.
      */
-    private static final Iterable<Lint<XML>> LINTS = new Shuffled<>(
-        new Joined<Lint<XML>>(
+    private static final Iterable<Lint> LINTS = new Shuffled<>(
+        new Joined<Lint>(
             new PkByXsl(),
             List.of(
                 new LtAsciiOnly(),
@@ -36,7 +36,7 @@ final class MonoLints extends IterableEnvelope<Lint<XML>> {
      * Cached all lint names for LtIncorrectUnlint validation.
      */
     private static final List<String> ALL_NAMES = new ListOf<>(
-        new Joined<Lint<XML>>(
+        new Joined<Lint>(
             MonoLints.LINTS,
             new ListOf<>(
                 new LtUnlintNonExistingDefect(MonoLints.LINTS)
@@ -51,7 +51,7 @@ final class MonoLints extends IterableEnvelope<Lint<XML>> {
      */
     MonoLints() {
         super(
-            new Joined<Lint<XML>>(
+            new Joined<Lint>(
                 MonoLints.LINTS,
                 List.of(
                     new LtIncorrectUnlint(MonoLints.ALL_NAMES)

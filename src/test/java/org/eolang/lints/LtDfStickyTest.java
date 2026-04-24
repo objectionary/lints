@@ -4,6 +4,8 @@
  */
 package org.eolang.lints;
 
+import com.jcabi.xml.XML;
+import com.jcabi.xml.XMLDocument;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
@@ -23,12 +25,11 @@ final class LtDfStickyTest {
     @Test
     void loadsDefectsOnlyOnce() throws IOException {
         final LtCounter counter = new LtCounter();
-        final Lint<Integer> lint = new LtDfSticky<>(
-            new LtFake<>(counter)
-        );
-        lint.defects(0);
-        lint.defects(0);
-        lint.defects(0);
+        final Lint lint = new LtDfSticky(new LtFake(counter));
+        final XML xmir = new XMLDocument("<o/>");
+        lint.defects(xmir);
+        lint.defects(xmir);
+        lint.defects(xmir);
         MatcherAssert.assertThat(
             "Lint.defects() calls amount differs from 1",
             counter.count(),
@@ -39,14 +40,15 @@ final class LtDfStickyTest {
     @Test
     void loadsDefectsOnlyOnceForEachEntity() throws IOException {
         final LtCounter counter = new LtCounter();
-        final Lint<Integer> lint = new LtDfSticky<>(
-            new LtFake<>(counter)
-        );
-        lint.defects(0);
-        lint.defects(0);
-        lint.defects(1);
-        lint.defects(2);
-        lint.defects(2);
+        final Lint lint = new LtDfSticky(new LtFake(counter));
+        final XML one = new XMLDocument("<o id='1'/>");
+        final XML two = new XMLDocument("<o id='2'/>");
+        final XML three = new XMLDocument("<o id='3'/>");
+        lint.defects(one);
+        lint.defects(one);
+        lint.defects(two);
+        lint.defects(three);
+        lint.defects(three);
         MatcherAssert.assertThat(
             "Lint.defects() calls amount differs from 3",
             counter.count(),
@@ -57,9 +59,7 @@ final class LtDfStickyTest {
     @Test
     void preventsDefectsLoadingBeforeMethodCall() {
         final LtCounter counter = new LtCounter();
-        new LtDfSticky<>(
-            new LtFake<>(counter)
-        );
+        new LtDfSticky(new LtFake(counter));
         MatcherAssert.assertThat(
             "Lt.defects() was called",
             counter.count(),
@@ -71,14 +71,14 @@ final class LtDfStickyTest {
      * Counter for lint calls.
      * @since 0.0.42
      */
-    private static final class LtCounter implements Function<Object, Collection<Defect>> {
+    private static final class LtCounter implements Function<XML, Collection<Defect>> {
         /**
          * Counter value.
          */
         private int cnt;
 
         @Override
-        public Collection<Defect> apply(final Object entity) {
+        public Collection<Defect> apply(final XML entity) {
             this.cnt = this.cnt + 1;
             return Collections.emptyList();
         }
@@ -91,10 +91,9 @@ final class LtDfStickyTest {
     /**
      * Fake class for Lint class.
      *
-     * @param <T> The type of entity to analyze
      * @since 0.0.42
      */
-    private static final class LtFake<T> implements Lint<T> {
+    private static final class LtFake implements Lint {
 
         /**
          * Name supplier.
@@ -104,7 +103,7 @@ final class LtDfStickyTest {
         /**
          * Defects supplier.
          */
-        private final Function<T, Collection<Defect>> aggregated;
+        private final Function<XML, Collection<Defect>> aggregated;
 
         /**
          * Motive supplier.
@@ -112,26 +111,11 @@ final class LtDfStickyTest {
         private final Supplier<String> mtve;
 
         /**
-         * Constructor. Name and motive are provided by value.
-         * @param name Lint name value.
-         * @param defects Lint defects supplier.
-         * @param motive Lint motive value.
-         */
-        LtFake(
-            final String name,
-            final Function<T, Collection<Defect>> defects,
-            final String motive
-        ) {
-            this(() -> name, defects, () -> motive);
-        }
-
-        /**
          * Constructor. Name and motive are hardcoded.
          * @param defects Lint defects supplier.
          */
-        @SuppressWarnings("unchecked")
-        LtFake(final Function<?, Collection<Defect>> defects) {
-            this("Lint", (Function<T, Collection<Defect>>) defects, "Motive");
+        LtFake(final Function<XML, Collection<Defect>> defects) {
+            this(() -> "Lint", defects, () -> "Motive");
         }
 
         /**
@@ -142,7 +126,7 @@ final class LtDfStickyTest {
          */
         LtFake(
             final Supplier<String> name,
-            final Function<T, Collection<Defect>> defects,
+            final Function<XML, Collection<Defect>> defects,
             final Supplier<String> motive
         ) {
             this.nme = name;
@@ -156,7 +140,7 @@ final class LtDfStickyTest {
         }
 
         @Override
-        public Collection<Defect> defects(final T entity) throws IOException {
+        public Collection<Defect> defects(final XML entity) throws IOException {
             return this.aggregated.apply(entity);
         }
 

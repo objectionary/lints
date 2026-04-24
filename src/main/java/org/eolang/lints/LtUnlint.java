@@ -20,7 +20,7 @@ import org.cactoos.list.ListOf;
  *
  * @since 0.0.1
  */
-final class LtUnlint implements Lint<XML> {
+final class LtUnlint implements Lint {
 
     /**
      * Line number to unlint.
@@ -30,13 +30,13 @@ final class LtUnlint implements Lint<XML> {
     /**
      * The original lint.
      */
-    private final Lint<XML> origin;
+    private final Lint origin;
 
     /**
      * Ctor.
      * @param lint The lint to decorate
      */
-    LtUnlint(final Lint<XML> lint) {
+    LtUnlint(final Lint lint) {
         this.origin = lint;
     }
 

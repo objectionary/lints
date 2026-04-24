@@ -22,7 +22,7 @@ import org.cactoos.iterable.Shuffled;
  *
  * @since 0.1.0
  */
-final class PkByXsl extends IterableEnvelope<Lint<XML>> {
+final class PkByXsl extends IterableEnvelope<Lint> {
 
     /**
      * XSL extension pattern.
@@ -41,7 +41,7 @@ final class PkByXsl extends IterableEnvelope<Lint<XML>> {
     /**
      * Cached lint instances.
      */
-    private static final List<Lint<XML>> LINTS = PkByXsl.load();
+    private static final List<Lint> LINTS = PkByXsl.load();
 
     /**
      * Ctor.
@@ -55,7 +55,7 @@ final class PkByXsl extends IterableEnvelope<Lint<XML>> {
      *
      * @return List of all lints
      */
-    private static List<Lint<XML>> load() {
+    private static List<Lint> load() {
         try {
             return Arrays.stream(
                 new PathMatchingResourcePatternResolver().getResources(

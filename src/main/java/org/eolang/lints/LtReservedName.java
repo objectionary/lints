@@ -19,7 +19,7 @@ import org.cactoos.text.UncheckedText;
  *
  * @since 0.0.44
  */
-final class LtReservedName implements Lint<XML> {
+final class LtReservedName implements Lint {
 
     /**
      * Reserved names.

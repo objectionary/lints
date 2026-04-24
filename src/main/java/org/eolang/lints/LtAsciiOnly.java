@@ -33,7 +33,7 @@ import org.cactoos.text.TextOf;
  *  <a href="https://github.com/yegor256/qulice/issues/1328">issue 1328</a>)
  * @checkstyle StringLiteralsConcatenationCheck (30 lines)
  */
-final class LtAsciiOnly implements Lint<XML> {
+final class LtAsciiOnly implements Lint {
 
     @Override
     public Collection<Defect> defects(final XML xmir) throws IOException {

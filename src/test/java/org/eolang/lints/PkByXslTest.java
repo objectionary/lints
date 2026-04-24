@@ -31,7 +31,7 @@ final class PkByXslTest {
 
     @Test
     void passesOnSimpleXmir() throws IOException {
-        for (final Lint<XML> lint : new PkByXsl()) {
+        for (final Lint lint : new PkByXsl()) {
             MatcherAssert.assertThat(
                 "passes with no exceptions",
                 lint.defects(new XMLDocument("<object><o name='no-exceptions'/></object>")),
@@ -55,7 +55,7 @@ final class PkByXslTest {
 
     @Test
     void checksAllMotives() throws Exception {
-        for (final Lint<XML> lint : new PkByXsl()) {
+        for (final Lint lint : new PkByXsl()) {
             MatcherAssert.assertThat(
                 "Lint's motive is empty, but should not be",
                 lint.motive().isEmpty(),

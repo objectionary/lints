@@ -26,7 +26,7 @@ import org.cactoos.text.TextOf;
  *
  * @since 0.0.1
  */
-final class LtByXsl implements Lint<XML> {
+final class LtByXsl implements Lint {
 
     /**
      * The name of the rule.
