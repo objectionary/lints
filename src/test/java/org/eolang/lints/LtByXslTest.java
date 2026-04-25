@@ -17,10 +17,8 @@ import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 import matchers.DefectsMatcher;
 import org.cactoos.io.ReaderOf;
 import org.cactoos.io.ResourceOf;
@@ -50,7 +48,6 @@ import org.yaml.snakeyaml.Yaml;
 
 /**
  * Test for {@link LtByXsl}.
- *
  * @since 0.0.1
  */
 @SuppressWarnings("PMD.TooManyMethods")
@@ -63,7 +60,7 @@ final class LtByXslTest {
             new LtByXsl("critical/duplicate-names").defects(
                 new EoSyntax(
                     String.join(
-                        "\n",
+                        System.lineSeparator(),
                         "# first.",
                         "[] > foo",
                         "  12 > x",
@@ -103,26 +100,11 @@ final class LtByXslTest {
     @Test
     @SuppressWarnings("StreamResourceLeak")
     void checksLocationsOfYamlPacks() throws IOException {
-        final Set<String> groups = Files.walk(Paths.get("src/main/resources/org/eolang/lints"))
-            .filter(Files::isRegularFile)
-            .filter(path -> path.toString().endsWith(".xsl"))
-            .map(path -> path.getParent().getFileName().toString())
-            .collect(Collectors.toSet());
-        final Path folder = Paths.get("src/main/resources/org/eolang/lints/");
         MatcherAssert.assertThat(
             "All YAML packs must have corresponding XSL files",
             Files.walk(Paths.get("src/test/resources/org/eolang/lints/packs/single"))
                 .filter(Files::isRegularFile)
-                .allMatch(
-                    path -> {
-                        final String lint = path.getParent().getFileName().toString();
-                        return groups.stream().anyMatch(
-                            group -> Files.exists(
-                                folder.resolve(group).resolve(String.format("%s.xsl", lint))
-                            )
-                        );
-                    }
-                ),
+                .allMatch(LtByXslTest::hasMatchingXsl),
             Matchers.equalTo(true)
         );
     }
@@ -136,8 +118,7 @@ final class LtByXslTest {
             Files.walk(Paths.get("src/test/resources/org/eolang/lints"))
                 .filter(Files::isRegularFile)
                 .filter(LtByXslTest.yamls())
-                .map(path -> path.getParent().getParent().toString())
-                .allMatch(
+                .map(path -> path.getParent().getParent().toString()).allMatch(
                     path ->
                         path.endsWith("org/eolang/lints/packs/single")
                             || path.endsWith("org/eolang/lints/packs/wpa")
@@ -177,8 +158,7 @@ final class LtByXslTest {
             "All XSL stylesheets must have @id matching their filename",
             Files.walk(Paths.get("src/main/resources/org/eolang/lints"))
                 .filter(Files::isRegularFile)
-                .filter(file -> file.getFileName().toString().endsWith(".xsl"))
-                .allMatch(
+                .filter(file -> file.getFileName().toString().endsWith(".xsl")).allMatch(
                     path -> XhtmlMatchers.hasXPath(
                         String.format(
                             "/xsl:stylesheet[@id='%s']",
@@ -201,8 +181,7 @@ final class LtByXslTest {
             "All XSL lints must have corresponding motive markdown files",
             Files.walk(Paths.get("src/main/resources/org/eolang/lints"))
                 .filter(Files::isRegularFile)
-                .filter(f -> f.getFileName().toString().endsWith(".xsl"))
-                .allMatch(
+                .filter(f -> f.getFileName().toString().endsWith(".xsl")).allMatch(
                     path -> Files.exists(
                         Path.of(
                             path.toString()
@@ -234,7 +213,7 @@ final class LtByXslTest {
                 new LtByXsl("comments/comment-without-dot").defects(
                     new EoSyntax(
                         String.join(
-                            "\n",
+                            System.lineSeparator(),
                             "# Foo",
                             "[] > foo"
                         )
@@ -267,18 +246,15 @@ final class LtByXslTest {
             "All packs with 'document' field must validate against XSD schema",
             Files.walk(Paths.get("src/test/resources/org/eolang/lints/packs/single"))
                 .filter(Files::isRegularFile)
-                .filter(LtByXslTest.yamls())
-                .map(
+                .filter(LtByXslTest.yamls()).map(
                     (Function<Path, Map<Path, Map<String, Object>>>)
                         p -> new MapOf<>(p, new Yaml().load(new ReaderOf(p.toFile())))
-                )
-                .filter(
+                ).filter(
                     pack -> {
                         final Map<String, Object> yaml = pack.values().stream().findFirst().get();
                         return yaml.containsKey("document") && !yaml.containsKey("ignore-schema");
                     }
-                )
-                .allMatch(LtByXslTest::schemaValid),
+                ).allMatch(LtByXslTest::schemaValid),
             Matchers.equalTo(true)
         );
     }
@@ -288,7 +264,7 @@ final class LtByXslTest {
         final Collection<Defect> defects = new LtByXsl("misc/unused-void-attr").defects(
             new EoSyntax(
                 String.join(
-                    "\n",
+                    System.lineSeparator(),
                     "# Foo with unused voids on the same line.",
                     "[x y z] > foo"
                 )
@@ -313,8 +289,7 @@ final class LtByXslTest {
             "All EO snippets in packs must parse without errors",
             Files.walk(Paths.get("src/test/resources/org/eolang/lints/packs/single"))
                 .filter(Files::isRegularFile)
-                .filter(LtByXslTest.yamls())
-                .map(
+                .filter(LtByXslTest.yamls()).map(
                     (Function<Path, Map<Path, Map<String, Object>>>)
                         p -> new MapOf<>(p, new Yaml().load(new ReaderOf(p.toFile())))
                 )
@@ -330,15 +305,13 @@ final class LtByXslTest {
             new StrictXmir(
                 new XMLDocument(
                     new Xembler(
-                        new Directives()
-                            .xpath("/object")
-                            .attr(
-                                "noNamespaceSchemaLocation xsi http://www.w3.org/2001/XMLSchema-instance",
-                                String.format(
-                                    "https://www.eolang.org/xsd/XMIR-%s.xsd",
-                                    Manifests.read("EO-Version")
-                                )
+                        new Directives().xpath("/object").attr(
+                            "noNamespaceSchemaLocation xsi http://www.w3.org/2001/XMLSchema-instance",
+                            String.format(
+                                "https://www.eolang.org/xsd/XMIR-%s.xsd",
+                                Manifests.read("EO-Version")
                             )
+                        )
                     ).apply(
                         new XMLDocument(
                             (String) pack.values().stream().findFirst().get().get("document")
@@ -378,5 +351,31 @@ final class LtByXslTest {
     @SuppressWarnings("UnnecessaryLambda")
     private static Predicate<Path> yamls() {
         return path -> path.toString().endsWith(".yaml");
+    }
+
+    /**
+     * Check if YAML pack path has a corresponding XSL file.
+     * @param yaml YAML pack path
+     * @return True if matching XSL exists
+     */
+    @SuppressWarnings("StreamResourceLeak")
+    private static boolean hasMatchingXsl(final Path yaml) {
+        try {
+            return Files.walk(Paths.get("src/main/resources/org/eolang/lints"))
+                .filter(Files::isRegularFile)
+                .filter(path -> path.toString().endsWith(".xsl"))
+                .map(path -> path.getParent().getFileName().toString()).anyMatch(
+                    group -> Files.exists(
+                        Paths.get("src/main/resources/org/eolang/lints/").resolve(group).resolve(
+                            String.format(
+                                "%s.xsl",
+                                yaml.getParent().getFileName().toString()
+                            )
+                        )
+                    )
+                );
+        } catch (final IOException ex) {
+            throw new IllegalStateException(ex);
+        }
     }
 }

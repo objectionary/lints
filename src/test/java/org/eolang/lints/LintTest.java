@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Tests for {@link Lint}.
- *
  * @since 0.23
  */
 final class LintTest {
@@ -21,10 +20,10 @@ final class LintTest {
     void ensuresEveryLintHasProperPrefix() {
         ArchRuleDefinition.classes()
             .that().haveSimpleNameStartingWith("Lt")
-            .should().implement(Lint.class)
-            .check(new ClassFileImporter()
-                .withImportOption(new ImportOption.DoNotIncludeTests())
-                .importPackages("org.eolang.lints")
+            .should().implement(Lint.class).check(
+                new ClassFileImporter()
+                    .withImportOption(new ImportOption.DoNotIncludeTests())
+                    .importPackages("org.eolang.lints")
             );
     }
 
@@ -33,10 +32,10 @@ final class LintTest {
     void ensuresLintsStayInTheirPackages() {
         ArchRuleDefinition.classes()
             .that().implement(Lint.class)
-            .should().bePackagePrivate()
-            .check(new ClassFileImporter()
-                .withImportOption(new ImportOption.DoNotIncludeTests())
-                .importPackages("org.eolang.lints")
+            .should().bePackagePrivate().check(
+                new ClassFileImporter()
+                    .withImportOption(new ImportOption.DoNotIncludeTests())
+                    .importPackages("org.eolang.lints")
             );
     }
 }

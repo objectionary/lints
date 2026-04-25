@@ -18,7 +18,6 @@ import org.cactoos.iterable.Shuffled;
  * All lints defined by XSLs.
  * Caches all XSL-based lint instances statically to avoid repeated
  * expensive parsing of XSL files during Program instantiation.
- *
  * @since 0.1.0
  */
 final class PkByXsl extends IterableEnvelope<Lint> {
@@ -51,7 +50,6 @@ final class PkByXsl extends IterableEnvelope<Lint> {
 
     /**
      * Load all lints once.
-     *
      * @return List of all lints
      */
     private static List<Lint> load() {

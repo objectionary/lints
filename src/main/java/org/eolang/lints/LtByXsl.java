@@ -18,12 +18,14 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import org.cactoos.Input;
 import org.cactoos.io.ResourceOf;
+import org.cactoos.scalar.Sticky;
+import org.cactoos.scalar.Unchecked;
+import org.cactoos.text.FormattedText;
 import org.cactoos.text.IoCheckedText;
 import org.cactoos.text.TextOf;
 
 /**
  * Lint by XSL.
- *
  * @since 0.0.1
  */
 final class LtByXsl implements Lint {
@@ -31,12 +33,12 @@ final class LtByXsl implements Lint {
     /**
      * The name of the rule.
      */
-    private final String rule;
+    private final Unchecked<String> rule;
 
     /**
      * The stylesheet.
      */
-    private final XSL sheet;
+    private final Unchecked<XSL> sheet;
 
     /**
      * Motive document.
@@ -46,15 +48,14 @@ final class LtByXsl implements Lint {
     /**
      * Ctor.
      * @param xsl Relative path of XSL
-     * @throws IOException If fails
      */
-    LtByXsl(final String xsl) throws IOException {
+    LtByXsl(final String xsl) {
         this(
             new ResourceOf(
-                String.format("org/eolang/lints/%s.xsl", xsl)
+                new FormattedText("org/eolang/lints/%s.xsl", xsl)
             ),
             new ResourceOf(
-                String.format("org/eolang/motives/%s.md", xsl)
+                new FormattedText("org/eolang/motives/%s.md", xsl)
             )
         );
     }
@@ -63,43 +64,66 @@ final class LtByXsl implements Lint {
      * Ctor.
      * @param xsl Relative path of XSL
      * @param motive Relative path of a motive document
-     * @throws IOException If fails
      */
-    @SuppressWarnings("PMD.ConstructorOnlyInitializesOrCallOtherConstructors")
-    LtByXsl(final Input xsl, final Input motive) throws IOException {
-        final XML xml = new XMLDocument(new IoCheckedText(new TextOf(xsl)).asString());
-        this.rule = new Xnav(xml.toString())
-            .element("xsl:stylesheet")
-            .attribute("id")
-            .text()
-            .orElseThrow();
-        this.sheet = new MeasuredXsl(
-            this.rule,
-            new XSLDocument(xml, this.rule).with(new ClasspathSources())
+    LtByXsl(final Input xsl, final Input motive) {
+        this(
+            new Unchecked<>(
+                new Sticky<>(
+                    () -> new XMLDocument(
+                        new IoCheckedText(new TextOf(xsl)).asString()
+                    )
+                )
+            ),
+            motive
+        );
+    }
+
+    /**
+     * Ctor.
+     * @param xml XSL stylesheet as XML
+     * @param motive Relative path of a motive document
+     */
+    private LtByXsl(final Unchecked<XML> xml, final Input motive) {
+        this.rule = new Unchecked<>(
+            new Sticky<>(
+                () -> new Xnav(xml.value().toString())
+                    .element("xsl:stylesheet")
+                    .attribute("id")
+                    .text()
+                    .orElseThrow()
+            )
+        );
+        this.sheet = new Unchecked<>(
+            new Sticky<>(
+                () -> new MeasuredXsl(
+                    this.rule.value(),
+                    new XSLDocument(xml.value(), this.rule.value()).with(new ClasspathSources())
+                )
+            )
         );
         this.doc = motive;
     }
 
     @Override
     public String name() {
-        return this.rule;
+        return this.rule.value();
     }
 
     @Override
     public Collection<Defect> defects(final XML xmir) {
         final Collection<Defect> defects = new ArrayList<>(0);
-        for (final XML defect : LtByXsl.findDefects(this.sheet.transform(xmir))) {
+        for (final XML defect : LtByXsl.findDefects(this.sheet.value().transform(xmir))) {
             final Xnav xml = new Xnav(defect.inner());
             final Optional<String> sever = xml.attribute("severity").text();
             if (sever.isEmpty()) {
                 throw new IllegalStateException(
-                    String.format("No severity reported by %s", this.rule)
+                    String.format("No severity reported by %s", this.rule.value())
                 );
             }
             defects.add(
                 new DfContext(
                     new Defect.Default(
-                        this.rule,
+                        this.rule.value(),
                         Severity.parsed(sever.get()),
                         this.lineno(xml),
                         xml.text().get(),
@@ -142,13 +166,13 @@ final class LtByXsl implements Lint {
         final Optional<String> oline = defect.attribute("line").text();
         if (oline.isEmpty()) {
             throw new IllegalStateException(
-                String.format("No line number reported by %s", this.rule)
+                String.format("No line number reported by %s", this.rule.value())
             );
         }
         final String line = oline.get();
         if (line.isEmpty()) {
             throw new IllegalStateException(
-                String.format("Empty line number reported by %s", this.rule)
+                String.format("Empty line number reported by %s", this.rule.value())
             );
         }
         final int lineno;
@@ -158,7 +182,7 @@ final class LtByXsl implements Lint {
             throw new IllegalStateException(
                 String.format(
                     "Wrong line number reported by %s: '%s'",
-                    this.rule, line
+                    this.rule.value(), line
                 ),
                 ex
             );
@@ -168,8 +192,8 @@ final class LtByXsl implements Lint {
 
     /**
      * Find defects in the report.
-     * @param report XML report.
-     * @return Collection of defects.
+     * @param report XML report
+     * @return Collection of defects
      */
     private static Collection<XML> findDefects(final XML report) {
         return new Xnav(report.inner())

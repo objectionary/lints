@@ -13,7 +13,6 @@ import org.cactoos.set.SetOf;
 
 /**
  * Lint that all unlint metas point to existing lint.
- *
  * @since 0.0.38
  */
 final class LtIncorrectUnlint implements Lint {
@@ -38,24 +37,21 @@ final class LtIncorrectUnlint implements Lint {
 
     @Override
     public Collection<Defect> defects(final XML xmir) throws IOException {
-        return new Xnav(xmir.inner()).path("/object/metas/meta[head='unlint']")
-            .filter(
-                u -> !this.names.contains(
-                    u.element("tail").text().orElse("unknown").split(":", -1)[0]
+        return new Xnav(xmir.inner()).path("/object/metas/meta[head='unlint']").filter(
+            u -> !this.names.contains(
+                u.element("tail").text().orElse("unknown").split(":", -1)[0]
+            )
+        ).map(
+            u -> new Defect.Default(
+                this.name(),
+                Severity.ERROR,
+                new LineOf(u).value(),
+                String.format(
+                    "Suppressing \"%s\" does not make sense, because there is no lint with that name",
+                    u.element("tail").text().orElse("unknown")
                 )
             )
-            .map(
-                u -> new Defect.Default(
-                    this.name(),
-                    Severity.ERROR,
-                    new LineOf(u).value(),
-                    String.format(
-                        "Suppressing \"%s\" does not make sense, because there is no lint with that name",
-                        u.element("tail").text().orElse("unknown")
-                    )
-                )
-            )
-            .collect(Collectors.toList());
+        ).collect(Collectors.toList());
     }
 
     @Override

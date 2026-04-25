@@ -24,7 +24,6 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Tests for {@link PkMono}.
- *
  * @since 0.23
  */
 final class PkMonoTest {
@@ -49,7 +48,14 @@ final class PkMonoTest {
             "Defects found, though they were unlinted",
             new Source(
                 new EoSyntax(
-                    "+unlint ascii-only\n # привет\n# как дела?\n[] > foo\n"
+                    String.join(
+                        System.lineSeparator(),
+                        "+unlint ascii-only",
+                        " # привет",
+                        "# как дела?",
+                        "[] > foo",
+                        ""
+                    )
                 ).parsed(),
                 new PkMono()
             ).defects().stream().filter(
@@ -63,13 +69,11 @@ final class PkMonoTest {
     void checksThatLintsCanBeUnlinted() {
         MatcherAssert.assertThat(
             "All lints (except LtIncorrectUnlint) must be wrapped by LtUnlint",
-            new ListOf<>(new PkMono()).stream()
-                .filter(
-                    lint -> !PkMonoTest.decoratee(lint).getClass().equals(LtIncorrectUnlint.class)
-                )
-                .allMatch(
-                    lint -> PkMonoTest.decoratee(lint).getClass().equals(LtUnlint.class)
-                ),
+            new ListOf<>(new PkMono()).stream().filter(
+                lint -> !PkMonoTest.decoratee(lint).getClass().equals(LtIncorrectUnlint.class)
+            ).allMatch(
+                lint -> PkMonoTest.decoratee(lint).getClass().equals(LtUnlint.class)
+            ),
             new IsEqual<>(true)
         );
     }
@@ -79,10 +83,10 @@ final class PkMonoTest {
     void staysInsideThePackage() {
         ArchRuleDefinition.classes()
             .that().haveSimpleName("PkMono")
-            .should().bePackagePrivate()
-            .check(new ClassFileImporter()
-                .withImportOption(new ImportOption.DoNotIncludeTests())
-                .importPackages("org.eolang.lints")
+            .should().bePackagePrivate().check(
+                new ClassFileImporter()
+                    .withImportOption(new ImportOption.DoNotIncludeTests())
+                    .importPackages("org.eolang.lints")
             );
     }
 
@@ -112,5 +116,4 @@ final class PkMonoTest {
         }
         return result;
     }
-
 }

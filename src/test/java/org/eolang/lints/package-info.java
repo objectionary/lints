@@ -5,7 +5,6 @@
 
 /**
  * Linters.
- *
  * @since 0.0.1
  */
 package org.eolang.lints;

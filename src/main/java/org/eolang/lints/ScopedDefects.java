@@ -10,13 +10,12 @@ import org.cactoos.list.ListOf;
 
 /**
  * Defects, marked with their scopes.
- *
  * @since 0.0.48
  */
 final class ScopedDefects extends CollectionEnvelope<Defect> {
+
     /**
      * Ctor.
-     *
      * @param origin Origin defects
      * @param marker Marker
      */

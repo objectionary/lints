@@ -15,7 +15,6 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Test for {@link LtUnlint}.
- *
  * @since 0.0.1
  */
 final class LtUnlintTest {
@@ -25,7 +24,14 @@ final class LtUnlintTest {
         MatcherAssert.assertThat(
             "failed to return one error",
             new LtUnlint(new LtAlways()).defects(
-                new EoSyntax("# first\n[] > foo\n").parsed()
+                new EoSyntax(
+                    String.join(
+                        System.lineSeparator(),
+                        "# first",
+                        "[] > foo",
+                        ""
+                    )
+                ).parsed()
             ),
             Matchers.hasSize(1)
         );
@@ -37,7 +43,14 @@ final class LtUnlintTest {
             "failed to return empty list",
             new LtUnlint(new LtAlways()).defects(
                 new EoSyntax(
-                    "+unlint always\n\n# first\n[] > foo\n"
+                    String.join(
+                        System.lineSeparator(),
+                        "+unlint always",
+                        "",
+                        "# first",
+                        "[] > one",
+                        ""
+                    )
                 ).parsed()
             ),
             Matchers.emptyIterable()
@@ -51,11 +64,11 @@ final class LtUnlintTest {
             new LtUnlint(new LtAsciiOnly()).defects(
                 new EoSyntax(
                     String.join(
-                        "\n",
+                        System.lineSeparator(),
                         "+unlint ascii-only:4",
                         "",
                         "# привет.",
-                        "[] > foo",
+                        "[] > two",
                         "  # дорогой!",
                         "  [] > bar"
                     )
@@ -82,12 +95,12 @@ final class LtUnlintTest {
             new LtUnlint(new LtAsciiOnly()).defects(
                 new EoSyntax(
                     String.join(
-                        "\n",
+                        System.lineSeparator(),
                         "+unlint ascii-only:5",
                         "+unlint ascii-only:7",
                         "",
                         "# Not ascii text: привет!",
-                        "[] > foo",
+                        "[] > three",
                         "  # Not ascii text: 你好，杰夫!",
                         "  [] > bar"
                     )
@@ -106,11 +119,11 @@ final class LtUnlintTest {
             ).defects(
                 new EoSyntax(
                     String.join(
-                        "\n",
+                        System.lineSeparator(),
                         "+unlint comment-without-dot",
                         "",
                         "# Foo",
-                        "[] > foo",
+                        "[] > four",
                         "  # Bar",
                         "  [] > bar"
                     )
@@ -129,7 +142,7 @@ final class LtUnlintTest {
             ).defects(
                 new EoSyntax(
                     String.join(
-                        "\n",
+                        System.lineSeparator(),
                         "+home https://github.com/objectionary/eo",
                         "+package f",
                         "+version 0.0.0",
@@ -153,7 +166,7 @@ final class LtUnlintTest {
         ).defects(
             new EoSyntax(
                 String.join(
-                    "\n",
+                    System.lineSeparator(),
                     "# Foo with unused voids on the same line.",
                     "[x y z] > foo"
                 )
@@ -176,11 +189,11 @@ final class LtUnlintTest {
             new LtUnlint(new LtByXsl("comments/comment-without-dot")).defects(
                 new EoSyntax(
                     String.join(
-                        "\n",
+                        System.lineSeparator(),
                         "+unlint comment-without-dot:4-6",
                         "",
                         "# No dot here",
-                        "[] > foo",
+                        "[] > five",
                         "  # and here",
                         "  [] > bar"
                     )
@@ -197,7 +210,7 @@ final class LtUnlintTest {
             new LtUnlint(new LtByXsl("comments/comment-without-dot")).defects(
                 new EoSyntax(
                     String.join(
-                        "\n",
+                        System.lineSeparator(),
                         "+unlint comment-without-dot:2-4",
                         "",
                         "# No dot here",
@@ -228,7 +241,7 @@ final class LtUnlintTest {
             new LtUnlint(new LtAsciiOnly()).defects(
                 new EoSyntax(
                     String.join(
-                        "\n",
+                        System.lineSeparator(),
                         "+unlint ascii-only:10-55",
                         "",
                         "# 致性是关键",

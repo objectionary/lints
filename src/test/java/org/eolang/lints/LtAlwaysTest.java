@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Test for {@link LtAlways}.
- *
  * @since 0.0.1
  */
 final class LtAlwaysTest {
@@ -22,7 +21,14 @@ final class LtAlwaysTest {
         MatcherAssert.assertThat(
             "didn't return one defect",
             new LtAlways().defects(
-                new EoSyntax("# first\n[] > foo\n").parsed()
+                new EoSyntax(
+                    String.join(
+                        System.lineSeparator(),
+                        "# first",
+                        "[] > foo",
+                        ""
+                    )
+                ).parsed()
             ),
             Matchers.hasSize(1)
         );

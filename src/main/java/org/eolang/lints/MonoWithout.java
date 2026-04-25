@@ -19,7 +19,6 @@ final class MonoWithout extends IterableEnvelope<Lint> {
 
     /**
      * Ctor.
-     *
      * @param names Lints to exclude
      */
     MonoWithout(final String... names) {

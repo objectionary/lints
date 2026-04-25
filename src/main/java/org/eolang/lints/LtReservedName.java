@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
 
 /**
  * Lint for reserved names.
- *
  * @since 0.0.44
  */
 final class LtReservedName implements Lint {
@@ -33,7 +32,6 @@ final class LtReservedName implements Lint {
 
     /**
      * Ctor.
-     *
      * @param names Reserved names
      */
     LtReservedName(final Map<String, String> names) {
@@ -47,23 +45,20 @@ final class LtReservedName implements Lint {
 
     @Override
     public Collection<Defect> defects(final XML xmir) throws IOException {
-        return new Xnav(xmir.inner()).path("//o[@name]")
-            .filter(
-                object -> this.reserved.containsKey(object.attribute("name").text().get())
-            )
-            .map(
-                object -> new Defect.Default(
-                    this.name(),
-                    Severity.WARNING,
-                    new LineOf(object).value(),
-                    String.format(
-                        "Object name \"%s\" is already reserved by object in the \"%s\"",
-                        object.attribute("name").text().get(),
-                        this.reserved.get(object.attribute("name").text().get())
-                    )
+        return new Xnav(xmir.inner()).path("//o[@name]").filter(
+            object -> this.reserved.containsKey(object.attribute("name").text().get())
+        ).map(
+            object -> new Defect.Default(
+                this.name(),
+                Severity.WARNING,
+                new LineOf(object).value(),
+                String.format(
+                    "Object name \"%s\" is already reserved by object in the \"%s\"",
+                    object.attribute("name").text().get(),
+                    this.reserved.get(object.attribute("name").text().get())
                 )
             )
-            .collect(Collectors.toList());
+        ).collect(Collectors.toList());
     }
 
     @Override

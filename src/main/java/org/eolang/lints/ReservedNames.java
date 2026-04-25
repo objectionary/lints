@@ -8,9 +8,10 @@ import com.yegor256.tojos.MnCsv;
 import com.yegor256.tojos.TjCached;
 import com.yegor256.tojos.TjDefault;
 import com.yegor256.tojos.TjSynchronized;
-import com.yegor256.tojos.Tojo;
-import java.util.Map;
+import org.cactoos.iterable.IterableOf;
+import org.cactoos.map.MapEntry;
 import org.cactoos.map.MapEnvelope;
+import org.cactoos.map.MapOf;
 
 /**
  * Reserved EO top object names.
@@ -30,23 +31,17 @@ final class ReservedNames extends MapEnvelope<String, String> {
      * @param path Path to reserved names
      */
     ReservedNames(final String path) {
-        super(ReservedNames.names(path));
-    }
-
-    /**
-     * Names.
-     * @param path Path to CSV file
-     * @return Map of object names, key is name, value is path
-     */
-    private static Map<String, String> names(final String path) {
-        return new TjCached(
-            new TjSynchronized(
-                new TjDefault(
-                    new MnCsv(path)
+        super(
+            new MapOf<>(
+                tojo -> new MapEntry<>(tojo.toString(), tojo.get("path")),
+                new IterableOf<>(
+                    () -> new TjCached(
+                        new TjSynchronized(
+                            new TjDefault(new MnCsv(path))
+                        )
+                    ).select(tojo -> true).iterator()
                 )
             )
-        ).select(tojo -> true).stream().collect(
-            java.util.stream.Collectors.toMap(Tojo::toString, tojo -> tojo.get("path"))
         );
     }
 }

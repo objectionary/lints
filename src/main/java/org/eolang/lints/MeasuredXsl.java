@@ -37,8 +37,8 @@ final class MeasuredXsl implements XSL {
 
     /**
      * Ctor.
-     * @param name Rule name.
-     * @param decorated Decorated XSL.
+     * @param name Rule name
+     * @param decorated Decorated XSL
      */
     MeasuredXsl(final String name, final XSL decorated) {
         this(name, decorated, MeasuredXsl.DEFAULT);
@@ -46,9 +46,9 @@ final class MeasuredXsl implements XSL {
 
     /**
      * Ctor.
-     * @param name Rule name.
-     * @param decorated Decorated XSL.
-     * @param threshold Custom threshold in milliseconds.
+     * @param name Rule name
+     * @param decorated Decorated XSL
+     * @param threshold Custom threshold in milliseconds
      */
     private MeasuredXsl(final String name, final XSL decorated, final long threshold) {
         this.rule = name;
@@ -65,7 +65,7 @@ final class MeasuredXsl implements XSL {
             if (System.currentTimeMillis() - start > this.threshold) {
                 Logger.warn(
                     this,
-                    "XSL transformation '%s' took %[ms]s, whereas threshold is %[ms]s\n",
+                    "XSL transformation '%s' took %[ms]s, whereas threshold is %[ms]s%n",
                     this.rule,
                     System.currentTimeMillis() - start,
                     this.threshold

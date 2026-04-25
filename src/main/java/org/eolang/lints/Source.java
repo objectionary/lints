@@ -16,7 +16,6 @@ import org.cactoos.iterable.Synced;
 
 /**
  * A single source XMIR to analyze.
- *
  * @see <a href="https://news.eolang.org/2022-11-25-xmir-guide.html">XMIR</a>
  * @since 0.1.0
  */
@@ -78,7 +77,7 @@ public final class Source {
      * @return Program analysis without specific name
      */
     public Source without(final String... names) {
-        return new Source(this.xmir, new MonoWithout(names));
+        return new org.eolang.lints.Source(this.xmir, new MonoWithout(names));
     }
 
     /**

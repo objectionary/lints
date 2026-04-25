@@ -7,6 +7,7 @@ package org.eolang.lints;
 import java.io.IOException;
 import org.cactoos.Input;
 import org.cactoos.io.ResourceOf;
+import org.cactoos.text.FormattedText;
 import org.cactoos.text.IoCheckedText;
 import org.cactoos.text.TextOf;
 
@@ -35,7 +36,7 @@ final class MotiveFrom {
     MotiveFrom(final String dimension, final String lint) {
         this(
             new ResourceOf(
-                String.format("org/eolang/motives/%s/%s.md", dimension, lint)
+                new FormattedText("org/eolang/motives/%s/%s.md", dimension, lint)
             )
         );
     }

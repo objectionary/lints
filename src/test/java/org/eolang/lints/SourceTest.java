@@ -60,7 +60,6 @@ import org.objectweb.asm.Opcodes;
 
 /**
  * Test for {@link Source}.
- *
  * @since 0.0.1
  * @todo #767:60min Decrease timeouts for source linting.
  *  As for now, most lints are too slow, we need to optimize them first, so they
@@ -81,7 +80,7 @@ final class SourceTest {
             new Source(
                 new EoSyntax(
                     String.join(
-                        "\n",
+                        System.lineSeparator(),
                         "+home https://www.eolang.org",
                         "+package com.example",
                         "+version 0.0.0",
@@ -111,7 +110,7 @@ final class SourceTest {
                 new EoSyntax(
                     new InputOf(
                         String.join(
-                            "\n",
+                            System.lineSeparator(),
                             "+unlint unlint-non-existing-defect",
                             "+unlint empty-object",
                             "+unlint mandatory-home",
@@ -124,7 +123,7 @@ final class SourceTest {
                             "+unlint unit-test-missing",
                             "",
                             "# Test.",
-                            "[] > foo"
+                            "[] > one"
                         )
                     )
                 ).parsed()
@@ -139,7 +138,12 @@ final class SourceTest {
         Files.write(
             path,
             new EoSyntax(
-                "# Foo\n[] > foo\n"
+                String.join(
+                    System.lineSeparator(),
+                    "# Foo",
+                    "[] > two",
+                    ""
+                )
             ).parsed().toString().getBytes(StandardCharsets.UTF_8)
         );
         MatcherAssert.assertThat(
@@ -160,7 +164,12 @@ final class SourceTest {
                 new Together<>(
                     t -> new Source(
                         new EoSyntax(
-                            "# Foo\n[] > foo\n"
+                            String.join(
+                                System.lineSeparator(),
+                                "# Foo",
+                                "[] > three",
+                                ""
+                            )
                         ).parsed(),
                         new ListOf<>(new LtByXsl("comments/comment-without-dot"))
                     ).defects().size()
@@ -178,7 +187,7 @@ final class SourceTest {
                 new EoSyntax(
                     new InputOf(
                         String.join(
-                            "\n",
+                            System.lineSeparator(),
                             "+version 8.8.8-beta",
                             "+alias org.eolang.txt.sprintf",
                             "+alias org . eolang . txt . broken",
@@ -244,7 +253,13 @@ final class SourceTest {
             "Defects for disabled lint are not empty, but should be",
             new Source(
                 new EoSyntax(
-                    "# привет\n# как дела?\n[] > foo\n"
+                    String.join(
+                        System.lineSeparator(),
+                        "# привет",
+                        "# как дела?",
+                        "[] > four",
+                        ""
+                    )
                 ).parsed()
             ).without("ascii-only").defects().stream()
                 .filter(defect -> defect.rule().equals("ascii-only"))
@@ -259,7 +274,13 @@ final class SourceTest {
             "Defects for disabled lints are not empty, but should be",
             new Source(
                 new EoSyntax(
-                    "# привет\n# как дела?\n[] > foo\n"
+                    String.join(
+                        System.lineSeparator(),
+                        "# привет",
+                        "# как дела?",
+                        "[] > five",
+                        ""
+                    )
                 ).parsed()
             ).without(
                 "ascii-only",
@@ -285,7 +306,7 @@ final class SourceTest {
             new Source(
                 new EoSyntax(
                     String.join(
-                        "\n",
+                        System.lineSeparator(),
                         "+home https://github.com/objectionary/eo",
                         "+package f",
                         "+version 0.0.0",
@@ -315,7 +336,7 @@ final class SourceTest {
             new Source(
                 new EoSyntax(
                     String.join(
-                        "\n",
+                        System.lineSeparator(),
                         String.format("+unlint %s", lid),
                         "",
                         "# Foo.",
@@ -354,7 +375,7 @@ final class SourceTest {
         final Collection<Defect> defects = new Source(
             new EoSyntax(
                 String.join(
-                    "\n",
+                    System.lineSeparator(),
                     "# Foo with unused voids on the same line.",
                     "[x y z] > foo"
                 )
@@ -378,7 +399,7 @@ final class SourceTest {
             new Source(
                 new EoSyntax(
                     String.join(
-                        "\n",
+                        System.lineSeparator(),
                         "# Foo",
                         "[] > foo"
                     )
@@ -422,18 +443,17 @@ final class SourceTest {
     @ExtendWith(MayBeSlow.class)
     @Timeout(600L)
     void checksLintTimeFormattingInBenchmarkResults() {
-        final Pattern tpattern = Pattern.compile(
-            "^Lint time: (\\d+(?:\\.\\d+)?)(ms|s|min|h) \\(\\d+ ms\\)$"
-        );
         MatcherAssert.assertThat(
             "All lint time entries must match the expected format",
             Arrays.stream(
                 Pattern.compile("\\R").split(
                     SourceTest.benchmarkResults().values().iterator().next()
                 )
-            )
-                .filter(line -> line.startsWith("Lint time:"))
-                .allMatch(text -> tpattern.matcher(text).matches()),
+            ).filter(line -> line.startsWith("Lint time:")).allMatch(
+                text -> Pattern.compile(
+                    "^Lint time: (\\d+(?:\\.\\d+)?)(ms|s|min|h) \\(\\d+ ms\\)$"
+                ).matcher(text).matches()
+            ),
             Matchers.equalTo(true)
         );
     }
@@ -448,7 +468,7 @@ final class SourceTest {
     }
 
     private static boolean lineCountWithinBounds(final SourceSize src) {
-        final LineCountVisitor visitor = new LineCountVisitor();
+        final SourceTest.LineCountVisitor visitor = new SourceTest.LineCountVisitor();
         new ClassReader(
             new UncheckedBytes(
                 new BytesOf(
@@ -471,14 +491,15 @@ final class SourceTest {
         final StringBuilder sum = new StringBuilder();
         for (final SourceSize source : SourceSize.values()) {
             final long before = System.currentTimeMillis();
-            final Collection<Defect> defects = new BcSource(
-                new Unchecked<>(new BytecodeClass(source)).value(), source.type()
+            final Collection<Defect> defects = new SourceTest.BcSource(
+                new Unchecked<>(new BytecodeClass(source.name(), source.java())).value(),
+                source.type()
             ).defects();
             final long msec = System.currentTimeMillis() - before;
             results.add(new MapOf<>(source, defects));
             sum.append(
                 String.join(
-                    "\n",
+                    System.lineSeparator(),
                     String.format(
                         "Input: %s (%s source)", source.java(), source.type()
                     ),
@@ -487,7 +508,7 @@ final class SourceTest {
                         msec, msec
                     )
                 )
-            ).append("\n\n");
+            ).append(System.lineSeparator()).append(System.lineSeparator());
         }
         return results.stream().collect(
             Collectors.toMap(run -> run, run -> sum.toString())
@@ -585,7 +606,7 @@ final class SourceTest {
          * @throws IOException If fails
          */
         private Collection<Defect> timed(final Lint lint) throws IOException {
-            return new TimedLint(lint, this.xmir, this.timings, this.marker).defects();
+            return new SourceTest.TimedLint(lint, this.xmir, this.timings, this.marker).defects();
         }
     }
 

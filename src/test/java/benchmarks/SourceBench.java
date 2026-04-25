@@ -25,7 +25,6 @@ import org.openjdk.jmh.annotations.Warmup;
 
 /**
  * Benchmark for {@link Source}.
- *
  * @since 0.0.34
  * @checkstyle DesignForExtensionCheck (10 lines)
  * @checkstyle NonStaticMethodCheck (100 lines)
@@ -79,7 +78,10 @@ public class SourceBench {
          */
         @Setup(Level.Trial)
         public void init() {
-            this.xmir = new Unchecked<>(new BytecodeClass(SourceSize.valueOf(this.size))).value();
+            final SourceSize psize = SourceSize.valueOf(this.size);
+            this.xmir = new Unchecked<>(
+                new BytecodeClass(psize.name(), psize.java())
+            ).value();
         }
     }
 }

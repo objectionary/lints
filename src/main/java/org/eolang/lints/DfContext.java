@@ -60,7 +60,7 @@ final class DfContext implements Defect {
         return this.ctxt.replace("&lt;", "<")
             .replace("&gt;", ">")
             .replace("&#34;", "\"")
-            .replace("&#xA;", "\n")
+            .replace("&#xA;", System.lineSeparator())
             .replace("&amp;", "&");
     }
 

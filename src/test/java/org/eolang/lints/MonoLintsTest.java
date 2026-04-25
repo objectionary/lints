@@ -4,7 +4,6 @@
  */
 package org.eolang.lints;
 
-import com.jcabi.xml.XML;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 import com.tngtech.archunit.core.importer.ImportOption;
 import com.tngtech.archunit.lang.syntax.ArchRuleDefinition;
@@ -20,7 +19,6 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Tests for {@link MonoLints}.
- *
  * @since 0.0.43
  */
 final class MonoLintsTest {
@@ -30,10 +28,10 @@ final class MonoLintsTest {
     void staysPackagePrivate() {
         ArchRuleDefinition.classes()
             .that().haveSimpleName("MonoLints")
-            .should().bePackagePrivate()
-            .check(new ClassFileImporter()
-                .withImportOption(new ImportOption.DoNotIncludeTests())
-                .importPackages("org.eolang.lints")
+            .should().bePackagePrivate().check(
+                new ClassFileImporter()
+                    .withImportOption(new ImportOption.DoNotIncludeTests())
+                    .importPackages("org.eolang.lints")
             );
     }
 
@@ -49,34 +47,44 @@ final class MonoLintsTest {
     }
 
     @Test
-    void lintsProgramCorrectly() throws IOException {
-        final XML xmir = new EoSyntax(
-            String.join(
-                "\n",
-                "+home https://github.com/objectionary/eo",
-                "+package f",
-                "+version 0.0.0",
-                "",
-                "# No comments.",
-                "[] > main",
-                "  QQ.io.stdout > @",
-                "    \"Hello world\""
-            )
-        ).parsed();
+    void lintsProgramCorrectly() {
         final Collection<Defect> found = new ListOf<>();
         new ListOf<>(new MonoLints()).forEach(
-            lint -> {
-                try {
-                    found.addAll(lint.defects(xmir));
-                } catch (final IOException exception) {
-                    throw new IllegalStateException("Failed to lint XMIR", exception);
-                }
-            }
+            lint -> MonoLintsTest.collect(lint, found)
         );
         MatcherAssert.assertThat(
             "Found defects should be all unique",
             new HashSet<>(found).size() == found.size(),
             Matchers.equalTo(true)
         );
+    }
+
+    /**
+     * Collect defects from the lint into the accumulator.
+     * @param lint Lint to run
+     * @param into Accumulator
+     */
+    private static void collect(final Lint lint, final Collection<Defect> into) {
+        try {
+            into.addAll(
+                lint.defects(
+                    new EoSyntax(
+                        String.join(
+                            System.lineSeparator(),
+                            "+home https://github.com/objectionary/eo",
+                            "+package f",
+                            "+version 0.0.0",
+                            "",
+                            "# No comments.",
+                            "[] > main",
+                            "  QQ.io.stdout > @",
+                            "    \"Hello world\""
+                        )
+                    ).parsed()
+                )
+            );
+        } catch (final IOException exception) {
+            throw new IllegalStateException("Failed to lint XMIR", exception);
+        }
     }
 }

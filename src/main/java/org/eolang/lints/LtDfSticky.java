@@ -33,7 +33,7 @@ final class LtDfSticky implements Lint {
 
     /**
      * Ctor.
-     * @param origin Object wrapped by a decorator.
+     * @param origin Object wrapped by a decorator
      */
     LtDfSticky(final Lint origin) {
         this(
@@ -44,8 +44,8 @@ final class LtDfSticky implements Lint {
 
     /**
      * Ctor.
-     * @param origin Object wrapped by a decorator.
-     * @param cache Defects cache.
+     * @param origin Object wrapped by a decorator
+     * @param cache Defects cache
      */
     LtDfSticky(final Lint origin, final Func<XML, Collection<Defect>> cache) {
         this.origin = origin;

@@ -10,7 +10,6 @@ import java.util.Collection;
 
 /**
  * A single checker for an {@code .xmir} file.
- *
  * @since 0.0.1
  */
 public interface Lint {
@@ -34,5 +33,4 @@ public interface Lint {
      * @throws IOException if something went wrong
      */
     String motive() throws IOException;
-
 }

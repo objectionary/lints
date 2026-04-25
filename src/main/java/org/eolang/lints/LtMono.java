@@ -10,10 +10,10 @@ import java.util.Collections;
 
 /**
  * Lint that always returns a given defect.
- *
  * @since 0.0.35
  */
 final class LtMono implements Lint {
+
     /**
      * The defect to return.
      */
@@ -21,7 +21,6 @@ final class LtMono implements Lint {
 
     /**
      * Ctor.
-     *
      * @param dft The defect to return
      */
     LtMono(final Defect dft) {

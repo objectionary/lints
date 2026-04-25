@@ -15,8 +15,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import opennlp.tools.postag.POSModel;
 import opennlp.tools.postag.POSTaggerME;
+import org.cactoos.io.InputStreamOf;
 import org.cactoos.io.ResourceOf;
-import org.cactoos.io.UncheckedInput;
 
 /**
  * Lint that checks test object name is a verb in singular.
@@ -39,9 +39,16 @@ final class LtTestNotVerb implements Lint {
 
     /**
      * Ctor.
+     * @throws IOException If fails
      */
-    LtTestNotVerb() {
-        this(LtTestNotVerb.defaultPosModel());
+    LtTestNotVerb() throws IOException {
+        this(
+            new POSModel(
+                new InputStreamOf(
+                    new ResourceOf("en-pos-perceptron.bin")
+                )
+            )
+        );
     }
 
     /**
@@ -87,17 +94,14 @@ final class LtTestNotVerb implements Lint {
     private boolean isVerbInSingular(final Xnav object) {
         return "VBZ".equals(
             this.model.tag(
-                Stream
-                    .concat(
-                        Stream.of("It"),
-                        Arrays.stream(
-                            LtTestNotVerb.KEBAB.split(
-                                object.attribute("name").text().get().replace("+", "")
-                            )
+                Stream.concat(
+                    Stream.of("It"),
+                    Arrays.stream(
+                        LtTestNotVerb.KEBAB.split(
+                            object.attribute("name").text().get().replace("+", "")
                         )
                     )
-                    .map(s -> s.toLowerCase(Locale.ROOT))
-                    .toArray(String[]::new)
+                ).map(s -> s.toLowerCase(Locale.ROOT)).toArray(String[]::new)
             )[1]
         );
     }
@@ -117,19 +121,5 @@ final class LtTestNotVerb implements Lint {
                 object.attribute("name").text().get().replace("+", "")
             )
         );
-    }
-
-    private static POSModel defaultPosModel() {
-        try {
-            return new POSModel(
-                new UncheckedInput(
-                    new ResourceOf("en-pos-perceptron.bin")
-                ).stream()
-            );
-        } catch (final IOException exception) {
-            throw new IllegalStateException(
-                "Failed to read from I/O", exception
-            );
-        }
     }
 }

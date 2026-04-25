@@ -5,7 +5,6 @@
 package org.eolang.lints;
 
 import com.jcabi.log.Logger;
-import com.jcabi.xml.XML;
 import com.jcabi.xml.XMLDocument;
 import io.github.secretx33.resourceresolver.PathMatchingResourcePatternResolver;
 import io.github.secretx33.resourceresolver.Resource;
@@ -24,7 +23,6 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Test for {@link PkByXsl}.
- *
  * @since 0.0.1
  */
 final class PkByXslTest {
@@ -48,7 +46,7 @@ final class PkByXslTest {
                 new PathMatchingResourcePatternResolver().getResources(
                     "classpath*:org/eolang/lints/**/*.xsl"
                 )
-            ).allMatch(new IdChecker()),
+            ).allMatch(new PkByXslTest.IdChecker()),
             Matchers.equalTo(true)
         );
     }
@@ -66,18 +64,21 @@ final class PkByXslTest {
 
     @Test
     void doesNotDuplicateDefectsWhenMultipleDefectsOnTheSameLine() throws Exception {
-        final XML tuple = new EoSyntax(
-            String.join(
-                "\n",
-                "# Foo with unused voids on the same line.",
-                "[x y z] > foo"
-            )
-        ).parsed();
         final Collection<Defect> aggregated = new ListOf<>();
         new PkByXsl().forEach(
             xsl -> {
                 try {
-                    aggregated.addAll(xsl.defects(tuple));
+                    aggregated.addAll(
+                        xsl.defects(
+                            new EoSyntax(
+                                String.join(
+                                    System.lineSeparator(),
+                                    "# Foo with unused voids on the same line.",
+                                    "[x y z] > foo"
+                                )
+                            ).parsed()
+                        )
+                    );
                 } catch (final IOException exception) {
                     throw new IllegalStateException(
                         String.format("Failed to lint tuple with '%s' lint", xsl.name()),
@@ -101,6 +102,7 @@ final class PkByXslTest {
      * @since 0.0.1
      */
     private static final class IdChecker implements java.util.function.Predicate<Resource> {
+
         @Override
         public boolean test(final Resource res) {
             try {

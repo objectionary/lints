@@ -16,7 +16,6 @@ import org.cactoos.list.ListOf;
 
 /**
  * Lint for checking `+unlint` meta to suppress non-existing defects in single XMIR scope.
- *
  * @since 0.0.40
  */
 final class LtUnlintNonExistingDefect implements Lint {
@@ -33,7 +32,6 @@ final class LtUnlintNonExistingDefect implements Lint {
 
     /**
      * Ctor.
-     *
      * @param lnts Lints
      */
     LtUnlintNonExistingDefect(final Iterable<Lint> lnts) {
@@ -42,7 +40,6 @@ final class LtUnlintNonExistingDefect implements Lint {
 
     /**
      * Ctor.
-     *
      * @param lnts Lints
      * @param exld Lint names to exclude
      */
@@ -61,8 +58,7 @@ final class LtUnlintNonExistingDefect implements Lint {
         return new Xnav(xmir.inner()).path("/object/metas/meta[head='unlint']/tail")
             .map(xnav -> xnav.text().get())
             .distinct()
-            .filter(new DefectMissing(this.existingDefects(xmir), this.excluded)::apply)
-            .flatMap(
+            .filter(new DefectMissing(this.existingDefects(xmir), this.excluded)::apply).flatMap(
                 unlint -> new Xnav(xmir.inner()).path(
                     String.format(
                         "object/metas/meta[head='unlint' and tail='%s']/@line", unlint
@@ -78,8 +74,7 @@ final class LtUnlintNonExistingDefect implements Lint {
                         )
                     )
                 )
-            )
-            .collect(Collectors.toList());
+            ).collect(Collectors.toList());
     }
 
     @Override
@@ -88,21 +83,19 @@ final class LtUnlintNonExistingDefect implements Lint {
     }
 
     private Map<String, List<Integer>> existingDefects(final XML xmir) {
-        return StreamSupport.stream(this.lints.spliterator(), false)
-            .flatMap(
-                lint -> {
-                    try {
-                        return lint.defects(xmir).stream();
-                    } catch (final IOException exception) {
-                        throw new IllegalStateException(exception);
-                    }
+        return StreamSupport.stream(this.lints.spliterator(), false).flatMap(
+            lint -> {
+                try {
+                    return lint.defects(xmir).stream();
+                } catch (final IOException exception) {
+                    throw new IllegalStateException(exception);
                 }
+            }
+        ).collect(
+            Collectors.groupingBy(
+                Defect::rule,
+                Collectors.mapping(Defect::line, Collectors.toList())
             )
-            .collect(
-                Collectors.groupingBy(
-                    Defect::rule,
-                    Collectors.mapping(Defect::line, Collectors.toList())
-                )
-            );
+        );
     }
 }

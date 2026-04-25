@@ -10,7 +10,6 @@ import java.util.Collections;
 
 /**
  * Lint that always complains.
- *
  * @since 0.0.1
  */
 final class LtAlways implements Lint {
@@ -36,5 +35,4 @@ final class LtAlways implements Lint {
     public String motive() {
         return "";
     }
-
 }

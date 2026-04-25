@@ -16,7 +16,6 @@ import java.util.Objects;
  * on XMIR format itself, consider checking resources on XMIR in order to get
  * understanding how intermediate representation of EO is structured in XML format.
  * </p>
- *
  * @see <a href="https://news.eolang.org/2022-11-25-xmir-guide.html">XMIR guide</a>
  * @see <a href="https://www.eolang.org/XMIR.html">XMIR specification</a>
  * @see <a href="https://www.eolang.org/XMIR.xsd">XMIR schema</a>
@@ -29,7 +28,6 @@ public interface Defect {
      * <p>
      * Returns the unique identifier of the rule that detected this defect.
      * </p>
-     *
      * @return Unique name of the rule
      */
     String rule();
@@ -39,7 +37,6 @@ public interface Defect {
      * <p>
      * Returns the severity level of this defect.
      * </p>
-     *
      * @return Severity of the defect
      */
     Severity severity();
@@ -49,7 +46,6 @@ public interface Defect {
      * <p>
      * Returns the line number in the source code where the defect was detected.
      * </p>
-     *
      * @return Line number in the source code
      */
     int line();
@@ -59,7 +55,6 @@ public interface Defect {
      * <p>
      * Returns the descriptive message explaining the defect.
      * </p>
-     *
      * @return Text of the error message
      */
     String text();
@@ -69,7 +64,6 @@ public interface Defect {
      * <p>
      * Returns the version of the linting tool that detected this defect.
      * </p>
-     *
      * @return Linter's current version string
      */
     String version();
@@ -80,7 +74,6 @@ public interface Defect {
      * Returns additional contextual information about the defect,
      * which may help understand and fix the issue.
      * </p>
-     *
      * @return Context of the defect as a string
      */
     String context();
@@ -96,10 +89,10 @@ public interface Defect {
      * <p>
      * Provides a standard implementation with basic functionality.
      * </p>
-     *
      * @since 0.0.1
      */
     final class Default implements Defect {
+
         /**
          * Rule.
          */
@@ -145,7 +138,6 @@ public interface Defect {
          * <p>
          * Constructs a defect with all required information.
          * </p>
-         *
          * @param rule Rule name
          * @param severity Severity level
          * @param line Line number
@@ -231,5 +223,4 @@ public interface Defect {
             return Objects.hash(this.rle, this.sev, this.lineno, this.txt);
         }
     }
-
 }

@@ -15,17 +15,24 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Tests for {@link LtIncorrectUnlint}.
- *
  * @since 0.0.38
  */
 final class LtIncorrectUnlintTest {
+
     @Test
     void catchesIncorrectUnlints() throws Exception {
         MatcherAssert.assertThat(
             "unlint must point to existing lint",
             new LtIncorrectUnlint(List.of("hello")).defects(
                 new EoSyntax(
-                    "+unlint foo\n+unlint bar\n\n# Foo.\n[] > foo"
+                    String.join(
+                        System.lineSeparator(),
+                        "+unlint foo",
+                        "+unlint bar",
+                        "",
+                        "# Foo.",
+                        "[] > foo"
+                    )
                 ).parsed()
             ),
             Matchers.allOf(
@@ -55,7 +62,13 @@ final class LtIncorrectUnlintTest {
             new ListOf<>(
                 new LtIncorrectUnlint(List.of("hello")).defects(
                     new EoSyntax(
-                        "+unlint boom\n\n# Foo.\n[] > foo"
+                        String.join(
+                            System.lineSeparator(),
+                            "+unlint boom",
+                            "",
+                            "# Foo.",
+                            "[] > foo"
+                        )
                     ).parsed()
                 )
             ).get(0).text(),
@@ -67,18 +80,17 @@ final class LtIncorrectUnlintTest {
     void understandsUnlintsWithLineNumber() throws IOException {
         MatcherAssert.assertThat(
             "Unlints with line number should be supported",
-            new LtIncorrectUnlint(new ListOf<>("comment-not-capitalized"))
-                .defects(
-                    new EoSyntax(
-                        String.join(
-                            "\n",
-                            "+unlint comment-not-capitalized:3",
-                            "",
-                            "# foo.",
-                            "[] > foo"
-                        )
-                    ).parsed()
-                ),
+            new LtIncorrectUnlint(new ListOf<>("comment-not-capitalized")).defects(
+                new EoSyntax(
+                    String.join(
+                        System.lineSeparator(),
+                        "+unlint comment-not-capitalized:3",
+                        "",
+                        "# foo.",
+                        "[] > foo"
+                    )
+                ).parsed()
+            ),
             Matchers.emptyIterable()
         );
     }
@@ -90,7 +102,7 @@ final class LtIncorrectUnlintTest {
             new LtIncorrectUnlint(new ListOf<>("a")).defects(
                 new EoSyntax(
                     String.join(
-                        "\n",
+                        System.lineSeparator(),
                         "+unlint b:1",
                         "",
                         "# App.",

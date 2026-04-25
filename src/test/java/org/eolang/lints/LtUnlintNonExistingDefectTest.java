@@ -14,7 +14,6 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Tests for {@link LtUnlintNonExistingDefect}.
- *
  * @since 0.0.40
  */
 final class LtUnlintNonExistingDefectTest {
@@ -29,7 +28,7 @@ final class LtUnlintNonExistingDefectTest {
             ).defects(
                 new EoSyntax(
                     String.join(
-                        "\n",
+                        System.lineSeparator(),
                         "+unlint ascii-only",
                         "# first",
                         "# second",
@@ -51,7 +50,7 @@ final class LtUnlintNonExistingDefectTest {
             ).defects(
                 new EoSyntax(
                     String.join(
-                        "\n",
+                        System.lineSeparator(),
                         "+unlint ascii-only",
                         "+unlint ascii-only",
                         "# first",
@@ -78,7 +77,7 @@ final class LtUnlintNonExistingDefectTest {
             ).defects(
                 new EoSyntax(
                     String.join(
-                        "\n",
+                        System.lineSeparator(),
                         "+unlint ascii-only",
                         "# 程式分析是我的熱愛",
                         "[] > bar"
@@ -99,7 +98,7 @@ final class LtUnlintNonExistingDefectTest {
             ).defects(
                 new EoSyntax(
                     String.join(
-                        "\n",
+                        System.lineSeparator(),
                         "# тук-тук",
                         "[] > bar"
                     )
@@ -119,7 +118,7 @@ final class LtUnlintNonExistingDefectTest {
             ).defects(
                 new EoSyntax(
                     String.join(
-                        "\n",
+                        System.lineSeparator(),
                         "+unlint ascii-only:4",
                         "",
                         "# привет мы тут.",
@@ -141,7 +140,7 @@ final class LtUnlintNonExistingDefectTest {
             ).defects(
                 new EoSyntax(
                     String.join(
-                        "\n",
+                        System.lineSeparator(),
                         "+unlint ascii-only:2",
                         "",
                         "# Мы тут.",
@@ -163,7 +162,7 @@ final class LtUnlintNonExistingDefectTest {
             ).defects(
                 new EoSyntax(
                     String.join(
-                        "\n",
+                        System.lineSeparator(),
                         "+unlint ascii-only:4-6",
                         "",
                         "# 应用程序.",
@@ -187,7 +186,7 @@ final class LtUnlintNonExistingDefectTest {
             ).defects(
                 new EoSyntax(
                     String.join(
-                        "\n",
+                        System.lineSeparator(),
                         "+unlint ascii-only:7-10",
                         "",
                         "# 应用程序.",
@@ -211,7 +210,7 @@ final class LtUnlintNonExistingDefectTest {
             ).defects(
                 new EoSyntax(
                     String.join(
-                        "\n",
+                        System.lineSeparator(),
                         "+unlint ascii-only:1-5",
                         "[] > main",
                         "  QQ.io.stdout > @",

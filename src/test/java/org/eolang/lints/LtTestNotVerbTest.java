@@ -20,7 +20,6 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 /**
  * Tests for {@link LtTestNotVerb}.
- *
  * @since 0.0.22
  */
 final class LtTestNotVerbTest {
@@ -77,7 +76,7 @@ final class LtTestNotVerbTest {
             new LtTestNotVerb().defects(
                 new EoSyntax(
                     String.join(
-                        "\n",
+                        System.lineSeparator(),
                         "# Foo",
                         "[] > foo",
                         String.format("  [] +> %s", name),
@@ -127,7 +126,7 @@ final class LtTestNotVerbTest {
             new LtTestNotVerb().defects(
                 new EoSyntax(
                     String.join(
-                        "\n",
+                        System.lineSeparator(),
                         "# Foo",
                         "[] > foo",
                         String.format("  [] +> %s", name),
@@ -148,7 +147,7 @@ final class LtTestNotVerbTest {
             new LtTestNotVerb().defects(
                 new EoSyntax(
                     String.join(
-                        "\n",
+                        System.lineSeparator(),
                         "# Regex",
                         "[] > regex",
                         "  # This unit test is supposed to check the functionality of the corresponding object.",
@@ -183,7 +182,7 @@ final class LtTestNotVerbTest {
                     t -> new LtTestNotVerb().defects(
                         new EoSyntax(
                             String.join(
-                                "\n",
+                                System.lineSeparator(),
                                 "# Regex",
                                 "[] > regex",
                                 "  # Unit test",

@@ -17,7 +17,6 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Tests for {@link LtReservedName}.
- *
  * @since 0.0.44
  */
 final class LtReservedNameTest {
@@ -26,17 +25,16 @@ final class LtReservedNameTest {
     void catchesReservedName() throws IOException {
         MatcherAssert.assertThat(
             "It is expected to catch only one defect here",
-            new LtReservedName(new MapOf<>("true", "true.eo"))
-                .defects(
-                    new EoSyntax(
-                        String.join(
-                            "\n",
-                            "# Qqq.",
-                            "[] > qqq",
-                            "  42 > true"
-                        )
-                    ).parsed()
-                ),
+            new LtReservedName(new MapOf<>("true", "true.eo")).defects(
+                new EoSyntax(
+                    String.join(
+                        System.lineSeparator(),
+                        "# Qqq.",
+                        "[] > qqq",
+                        "  42 > true"
+                    )
+                ).parsed()
+            ),
             Matchers.hasSize(1)
         );
     }
@@ -45,16 +43,15 @@ final class LtReservedNameTest {
     void allowsNonReservedName() throws IOException {
         MatcherAssert.assertThat(
             "Defects are not empty, but they should",
-            new LtReservedName(new MapOf<>("true", "true.eo"))
-                .defects(
-                    new EoSyntax(
-                        String.join(
-                            "# X object.",
-                            "[] > x",
-                            "  42 > y"
-                        )
-                    ).parsed()
-                ),
+            new LtReservedName(new MapOf<>("true", "true.eo")).defects(
+                new EoSyntax(
+                    String.join(
+                        "# X object.",
+                        "[] > x",
+                        "  42 > y"
+                    )
+                ).parsed()
+            ),
             Matchers.emptyIterable()
         );
     }
@@ -63,16 +60,15 @@ final class LtReservedNameTest {
     void allowsUniqueNameInTopSourceObject() throws IOException {
         MatcherAssert.assertThat(
             "Defects are not empty, but they should",
-            new LtReservedName(new MapOf<>("f", "f.eo"))
-                .defects(
-                    new EoSyntax(
-                        String.join(
-                            "# top.",
-                            "[] > top",
-                            "  52 > x"
-                        )
-                    ).parsed()
-                ),
+            new LtReservedName(new MapOf<>("f", "f.eo")).defects(
+                new EoSyntax(
+                    String.join(
+                        "# top.",
+                        "[] > top",
+                        "  52 > x"
+                    )
+                ).parsed()
+            ),
             Matchers.emptyIterable()
         );
     }
@@ -115,7 +111,7 @@ final class LtReservedNameTest {
             ).defects(
                 new EoSyntax(
                     String.join(
-                        "\n",
+                        System.lineSeparator(),
                         "# JA.",
                         "[] > ja",
                         "  52 > spb"
@@ -135,7 +131,7 @@ final class LtReservedNameTest {
             ).defects(
                 new EoSyntax(
                     String.join(
-                        "\n",
+                        System.lineSeparator(),
                         "# Foo.",
                         "[] > foo",
                         "  52 > spb"
@@ -156,7 +152,7 @@ final class LtReservedNameTest {
                 ).defects(
                     new EoSyntax(
                         String.join(
-                            "\n",
+                            System.lineSeparator(),
                             "# Foo.",
                             "[] > foo",
                             "  52 > spb"
@@ -178,7 +174,7 @@ final class LtReservedNameTest {
             new LtReservedName().defects(
                 new EoSyntax(
                     String.join(
-                        "\n",
+                        System.lineSeparator(),
                         "# Bar.",
                         "[] > bar",
                         "  52 > stdout"
@@ -198,7 +194,7 @@ final class LtReservedNameTest {
                 new LtReservedName().defects(
                     new EoSyntax(
                         String.join(
-                            "\n",
+                            System.lineSeparator(),
                             "# Baz.",
                             "[] > baz",
                             "  52 > stdout"

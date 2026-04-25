@@ -10,22 +10,20 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Tests for {@link Defect}.
- *
  * @since 0.0.12
  */
 final class DefectTest {
 
     @Test
     void returnsVersion() {
-        final String version = new Defect.Default(
-            "metas/incorrect-architect",
-            Severity.WARNING,
-            3,
-            "Something went wrong with an architect"
-        ).version();
         MatcherAssert.assertThat(
             "Version doesn't match with expected",
-            version,
+            new Defect.Default(
+                "metas/incorrect-architect",
+                Severity.WARNING,
+                3,
+                "Something went wrong with an architect"
+            ).version(),
             Matchers.equalTo("1.2.3")
         );
     }

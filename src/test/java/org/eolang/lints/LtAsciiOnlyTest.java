@@ -15,7 +15,6 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Test for {@link LtAsciiOnly}.
- *
  * @since 0.0.1
  */
 final class LtAsciiOnlyTest {
@@ -26,7 +25,13 @@ final class LtAsciiOnlyTest {
             "non-ascii comment is not welcome",
             new LtAsciiOnly().defects(
                 new EoSyntax(
-                    "# привет\n# как дела?\n[] > foo\n"
+                    String.join(
+                        System.lineSeparator(),
+                        "# привет",
+                        "# как дела?",
+                        "[] > foo",
+                        ""
+                    )
                 ).parsed()
             ),
             Matchers.allOf(
@@ -43,7 +48,13 @@ final class LtAsciiOnlyTest {
             new ListOf<>(
                 new LtAsciiOnly().defects(
                     new EoSyntax(
-                        "# привет\n# как дела?\n[] > foo\n"
+                        String.join(
+                            System.lineSeparator(),
+                            "# привет",
+                            "# как дела?",
+                            "[] > foo",
+                            ""
+                        )
                     ).parsed()
                 )
             ).get(0).text(),
@@ -66,7 +77,12 @@ final class LtAsciiOnlyTest {
             "The rule name is set right",
             new LtAsciiOnly().defects(
                 new EoSyntax(
-                    "# тук тук\n[] > foo\n"
+                    String.join(
+                        System.lineSeparator(),
+                        "# тук тук",
+                        "[] > foo",
+                        ""
+                    )
                 ).parsed()
             ).iterator().next().rule(),
             Matchers.equalTo("ascii-only")
@@ -79,11 +95,14 @@ final class LtAsciiOnlyTest {
             "The lint should complain as warning",
             new LtAsciiOnly().defects(
                 new EoSyntax(
-                    "# 计算机编程是我的生活!\n[] > a"
+                    String.join(
+                        System.lineSeparator(),
+                        "# 计算机编程是我的生活!",
+                        "[] > a"
+                    )
                 ).parsed()
             ).iterator().next().severity(),
             Matchers.equalTo(Severity.WARNING)
         );
     }
-
 }

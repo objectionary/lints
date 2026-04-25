@@ -26,7 +26,6 @@ final class WithoutLints extends IterableEnvelope<Lint> {
 
     /**
      * Ctor.
-     *
      * @param origin Origin lints
      * @param names Lint names to exclude
      */

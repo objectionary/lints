@@ -52,7 +52,7 @@ final class MonoLints extends IterableEnvelope<Lint> {
         super(
             new Joined<Lint>(
                 MonoLints.LINTS,
-                List.of(
+                new ListOf<>(
                     new LtIncorrectUnlint(MonoLints.ALL_NAMES)
                 )
             )

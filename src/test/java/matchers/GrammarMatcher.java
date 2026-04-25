@@ -22,7 +22,6 @@ import org.languagetool.rules.spelling.SpellingCheckRule;
 /**
  * Hamcrest matcher for a single piece of text, to make sure it's
  * grammatically valid.
- *
  * @since 0.0.34
  */
 public final class GrammarMatcher extends BaseMatcher<String> {
@@ -65,7 +64,7 @@ public final class GrammarMatcher extends BaseMatcher<String> {
                 desc.appendText(" and ");
             }
             final RuleMatch match = this.errors.get(idx);
-            desc.appendText("\n")
+            desc.appendText(System.lineSeparator())
                 .appendValue(match.getRule().getId())
                 .appendText(" (")
                 .appendText(match.getMessage())
@@ -73,11 +72,11 @@ public final class GrammarMatcher extends BaseMatcher<String> {
                 .appendText(Integer.toString(match.getFromPos()))
                 .appendText("-")
                 .appendText(Integer.toString(match.getToPos()))
-                .appendText(" in:\n  ")
+                .appendText(String.format(" in:%n  "))
                 .appendText(this.input)
-                .appendText("\n  annotated input:\n  ")
+                .appendText(String.format("%n  annotated input:%n  "))
                 .appendText(GrammarMatcher.annotated(this.input).toString())
-                .appendText("\n  suggested correction(s):\n  ")
+                .appendText(String.format("%n  suggested correction(s):%n  "))
                 .appendValue(match.getSuggestedReplacements());
         }
     }

@@ -6,10 +6,10 @@ package org.eolang.lints;
 
 /**
  * Severity.
- *
  * @since 0.0.1
  */
 public enum Severity {
+
     /**
      * Compilation can't continue, must stop.
      */
@@ -32,7 +32,7 @@ public enum Severity {
 
     /**
      * Ctor.
-     * @param txt Name of it.
+     * @param txt Name of it
      */
     Severity(final String txt) {
         this.name = txt;
@@ -48,7 +48,6 @@ public enum Severity {
 
     /**
      * Parse it from the text.
-     *
      * @param text Text of it
      * @return Severity
      */

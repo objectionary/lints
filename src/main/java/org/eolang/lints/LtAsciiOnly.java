@@ -15,7 +15,6 @@ import java.util.stream.Collectors;
 
 /**
  * A comment must include only ASCII characters.
- *
  * @since 0.1.0
  * @todo #14:35min Calculate comment line number with abusive character.
  *  For now we just reusing object line number (via @line), which is not correct

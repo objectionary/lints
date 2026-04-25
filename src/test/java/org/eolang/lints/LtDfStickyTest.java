@@ -17,15 +17,14 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Tests for {@link LtDfSticky}.
- *
  * @since 0.0.42
  */
 final class LtDfStickyTest {
 
     @Test
     void loadsDefectsOnlyOnce() throws IOException {
-        final LtCounter counter = new LtCounter();
-        final Lint lint = new LtDfSticky(new LtFake(counter));
+        final LtCounter counter = new LtDfStickyTest.LtCounter();
+        final Lint lint = new LtDfSticky(new LtDfStickyTest.LtFake(counter));
         final XML xmir = new XMLDocument("<o/>");
         lint.defects(xmir);
         lint.defects(xmir);
@@ -39,8 +38,8 @@ final class LtDfStickyTest {
 
     @Test
     void loadsDefectsOnlyOnceForEachEntity() throws IOException {
-        final LtCounter counter = new LtCounter();
-        final Lint lint = new LtDfSticky(new LtFake(counter));
+        final LtCounter counter = new LtDfStickyTest.LtCounter();
+        final Lint lint = new LtDfSticky(new LtDfStickyTest.LtFake(counter));
         final XML one = new XMLDocument("<o id='1'/>");
         final XML three = new XMLDocument("<o id='3'/>");
         lint.defects(one);
@@ -57,8 +56,8 @@ final class LtDfStickyTest {
 
     @Test
     void preventsDefectsLoadingBeforeMethodCall() {
-        final LtCounter counter = new LtCounter();
-        new LtDfSticky(new LtFake(counter));
+        final LtCounter counter = new LtDfStickyTest.LtCounter();
+        new LtDfSticky(new LtDfStickyTest.LtFake(counter));
         MatcherAssert.assertThat(
             "Lt.defects() was called",
             counter.count(),
@@ -71,6 +70,7 @@ final class LtDfStickyTest {
      * @since 0.0.42
      */
     private static final class LtCounter implements Function<XML, Collection<Defect>> {
+
         /**
          * Counter value.
          */
@@ -89,7 +89,6 @@ final class LtDfStickyTest {
 
     /**
      * Fake class for Lint class.
-     *
      * @since 0.0.42
      */
     private static final class LtFake implements Lint {
@@ -111,7 +110,7 @@ final class LtDfStickyTest {
 
         /**
          * Constructor. Name and motive are hardcoded.
-         * @param defects Lint defects supplier.
+         * @param defects Lint defects supplier
          */
         LtFake(final Function<XML, Collection<Defect>> defects) {
             this(() -> "Lint", defects, () -> "Motive");
@@ -119,9 +118,9 @@ final class LtDfStickyTest {
 
         /**
          * Constructor.
-         * @param name Lint name supplier.
-         * @param defects Lint defects supplier.
-         * @param motive Lint motive supplier.
+         * @param name Lint name supplier
+         * @param defects Lint defects supplier
+         * @param motive Lint motive supplier
          */
         LtFake(
             final Supplier<String> name,

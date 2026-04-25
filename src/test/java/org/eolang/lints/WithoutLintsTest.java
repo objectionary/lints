@@ -81,10 +81,10 @@ final class WithoutLintsTest {
     void staysPackagePrivate() {
         ArchRuleDefinition.classes()
             .that().haveSimpleName("WithoutLints")
-            .should().bePackagePrivate()
-            .check(new ClassFileImporter()
-                .withImportOption(new ImportOption.DoNotIncludeTests())
-                .importPackages("org.eolang.lints")
+            .should().bePackagePrivate().check(
+                new ClassFileImporter()
+                    .withImportOption(new ImportOption.DoNotIncludeTests())
+                    .importPackages("org.eolang.lints")
             );
     }
 
@@ -101,7 +101,6 @@ final class WithoutLintsTest {
 
         /**
          * Ctor.
-         *
          * @param nme The lint name
          */
         LtFake(final String nme) {

@@ -17,7 +17,6 @@ import org.cactoos.list.ListOf;
 
 /**
  * Lint that ignores linting if {@code +unlint} meta is present.
- *
  * @since 0.0.1
  */
 final class LtUnlint implements Lint {
@@ -68,11 +67,11 @@ final class LtUnlint implements Lint {
                 if (unlint.matches(String.format("%s:\\d+-\\d+", lname))) {
                     problematic.removeIf(new UnlintInRange(unlint));
                 } else if (LtUnlint.LINE_NUMBER.matcher(unlint).matches()) {
-                    final List<String> split = new ListOf<>(unlint.split(":"));
-                    final int lineno = Integer.parseInt(
-                        split.get(1)
+                    problematic.removeIf(
+                        line -> line == Integer.parseInt(
+                            new ListOf<>(unlint.split(":")).get(1)
+                        )
                     );
-                    problematic.removeIf(line -> line == lineno);
                 } else {
                     problematic.clear();
                 }
@@ -98,5 +97,4 @@ final class LtUnlint implements Lint {
     public String motive() throws IOException {
         return this.origin.motive();
     }
-
 }

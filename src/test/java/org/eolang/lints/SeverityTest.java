@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Tests for {@link Severity}.
- *
  * @since 0.0.12
  */
 final class SeverityTest {
