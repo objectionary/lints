@@ -326,6 +326,37 @@ final class SourceTest {
         );
     }
 
+    @Test
+    void disablesUnlintNonExistingDefectViaWithout() throws IOException {
+        MatcherAssert.assertThat(
+            "unlint-non-existing-defect should be silenced when disabled via without()",
+            new Source(
+                new EoSyntax(
+                    String.join(
+                        System.lineSeparator(),
+                        "+unlint mandatory-home",
+                        "",
+                        "# Foo.",
+                        "[] > foo"
+                    )
+                ).parsed()
+            ).without(
+                "unlint-non-existing-defect",
+                "mandatory-home",
+                "mandatory-version",
+                "empty-object",
+                "mandatory-package",
+                "mandatory-spdx",
+                "comment-too-short",
+                "no-attribute-formation",
+                "unit-test-missing"
+            ).defects().stream()
+                .filter(defect -> defect.rule().startsWith("unlint-non-existing-defect"))
+                .collect(Collectors.toList()),
+            Matchers.emptyIterable()
+        );
+    }
+
     @ParameterizedTest
     @ValueSource(
         strings = {"mandatory-home", "mandatory-home:0"}
