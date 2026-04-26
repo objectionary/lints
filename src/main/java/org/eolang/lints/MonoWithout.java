@@ -22,6 +22,11 @@ final class MonoWithout extends IterableEnvelope<Lint> {
      * @param names Lints to exclude
      */
     MonoWithout(final String... names) {
-        super(new PkMono(new WithoutLints(MonoWithout.LINTS, names)));
+        super(
+            new WithoutLints(
+                new PkMono(new WithoutLints(MonoWithout.LINTS, names)),
+                names
+            )
+        );
     }
 }
