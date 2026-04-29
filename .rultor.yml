@@ -4,6 +4,7 @@
 # yamllint disable rule:line-length
 architect:
   - yegor256
+  - volodya-lombrozo
 ec2:
   type: t2.2xlarge
 docker:
