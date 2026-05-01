@@ -29,4 +29,4 @@ jobs:
           key: ubuntu-surefire-jdk-23-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: ubuntu-surefire-jdk-23-maven-
       - run: |
-          mvn clean install -Preserved --errors --batch-mode
+          mvn clean install -ntp -Preserved --errors --batch-mode
