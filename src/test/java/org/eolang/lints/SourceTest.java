@@ -518,7 +518,7 @@ final class SourceTest {
      * @return Benchmark results
      */
     private static Map<Map<SourceSize, Collection<Defect>>, String> benchmarkResults() {
-        final List<Map<SourceSize, Collection<Defect>>> results = new ArrayList<>(0);
+        final List<Map<SourceSize, Collection<Defect>>> results = new ArrayList<>();
         final StringBuilder sum = new StringBuilder();
         for (final SourceSize source : SourceSize.values()) {
             final long before = System.currentTimeMillis();
@@ -617,7 +617,7 @@ final class SourceTest {
          */
         Collection<Defect> defects() {
             try {
-                final Collection<Defect> messages = new ArrayList<>(0);
+                final Collection<Defect> messages = new ArrayList<>();
                 for (final Lint lint : this.lints) {
                     messages.addAll(this.timed(lint));
                 }
