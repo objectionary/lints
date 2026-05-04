@@ -25,7 +25,7 @@
             <xsl:text>critical</xsl:text>
           </xsl:attribute>
           <xsl:text>Object </xsl:text>
-          <xsl:value-of select="@name"/>
+          <xsl:value-of select="eo:escape(@name)"/>
           <xsl:text> have the "@pos" attribute, but the "@line" attribute is absent</xsl:text>
         </xsl:element>
       </xsl:for-each>

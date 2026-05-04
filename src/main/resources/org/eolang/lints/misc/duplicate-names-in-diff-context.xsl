@@ -5,6 +5,7 @@
 -->
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:eo="https://www.eolang.org" version="2.0" id="duplicate-names-in-diff-context">
   <xsl:import href="/org/eolang/funcs/lineno.xsl"/>
+  <xsl:import href="/org/eolang/funcs/escape.xsl"/>
   <xsl:import href="/org/eolang/funcs/defect-context.xsl"/>
   <xsl:import href="/org/eolang/funcs/special-name.xsl"/>
   <xsl:output encoding="UTF-8" method="xml"/>
@@ -23,9 +24,9 @@
               </xsl:attribute>
             </xsl:if>
             <xsl:attribute name="severity">warning</xsl:attribute>
-            <xsl:text>Object "</xsl:text>
-            <xsl:value-of select="@name"/>
-            <xsl:text>" has the same name as </xsl:text>
+            <xsl:text>Object </xsl:text>
+            <xsl:value-of select="eo:escape(@name)"/>
+            <xsl:text> has the same name as </xsl:text>
             <xsl:variable name="lines" select="current-group()/@line[. and . != current()/@line]"/>
             <xsl:variable name="empty" select="count($lines) != count(current-group()) - 1"/>
             <xsl:if test="count($lines) &gt; 0">
