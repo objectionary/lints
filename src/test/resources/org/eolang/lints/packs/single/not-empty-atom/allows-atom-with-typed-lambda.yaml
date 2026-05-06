@@ -4,12 +4,10 @@
 sheets:
   - /org/eolang/lints/atoms/not-empty-atom.xsl
 asserts:
-  - /defects[count(defect[@severity='error'])=1]
-  - /defects/defect[@line='1']
+  - /defects[count(defect)=0]
 document: |
   <object author="tests">
-    <o line="1" name="number">
-      <o base="∅" name="λ"/>
-      <o base="Φ.f" name="x"/>
+    <o name="times">
+      <o base="Φ.number" name="λ"/>
     </o>
   </object>

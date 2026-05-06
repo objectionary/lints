@@ -11,7 +11,7 @@
   <xsl:output encoding="UTF-8" method="xml"/>
   <xsl:template match="/">
     <defects>
-      <xsl:for-each select="//o[eo:atom(.) and o[@base and @base!='∅' and not(@base='ξ' and @name='xi🌵')]]">
+      <xsl:for-each select="//o[eo:atom(.) and o[@base and @base!='∅' and not(@name='λ') and not(@base='ξ' and @name='xi🌵')]]">
         <xsl:element name="defect">
           <xsl:variable name="line" select="eo:lineno(@line)"/>
           <xsl:attribute name="line">
@@ -28,7 +28,7 @@
           <xsl:text>The atom </xsl:text>
           <xsl:value-of select="eo:escape(@name)"/>
           <xsl:text> may not have any attributes, which however exist: </xsl:text>
-          <xsl:for-each select="o[@base]">
+          <xsl:for-each select="o[@base and not(@name='λ')]">
             <xsl:if test="position() &gt; 1">
               <xsl:text>, </xsl:text>
             </xsl:if>
