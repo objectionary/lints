@@ -4,13 +4,21 @@
  */
 package org.eolang.lints;
 
+import com.jcabi.log.Logger;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 import com.tngtech.archunit.core.importer.ImportOption;
 import com.tngtech.archunit.lang.syntax.ArchRuleDefinition;
 import com.yegor256.Together;
+import io.github.secretx33.resourceresolver.PathMatchingResourcePatternResolver;
+import io.github.secretx33.resourceresolver.Resource;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import org.cactoos.list.ListOf;
 import org.cactoos.scalar.LengthOf;
 import org.cactoos.set.SetOf;
@@ -79,6 +87,27 @@ final class PkMonoTest {
     }
 
     @Test
+    void linksEveryMotiveFileToALint() throws Exception {
+        final List<String> orphans = Arrays.stream(
+            new PathMatchingResourcePatternResolver().getResources(
+                "classpath*:org/eolang/motives/**/*.md"
+            )
+        ).map(PkMonoTest::shortName)
+            .filter(((Predicate<String>) PkMonoTest.lintNames()::contains).negate())
+            .distinct()
+            .sorted()
+            .collect(Collectors.toList());
+        MatcherAssert.assertThat(
+            Logger.format(
+                "Motive files without a corresponding lint: %[list]s. Each .md under src/main/resources/org/eolang/motives/ must match the name() of a lint produced by PkMono.",
+                orphans
+            ),
+            orphans,
+            Matchers.empty()
+        );
+    }
+
+    @Test
     @SuppressWarnings("JTCOP.RuleAssertionMessage")
     void staysInsideThePackage() {
         ArchRuleDefinition.classes()
@@ -88,6 +117,30 @@ final class PkMonoTest {
                     .withImportOption(new ImportOption.DoNotIncludeTests())
                     .importPackages("org.eolang.lints")
             );
+    }
+
+    /**
+     * Snapshot of every lint name produced by {@link PkMono}.
+     * @return Set of lint names
+     */
+    private static Set<String> lintNames() {
+        return StreamSupport.stream(new PkMono().spliterator(), false)
+            .map(Lint::name).collect(Collectors.toSet());
+    }
+
+    /**
+     * Pull the lint name out of a motive resource filename.
+     * @param res Classpath resource for a motive markdown file
+     * @return Lint name (filename without {@code .md})
+     */
+    private static String shortName(final Resource res) {
+        final String filename = res.getFilename();
+        if (filename == null) {
+            throw new IllegalStateException(
+                String.format("Resource %s has no filename", res)
+            );
+        }
+        return filename.replaceAll("\\.md$", "");
     }
 
     /**
