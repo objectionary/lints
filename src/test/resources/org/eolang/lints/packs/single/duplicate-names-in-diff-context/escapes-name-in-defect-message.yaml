@@ -1,0 +1,20 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+# yamllint disable rule:line-length
+sheets:
+  - /org/eolang/lints/misc/duplicate-names-in-diff-context.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=1]
+  - /defects/defect[contains(normalize-space(), 'Object "foo\x22bar" has the same name as')]
+document: |
+  <object author="tests">
+    <o>
+      <o>
+        <o name='foo&quot;bar' line="3"/>
+      </o>
+      <o>
+        <o name='foo&quot;bar' line="6"/>
+      </o>
+    </o>
+  </object>
