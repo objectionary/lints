@@ -16,3 +16,7 @@ mochawesome-report/
 node_modules/
 target/
 temp/
+.classpath
+.project
+.settings/
+
