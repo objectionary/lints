@@ -49,10 +49,11 @@ final class MonoLintsTest {
     }
 
     @Test
-    void lintsProgramCorrectly() {
+    void lintsProgramCorrectly() throws IOException {
+        final XML xmir = MonoLintsTest.parse();
         final Collection<Defect> found = new ListOf<>();
         new ListOf<>(new MonoLints()).forEach(
-            lint -> MonoLintsTest.collect(lint, found)
+            lint -> MonoLintsTest.collect(lint, xmir, found)
         );
         MatcherAssert.assertThat(
             "Found defects should be all unique",
@@ -62,35 +63,50 @@ final class MonoLintsTest {
     }
 
     /**
+     * Parse EO source into XMIR once.
+     * @return Parsed XMIR
+     * @throws IOException If fails
+     */
+    private static XML parse() throws IOException {
+        final long start = System.currentTimeMillis();
+        final XML xmir = new EoSyntax(
+            String.join(
+                System.lineSeparator(),
+                "+home https://github.com/objectionary/eo",
+                "+package f",
+                "+version 0.0.0",
+                "",
+                "# No comments.",
+                "[] > main",
+                "  QQ.io.stdout > @",
+                "    \"Hello world\""
+            )
+        ).parsed();
+        Logger.info(
+            MonoLintsTest.class,
+            "Parsing: %dms",
+            System.currentTimeMillis() - start
+        );
+        return xmir;
+    }
+
+    /**
      * Collect defects from the lint into the accumulator.
      * @param lint Lint to run
+     * @param xmir Parsed XMIR
      * @param into Accumulator
      */
-    private static void collect(final Lint lint, final Collection<Defect> into) {
+    private static void collect(
+        final Lint lint, final XML xmir, final Collection<Defect> into
+    ) {
         try {
-            final long parse = System.currentTimeMillis();
-            final XML xmir = new EoSyntax(
-                String.join(
-                    System.lineSeparator(),
-                    "+home https://github.com/objectionary/eo",
-                    "+package f",
-                    "+version 0.0.0",
-                    "",
-                    "# No comments.",
-                    "[] > main",
-                    "  QQ.io.stdout > @",
-                    "    \"Hello world\""
-                )
-            ).parsed();
-            final long parsed = System.currentTimeMillis() - parse;
-            final long linted = System.currentTimeMillis();
+            final long start = System.currentTimeMillis();
             into.addAll(lint.defects(xmir));
             Logger.info(
                 MonoLintsTest.class,
-                "Lint '%s': parse=%dms, lint=%dms",
+                "Lint '%s': %dms",
                 lint.name(),
-                parsed,
-                System.currentTimeMillis() - linted
+                System.currentTimeMillis() - start
             );
         } catch (final IOException exception) {
             throw new IllegalStateException("Failed to lint XMIR", exception);
