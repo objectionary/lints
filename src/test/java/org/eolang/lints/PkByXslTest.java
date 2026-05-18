@@ -5,6 +5,7 @@
 package org.eolang.lints;
 
 import com.jcabi.log.Logger;
+import com.jcabi.xml.XML;
 import com.jcabi.xml.XMLDocument;
 import io.github.secretx33.resourceresolver.PathMatchingResourcePatternResolver;
 import io.github.secretx33.resourceresolver.Resource;
@@ -12,6 +13,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.function.Predicate;
 import org.cactoos.io.InputOf;
 import org.cactoos.list.ListOf;
 import org.cactoos.text.TextOf;
@@ -64,20 +66,18 @@ final class PkByXslTest {
 
     @Test
     void doesNotDuplicateDefectsWhenMultipleDefectsOnTheSameLine() throws Exception {
+        final XML xmir = PkByXslTest.parse();
         final Collection<Defect> aggregated = new ListOf<>();
         new PkByXsl().forEach(
             xsl -> {
                 try {
-                    aggregated.addAll(
-                        xsl.defects(
-                            new EoSyntax(
-                                String.join(
-                                    System.lineSeparator(),
-                                    "# Foo with unused voids on the same line.",
-                                    "[x y z] > foo"
-                                )
-                            ).parsed()
-                        )
+                    final long start = System.currentTimeMillis();
+                    aggregated.addAll(xsl.defects(xmir));
+                    Logger.info(
+                        PkByXslTest.class,
+                        "Lint '%s': %dms",
+                        xsl.name(),
+                        System.currentTimeMillis() - start
                     );
                 } catch (final IOException exception) {
                     throw new IllegalStateException(
@@ -98,10 +98,32 @@ final class PkByXslTest {
     }
 
     /**
+     * Parse EO source into XMIR once.
+     * @return Parsed XMIR
+     * @throws IOException If fails
+     */
+    private static XML parse() throws IOException {
+        final long start = System.currentTimeMillis();
+        final XML xmir = new EoSyntax(
+            String.join(
+                System.lineSeparator(),
+                "# Foo with unused voids on the same line.",
+                "[x y z] > foo"
+            )
+        ).parsed();
+        Logger.info(
+            PkByXslTest.class,
+            "Parsing: %dms",
+            System.currentTimeMillis() - start
+        );
+        return xmir;
+    }
+
+    /**
      * Checks that XSL stylesheet ID matches filename.
      * @since 0.0.1
      */
-    private static final class IdChecker implements java.util.function.Predicate<Resource> {
+    private static final class IdChecker implements Predicate<Resource> {
 
         @Override
         public boolean test(final Resource res) {

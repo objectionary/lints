@@ -64,6 +64,12 @@ final class MonoLintsTest {
 
     /**
      * Parse EO source into XMIR once.
+     * @todo #867:90min Standardize EO test programs by using .eo files instead of inline strings.
+     *  Currently, EO programs used in tests (e.g. in MonoLintsTest, PkByXslTest) are constructed
+     *  from hard-coded String.join(...) calls scattered across test classes. This makes them hard
+     *  to maintain and inconsistent. All such inline EO snippets should be extracted into dedicated
+     *  .eo resource files under src/test/resources and loaded via ResourceOf, so that every test
+     *  reads its input from a single canonical source.
      * @return Parsed XMIR
      * @throws IOException If fails
      */
