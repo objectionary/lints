@@ -7,6 +7,7 @@ package org.eolang.lints;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 import com.tngtech.archunit.core.importer.ImportOption;
 import com.tngtech.archunit.lang.syntax.ArchRuleDefinition;
+import com.jcabi.log.Logger;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashSet;
@@ -66,6 +67,7 @@ final class MonoLintsTest {
      */
     private static void collect(final Lint lint, final Collection<Defect> into) {
         try {
+            final long start = System.currentTimeMillis();
             into.addAll(
                 lint.defects(
                     new EoSyntax(
@@ -82,6 +84,12 @@ final class MonoLintsTest {
                         )
                     ).parsed()
                 )
+            );
+            Logger.info(
+                MonoLintsTest.class,
+                "Lint '%s': %dms",
+                lint.name(),
+                System.currentTimeMillis() - start
             );
         } catch (final IOException exception) {
             throw new IllegalStateException("Failed to lint XMIR", exception);
