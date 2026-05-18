@@ -4,6 +4,7 @@
  */
 package org.eolang.lints;
 
+import com.jcabi.xml.XML;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 import com.tngtech.archunit.core.importer.ImportOption;
 import com.tngtech.archunit.lang.syntax.ArchRuleDefinition;
@@ -67,29 +68,29 @@ final class MonoLintsTest {
      */
     private static void collect(final Lint lint, final Collection<Defect> into) {
         try {
-            final long start = System.currentTimeMillis();
-            into.addAll(
-                lint.defects(
-                    new EoSyntax(
-                        String.join(
-                            System.lineSeparator(),
-                            "+home https://github.com/objectionary/eo",
-                            "+package f",
-                            "+version 0.0.0",
-                            "",
-                            "# No comments.",
-                            "[] > main",
-                            "  QQ.io.stdout > @",
-                            "    \"Hello world\""
-                        )
-                    ).parsed()
+            final long parse = System.currentTimeMillis();
+            final XML xmir = new EoSyntax(
+                String.join(
+                    System.lineSeparator(),
+                    "+home https://github.com/objectionary/eo",
+                    "+package f",
+                    "+version 0.0.0",
+                    "",
+                    "# No comments.",
+                    "[] > main",
+                    "  QQ.io.stdout > @",
+                    "    \"Hello world\""
                 )
-            );
+            ).parsed();
+            final long parsed = System.currentTimeMillis() - parse;
+            final long linted = System.currentTimeMillis();
+            into.addAll(lint.defects(xmir));
             Logger.info(
                 MonoLintsTest.class,
-                "Lint '%s': %dms",
+                "Lint '%s': parse=%dms, lint=%dms",
                 lint.name(),
-                System.currentTimeMillis() - start
+                parsed,
+                System.currentTimeMillis() - linted
             );
         } catch (final IOException exception) {
             throw new IllegalStateException("Failed to lint XMIR", exception);
