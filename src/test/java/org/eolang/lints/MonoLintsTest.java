@@ -4,11 +4,11 @@
  */
 package org.eolang.lints;
 
+import com.jcabi.log.Logger;
 import com.jcabi.xml.XML;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 import com.tngtech.archunit.core.importer.ImportOption;
 import com.tngtech.archunit.lang.syntax.ArchRuleDefinition;
-import com.jcabi.log.Logger;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashSet;
@@ -49,6 +49,7 @@ final class MonoLintsTest {
     }
 
     @Test
+    @SuppressWarnings("PMD.UnnecessaryLocalRule")
     void lintsProgramCorrectly() throws IOException {
         final XML xmir = MonoLintsTest.parse();
         final Collection<Defect> found = new ListOf<>();
@@ -64,15 +65,16 @@ final class MonoLintsTest {
 
     /**
      * Parse EO source into XMIR once.
+     * @return Parsed XMIR
+     * @throws IOException If fails
      * @todo #867:90min Standardize EO test programs by using .eo files instead of inline strings.
      *  Currently, EO programs used in tests (e.g. in MonoLintsTest, PkByXslTest) are constructed
      *  from hard-coded String.join(...) calls scattered across test classes. This makes them hard
      *  to maintain and inconsistent. All such inline EO snippets should be extracted into dedicated
      *  .eo resource files under src/test/resources and loaded via ResourceOf, so that every test
      *  reads its input from a single canonical source.
-     * @return Parsed XMIR
-     * @throws IOException If fails
      */
+    @SuppressWarnings("PMD.UnnecessaryLocalRule")
     private static XML parse() throws IOException {
         final long start = System.currentTimeMillis();
         final XML xmir = new EoSyntax(
@@ -102,6 +104,7 @@ final class MonoLintsTest {
      * @param xmir Parsed XMIR
      * @param into Accumulator
      */
+    @SuppressWarnings("PMD.UnnecessaryLocalRule")
     private static void collect(
         final Lint lint, final XML xmir, final Collection<Defect> into
     ) {

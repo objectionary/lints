@@ -65,6 +65,7 @@ final class PkByXslTest {
     }
 
     @Test
+    @SuppressWarnings("PMD.UnnecessaryLocalRule")
     void doesNotDuplicateDefectsWhenMultipleDefectsOnTheSameLine() throws Exception {
         final XML xmir = PkByXslTest.parse();
         final Collection<Defect> aggregated = new ListOf<>();
@@ -102,6 +103,7 @@ final class PkByXslTest {
      * @return Parsed XMIR
      * @throws IOException If fails
      */
+    @SuppressWarnings("PMD.UnnecessaryLocalRule")
     private static XML parse() throws IOException {
         final long start = System.currentTimeMillis();
         final XML xmir = new EoSyntax(
