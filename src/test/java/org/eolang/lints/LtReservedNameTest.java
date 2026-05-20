@@ -6,6 +6,7 @@ package org.eolang.lints;
 
 import java.io.IOException;
 import java.util.Collection;
+import org.cactoos.io.ResourceOf;
 import org.cactoos.list.ListOf;
 import org.cactoos.map.MapEntry;
 import org.cactoos.map.MapOf;
@@ -27,12 +28,7 @@ final class LtReservedNameTest {
             "It is expected to catch only one defect here",
             new LtReservedName(new MapOf<>("true", "true.eo")).defects(
                 new EoSyntax(
-                    String.join(
-                        System.lineSeparator(),
-                        "# Qqq.",
-                        "[] > qqq",
-                        "  42 > true"
-                    )
+                    new ResourceOf("org/eolang/lints/reserved-qqq.eo")
                 ).parsed()
             ),
             Matchers.hasSize(1)
@@ -45,11 +41,7 @@ final class LtReservedNameTest {
             "Defects are not empty, but they should",
             new LtReservedName(new MapOf<>("true", "true.eo")).defects(
                 new EoSyntax(
-                    String.join(
-                        "# X object.",
-                        "[] > x",
-                        "  42 > y"
-                    )
+                    new ResourceOf("org/eolang/lints/non-reserved-x.eo")
                 ).parsed()
             ),
             Matchers.emptyIterable()
@@ -62,11 +54,7 @@ final class LtReservedNameTest {
             "Defects are not empty, but they should",
             new LtReservedName(new MapOf<>("f", "f.eo")).defects(
                 new EoSyntax(
-                    String.join(
-                        "# top.",
-                        "[] > top",
-                        "  52 > x"
-                    )
+                    new ResourceOf("org/eolang/lints/non-reserved-top.eo")
                 ).parsed()
             ),
             Matchers.emptyIterable()
@@ -79,13 +67,7 @@ final class LtReservedNameTest {
             new MapOf<>("stdout", "stdout.eo")
         ).defects(
             new EoSyntax(
-                String.join(
-                    "+package org.foo",
-                    "",
-                    "# Tee packaged.",
-                    "[] > tee",
-                    "  52 > stdout"
-                )
+                new ResourceOf("org/eolang/lints/reserved-with-package.eo")
             ).parsed()
         );
         final int expected = 1;
@@ -110,12 +92,7 @@ final class LtReservedNameTest {
                 )
             ).defects(
                 new EoSyntax(
-                    String.join(
-                        System.lineSeparator(),
-                        "# JA.",
-                        "[] > ja",
-                        "  52 > spb"
-                    )
+                    new ResourceOf("org/eolang/lints/reserved-ja-spb.eo")
                 ).parsed()
             ),
             Matchers.hasSize(2)
@@ -130,12 +107,7 @@ final class LtReservedNameTest {
                 new MapOf<>("foo", "foo.eo")
             ).defects(
                 new EoSyntax(
-                    String.join(
-                        System.lineSeparator(),
-                        "# Foo.",
-                        "[] > foo",
-                        "  52 > spb"
-                    )
+                    new ResourceOf("org/eolang/lints/reserved-foo-spb.eo")
                 ).parsed()
             ),
             Matchers.hasSize(1)
@@ -151,12 +123,7 @@ final class LtReservedNameTest {
                     new MapOf<>("foo", "foo.eo")
                 ).defects(
                     new EoSyntax(
-                        String.join(
-                            System.lineSeparator(),
-                            "# Foo.",
-                            "[] > foo",
-                            "  52 > spb"
-                        )
+                        new ResourceOf("org/eolang/lints/reserved-foo-spb.eo")
                     ).parsed()
                 )
             ).get(0).text(),
@@ -173,12 +140,7 @@ final class LtReservedNameTest {
             "Defects size does not match with expected",
             new LtReservedName().defects(
                 new EoSyntax(
-                    String.join(
-                        System.lineSeparator(),
-                        "# Bar.",
-                        "[] > bar",
-                        "  52 > stdout"
-                    )
+                    new ResourceOf("org/eolang/lints/reserved-bar-stdout.eo")
                 ).parsed()
             ),
             Matchers.hasSize(1)
@@ -193,12 +155,7 @@ final class LtReservedNameTest {
             new ListOf<>(
                 new LtReservedName().defects(
                     new EoSyntax(
-                        String.join(
-                            System.lineSeparator(),
-                            "# Baz.",
-                            "[] > baz",
-                            "  52 > stdout"
-                        )
+                        new ResourceOf("org/eolang/lints/reserved-baz-stdout.eo")
                     ).parsed()
                 )
             ).get(0).text(),

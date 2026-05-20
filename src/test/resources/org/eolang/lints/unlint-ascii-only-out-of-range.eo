@@ -1,0 +1,6 @@
++unlint ascii-only:10-55
+
+# 致性是关键
+[] > main
+  # 大成果是目标
+  [] > run

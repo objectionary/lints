@@ -1,0 +1,6 @@
++unlint ascii-only:7-10
+
+# 应用程序.
+[] > main
+  # 你好，杰夫!
+  [] > say-hello

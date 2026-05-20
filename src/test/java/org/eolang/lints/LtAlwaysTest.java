@@ -5,6 +5,7 @@
 package org.eolang.lints;
 
 import java.io.IOException;
+import org.cactoos.io.ResourceOf;
 import org.eolang.parser.EoSyntax;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -22,12 +23,7 @@ final class LtAlwaysTest {
             "didn't return one defect",
             new LtAlways().defects(
                 new EoSyntax(
-                    String.join(
-                        System.lineSeparator(),
-                        "# first",
-                        "[] > foo",
-                        ""
-                    )
+                    new ResourceOf("org/eolang/lints/first-foo.eo")
                 ).parsed()
             ),
             Matchers.hasSize(1)

@@ -66,13 +66,7 @@ final class LtByXslTest {
             "No defects found, while a few of them expected",
             new LtByXsl("critical/duplicate-names").defects(
                 new EoSyntax(
-                    String.join(
-                        System.lineSeparator(),
-                        "# first.",
-                        "[] > foo",
-                        "  12 > x",
-                        "  52 > x"
-                    )
+                    new ResourceOf("org/eolang/lints/duplicate-names.eo")
                 ).parsed()
             ),
             Matchers.hasSize(Matchers.greaterThan(0))
@@ -219,11 +213,7 @@ final class LtByXslTest {
             new ListOf<>(
                 new LtByXsl("comments/comment-without-dot").defects(
                     new EoSyntax(
-                        String.join(
-                            System.lineSeparator(),
-                            "# Foo",
-                            "[] > foo"
-                        )
+                        new ResourceOf("org/eolang/lints/foo-without-dot.eo")
                     ).parsed()
                 )
             ).get(0).experimental(),
@@ -270,11 +260,7 @@ final class LtByXslTest {
     void doesNotDuplicateDefectsWhenMultipleDefectsOnTheSameLine() throws Exception {
         final Collection<Defect> defects = new LtByXsl("misc/unused-void-attr").defects(
             new EoSyntax(
-                String.join(
-                    System.lineSeparator(),
-                    "# Foo with unused voids on the same line.",
-                    "[x y z] > foo"
-                )
+                new ResourceOf("org/eolang/lints/unused-voids.eo")
             ).parsed()
         );
         MatcherAssert.assertThat(

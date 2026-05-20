@@ -1,0 +1,12 @@
++version 8.8.8-beta
++alias org.eolang.txt.sprintf
++alias org . eolang . txt . broken
++version 1.1-another maybe be wrong
++package Z.Y.Z
++home some-wrong-URL
++architect broken-email-here
+
+# A comment here.
+[] > foo-bar
+  boom > @
+    bar 42 > zzz

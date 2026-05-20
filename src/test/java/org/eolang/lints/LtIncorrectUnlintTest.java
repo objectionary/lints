@@ -7,6 +7,7 @@ package org.eolang.lints;
 import java.io.IOException;
 import java.util.List;
 import matchers.DefectMatcher;
+import org.cactoos.io.ResourceOf;
 import org.cactoos.list.ListOf;
 import org.eolang.parser.EoSyntax;
 import org.hamcrest.MatcherAssert;
@@ -25,14 +26,7 @@ final class LtIncorrectUnlintTest {
             "unlint must point to existing lint",
             new LtIncorrectUnlint(List.of("hello")).defects(
                 new EoSyntax(
-                    String.join(
-                        System.lineSeparator(),
-                        "+unlint foo",
-                        "+unlint bar",
-                        "",
-                        "# Foo.",
-                        "[] > foo"
-                    )
+                    new ResourceOf("org/eolang/lints/incorrect-unlints.eo")
                 ).parsed()
             ),
             Matchers.allOf(
@@ -62,13 +56,7 @@ final class LtIncorrectUnlintTest {
             new ListOf<>(
                 new LtIncorrectUnlint(List.of("hello")).defects(
                     new EoSyntax(
-                        String.join(
-                            System.lineSeparator(),
-                            "+unlint boom",
-                            "",
-                            "# Foo.",
-                            "[] > foo"
-                        )
+                        new ResourceOf("org/eolang/lints/unlint-boom.eo")
                     ).parsed()
                 )
             ).get(0).text(),
@@ -82,13 +70,7 @@ final class LtIncorrectUnlintTest {
             "Unlints with line number should be supported",
             new LtIncorrectUnlint(new ListOf<>("comment-not-capitalized")).defects(
                 new EoSyntax(
-                    String.join(
-                        System.lineSeparator(),
-                        "+unlint comment-not-capitalized:3",
-                        "",
-                        "# foo.",
-                        "[] > foo"
-                    )
+                    new ResourceOf("org/eolang/lints/unlint-with-line-number.eo")
                 ).parsed()
             ),
             Matchers.emptyIterable()
@@ -101,13 +83,7 @@ final class LtIncorrectUnlintTest {
             "Non existing unlint with line number should be caught",
             new LtIncorrectUnlint(new ListOf<>("a")).defects(
                 new EoSyntax(
-                    String.join(
-                        System.lineSeparator(),
-                        "+unlint b:1",
-                        "",
-                        "# App.",
-                        "[] > app"
-                    )
+                    new ResourceOf("org/eolang/lints/unlint-non-existing-with-line.eo")
                 ).parsed()
             ),
             Matchers.hasSize(Matchers.greaterThan(0))

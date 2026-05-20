@@ -1,0 +1,13 @@
++unlint unlint-non-existing-defect
++unlint empty-object
++unlint mandatory-home
++unlint mandatory-package
++unlint mandatory-version
++unlint comment-too-short
++unlint unsorted-metas
++unlint mandatory-spdx
++unlint no-attribute-formation
++unlint unit-test-missing
+
+# Test.
+[] > one

@@ -1,0 +1,6 @@
+
+# Regex
+[] > regex
+  # Unit test
+  [] +> matches-regex-against-the-pattern
+    (regex "/[a-z]+/").compiled.matches "hello" > @

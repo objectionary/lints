@@ -1,0 +1,6 @@
++unlint comment-without-dot
+
+# Foo
+[] > four
+  # Bar
+  [] > bar

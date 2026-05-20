@@ -1,0 +1,6 @@
++unlint ascii-only:4-6
+
+# 应用程序.
+[] > app
+  # 主函数.
+  [] > main

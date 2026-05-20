@@ -1,0 +1,7 @@
++unlint ascii-only:5
++unlint ascii-only:7
+
+# Not ascii text: привет!
+[] > three
+  # Not ascii text: 你好，杰夫!
+  [] > bar

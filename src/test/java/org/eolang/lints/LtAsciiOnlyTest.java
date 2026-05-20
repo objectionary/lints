@@ -6,6 +6,7 @@ package org.eolang.lints;
 
 import java.io.IOException;
 import matchers.DefectMatcher;
+import org.cactoos.io.ResourceOf;
 import org.cactoos.list.ListOf;
 import org.eolang.parser.EoSyntax;
 import org.hamcrest.MatcherAssert;
@@ -25,13 +26,7 @@ final class LtAsciiOnlyTest {
             "non-ascii comment is not welcome",
             new LtAsciiOnly().defects(
                 new EoSyntax(
-                    String.join(
-                        System.lineSeparator(),
-                        "# привет",
-                        "# как дела?",
-                        "[] > foo",
-                        ""
-                    )
+                    new ResourceOf("org/eolang/lints/non-ascii-cyrillic.eo")
                 ).parsed()
             ),
             Matchers.allOf(
@@ -48,13 +43,7 @@ final class LtAsciiOnlyTest {
             new ListOf<>(
                 new LtAsciiOnly().defects(
                     new EoSyntax(
-                        String.join(
-                            System.lineSeparator(),
-                            "# привет",
-                            "# как дела?",
-                            "[] > foo",
-                            ""
-                        )
+                        new ResourceOf("org/eolang/lints/non-ascii-cyrillic.eo")
                     ).parsed()
                 )
             ).get(0).text(),
@@ -77,12 +66,7 @@ final class LtAsciiOnlyTest {
             "The rule name is set right",
             new LtAsciiOnly().defects(
                 new EoSyntax(
-                    String.join(
-                        System.lineSeparator(),
-                        "# тук тук",
-                        "[] > foo",
-                        ""
-                    )
+                    new ResourceOf("org/eolang/lints/non-ascii-tuk-tuk.eo")
                 ).parsed()
             ).iterator().next().rule(),
             Matchers.equalTo("ascii-only")
@@ -95,11 +79,7 @@ final class LtAsciiOnlyTest {
             "The lint should complain as warning",
             new LtAsciiOnly().defects(
                 new EoSyntax(
-                    String.join(
-                        System.lineSeparator(),
-                        "# 计算机编程是我的生活!",
-                        "[] > a"
-                    )
+                    new ResourceOf("org/eolang/lints/non-ascii-chinese.eo")
                 ).parsed()
             ).iterator().next().severity(),
             Matchers.equalTo(Severity.WARNING)

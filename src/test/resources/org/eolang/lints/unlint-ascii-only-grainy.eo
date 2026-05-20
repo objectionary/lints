@@ -1,0 +1,6 @@
++unlint ascii-only:4
+
+# привет.
+[] > two
+  # дорогой!
+  [] > bar

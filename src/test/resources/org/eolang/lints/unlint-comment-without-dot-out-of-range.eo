@@ -1,0 +1,6 @@
++unlint comment-without-dot:2-4
+
+# No dot here
+[] > x
+  # and here
+  [] > y

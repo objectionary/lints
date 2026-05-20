@@ -8,6 +8,7 @@ import com.jcabi.log.Logger;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashSet;
+import org.cactoos.io.ResourceOf;
 import org.eolang.parser.EoSyntax;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -25,12 +26,7 @@ final class LtUnlintTest {
             "failed to return one error",
             new LtUnlint(new LtAlways()).defects(
                 new EoSyntax(
-                    String.join(
-                        System.lineSeparator(),
-                        "# first",
-                        "[] > foo",
-                        ""
-                    )
+                    new ResourceOf("org/eolang/lints/first-foo.eo")
                 ).parsed()
             ),
             Matchers.hasSize(1)
@@ -43,14 +39,7 @@ final class LtUnlintTest {
             "failed to return empty list",
             new LtUnlint(new LtAlways()).defects(
                 new EoSyntax(
-                    String.join(
-                        System.lineSeparator(),
-                        "+unlint always",
-                        "",
-                        "# first",
-                        "[] > one",
-                        ""
-                    )
+                    new ResourceOf("org/eolang/lints/unlint-always.eo")
                 ).parsed()
             ),
             Matchers.emptyIterable()
@@ -63,15 +52,7 @@ final class LtUnlintTest {
             "Only one defect should be unlinted",
             new LtUnlint(new LtAsciiOnly()).defects(
                 new EoSyntax(
-                    String.join(
-                        System.lineSeparator(),
-                        "+unlint ascii-only:4",
-                        "",
-                        "# привет.",
-                        "[] > two",
-                        "  # дорогой!",
-                        "  [] > bar"
-                    )
+                    new ResourceOf("org/eolang/lints/unlint-ascii-only-grainy.eo")
                 ).parsed()
             ),
             Matchers.allOf(
@@ -94,16 +75,7 @@ final class LtUnlintTest {
             "All defects should be unlinted",
             new LtUnlint(new LtAsciiOnly()).defects(
                 new EoSyntax(
-                    String.join(
-                        System.lineSeparator(),
-                        "+unlint ascii-only:5",
-                        "+unlint ascii-only:7",
-                        "",
-                        "# Not ascii text: привет!",
-                        "[] > three",
-                        "  # Not ascii text: 你好，杰夫!",
-                        "  [] > bar"
-                    )
+                    new ResourceOf("org/eolang/lints/unlint-ascii-only-multiple.eo")
                 ).parsed()
             ),
             Matchers.emptyIterable()
@@ -118,15 +90,7 @@ final class LtUnlintTest {
                 new LtByXsl("comments/comment-without-dot")
             ).defects(
                 new EoSyntax(
-                    String.join(
-                        System.lineSeparator(),
-                        "+unlint comment-without-dot",
-                        "",
-                        "# Foo",
-                        "[] > four",
-                        "  # Bar",
-                        "  [] > bar"
-                    )
+                    new ResourceOf("org/eolang/lints/unlint-comment-without-dot.eo")
                 ).parsed()
             ),
             Matchers.emptyIterable()
@@ -141,18 +105,7 @@ final class LtUnlintTest {
                 new LtByXsl("comments/comment-without-dot")
             ).defects(
                 new EoSyntax(
-                    String.join(
-                        System.lineSeparator(),
-                        "+home https://github.com/objectionary/eo",
-                        "+package f",
-                        "+version 0.0.0",
-                        "+unlint comment-without-dot:7",
-                        "",
-                        "# No comments",
-                        "[] > boom",
-                        "  QQ.io.stdout > @",
-                        "    \"we are booming!\""
-                    )
+                    new ResourceOf("org/eolang/lints/unlint-comment-without-dot-line.eo")
                 ).parsed()
             ),
             Matchers.emptyIterable()
@@ -165,11 +118,7 @@ final class LtUnlintTest {
             new LtByXsl("misc/unused-void-attr")
         ).defects(
             new EoSyntax(
-                String.join(
-                    System.lineSeparator(),
-                    "# Foo with unused voids on the same line.",
-                    "[x y z] > foo"
-                )
+                new ResourceOf("org/eolang/lints/unused-voids.eo")
             ).parsed()
         );
         MatcherAssert.assertThat(
@@ -188,15 +137,7 @@ final class LtUnlintTest {
             "Defects are not empty, but they should",
             new LtUnlint(new LtByXsl("comments/comment-without-dot")).defects(
                 new EoSyntax(
-                    String.join(
-                        System.lineSeparator(),
-                        "+unlint comment-without-dot:4-6",
-                        "",
-                        "# No dot here",
-                        "[] > five",
-                        "  # and here",
-                        "  [] > bar"
-                    )
+                    new ResourceOf("org/eolang/lints/unlint-comment-without-dot-range.eo")
                 ).parsed()
             ),
             Matchers.emptyIterable()
@@ -209,15 +150,7 @@ final class LtUnlintTest {
             "Resulted defects do not match with expected",
             new LtUnlint(new LtByXsl("comments/comment-without-dot")).defects(
                 new EoSyntax(
-                    String.join(
-                        System.lineSeparator(),
-                        "+unlint comment-without-dot:2-4",
-                        "",
-                        "# No dot here",
-                        "[] > x",
-                        "  # and here",
-                        "  [] > y"
-                    )
+                    new ResourceOf("org/eolang/lints/unlint-comment-without-dot-out-of-range.eo")
                 ).parsed()
             ),
             Matchers.allOf(
@@ -240,15 +173,7 @@ final class LtUnlintTest {
             "Size of defects does not match with expected",
             new LtUnlint(new LtAsciiOnly()).defects(
                 new EoSyntax(
-                    String.join(
-                        System.lineSeparator(),
-                        "+unlint ascii-only:10-55",
-                        "",
-                        "# 致性是关键",
-                        "[] > main",
-                        "  # 大成果是目标",
-                        "  [] > run"
-                    )
+                    new ResourceOf("org/eolang/lints/unlint-ascii-only-out-of-range.eo")
                 ).parsed()
             ),
             Matchers.iterableWithSize(2)

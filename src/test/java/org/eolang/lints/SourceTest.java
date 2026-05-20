@@ -79,23 +79,7 @@ final class SourceTest {
             "defects found even though the code is clean",
             new Source(
                 new EoSyntax(
-                    String.join(
-                        System.lineSeparator(),
-                        "+home https://www.eolang.org",
-                        "+package com.example",
-                        "+version 0.0.0",
-                        // REUSE-IgnoreStart
-                        "+spdx SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com",
-                        "+spdx SPDX-License-Identifier: MIT",
-                        // REUSE-IgnoreEnd,
-                        "",
-                        "# This is just a test object with no functionality.",
-                        "[i] > foo",
-                        "  i > @",
-                        "  # This is real unit test for object with no functionality.",
-                        "  [] +> does-something",
-                        "    foo 1 > @"
-                    )
+                    new ResourceOf("org/eolang/lints/valid-source.eo")
                 ).parsed()
             ).defects(),
             Matchers.emptyIterable()
@@ -108,24 +92,7 @@ final class SourceTest {
             "defect found even though lint is suppressed",
             new Source(
                 new EoSyntax(
-                    new InputOf(
-                        String.join(
-                            System.lineSeparator(),
-                            "+unlint unlint-non-existing-defect",
-                            "+unlint empty-object",
-                            "+unlint mandatory-home",
-                            "+unlint mandatory-package",
-                            "+unlint mandatory-version",
-                            "+unlint comment-too-short",
-                            "+unlint unsorted-metas",
-                            "+unlint mandatory-spdx",
-                            "+unlint no-attribute-formation",
-                            "+unlint unit-test-missing",
-                            "",
-                            "# Test.",
-                            "[] > one"
-                        )
-                    )
+                    new ResourceOf("org/eolang/lints/suppress-all-lints.eo")
                 ).parsed()
             ).defects(),
             Matchers.emptyIterable()
@@ -138,12 +105,7 @@ final class SourceTest {
         Files.write(
             path,
             new EoSyntax(
-                String.join(
-                    System.lineSeparator(),
-                    "# Foo",
-                    "[] > two",
-                    ""
-                )
+                new ResourceOf("org/eolang/lints/foo-without-dot.eo")
             ).parsed().toString().getBytes(StandardCharsets.UTF_8)
         );
         MatcherAssert.assertThat(
@@ -164,12 +126,7 @@ final class SourceTest {
                 new Together<>(
                     t -> new Source(
                         new EoSyntax(
-                            String.join(
-                                System.lineSeparator(),
-                                "# Foo",
-                                "[] > three",
-                                ""
-                            )
+                            new ResourceOf("org/eolang/lints/foo-without-dot.eo")
                         ).parsed(),
                         new ListOf<>(new LtByXsl("comments/comment-without-dot"))
                     ).defects().size()
@@ -185,23 +142,7 @@ final class SourceTest {
             "checking passes",
             new Source(
                 new EoSyntax(
-                    new InputOf(
-                        String.join(
-                            System.lineSeparator(),
-                            "+version 8.8.8-beta",
-                            "+alias org.eolang.txt.sprintf",
-                            "+alias org . eolang . txt . broken",
-                            "+version 1.1-another maybe be wrong",
-                            "+package Z.Y.Z",
-                            "+home some-wrong-URL",
-                            "+architect broken-email-here",
-                            "",
-                            "# A comment here.",
-                            "[] > foo-bar",
-                            "  boom > @",
-                            "    bar 42 > zzz"
-                        )
-                    )
+                    new ResourceOf("org/eolang/lints/broken-source.eo")
                 ).parsed(),
                 new ListOf<>(new LtByXsl("aliases/alias-too-long"))
             ).defects(),
@@ -253,13 +194,7 @@ final class SourceTest {
             "Defects for disabled lint are not empty, but should be",
             new Source(
                 new EoSyntax(
-                    String.join(
-                        System.lineSeparator(),
-                        "# привет",
-                        "# как дела?",
-                        "[] > four",
-                        ""
-                    )
+                    new ResourceOf("org/eolang/lints/non-ascii-cyrillic.eo")
                 ).parsed()
             ).without("ascii-only").defects().stream()
                 .filter(defect -> defect.rule().equals("ascii-only"))
@@ -274,13 +209,7 @@ final class SourceTest {
             "Defects for disabled lints are not empty, but should be",
             new Source(
                 new EoSyntax(
-                    String.join(
-                        System.lineSeparator(),
-                        "# привет",
-                        "# как дела?",
-                        "[] > five",
-                        ""
-                    )
+                    new ResourceOf("org/eolang/lints/non-ascii-cyrillic.eo")
                 ).parsed()
             ).without(
                 "ascii-only",
@@ -305,21 +234,7 @@ final class SourceTest {
             "Only one defect should be found",
             new Source(
                 new EoSyntax(
-                    String.join(
-                        System.lineSeparator(),
-                        "+home https://github.com/objectionary/eo",
-                        "+package f",
-                        "+version 0.0.0",
-                        "",
-                        "# No comments.",
-                        "[c] > main",
-                        "  QQ.io.stdout > @",
-                        "    QQ.txt.sprintf",
-                        "      \"Hello %s\"",
-                        "      * c",
-                        "  [] +> starts-correctly",
-                        "    main 42 > @"
-                    )
+                    new ResourceOf("org/eolang/lints/main-with-test.eo")
                 ).parsed()
             ).without("mandatory-spdx").defects(),
             Matchers.hasSize(1)
@@ -332,13 +247,7 @@ final class SourceTest {
             "unlint-non-existing-defect should be silenced when disabled via without()",
             new Source(
                 new EoSyntax(
-                    String.join(
-                        System.lineSeparator(),
-                        "+unlint mandatory-home",
-                        "",
-                        "# Foo.",
-                        "[] > foo"
-                    )
+                    new ResourceOf("org/eolang/lints/unlint-mandatory-home.eo")
                 ).parsed()
             ).without(
                 "unlint-non-existing-defect",
@@ -405,11 +314,7 @@ final class SourceTest {
     void doesNotDuplicateDefectsWhenMultipleDefectsOnTheSameLine() throws IOException {
         final Collection<Defect> defects = new Source(
             new EoSyntax(
-                String.join(
-                    System.lineSeparator(),
-                    "# Foo with unused voids on the same line.",
-                    "[x y z] > foo"
-                )
+                new ResourceOf("org/eolang/lints/unused-voids.eo")
             ).parsed(),
             new ListOf<>(new LtByXsl("misc/unused-void-attr"))
         ).defects();
@@ -429,11 +334,7 @@ final class SourceTest {
             "Found defects don't contain information about Single scope, but they should",
             new Source(
                 new EoSyntax(
-                    String.join(
-                        System.lineSeparator(),
-                        "# Foo",
-                        "[] > foo"
-                    )
+                    new ResourceOf("org/eolang/lints/foo-without-dot.eo")
                 ).parsed(),
                 new ListOf<>(new LtByXsl("comments/comment-without-dot"))
             ).defects(),

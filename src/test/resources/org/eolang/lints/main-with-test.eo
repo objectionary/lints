@@ -1,0 +1,12 @@
++home https://github.com/objectionary/eo
++package f
++version 0.0.0
+
+# No comments.
+[c] > main
+  QQ.io.stdout > @
+    QQ.txt.sprintf
+      "Hello %s"
+      * c
+  [] +> starts-correctly
+    main 42 > @

@@ -7,6 +7,7 @@ package org.eolang.lints;
 import com.yegor256.MayBeSlow;
 import com.yegor256.Together;
 import matchers.DefectMatcher;
+import org.cactoos.io.ResourceOf;
 import org.cactoos.set.SetOf;
 import org.eolang.parser.EoSyntax;
 import org.hamcrest.MatcherAssert;
@@ -146,26 +147,7 @@ final class LtTestNotVerbTest {
             "Defects size doesn't match with expected",
             new LtTestNotVerb().defects(
                 new EoSyntax(
-                    String.join(
-                        System.lineSeparator(),
-                        "# Regex",
-                        "[] > regex",
-                        "  # This unit test is supposed to check the functionality of the corresponding object.",
-                        "  [] +> regex-contains-valid-groups-on-each-matched-block",
-                        "    ((regex \"/([a-z]+)([1-9]{1})/\").compiled.match \"!hello1!world2\").next > first",
-                        "    first.next > second",
-                        "    and. > @",
-                        "      and.",
-                        "        and.",
-                        "          first.groups-count.eq 3",
-                        "          (first.group 1).eq \"hello\"",
-                        "        (first.group 2).eq \"1\"",
-                        "      and.",
-                        "        and.",
-                        "          second.groups-count.eq 3",
-                        "          (second.group 1).eq \"world\"",
-                        "        (second.group 2).eq \"2\""
-                    )
+                    new ResourceOf("org/eolang/lints/regex-test.eo")
                 ).parsed()
             ),
             Matchers.hasSize(1)
@@ -181,14 +163,7 @@ final class LtTestNotVerbTest {
                 new Together<>(
                     t -> new LtTestNotVerb().defects(
                         new EoSyntax(
-                            String.join(
-                                System.lineSeparator(),
-                                "# Regex",
-                                "[] > regex",
-                                "  # Unit test",
-                                "  [] +> matches-regex-against-the-pattern",
-                                "    (regex \"/[a-z]+/\").compiled.matches \"hello\" > @"
-                            )
+                            new ResourceOf("org/eolang/lints/regex-match.eo")
                         ).parsed()
                     ).size()
                 ).asList()

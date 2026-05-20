@@ -19,6 +19,7 @@ import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+import org.cactoos.io.ResourceOf;
 import org.cactoos.list.ListOf;
 import org.cactoos.scalar.LengthOf;
 import org.cactoos.set.SetOf;
@@ -56,14 +57,7 @@ final class PkMonoTest {
             "Defects found, though they were unlinted",
             new Source(
                 new EoSyntax(
-                    String.join(
-                        System.lineSeparator(),
-                        "+unlint ascii-only",
-                        " # привет",
-                        "# как дела?",
-                        "[] > foo",
-                        ""
-                    )
+                    new ResourceOf("org/eolang/lints/unlint-ascii-only.eo")
                 ).parsed(),
                 new PkMono()
             ).defects().stream().filter(

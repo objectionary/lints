@@ -1,0 +1,4 @@
++unlint ascii-only:1-5
+[] > main
+  QQ.io.stdout > @
+    "Hello"

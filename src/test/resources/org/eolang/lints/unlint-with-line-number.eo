@@ -1,0 +1,4 @@
++unlint comment-not-capitalized:3
+
+# foo.
+[] > foo

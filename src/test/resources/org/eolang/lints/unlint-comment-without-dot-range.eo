@@ -1,0 +1,6 @@
++unlint comment-without-dot:4-6
+
+# No dot here
+[] > five
+  # and here
+  [] > bar

@@ -1,0 +1,9 @@
++home https://github.com/objectionary/eo
++package f
++version 0.0.0
++unlint comment-without-dot:7
+
+# No comments
+[] > boom
+  QQ.io.stdout > @
+    "we are booming!"
