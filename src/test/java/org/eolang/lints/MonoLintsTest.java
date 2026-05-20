@@ -68,6 +68,12 @@ final class MonoLintsTest {
      * Parse EO source into XMIR once.
      * @return Parsed XMIR
      * @throws IOException If fails
+     * @todo #870:90min Introduce EoProgram helper class to wrap EO resource parsing.
+     *  In many test classes we repeat {@code new EoSyntax(new ResourceOf("...")).parsed()}.
+     *  Extract this into a dedicated {@code EoProgram(String resource)} class with a
+     *  {@code parse()} method that handles {@link java.io.IOException} gracefully,
+     *  logs parse timing, and provides a minimal in-memory cache so the same resource
+     *  is not re-parsed across multiple test methods.
      */
     @SuppressWarnings("PMD.UnnecessaryLocalRule")
     private static XML parse() throws IOException {
