@@ -1,0 +1,2 @@
+# Foo with unused voids on the same line.
+[x y z] > foo

@@ -49,6 +49,13 @@ import org.yaml.snakeyaml.Yaml;
 /**
  * Test for {@link LtByXsl}.
  * @since 0.0.1
+ * @todo #870:90min Reduce total execution time of LtByXslTest below 60 seconds.
+ *  The full test suite in this class takes ~197 seconds to run (360 tests), which
+ *  is too slow for a regular build. Investigate which parameterized or integration
+ *  tests dominate the runtime (likely {@code testsAllLintsByEo} and similar
+ *  classpath-scanning suites), and consider splitting heavy tests into a separate
+ *  integration-test profile, parallelising test execution, or caching parsed XMIR
+ *  across test cases where it is safe to do so.
  */
 @SuppressWarnings("PMD.TooManyMethods")
 final class LtByXslTest {

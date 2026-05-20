@@ -15,6 +15,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.function.Predicate;
 import org.cactoos.io.InputOf;
+import org.cactoos.io.ResourceOf;
 import org.cactoos.list.ListOf;
 import org.cactoos.text.TextOf;
 import org.cactoos.text.UncheckedText;
@@ -107,11 +108,7 @@ final class PkByXslTest {
     private static XML parse() throws IOException {
         final long start = System.currentTimeMillis();
         final XML xmir = new EoSyntax(
-            String.join(
-                System.lineSeparator(),
-                "# Foo with unused voids on the same line.",
-                "[x y z] > foo"
-            )
+            new ResourceOf("org/eolang/lints/unused-voids.eo")
         ).parsed();
         Logger.info(
             PkByXslTest.class,

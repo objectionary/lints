@@ -1,0 +1,8 @@
++home https://github.com/objectionary/eo
++package f
++version 0.0.0
+
+# No comments.
+[] > main
+  QQ.io.stdout > @
+    "Hello world"
