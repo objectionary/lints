@@ -50,7 +50,7 @@ final class LtUnlintNonExistingDefectTest {
                 .map(Defect::line)
                 .collect(Collectors.toList()),
             Matchers.equalTo(
-                new ListOf<>(1, 2)
+                new ListOf<>(3, 4)
             )
         );
     }

@@ -152,7 +152,7 @@ final class SourceTest {
                         Matchers.allOf(
                             Matchers.containsString("alias-too-long"),
                             Matchers.containsString("The alias has too many parts"),
-                            Matchers.containsString(":3")
+                            Matchers.containsString(":5")
                         )
                     )
                 )
@@ -341,7 +341,7 @@ final class SourceTest {
                 Matchers.hasToString(
                     Matchers.allOf(
                         Matchers.containsString("comment-without-dot/S WARNING"),
-                        Matchers.containsString(":2")
+                        Matchers.containsString(":4")
                     )
                 )
             )

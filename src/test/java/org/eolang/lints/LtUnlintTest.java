@@ -61,7 +61,7 @@ final class LtUnlintTest {
                     Matchers.hasToString(
                         Matchers.allOf(
                             Matchers.containsString("ascii-only WARNING"),
-                            Matchers.containsString(":6")
+                            Matchers.containsString(":8")
                         )
                     )
                 )
@@ -159,7 +159,7 @@ final class LtUnlintTest {
                     Matchers.hasToString(
                         Matchers.allOf(
                             Matchers.containsString("comment-without-dot WARNING"),
-                            Matchers.containsString(":6")
+                            Matchers.containsString(":8")
                         )
                     )
                 )
