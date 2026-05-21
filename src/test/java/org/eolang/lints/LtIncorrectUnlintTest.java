@@ -4,10 +4,10 @@
  */
 package org.eolang.lints;
 
+import fixtures.EoProgram;
 import java.io.IOException;
 import java.util.List;
 import matchers.DefectMatcher;
-import org.cactoos.io.ResourceOf;
 import org.cactoos.list.ListOf;
 import org.eolang.parser.EoSyntax;
 import org.hamcrest.MatcherAssert;
@@ -21,13 +21,11 @@ import org.junit.jupiter.api.Test;
 final class LtIncorrectUnlintTest {
 
     @Test
-    void catchesIncorrectUnlints() throws Exception {
+    void catchesIncorrectUnlints() throws IOException {
         MatcherAssert.assertThat(
             "unlint must point to existing lint",
             new LtIncorrectUnlint(List.of("hello")).defects(
-                new EoSyntax(
-                    new ResourceOf("org/eolang/lints/incorrect-unlints.eo")
-                ).parsed()
+                new EoProgram("org/eolang/lints/incorrect-unlints.eo").parse()
             ),
             Matchers.allOf(
                 Matchers.<Defect>iterableWithSize(2),
@@ -37,13 +35,11 @@ final class LtIncorrectUnlintTest {
     }
 
     @Test
-    void allowsCorrectUnlints() throws Exception {
+    void allowsCorrectUnlints() throws IOException {
         MatcherAssert.assertThat(
             "Defects are not empty, but they shouldn't be",
             new LtIncorrectUnlint(List.of("ascii-only")).defects(
-                new EoSyntax(
-                    "+unlint ascii-only"
-                ).parsed()
+                new EoSyntax("+unlint ascii-only").parsed()
             ),
             Matchers.emptyIterable()
         );
@@ -55,9 +51,7 @@ final class LtIncorrectUnlintTest {
             "Lint text doesn't contain clear message to the reader",
             new ListOf<>(
                 new LtIncorrectUnlint(List.of("hello")).defects(
-                    new EoSyntax(
-                        new ResourceOf("org/eolang/lints/unlint-boom.eo")
-                    ).parsed()
+                    new EoProgram("org/eolang/lints/unlint-boom.eo").parse()
                 )
             ).get(0).text(),
             Matchers.containsString("Suppressing \"boom\" does not make sense")
@@ -69,9 +63,7 @@ final class LtIncorrectUnlintTest {
         MatcherAssert.assertThat(
             "Unlints with line number should be supported",
             new LtIncorrectUnlint(new ListOf<>("comment-not-capitalized")).defects(
-                new EoSyntax(
-                    new ResourceOf("org/eolang/lints/unlint-with-line-number.eo")
-                ).parsed()
+                new EoProgram("org/eolang/lints/unlint-with-line-number.eo").parse()
             ),
             Matchers.emptyIterable()
         );
@@ -82,9 +74,7 @@ final class LtIncorrectUnlintTest {
         MatcherAssert.assertThat(
             "Non existing unlint with line number should be caught",
             new LtIncorrectUnlint(new ListOf<>("a")).defects(
-                new EoSyntax(
-                    new ResourceOf("org/eolang/lints/unlint-non-existing-with-line.eo")
-                ).parsed()
+                new EoProgram("org/eolang/lints/unlint-non-existing-with-line.eo").parse()
             ),
             Matchers.hasSize(Matchers.greaterThan(0))
         );

@@ -16,6 +16,7 @@ import com.yegor256.tojos.TjCached;
 import com.yegor256.tojos.TjDefault;
 import com.yegor256.tojos.Tojos;
 import fixtures.BytecodeClass;
+import fixtures.EoProgram;
 import fixtures.SourceSize;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -77,9 +78,7 @@ final class SourceTest {
         MatcherAssert.assertThat(
             "defects found even though the code is clean",
             new Source(
-                new EoSyntax(
-                    new ResourceOf("org/eolang/lints/valid-source.eo")
-                ).parsed()
+                new EoProgram("org/eolang/lints/valid-source.eo").parse()
             ).defects(),
             Matchers.emptyIterable()
         );
@@ -90,9 +89,7 @@ final class SourceTest {
         MatcherAssert.assertThat(
             "defect found even though lint is suppressed",
             new Source(
-                new EoSyntax(
-                    new ResourceOf("org/eolang/lints/suppress-all-lints.eo")
-                ).parsed()
+                new EoProgram("org/eolang/lints/suppress-all-lints.eo").parse()
             ).defects(),
             Matchers.emptyIterable()
         );
@@ -103,9 +100,9 @@ final class SourceTest {
         final Path path = dir.resolve("foo.xmir");
         Files.write(
             path,
-            new EoSyntax(
-                new ResourceOf("org/eolang/lints/foo-without-dot.eo")
-            ).parsed().toString().getBytes(StandardCharsets.UTF_8)
+            new EoProgram("org/eolang/lints/foo-without-dot.eo").parse()
+                .toString()
+                .getBytes(StandardCharsets.UTF_8)
         );
         MatcherAssert.assertThat(
             "the defect is found",
@@ -124,9 +121,7 @@ final class SourceTest {
             new SetOf<>(
                 new Together<>(
                     t -> new Source(
-                        new EoSyntax(
-                            new ResourceOf("org/eolang/lints/foo-without-dot.eo")
-                        ).parsed(),
+                        new EoProgram("org/eolang/lints/foo-without-dot.eo").parse(),
                         new ListOf<>(new LtByXsl("comments/comment-without-dot"))
                     ).defects().size()
                 ).asList()
@@ -136,13 +131,11 @@ final class SourceTest {
     }
 
     @Test
-    void checksLargerBrokenSource() throws IOException {
+    void checksLargerBrokenSource() {
         MatcherAssert.assertThat(
             "checking passes",
             new Source(
-                new EoSyntax(
-                    new ResourceOf("org/eolang/lints/broken-source.eo")
-                ).parsed(),
+                new EoProgram("org/eolang/lints/broken-source.eo").parse(),
                 new ListOf<>(new LtByXsl("aliases/alias-too-long"))
             ).defects(),
             Matchers.allOf(
@@ -162,12 +155,10 @@ final class SourceTest {
 
     @Test
     @Timeout(60L)
-    void acceptsCanonicalCode() throws IOException {
-        final XML xmir = new EoSyntax(
-            new ResourceOf(
-                "org/eolang/lints/canonical.eo"
-            )
-        ).parsed();
+    void acceptsCanonicalCode() {
+        final XML xmir = new EoProgram(
+            "org/eolang/lints/canonical.eo"
+        ).parse();
         MatcherAssert.assertThat(
             String.format("no errors in canonical code in %s", xmir),
             new Source(xmir).defects(),
@@ -188,13 +179,11 @@ final class SourceTest {
     }
 
     @Test
-    void createsSourceWithoutOneLint() throws IOException {
+    void createsSourceWithoutOneLint() {
         MatcherAssert.assertThat(
             "Defects for disabled lint are not empty, but should be",
             new Source(
-                new EoSyntax(
-                    new ResourceOf("org/eolang/lints/non-ascii-cyrillic.eo")
-                ).parsed()
+                new EoProgram("org/eolang/lints/non-ascii-cyrillic.eo").parse()
             ).without("ascii-only").defects().stream()
                 .filter(defect -> defect.rule().equals("ascii-only"))
                 .collect(Collectors.toList()),
@@ -203,62 +192,55 @@ final class SourceTest {
     }
 
     @Test
-    void createsSourceWithoutMultipleLints() throws IOException {
+    void createsSourceWithoutMultipleLints() {
         MatcherAssert.assertThat(
             "Defects for disabled lints are not empty, but should be",
-            new Source(
-                new EoSyntax(
-                    new ResourceOf("org/eolang/lints/non-ascii-cyrillic.eo")
-                ).parsed()
-            ).without(
-                "ascii-only",
-                "object-does-not-match-filename",
-                "comment-not-capitalized",
-                "empty-object",
-                "mandatory-home",
-                "mandatory-version",
-                "mandatory-package",
-                "comment-too-short",
-                "mandatory-spdx",
-                "no-attribute-formation",
-                "unit-test-missing"
-            ).defects(),
+            new Source(new EoProgram("org/eolang/lints/non-ascii-cyrillic.eo").parse())
+                .without(
+                    "ascii-only",
+                    "object-does-not-match-filename",
+                    "comment-not-capitalized",
+                    "empty-object",
+                    "mandatory-home",
+                    "mandatory-version",
+                    "mandatory-package",
+                    "comment-too-short",
+                    "mandatory-spdx",
+                    "no-attribute-formation",
+                    "unit-test-missing"
+                ).defects(),
             Matchers.emptyIterable()
         );
     }
 
     @Test
-    void returnsOnlyOneDefect() throws IOException {
+    void returnsOnlyOneDefect() {
         MatcherAssert.assertThat(
             "Only one defect should be found",
-            new Source(
-                new EoSyntax(
-                    new ResourceOf("org/eolang/lints/main-with-test.eo")
-                ).parsed()
-            ).without("mandatory-spdx").defects(),
+            new Source(new EoProgram("org/eolang/lints/main-with-test.eo").parse())
+                .without("mandatory-spdx")
+                .defects(),
             Matchers.hasSize(1)
         );
     }
 
     @Test
-    void disablesUnlintNonExistingDefectViaWithout() throws IOException {
+    void disablesUnlintNonExistingDefectViaWithout() {
         MatcherAssert.assertThat(
             "unlint-non-existing-defect should be silenced when disabled via without()",
             new Source(
-                new EoSyntax(
-                    new ResourceOf("org/eolang/lints/unlint-mandatory-home.eo")
-                ).parsed()
+                new EoProgram("org/eolang/lints/unlint-mandatory-home.eo").parse()
             ).without(
-                "unlint-non-existing-defect",
-                "mandatory-home",
-                "mandatory-version",
-                "empty-object",
-                "mandatory-package",
-                "mandatory-spdx",
-                "comment-too-short",
-                "no-attribute-formation",
-                "unit-test-missing"
-            ).defects().stream()
+                    "unlint-non-existing-defect",
+                    "mandatory-home",
+                    "mandatory-version",
+                    "empty-object",
+                    "mandatory-package",
+                    "mandatory-spdx",
+                    "comment-too-short",
+                    "no-attribute-formation",
+                    "unit-test-missing"
+                ).defects().stream()
                 .filter(defect -> defect.rule().startsWith("unlint-non-existing-defect"))
                 .collect(Collectors.toList()),
             Matchers.emptyIterable()
@@ -310,11 +292,9 @@ final class SourceTest {
     }
 
     @Test
-    void doesNotDuplicateDefectsWhenMultipleDefectsOnTheSameLine() throws IOException {
+    void doesNotDuplicateDefectsWhenMultipleDefectsOnTheSameLine() {
         final Collection<Defect> defects = new Source(
-            new EoSyntax(
-                new ResourceOf("org/eolang/lints/unused-voids.eo")
-            ).parsed(),
+            new EoProgram("org/eolang/lints/unused-voids.eo").parse(),
             new ListOf<>(new LtByXsl("misc/unused-void-attr"))
         ).defects();
         MatcherAssert.assertThat(
@@ -328,13 +308,11 @@ final class SourceTest {
     }
 
     @Test
-    void outputsInformationAboutSingleScope() throws IOException {
+    void outputsInformationAboutSingleScope() {
         MatcherAssert.assertThat(
             "Found defects don't contain information about Single scope, but they should",
             new Source(
-                new EoSyntax(
-                    new ResourceOf("org/eolang/lints/foo-without-dot.eo")
-                ).parsed(),
+                new EoProgram("org/eolang/lints/foo-without-dot.eo").parse(),
                 new ListOf<>(new LtByXsl("comments/comment-without-dot"))
             ).defects(),
             Matchers.hasItem(

@@ -4,11 +4,10 @@
  */
 package org.eolang.lints;
 
+import fixtures.EoProgram;
 import java.io.IOException;
 import java.util.stream.Collectors;
-import org.cactoos.io.ResourceOf;
 import org.cactoos.list.ListOf;
-import org.eolang.parser.EoSyntax;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
@@ -27,9 +26,7 @@ final class LtUnlintNonExistingDefectTest {
                 new ListOf<>(new LtAsciiOnly()),
                 new ListOf<>()
             ).defects(
-                new EoSyntax(
-                    new ResourceOf("org/eolang/lints/unlint-ascii-only-no-defect.eo")
-                ).parsed()
+                new EoProgram("org/eolang/lints/unlint-ascii-only-no-defect.eo").parse()
             ),
             Matchers.hasSize(Matchers.greaterThan(0))
         );
@@ -43,9 +40,7 @@ final class LtUnlintNonExistingDefectTest {
                 new ListOf<>(new LtAsciiOnly()),
                 new ListOf<>()
             ).defects(
-                new EoSyntax(
-                    new ResourceOf("org/eolang/lints/unlint-ascii-only-duplicate.eo")
-                ).parsed()
+                new EoProgram("org/eolang/lints/unlint-ascii-only-duplicate.eo").parse()
             ).stream()
                 .map(Defect::line)
                 .collect(Collectors.toList()),
@@ -63,9 +58,7 @@ final class LtUnlintNonExistingDefectTest {
                 new ListOf<>(new LtAsciiOnly()),
                 new ListOf<>()
             ).defects(
-                new EoSyntax(
-                    new ResourceOf("org/eolang/lints/unlint-ascii-only-chinese.eo")
-                ).parsed()
+                new EoProgram("org/eolang/lints/unlint-ascii-only-chinese.eo").parse()
             ),
             Matchers.emptyIterable()
         );
@@ -79,9 +72,7 @@ final class LtUnlintNonExistingDefectTest {
                 new ListOf<>(new LtAsciiOnly()),
                 new ListOf<>()
             ).defects(
-                new EoSyntax(
-                    new ResourceOf("org/eolang/lints/non-ascii-bar.eo")
-                ).parsed()
+                new EoProgram("org/eolang/lints/non-ascii-bar.eo").parse()
             ),
             Matchers.emptyIterable()
         );
@@ -95,9 +86,7 @@ final class LtUnlintNonExistingDefectTest {
                 new ListOf<>(new LtAsciiOnly()),
                 new ListOf<>()
             ).defects(
-                new EoSyntax(
-                    new ResourceOf("org/eolang/lints/unlint-ascii-only-line.eo")
-                ).parsed()
+                new EoProgram("org/eolang/lints/unlint-ascii-only-line.eo").parse()
             ),
             Matchers.emptyIterable()
         );
@@ -111,9 +100,9 @@ final class LtUnlintNonExistingDefectTest {
                 new ListOf<>(new LtAsciiOnly()),
                 new ListOf<>()
             ).defects(
-                new EoSyntax(
-                    new ResourceOf("org/eolang/lints/unlint-ascii-only-wrong-line.eo")
-                ).parsed()
+                new EoProgram(
+                    "org/eolang/lints/unlint-ascii-only-wrong-line.eo"
+                ).parse()
             ),
             Matchers.hasSize(Matchers.greaterThan(0))
         );
@@ -127,9 +116,9 @@ final class LtUnlintNonExistingDefectTest {
                 new ListOf<>(new LtAsciiOnly()),
                 new ListOf<>()
             ).defects(
-                new EoSyntax(
-                    new ResourceOf("org/eolang/lints/unlint-ascii-only-range.eo")
-                ).parsed()
+                new EoProgram(
+                    "org/eolang/lints/unlint-ascii-only-range.eo"
+                ).parse()
             ),
             Matchers.emptyIterable()
         );
@@ -143,9 +132,9 @@ final class LtUnlintNonExistingDefectTest {
                 new ListOf<>(new LtAsciiOnly()),
                 new ListOf<>()
             ).defects(
-                new EoSyntax(
-                    new ResourceOf("org/eolang/lints/unlint-ascii-only-out-range.eo")
-                ).parsed()
+                new EoProgram(
+                    "org/eolang/lints/unlint-ascii-only-out-range.eo"
+                ).parse()
             ),
             Matchers.iterableWithSize(1)
         );
@@ -159,9 +148,9 @@ final class LtUnlintNonExistingDefectTest {
                 new ListOf<>(new LtAsciiOnly()),
                 new ListOf<>()
             ).defects(
-                new EoSyntax(
-                    new ResourceOf("org/eolang/lints/unlint-ascii-only-absent.eo")
-                ).parsed()
+                new EoProgram(
+                    "org/eolang/lints/unlint-ascii-only-absent.eo"
+                ).parse()
             ),
             Matchers.iterableWithSize(1)
         );

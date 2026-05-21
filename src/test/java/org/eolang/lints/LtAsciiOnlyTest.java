@@ -4,11 +4,11 @@
  */
 package org.eolang.lints;
 
+import fixtures.EoProgram;
 import java.io.IOException;
 import matchers.DefectMatcher;
 import org.cactoos.io.ResourceOf;
 import org.cactoos.list.ListOf;
-import org.eolang.parser.EoSyntax;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.IsEqual;
@@ -25,9 +25,7 @@ final class LtAsciiOnlyTest {
         MatcherAssert.assertThat(
             "non-ascii comment is not welcome",
             new LtAsciiOnly().defects(
-                new EoSyntax(
-                    new ResourceOf("org/eolang/lints/non-ascii-cyrillic.eo")
-                ).parsed()
+                new EoProgram("org/eolang/lints/non-ascii-cyrillic.eo").parse()
             ),
             Matchers.allOf(
                 Matchers.<Defect>iterableWithSize(Matchers.greaterThan(0)),
@@ -42,9 +40,7 @@ final class LtAsciiOnlyTest {
             "non-ascii comment error should contain abusive character",
             new ListOf<>(
                 new LtAsciiOnly().defects(
-                    new EoSyntax(
-                        new ResourceOf("org/eolang/lints/non-ascii-cyrillic.eo")
-                    ).parsed()
+                    new EoProgram("org/eolang/lints/non-ascii-cyrillic.eo").parse()
                 )
             ).get(0).text(),
             Matchers.containsString("Only ASCII characters are allowed in comments")
@@ -52,7 +48,7 @@ final class LtAsciiOnlyTest {
     }
 
     @Test
-    void explainsMotive() throws Exception {
+    void explainsMotive() throws IOException {
         MatcherAssert.assertThat(
             "The motive doesn't contain expected string",
             new LtAsciiOnly().motive().contains("# ASCII-Only Characters in Comments"),
@@ -61,13 +57,11 @@ final class LtAsciiOnlyTest {
     }
 
     @Test
-    void setsRuleCorrectly() throws Exception {
+    void setsRuleCorrectly() throws IOException {
         MatcherAssert.assertThat(
             "The rule name is set right",
             new LtAsciiOnly().defects(
-                new EoSyntax(
-                    new ResourceOf("org/eolang/lints/non-ascii-tuk-tuk.eo")
-                ).parsed()
+                new EoProgram("org/eolang/lints/non-ascii-tuk-tuk.eo").parse()
             ).iterator().next().rule(),
             Matchers.equalTo("ascii-only")
         );
@@ -78,9 +72,7 @@ final class LtAsciiOnlyTest {
         MatcherAssert.assertThat(
             "The lint should complain as warning",
             new LtAsciiOnly().defects(
-                new EoSyntax(
-                    new ResourceOf("org/eolang/lints/non-ascii-chinese.eo")
-                ).parsed()
+                new EoProgram("org/eolang/lints/non-ascii-chinese.eo").parse()
             ).iterator().next().severity(),
             Matchers.equalTo(Severity.WARNING)
         );

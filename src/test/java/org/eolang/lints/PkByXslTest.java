@@ -7,6 +7,7 @@ package org.eolang.lints;
 import com.jcabi.log.Logger;
 import com.jcabi.xml.XML;
 import com.jcabi.xml.XMLDocument;
+import fixtures.EoProgram;
 import io.github.secretx33.resourceresolver.PathMatchingResourcePatternResolver;
 import io.github.secretx33.resourceresolver.Resource;
 import java.io.IOException;
@@ -15,11 +16,9 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.function.Predicate;
 import org.cactoos.io.InputOf;
-import org.cactoos.io.ResourceOf;
 import org.cactoos.list.ListOf;
 import org.cactoos.text.TextOf;
 import org.cactoos.text.UncheckedText;
-import org.eolang.parser.EoSyntax;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
@@ -67,7 +66,7 @@ final class PkByXslTest {
 
     @Test
     @SuppressWarnings("PMD.UnnecessaryLocalRule")
-    void doesNotDuplicateDefectsWhenMultipleDefectsOnTheSameLine() throws Exception {
+    void doesNotDuplicateDefectsWhenMultipleDefectsOnTheSameLine() {
         final XML xmir = PkByXslTest.parse();
         final Collection<Defect> aggregated = new ListOf<>();
         new PkByXsl().forEach(
@@ -102,20 +101,10 @@ final class PkByXslTest {
     /**
      * Parse EO source into XMIR once.
      * @return Parsed XMIR
-     * @throws IOException If fails
      */
     @SuppressWarnings("PMD.UnnecessaryLocalRule")
-    private static XML parse() throws IOException {
-        final long start = System.currentTimeMillis();
-        final XML xmir = new EoSyntax(
-            new ResourceOf("org/eolang/lints/unused-voids.eo")
-        ).parsed();
-        Logger.info(
-            PkByXslTest.class,
-            "Parsing: %dms",
-            System.currentTimeMillis() - start
-        );
-        return xmir;
+    private static XML parse() {
+        return new EoProgram("org/eolang/lints/unused-voids.eo").parse();
     }
 
     /**
