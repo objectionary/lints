@@ -10,6 +10,7 @@ import com.jcabi.manifests.Manifests;
 import com.jcabi.matchers.XhtmlMatchers;
 import com.jcabi.xml.XMLDocument;
 import fixtures.BytecodeClass;
+import fixtures.EoProgram;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -63,18 +64,17 @@ import org.yaml.snakeyaml.Yaml;
  *  Audit all fixture files for content duplicates and consolidate where possible, updating
  *  test references to point to the surviving canonical file. This reduces maintenance
  *  burden and avoids subtle divergence between "the same" EO program defined twice.
+ * @checkstyle ClassFanOutComplexityCheck (500 lines)
  */
 @SuppressWarnings("PMD.TooManyMethods")
 final class LtByXslTest {
 
     @Test
-    void lintsOneFile() throws IOException {
+    void lintsOneFile() {
         MatcherAssert.assertThat(
             "No defects found, while a few of them expected",
             new LtByXsl("critical/duplicate-names").defects(
-                new EoSyntax(
-                    new ResourceOf("org/eolang/lints/duplicate-names.eo")
-                ).parsed()
+                new EoProgram("org/eolang/lints/duplicate-names.eo").parse()
             ),
             Matchers.hasSize(Matchers.greaterThan(0))
         );
@@ -214,14 +214,12 @@ final class LtByXslTest {
     }
 
     @Test
-    void returnsNonExperimentalWhenXslStaysQuiet() throws IOException {
+    void returnsNonExperimentalWhenXslStaysQuiet() {
         MatcherAssert.assertThat(
             "Experimental flag should be set to false",
             new ListOf<>(
                 new LtByXsl("comments/comment-without-dot").defects(
-                    new EoSyntax(
-                        new ResourceOf("org/eolang/lints/foo-without-dot.eo")
-                    ).parsed()
+                    new EoProgram("org/eolang/lints/foo-without-dot.eo").parse()
                 )
             ).get(0).experimental(),
             Matchers.equalTo(false)
@@ -264,11 +262,9 @@ final class LtByXslTest {
     }
 
     @Test
-    void doesNotDuplicateDefectsWhenMultipleDefectsOnTheSameLine() throws Exception {
+    void doesNotDuplicateDefectsWhenMultipleDefectsOnTheSameLine() {
         final Collection<Defect> defects = new LtByXsl("misc/unused-void-attr").defects(
-            new EoSyntax(
-                new ResourceOf("org/eolang/lints/unused-voids.eo")
-            ).parsed()
+            new EoProgram("org/eolang/lints/unused-voids.eo").parse()
         );
         MatcherAssert.assertThat(
             Logger.format(

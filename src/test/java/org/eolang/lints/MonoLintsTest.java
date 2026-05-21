@@ -9,13 +9,12 @@ import com.jcabi.xml.XML;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 import com.tngtech.archunit.core.importer.ImportOption;
 import com.tngtech.archunit.lang.syntax.ArchRuleDefinition;
+import fixtures.EoProgram;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.stream.Collectors;
-import org.cactoos.io.ResourceOf;
 import org.cactoos.list.ListOf;
-import org.eolang.parser.EoSyntax;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
@@ -67,26 +66,9 @@ final class MonoLintsTest {
     /**
      * Parse EO source into XMIR once.
      * @return Parsed XMIR
-     * @throws IOException If fails
-     * @todo #870:90min Introduce EoProgram helper class to wrap EO resource parsing.
-     *  In many test classes we repeat {@code new EoSyntax(new ResourceOf("...")).parsed()}.
-     *  Extract this into a dedicated {@code EoProgram(String resource)} class with a
-     *  {@code parse()} method that handles {@link java.io.IOException} gracefully,
-     *  logs parse timing, and provides a minimal in-memory cache so the same resource
-     *  is not re-parsed across multiple test methods.
      */
-    @SuppressWarnings("PMD.UnnecessaryLocalRule")
-    private static XML parse() throws IOException {
-        final long start = System.currentTimeMillis();
-        final XML xmir = new EoSyntax(
-            new ResourceOf("org/eolang/lints/simple.eo")
-        ).parsed();
-        Logger.info(
-            MonoLintsTest.class,
-            "Parsing: %dms",
-            System.currentTimeMillis() - start
-        );
-        return xmir;
+    private static XML parse() {
+        return new EoProgram("org/eolang/lints/simple.eo").parse();
     }
 
     /**

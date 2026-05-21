@@ -9,9 +9,9 @@ import com.tngtech.archunit.core.importer.ClassFileImporter;
 import com.tngtech.archunit.core.importer.ImportOption;
 import com.tngtech.archunit.lang.syntax.ArchRuleDefinition;
 import com.yegor256.Together;
+import fixtures.EoProgram;
 import io.github.secretx33.resourceresolver.PathMatchingResourcePatternResolver;
 import io.github.secretx33.resourceresolver.Resource;
-import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
@@ -19,11 +19,9 @@ import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
-import org.cactoos.io.ResourceOf;
 import org.cactoos.list.ListOf;
 import org.cactoos.scalar.LengthOf;
 import org.cactoos.set.SetOf;
-import org.eolang.parser.EoSyntax;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.IsEqual;
@@ -52,13 +50,13 @@ final class PkMonoTest {
     }
 
     @Test
-    void allowsUnlint() throws IOException {
+    void allowsUnlint() {
         MatcherAssert.assertThat(
             "Defects found, though they were unlinted",
             new Source(
-                new EoSyntax(
-                    new ResourceOf("org/eolang/lints/unlint-ascii-only.eo")
-                ).parsed(),
+                new EoProgram(
+                    "org/eolang/lints/unlint-ascii-only.eo"
+                ).parse(),
                 new PkMono()
             ).defects().stream().filter(
                 defect -> "ascii-only".equals(defect.rule())

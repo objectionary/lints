@@ -4,9 +4,7 @@
  */
 package org.eolang.lints;
 
-import java.io.IOException;
-import org.cactoos.io.ResourceOf;
-import org.eolang.parser.EoSyntax;
+import fixtures.EoProgram;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
@@ -18,14 +16,10 @@ import org.junit.jupiter.api.Test;
 final class LtAlwaysTest {
 
     @Test
-    void complainsAlways() throws IOException {
+    void complainsAlways() {
         MatcherAssert.assertThat(
             "didn't return one defect",
-            new LtAlways().defects(
-                new EoSyntax(
-                    new ResourceOf("org/eolang/lints/first-foo.eo")
-                ).parsed()
-            ),
+            new LtAlways().defects(new EoProgram("org/eolang/lints/first-foo.eo").parse()),
             Matchers.hasSize(1)
         );
     }

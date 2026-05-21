@@ -6,8 +6,9 @@ package org.eolang.lints;
 
 import com.yegor256.MayBeSlow;
 import com.yegor256.Together;
+import fixtures.EoProgram;
+import java.io.IOException;
 import matchers.DefectMatcher;
-import org.cactoos.io.ResourceOf;
 import org.cactoos.set.SetOf;
 import org.eolang.parser.EoSyntax;
 import org.hamcrest.MatcherAssert;
@@ -142,13 +143,11 @@ final class LtTestNotVerbTest {
     @SuppressWarnings("JTCOP.RuleNotContainsTestWord")
     @Test
     @ExtendWith(MayBeSlow.class)
-    void lintsRegexTests() throws Exception {
+    void lintsRegexTests() throws IOException {
         MatcherAssert.assertThat(
             "Defects size doesn't match with expected",
             new LtTestNotVerb().defects(
-                new EoSyntax(
-                    new ResourceOf("org/eolang/lints/regex-test.eo")
-                ).parsed()
+                new EoProgram("org/eolang/lints/regex-test.eo").parse()
             ),
             Matchers.hasSize(1)
         );
@@ -162,9 +161,7 @@ final class LtTestNotVerbTest {
             new SetOf<>(
                 new Together<>(
                     t -> new LtTestNotVerb().defects(
-                        new EoSyntax(
-                            new ResourceOf("org/eolang/lints/regex-match.eo")
-                        ).parsed()
+                        new EoProgram("org/eolang/lints/regex-match.eo").parse()
                     ).size()
                 ).asList()
             ).size(),
