@@ -8,6 +8,7 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.jcabi.log.Logger;
 import com.jcabi.xml.XML;
+import com.jcabi.xml.XMLDocument;
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 import org.cactoos.io.ResourceOf;
@@ -50,7 +51,11 @@ public final class EoProgram {
      */
     public XML parse() {
         try {
-            return EoProgram.CACHE.get(this.resource, () -> EoProgram.doParse(this.resource));
+            return new XMLDocument(
+                EoProgram.CACHE.get(
+                    this.resource, () -> EoProgram.doParse(this.resource)
+                ).deepCopy()
+            );
         } catch (final ExecutionException ex) {
             throw new IllegalStateException(
                 String.format("Failed to parse EO resource '%s'", this.resource),
