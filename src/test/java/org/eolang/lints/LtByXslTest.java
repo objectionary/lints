@@ -64,6 +64,7 @@ import org.yaml.snakeyaml.Yaml;
  *  Audit all fixture files for content duplicates and consolidate where possible, updating
  *  test references to point to the surviving canonical file. This reduces maintenance
  *  burden and avoids subtle divergence between "the same" EO program defined twice.
+ * @checkstyle ClassFanOutComplexityCheck (500 lines)
  */
 @SuppressWarnings("PMD.TooManyMethods")
 final class LtByXslTest {

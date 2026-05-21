@@ -195,20 +195,19 @@ final class SourceTest {
     void createsSourceWithoutMultipleLints() {
         MatcherAssert.assertThat(
             "Defects for disabled lints are not empty, but should be",
-            new Source(new EoProgram("org/eolang/lints/non-ascii-cyrillic.eo").parse())
-                .without(
-                    "ascii-only",
-                    "object-does-not-match-filename",
-                    "comment-not-capitalized",
-                    "empty-object",
-                    "mandatory-home",
-                    "mandatory-version",
-                    "mandatory-package",
-                    "comment-too-short",
-                    "mandatory-spdx",
-                    "no-attribute-formation",
-                    "unit-test-missing"
-                ).defects(),
+            new Source(new EoProgram("org/eolang/lints/non-ascii-cyrillic.eo").parse()).without(
+                "ascii-only",
+                "object-does-not-match-filename",
+                "comment-not-capitalized",
+                "empty-object",
+                "mandatory-home",
+                "mandatory-version",
+                "mandatory-package",
+                "comment-too-short",
+                "mandatory-spdx",
+                "no-attribute-formation",
+                "unit-test-missing"
+            ).defects(),
             Matchers.emptyIterable()
         );
     }
@@ -231,16 +230,16 @@ final class SourceTest {
             new Source(
                 new EoProgram("org/eolang/lints/unlint-mandatory-home.eo").parse()
             ).without(
-                    "unlint-non-existing-defect",
-                    "mandatory-home",
-                    "mandatory-version",
-                    "empty-object",
-                    "mandatory-package",
-                    "mandatory-spdx",
-                    "comment-too-short",
-                    "no-attribute-formation",
-                    "unit-test-missing"
-                ).defects().stream()
+                "unlint-non-existing-defect",
+                "mandatory-home",
+                "mandatory-version",
+                "empty-object",
+                "mandatory-package",
+                "mandatory-spdx",
+                "comment-too-short",
+                "no-attribute-formation",
+                "unit-test-missing"
+            ).defects().stream()
                 .filter(defect -> defect.rule().startsWith("unlint-non-existing-defect"))
                 .collect(Collectors.toList()),
             Matchers.emptyIterable()

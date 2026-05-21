@@ -102,7 +102,6 @@ final class PkByXslTest {
      * Parse EO source into XMIR once.
      * @return Parsed XMIR
      */
-    @SuppressWarnings("PMD.UnnecessaryLocalRule")
     private static XML parse() {
         return new EoProgram("org/eolang/lints/unused-voids.eo").parse();
     }

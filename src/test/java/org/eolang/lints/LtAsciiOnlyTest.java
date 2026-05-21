@@ -7,7 +7,6 @@ package org.eolang.lints;
 import fixtures.EoProgram;
 import java.io.IOException;
 import matchers.DefectMatcher;
-import org.cactoos.io.ResourceOf;
 import org.cactoos.list.ListOf;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
