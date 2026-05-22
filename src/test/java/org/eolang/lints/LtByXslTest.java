@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import matchers.DefectsMatcher;
+import org.cactoos.io.InputOf;
 import org.cactoos.io.ReaderOf;
 import org.cactoos.io.ResourceOf;
 import org.cactoos.list.ListOf;
@@ -41,6 +42,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.junit.jupiter.api.condition.OS;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.xembly.Directives;
 import org.xembly.ImpossibleModificationException;
@@ -74,6 +77,7 @@ final class LtByXslTest {
     }
 
     @SuppressWarnings("JTCOP.RuleNotContainsTestWord")
+    @Execution(ExecutionMode.CONCURRENT)
     @ParameterizedTest
     @ClasspathSource(value = "org/eolang/lints/packs/single/", glob = "**.yaml")
     void testsAllLintsByEo(final String yaml) {
@@ -82,7 +86,7 @@ final class LtByXslTest {
             new XtSticky(
                 new XtYaml(
                     yaml,
-                    eo -> new EoSyntax(eo).parsed()
+                    eo -> new EoProgram(String.valueOf(eo.hashCode()), new InputOf(eo)).parse()
                 )
             ),
             new XtoryMatcher(new DefectsMatcher())

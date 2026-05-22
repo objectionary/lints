@@ -11,6 +11,7 @@ import com.jcabi.xml.XML;
 import com.jcabi.xml.XMLDocument;
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
+import org.cactoos.Input;
 import org.cactoos.io.ResourceOf;
 import org.eolang.parser.EoSyntax;
 
@@ -33,16 +34,31 @@ public final class EoProgram {
         .build();
 
     /**
+     * Program name for caching.
+     */
+    private final String name;
+
+    /**
      * Resource path.
      */
-    private final String resource;
+    private final Input resource;
 
     /**
      * Constructor.
      * @param res Classpath resource path to the EO source file
      */
     public EoProgram(final String res) {
-        this.resource = res;
+        this(res, new ResourceOf(res));
+    }
+
+    /**
+     * Constructor.
+     * @param nme Cache key and log label for this program
+     * @param input EO source input
+     */
+    public EoProgram(final String nme, final Input input) {
+        this.name = nme;
+        this.resource = input;
     }
 
     /**
@@ -51,11 +67,7 @@ public final class EoProgram {
      */
     public XML parse() {
         try {
-            return new XMLDocument(
-                EoProgram.CACHE.get(
-                    this.resource, () -> EoProgram.doParse(this.resource)
-                ).deepCopy()
-            );
+            return new XMLDocument(EoProgram.CACHE.get(this.name, this::doParse).deepCopy());
         } catch (final ExecutionException ex) {
             throw new IllegalStateException(
                 String.format("Failed to parse EO resource '%s'", this.resource),
@@ -66,18 +78,17 @@ public final class EoProgram {
 
     /**
      * Perform the actual parse and log timing.
-     * @param res Resource path to parse
      * @return Parsed XMIR document
      * @throws IOException If parsing fails
      */
     @SuppressWarnings("PMD.UnnecessaryLocalRule")
-    private static XML doParse(final String res) throws IOException {
+    private XML doParse() throws IOException {
         final long start = System.currentTimeMillis();
-        final XML xmir = new EoSyntax(new ResourceOf(res)).parsed();
+        final XML xmir = new EoSyntax(this.resource).parsed();
         Logger.info(
             EoProgram.class,
             "Parsed '%s': %dms",
-            res,
+            this.name,
             System.currentTimeMillis() - start
         );
         return xmir;
