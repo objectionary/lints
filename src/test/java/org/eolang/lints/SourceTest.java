@@ -34,6 +34,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import org.cactoos.bytes.BytesOf;
 import org.cactoos.bytes.UncheckedBytes;
+import org.cactoos.io.InputOf;
 import org.cactoos.io.ResourceOf;
 import org.cactoos.iterable.Sticky;
 import org.cactoos.iterable.Synced;
@@ -41,7 +42,6 @@ import org.cactoos.list.ListOf;
 import org.cactoos.map.MapOf;
 import org.cactoos.scalar.Unchecked;
 import org.cactoos.set.SetOf;
-import org.eolang.parser.EoSyntax;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
@@ -250,19 +250,22 @@ final class SourceTest {
     @ValueSource(
         strings = {"mandatory-home", "mandatory-home:0"}
     )
-    void catchesBrokenUnlintAfterLintWasRemoved(final String lid) throws IOException {
+    void catchesBrokenUnlintAfterLintWasRemoved(final String lid) {
         MatcherAssert.assertThat(
             "Found defect does not match with expected",
             new Source(
-                new EoSyntax(
-                    String.join(
-                        System.lineSeparator(),
-                        String.format("+unlint %s", lid),
-                        "",
-                        "# Foo.",
-                        "[] > foo"
+                new EoProgram(
+                    lid,
+                    new InputOf(
+                        String.join(
+                            System.lineSeparator(),
+                            String.format("+unlint %s", lid),
+                            "",
+                            "# Foo.",
+                            "[] > foo"
+                        )
                     )
-                ).parsed()
+                ).parse()
             ).without(
                 "mandatory-home",
                 "mandatory-version",

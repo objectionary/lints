@@ -9,8 +9,8 @@ import com.yegor256.Together;
 import fixtures.EoProgram;
 import java.io.IOException;
 import matchers.DefectMatcher;
+import org.cactoos.io.InputOf;
 import org.cactoos.set.SetOf;
-import org.eolang.parser.EoSyntax;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.RepeatedTest;
@@ -23,6 +23,13 @@ import org.junit.jupiter.params.provider.ValueSource;
 /**
  * Tests for {@link LtTestNotVerb}.
  * @since 0.0.22
+ * @todo #872:60min Extract name-validation logic from LtTestNotVerb into a testable component.
+ *  Currently {@link LtTestNotVerbTest} parses many EO programs that differ only in the
+ *  object name being tested, making the tests slow and hard to maintain. The name-validation
+ *  predicate (verb vs. non-verb check) should be extracted into its own class so it can be
+ *  tested directly with plain strings — no EO parsing required. Once extracted, reduce
+ *  {@link LtTestNotVerbTest} to a few representative end-to-end cases and add a dedicated
+ *  unit test class for the new component.
  */
 final class LtTestNotVerbTest {
 
@@ -72,19 +79,22 @@ final class LtTestNotVerbTest {
             "hope-it-works"
         }
     )
-    void catchesBadName(final String name) throws Exception {
+    void catchesBadName(final String name) throws IOException {
         MatcherAssert.assertThat(
             "Defects size doesn't match with expected",
             new LtTestNotVerb().defects(
-                new EoSyntax(
-                    String.join(
-                        System.lineSeparator(),
-                        "# Foo",
-                        "[] > foo",
-                        String.format("  [] +> %s", name),
-                        "    42 > @"
+                new EoProgram(
+                    name,
+                    new InputOf(
+                        String.join(
+                            System.lineSeparator(),
+                            "# Foo",
+                            "[] > foo",
+                            String.format("  [] +> %s", name),
+                            "    42 > @"
+                        )
                     )
-                ).parsed()
+                ).parse()
             ),
             Matchers.allOf(
                 Matchers.<Defect>iterableWithSize(1),
@@ -122,19 +132,22 @@ final class LtTestNotVerbTest {
             "is-almost-correct"
         }
     )
-    void allowsGoodNames(final String name) throws Exception {
+    void allowsGoodNames(final String name) throws IOException {
         MatcherAssert.assertThat(
             "Defects are not empty, but they shouldn't be",
             new LtTestNotVerb().defects(
-                new EoSyntax(
-                    String.join(
-                        System.lineSeparator(),
-                        "# Foo",
-                        "[] > foo",
-                        String.format("  [] +> %s", name),
-                        "    42 > @"
+                new EoProgram(
+                    name,
+                    new InputOf(
+                        String.join(
+                            System.lineSeparator(),
+                            "# Foo",
+                            "[] > foo",
+                            String.format("  [] +> %s", name),
+                            "    42 > @"
+                        )
                     )
-                ).parsed()
+                ).parse()
             ),
             Matchers.hasSize(0)
         );

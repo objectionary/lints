@@ -8,8 +8,8 @@ import fixtures.EoProgram;
 import java.io.IOException;
 import java.util.List;
 import matchers.DefectMatcher;
+import org.cactoos.io.InputOf;
 import org.cactoos.list.ListOf;
-import org.eolang.parser.EoSyntax;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
@@ -36,10 +36,11 @@ final class LtIncorrectUnlintTest {
 
     @Test
     void allowsCorrectUnlints() throws IOException {
+        final String src = "+unlint ascii-only";
         MatcherAssert.assertThat(
             "Defects are not empty, but they shouldn't be",
             new LtIncorrectUnlint(List.of("ascii-only")).defects(
-                new EoSyntax("+unlint ascii-only").parsed()
+                new EoProgram(src, new InputOf(src)).parse()
             ),
             Matchers.emptyIterable()
         );

@@ -29,7 +29,6 @@ import org.cactoos.map.MapOf;
 import org.cactoos.text.TextOf;
 import org.cactoos.text.UncheckedText;
 import org.eolang.jucs.ClasspathSource;
-import org.eolang.parser.EoSyntax;
 import org.eolang.parser.StrictXmir;
 import org.eolang.xax.XtSticky;
 import org.eolang.xax.XtYaml;
@@ -320,21 +319,10 @@ final class LtByXslTest {
     }
 
     private static boolean eoErrorFree(final Map<Path, Map<String, Object>> pack) {
-        try {
-            return new Xnav(
-                new EoSyntax(
-                    (String) pack.values().stream().findFirst().get().get("input")
-                ).parsed().inner()
-            ).path("/object[errors]").findAny().isEmpty();
-        } catch (final IOException exception) {
-            throw new IllegalStateException(
-                String.format(
-                    "Failed to parse EO snippet from '%s' pack",
-                    pack.keySet().iterator().next()
-                ),
-                exception
-            );
-        }
+        final String src = (String) pack.values().stream().findFirst().get().get("input");
+        return new Xnav(
+            new EoProgram(src, new InputOf(src)).parse().inner()
+        ).path("/object[errors]").findAny().isEmpty();
     }
 
     /**

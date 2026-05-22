@@ -7,10 +7,10 @@ package org.eolang.lints;
 import fixtures.EoProgram;
 import java.io.IOException;
 import java.util.Collection;
+import org.cactoos.io.InputOf;
 import org.cactoos.list.ListOf;
 import org.cactoos.map.MapEntry;
 import org.cactoos.map.MapOf;
-import org.eolang.parser.EoSyntax;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Tag;
@@ -141,9 +141,12 @@ final class LtReservedNameTest {
 
     @Test
     void allowsAllUnique() throws IOException {
+        final String src = "[] > qux";
         MatcherAssert.assertThat(
             "Object names should not be reported, since they all unique",
-            new LtReservedName(new MapOf<>()).defects(new EoSyntax("[] > qux").parsed()),
+            new LtReservedName(new MapOf<>()).defects(
+                new EoProgram(src, new InputOf(src)).parse()
+            ),
             Matchers.emptyIterable()
         );
     }
