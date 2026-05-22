@@ -57,13 +57,6 @@ import org.yaml.snakeyaml.Yaml;
  *  classpath-scanning suites), and consider splitting heavy tests into a separate
  *  integration-test profile, parallelising test execution, or caching parsed XMIR
  *  across test cases where it is safe to do so.
- * @todo #870:60min Deduplicate EO resource files under src/test/resources/org/eolang/lints/.
- *  We now have 46 small {@code .eo} fixture files added during the extraction of inline
- *  EO programs. Some of these files may contain identical or semantically equivalent
- *  programs (e.g. {@code foo-without-dot.eo}, {@code first-foo.eo}, {@code simple.eo}).
- *  Audit all fixture files for content duplicates and consolidate where possible, updating
- *  test references to point to the surviving canonical file. This reduces maintenance
- *  burden and avoids subtle divergence between "the same" EO program defined twice.
  * @checkstyle ClassFanOutComplexityCheck (500 lines)
  */
 @SuppressWarnings("PMD.TooManyMethods")

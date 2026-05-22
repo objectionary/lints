@@ -24,7 +24,7 @@ final class LtUnlintTest {
         MatcherAssert.assertThat(
             "failed to return one error",
             new LtUnlint(new LtAlways()).defects(
-                new EoProgram("org/eolang/lints/first-foo.eo").parse()
+                new EoProgram("org/eolang/lints/foo-without-dot.eo").parse()
             ),
             Matchers.hasSize(1)
         );

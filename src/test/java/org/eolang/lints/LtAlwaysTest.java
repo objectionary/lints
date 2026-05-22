@@ -19,7 +19,7 @@ final class LtAlwaysTest {
     void complainsAlways() {
         MatcherAssert.assertThat(
             "didn't return one defect",
-            new LtAlways().defects(new EoProgram("org/eolang/lints/first-foo.eo").parse()),
+            new LtAlways().defects(new EoProgram("org/eolang/lints/foo-without-dot.eo").parse()),
             Matchers.hasSize(1)
         );
     }
