@@ -7,16 +7,10 @@ package org.eolang.lints;
 import com.github.lombrozo.xnav.Xnav;
 import com.jcabi.xml.XML;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Locale;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import opennlp.tools.postag.POSModel;
 import opennlp.tools.postag.POSTaggerME;
-import org.cactoos.io.InputStreamOf;
-import org.cactoos.io.ResourceOf;
 
 /**
  * Lint that checks test object name is a verb in singular.
@@ -28,27 +22,16 @@ import org.cactoos.io.ResourceOf;
 final class LtTestNotVerb implements Lint {
 
     /**
-     * The pattern to split kebab case.
+     * Vocabulary for English name checks.
      */
-    private static final Pattern KEBAB = Pattern.compile("-");
-
-    /**
-     * Part-Of-Speech tagger.
-     */
-    private final POSTaggerME model;
+    private final Vocabulary vocabulary;
 
     /**
      * Ctor.
      * @throws IOException If fails
      */
     LtTestNotVerb() throws IOException {
-        this(
-            new POSModel(
-                new InputStreamOf(
-                    new ResourceOf("en-pos-perceptron.bin")
-                )
-            )
-        );
+        this(new Vocabulary());
     }
 
     /**
@@ -56,7 +39,7 @@ final class LtTestNotVerb implements Lint {
      * @param mdl Part-Of-Speech model
      */
     LtTestNotVerb(final POSModel mdl) {
-        this(new POSTaggerME(mdl));
+        this(new Vocabulary(mdl));
     }
 
     /**
@@ -64,7 +47,15 @@ final class LtTestNotVerb implements Lint {
      * @param pos Part-Of-Speech tagger
      */
     LtTestNotVerb(final POSTaggerME pos) {
-        this.model = pos;
+        this(new Vocabulary(pos));
+    }
+
+    /**
+     * Ctor.
+     * @param vocab Vocabulary to use for name checks
+     */
+    LtTestNotVerb(final Vocabulary vocab) {
+        this.vocabulary = vocab;
     }
 
     @Override
@@ -76,7 +67,11 @@ final class LtTestNotVerb implements Lint {
     public Collection<Defect> defects(final XML xmir) throws IOException {
         return new Xnav(xmir.inner())
             .path("/object//o[@name and starts-with(@name, '+')]")
-            .filter(object -> !this.isVerbInSingular(object))
+            .filter(
+                object -> !this.vocabulary.isVerb(
+                    object.attribute("name").text().get().replace("+", "")
+                )
+            )
             .map(LtTestNotVerb::verbDefect)
             .collect(Collectors.toList());
     }
@@ -84,26 +79,6 @@ final class LtTestNotVerb implements Lint {
     @Override
     public String motive() throws IOException {
         return new MotiveFrom("misc", "test-object-is-not-verb-in-singular").asString();
-    }
-
-    /**
-     * Check if object name is verb in singular.
-     * @param object Object navigator
-     * @return True if first word is a verb in singular form
-     */
-    private boolean isVerbInSingular(final Xnav object) {
-        return "VBZ".equals(
-            this.model.tag(
-                Stream.concat(
-                    Stream.of("It"),
-                    Arrays.stream(
-                        LtTestNotVerb.KEBAB.split(
-                            object.attribute("name").text().get().replace("+", "")
-                        )
-                    )
-                ).map(s -> s.toLowerCase(Locale.ROOT)).toArray(String[]::new)
-            )[1]
-        );
     }
 
     /**

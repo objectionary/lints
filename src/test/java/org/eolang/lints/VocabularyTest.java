@@ -1,0 +1,111 @@
+/*
+ * SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+ * SPDX-License-Identifier: MIT
+ */
+package org.eolang.lints;
+
+import com.yegor256.MayBeSlow;
+import java.io.IOException;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
+
+/**
+ * Tests for {@link Vocabulary}.
+ * @since 0.2.0
+ */
+final class VocabularyTest {
+
+    @ExtendWith(MayBeSlow.class)
+    @ParameterizedTest
+    @ValueSource(
+        strings = {
+            "itIsTrue",
+            "testing",
+            "this-is-test",
+            "it-works",
+            "nothing-happened",
+            "something-is-wrong",
+            "will-fail-eventually",
+            "always-returns-true",
+            "was-lost-forever",
+            "nobody-knows-why",
+            "should-not-pass",
+            "once-upon-a-time",
+            "must-do-better",
+            "was-a-trap",
+            "dont-look-here",
+            "never-saw-it-coming",
+            "this-time-for-sure",
+            "there-it-goes",
+            "it-is-fine-probably",
+            "maybe-next-time",
+            "well-this-is-awkward",
+            "why-this-again",
+            "here-we-go-again",
+            "it-was-working-before",
+            "expected-the-unexpected",
+            "it-seems-fine",
+            "suddenly-works",
+            "too-late-now",
+            "could-not-care-less",
+            "it-just-works",
+            "dont-push-that-button",
+            "error-404-not-found",
+            "who-did-this",
+            "it-has-a-plan",
+            "will-never-finish",
+            "accidentally-passed",
+            "i-think-its-ok",
+            "chicken-as-expected",
+            "please-reboot",
+            "hope-it-works"
+        }
+    )
+    void detectsNonVerbName(final String name) throws IOException {
+        MatcherAssert.assertThat(
+            "Name should not be recognized as a verb in singular, but it was",
+            new Vocabulary().isVerb(name),
+            Matchers.is(false)
+        );
+    }
+
+    @ExtendWith(MayBeSlow.class)
+    @ParameterizedTest
+    @ValueSource(
+        strings = {
+            "generates-report",
+            "locks-branch",
+            "parses-dom",
+            "prints-data",
+            "runs",
+            "works-as-expected",
+            "breaks-hearts",
+            "crashes-again",
+            "forgets-everything",
+            "has-been-found",
+            "looks-fine-to-me",
+            "returns-something-strange",
+            "disappears-silently",
+            "follows-the-rules",
+            "finds-nothing-at-all",
+            "sounds-legit",
+            "sleeps-forever",
+            "makes-zero-sense",
+            "runs-in-circles",
+            "is-never-called",
+            "is-kind-of-slow",
+            "is-totally-broken",
+            "is-almost-correct"
+        }
+    )
+    void recognizesVerbName(final String name) throws IOException {
+        MatcherAssert.assertThat(
+            "Name should be recognized as a verb in singular, but it was not",
+            new Vocabulary().isVerb(name),
+            Matchers.is(true)
+        );
+    }
+}
