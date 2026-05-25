@@ -733,7 +733,7 @@
             <artifactId>maven-surefire-plugin</artifactId>
             <version>3.5.5</version>
             <configuration>
-              <excludedGroups>benchmark</excludedGroups>
+              <groups>reserved</groups>
               <excludes>
                 <exclude>
                   generated/**
