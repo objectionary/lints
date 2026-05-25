@@ -485,7 +485,7 @@
             <artifactId>maven-surefire-plugin</artifactId>
             <version>3.5.5</version>
             <configuration>
-              <excludedGroups>benchmark,reserved</excludedGroups>
+              <groups>deep</groups>
               <excludes>
                 <exclude>
                   generated/**
