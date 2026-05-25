@@ -9,8 +9,6 @@ import com.jcabi.xml.XML;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.stream.Collectors;
-import opennlp.tools.postag.POSModel;
-import opennlp.tools.postag.POSTaggerME;
 
 /**
  * Lint that checks test object name is a verb in singular.
@@ -51,11 +49,7 @@ final class LtTestNotVerb implements Lint {
     public Collection<Defect> defects(final XML xmir) throws IOException {
         return new Xnav(xmir.inner())
             .path("/object//o[@name and starts-with(@name, '+')]")
-            .filter(
-                object -> !this.vocabulary.isVerb(
-                    object.attribute("name").text().get().replace("+", "")
-                )
-            )
+            .filter(object -> !this.isVerb(object))
             .map(LtTestNotVerb::verbDefect)
             .collect(Collectors.toList());
     }
@@ -63,6 +57,17 @@ final class LtTestNotVerb implements Lint {
     @Override
     public String motive() throws IOException {
         return new MotiveFrom("misc", "test-object-is-not-verb-in-singular").asString();
+    }
+
+    /**
+     * Check if the test object name is a verb in singular.
+     * @param object Object navigator
+     * @return True if first word is a verb in singular form
+     */
+    private boolean isVerb(final Xnav object) {
+        return this.vocabulary.isVerb(
+            object.attribute("name").text().get().replace("+", "")
+        );
     }
 
     /**

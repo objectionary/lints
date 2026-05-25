@@ -71,7 +71,7 @@ final class Vocabulary {
      * first word must be tagged {@code VBZ} (verb, 3rd-person singular present).</p>
      *
      * @param name Kebab-case name without any leading {@code +} sigil
-     * @return {@code true} if the first word is a VBZ-tagged verb
+     * @return True if the first word is a VBZ-tagged verb
      */
     boolean isVerb(final String name) {
         return "VBZ".equals(
