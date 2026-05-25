@@ -36,22 +36,6 @@ final class LtTestNotVerb implements Lint {
 
     /**
      * Ctor.
-     * @param mdl Part-Of-Speech model
-     */
-    LtTestNotVerb(final POSModel mdl) {
-        this(new Vocabulary(mdl));
-    }
-
-    /**
-     * Ctor.
-     * @param pos Part-Of-Speech tagger
-     */
-    LtTestNotVerb(final POSTaggerME pos) {
-        this(new Vocabulary(pos));
-    }
-
-    /**
-     * Ctor.
      * @param vocab Vocabulary to use for name checks
      */
     LtTestNotVerb(final Vocabulary vocab) {

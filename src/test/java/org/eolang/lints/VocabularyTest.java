@@ -4,11 +4,11 @@
  */
 package org.eolang.lints;
 
-import com.yegor256.MayBeSlow;
 import java.io.IOException;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -18,7 +18,7 @@ import org.junit.jupiter.params.provider.ValueSource;
  */
 final class VocabularyTest {
 
-    @ExtendWith(MayBeSlow.class)
+    @Execution(ExecutionMode.CONCURRENT)
     @ParameterizedTest
     @ValueSource(
         strings = {
@@ -72,7 +72,7 @@ final class VocabularyTest {
         );
     }
 
-    @ExtendWith(MayBeSlow.class)
+    @Execution(ExecutionMode.CONCURRENT)
     @ParameterizedTest
     @ValueSource(
         strings = {
