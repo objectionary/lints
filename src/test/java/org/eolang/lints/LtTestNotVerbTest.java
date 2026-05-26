@@ -29,7 +29,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 final class LtTestNotVerbTest {
 
     @ExtendWith(MayBeSlow.class)
-    @Execution(ExecutionMode.CONCURRENT)
+    @Execution(ExecutionMode.SAME_THREAD)
     @ParameterizedTest
     @ValueSource(strings = {"it-works", "should-not-pass", "testing"})
     void catchesBadName(final String name) throws IOException {
@@ -57,7 +57,7 @@ final class LtTestNotVerbTest {
     }
 
     @ExtendWith(MayBeSlow.class)
-    @Execution(ExecutionMode.CONCURRENT)
+    @Execution(ExecutionMode.SAME_THREAD)
     @ParameterizedTest
     @ValueSource(strings = {"generates-report", "runs", "parses-dom"})
     void allowsGoodNames(final String name) throws IOException {
