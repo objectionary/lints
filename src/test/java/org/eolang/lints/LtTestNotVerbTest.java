@@ -16,7 +16,7 @@ import org.hamcrest.Matchers;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -28,8 +28,13 @@ import org.junit.jupiter.params.provider.ValueSource;
  */
 final class LtTestNotVerbTest {
 
-    @ExtendWith(MayBeSlow.class)
-    @Execution(ExecutionMode.SAME_THREAD)
+    /**
+     * Slow-test watcher.
+     */
+    @RegisterExtension
+    private final MayBeSlow slow = new MayBeSlow();
+
+    @Execution(ExecutionMode.CONCURRENT)
     @ParameterizedTest
     @ValueSource(strings = {"it-works", "should-not-pass", "testing"})
     void catchesBadName(final String name) throws IOException {
@@ -56,8 +61,7 @@ final class LtTestNotVerbTest {
         );
     }
 
-    @ExtendWith(MayBeSlow.class)
-    @Execution(ExecutionMode.SAME_THREAD)
+    @Execution(ExecutionMode.CONCURRENT)
     @ParameterizedTest
     @ValueSource(strings = {"generates-report", "runs", "parses-dom"})
     void allowsGoodNames(final String name) throws IOException {
@@ -83,7 +87,6 @@ final class LtTestNotVerbTest {
 
     @SuppressWarnings("JTCOP.RuleNotContainsTestWord")
     @Test
-    @ExtendWith(MayBeSlow.class)
     void lintsRegexTests() throws IOException {
         MatcherAssert.assertThat(
             "Defects size doesn't match with expected",
@@ -107,6 +110,26 @@ final class LtTestNotVerbTest {
                 ).asList()
             ).size(),
             Matchers.equalTo(1)
+        );
+    }
+
+    @Test
+    void registersSlowWatcherPerCase() {
+        MatcherAssert.assertThat(
+            "slow-test watcher should be available for each case",
+            this.slow,
+            Matchers.notNullValue()
+        );
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"catchesBadName", "allowsGoodNames"})
+    void keepsParameterizedCasesParallel(final String method) throws NoSuchMethodException {
+        MatcherAssert.assertThat(
+            String.format("method '%s' should stay concurrent", method),
+            LtTestNotVerbTest.class.getDeclaredMethod(method, String.class)
+                .getAnnotation(Execution.class).value(),
+            Matchers.equalTo(ExecutionMode.CONCURRENT)
         );
     }
 }
