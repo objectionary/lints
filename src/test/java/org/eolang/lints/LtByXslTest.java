@@ -5,7 +5,6 @@
 package org.eolang.lints;
 
 import com.github.lombrozo.xnav.Xnav;
-import com.jcabi.log.Logger;
 import com.jcabi.manifests.Manifests;
 import com.jcabi.matchers.XhtmlMatchers;
 import com.jcabi.xml.XMLDocument;
@@ -24,7 +23,6 @@ import matchers.DefectsMatcher;
 import org.cactoos.io.InputOf;
 import org.cactoos.io.ReaderOf;
 import org.cactoos.io.ResourceOf;
-import org.cactoos.list.ListOf;
 import org.cactoos.map.MapOf;
 import org.cactoos.text.TextOf;
 import org.cactoos.text.UncheckedText;
@@ -52,6 +50,7 @@ import org.yaml.snakeyaml.Yaml;
 /**
  * Test for {@link LtByXsl}.
  * @since 0.0.1
+ * @checkstyle ClassFanOutComplexityCheck (500 lines)
  */
 @SuppressWarnings("PMD.TooManyMethods")
 final class LtByXslTest {
@@ -205,11 +204,9 @@ final class LtByXslTest {
     void returnsNonExperimentalWhenXslStaysQuiet() {
         MatcherAssert.assertThat(
             "Experimental flag should be set to false",
-            new ListOf<>(
-                new LtByXsl("comments/comment-without-dot").defects(
-                    new EoProgram("org/eolang/lints/foo-without-dot.eo").parse()
-                )
-            ).get(0).experimental(),
+            new LtByXsl("comments/comment-without-dot").defects(
+                new EoProgram("org/eolang/lints/foo-without-dot.eo").parse()
+            ).stream().findFirst().get().experimental(),
             Matchers.equalTo(false)
         );
     }
@@ -255,10 +252,7 @@ final class LtByXslTest {
             new EoProgram("org/eolang/lints/unused-voids.eo").parse()
         );
         MatcherAssert.assertThat(
-            Logger.format(
-                "Found defects (%[list]s) should not contain duplicates",
-                defects
-            ),
+            "Found defects should not contain duplicates",
             new HashSet<>(defects).size() == defects.size(),
             Matchers.equalTo(true)
         );
