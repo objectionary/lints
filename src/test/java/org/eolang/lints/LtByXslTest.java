@@ -109,7 +109,7 @@ final class LtByXslTest {
     @SuppressWarnings("StreamResourceLeak")
     void catchesLostYamls() throws IOException {
         MatcherAssert.assertThat(
-            "All YAML files must be in allowed locations (single or wpa packs)",
+            "All YAML files must be in allowed locations (single, wpa packs, or fixes)",
             Files.walk(Paths.get("src/test/resources/org/eolang/lints"))
                 .filter(Files::isRegularFile)
                 .filter(LtByXslTest.yamls())
@@ -117,6 +117,7 @@ final class LtByXslTest {
                     path ->
                         path.endsWith("org/eolang/lints/packs/single")
                             || path.endsWith("org/eolang/lints/packs/wpa")
+                            || path.contains("org/eolang/lints/fixes")
                 ),
             Matchers.equalTo(true)
         );

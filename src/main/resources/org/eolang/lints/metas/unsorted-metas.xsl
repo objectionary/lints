@@ -13,8 +13,8 @@
       <xsl:for-each select="/object/metas/meta">
         <xsl:variable name="meta-text" select="concat(head, ' ', tail)"/>
         <xsl:variable name="previous" select="(preceding-sibling::meta)[1]"/>
-        <xsl:variable name="sibling-text" select="concat($previous/head/text(), ' ', $previous/tail/text())"/>
-        <xsl:if test="$meta-text &lt; $sibling-text">
+        <xsl:variable name="previous-text" select="concat($previous/head/text(), ' ', $previous/tail/text())"/>
+        <xsl:if test="$meta-text &lt; $previous-text">
           <xsl:element name="defect">
             <xsl:variable name="line" select="eo:lineno(@line)"/>
             <xsl:attribute name="line">

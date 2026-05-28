@@ -11,6 +11,7 @@ import java.io.IOException;
  * A fix for a lint defect.
  * @since 0.2.1
  */
+@FunctionalInterface
 public interface Fix {
 
     /**
