@@ -1,0 +1,19 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/fixes/metas/unsorted-metas.xsl
+input: |
+  +version 0.0.0
+  +spdx SPDX-License-Identifier: MIT
+
+  # No comments.
+  [] > foo
+    42 > @
+output: |
+  +spdx SPDX-License-Identifier: MIT
+  +version 0.0.0
+
+  # No comments.
+  [] > foo
+    42 > @
