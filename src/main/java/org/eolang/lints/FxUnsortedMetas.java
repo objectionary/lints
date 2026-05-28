@@ -4,16 +4,9 @@
  */
 package org.eolang.lints;
 
-import com.jcabi.xml.ClasspathSources;
 import com.jcabi.xml.XML;
-import com.jcabi.xml.XSL;
-import com.jcabi.xml.XSLDocument;
 import java.io.IOException;
-import org.cactoos.io.ResourceOf;
-import org.cactoos.scalar.Sticky;
-import org.cactoos.scalar.Unchecked;
-import org.cactoos.text.IoCheckedText;
-import org.cactoos.text.TextOf;
+import java.util.List;
 
 /**
  * Fix for the {@code unsorted-metas} lint.
@@ -24,29 +17,20 @@ import org.cactoos.text.TextOf;
 public final class FxUnsortedMetas implements Fix {
 
     /**
-     * The XSL stylesheet.
+     * Delegate fix.
      */
-    private final Unchecked<XSL> sheet;
+    private final Fix delegate;
 
     /**
      * Ctor.
+     * @checkstyle ConstructorsCodeFreeCheck (5 lines)
      */
     public FxUnsortedMetas() {
-        this.sheet = new Unchecked<>(
-            new Sticky<>(
-                () -> new XSLDocument(
-                    new IoCheckedText(
-                        new TextOf(
-                            new ResourceOf("org/eolang/fixes/metas/unsorted-metas.xsl")
-                        )
-                    ).asString()
-                ).with(new ClasspathSources())
-            )
-        );
+        this.delegate = new FxByXsl(List.of("org/eolang/fixes/metas/unsorted-metas.xsl"));
     }
 
     @Override
     public XML apply(final XML xmir) throws IOException {
-        return this.sheet.value().transform(xmir);
+        return this.delegate.apply(xmir);
     }
 }

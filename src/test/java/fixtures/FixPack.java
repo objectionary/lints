@@ -5,45 +5,41 @@
 package fixtures;
 
 import com.jcabi.xml.XML;
+import java.util.List;
 import java.util.Map;
 import org.cactoos.io.InputOf;
 import org.eolang.lints.Fix;
+import org.eolang.lints.FxByXsl;
 import org.yaml.snakeyaml.Yaml;
 
 /**
- * A YAML test pack for a {@link Fix}, exposing the normalized fixed and
+ * A YAML test pack for a fix, exposing the normalized fixed and
  * expected XMIR for comparison in tests.
  * @since 0.2.1
  */
 public final class FixPack {
 
     /**
-     * Parsed YAML pack with 'input' and 'output' EO programs.
+     * Parsed YAML pack with 'sheets', 'input' and 'output' fields.
      */
     private final Map<String, Object> pack;
 
     /**
-     * The fix to apply to the input.
-     */
-    private final Fix fix;
-
-    /**
      * Constructor.
-     * @param yaml Raw YAML string containing 'input' and 'output' fields
-     * @param fix The fix to apply
+     * @param yaml Raw YAML string containing 'sheets', 'input' and 'output' fields
+     * @checkstyle ConstructorsCodeFreeCheck (5 lines)
      */
-    public FixPack(final String yaml, final Fix fix) {
-        this((Map<String, Object>) new Yaml().load(yaml), fix);
+    @SuppressWarnings("unchecked")
+    public FixPack(final String yaml) {
+        this((Map<String, Object>) new Yaml().load(yaml));
     }
 
     /**
      * Constructor.
-     * @param pack Parsed YAML map containing 'input' and 'output' fields
-     * @param fix The fix to apply
+     * @param pack Parsed YAML map
      */
-    private FixPack(final Map<String, Object> pack, final Fix fix) {
+    private FixPack(final Map<String, Object> pack) {
         this.pack = pack;
-        this.fix = fix;
     }
 
     /**
@@ -53,7 +49,7 @@ public final class FixPack {
      */
     public String fixed() throws Exception {
         return FixPack.normalize(
-            this.fix.apply(
+            this.fix().apply(
                 new EoProgram(
                     String.valueOf(this.pack.get("input").hashCode()),
                     new InputOf(this.pack.get("input").toString())
@@ -73,6 +69,10 @@ public final class FixPack {
                 new InputOf(this.pack.get("output").toString())
             ).parse()
         );
+    }
+
+    private Fix fix() {
+        return new FxByXsl((List<String>) this.pack.get("sheets"));
     }
 
     private static String normalize(final XML xmir) {

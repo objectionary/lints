@@ -19,7 +19,7 @@ final class FxUnsortedMetasTest {
     @ParameterizedTest
     @ClasspathSource(value = "org/eolang/lints/fixes/unsorted-metas/", glob = "**.yaml")
     void fixesUnsortedMetas(final String yaml) throws Exception {
-        final FixPack pack = new FixPack(yaml, new FxUnsortedMetas());
+        final FixPack pack = new FixPack(yaml);
         MatcherAssert.assertThat(
             "Full XMIR after fix must exactly match the expected XMIR",
             pack.fixed(),
