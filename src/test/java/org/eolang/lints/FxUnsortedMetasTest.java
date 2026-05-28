@@ -4,9 +4,9 @@
  */
 package org.eolang.lints;
 
+import com.jcabi.xml.XML;
 import fixtures.EoProgram;
 import java.util.Map;
-import java.util.stream.Collectors;
 import org.cactoos.io.InputOf;
 import org.eolang.jucs.ClasspathSource;
 import org.hamcrest.MatcherAssert;
@@ -17,12 +17,6 @@ import org.yaml.snakeyaml.Yaml;
 /**
  * Tests for {@link FxUnsortedMetas}.
  * @since 0.2.1
- * @todo #896:60min Replace partial meta comparison with exact XMIR match.
- *  Currently the test only compares the ordered sequence of "head tail"
- *  strings extracted from the metas section. Since we have a clear 'input'
- *  and 'output' EO program in each YAML pack, we should compare the full
- *  XMIR structure of the fixed result against the expected XMIR, ignoring
- *  only volatile attributes such as @line numbers.
  */
 final class FxUnsortedMetasTest {
 
@@ -30,34 +24,29 @@ final class FxUnsortedMetasTest {
     @ClasspathSource(value = "org/eolang/lints/fixes/unsorted-metas/", glob = "**.yaml")
     void fixesUnsortedMetas(final String yaml) throws Exception {
         final Map<String, Object> pack = new Yaml().load(yaml);
-        final Object input = pack.get("input");
-        final Object output = pack.get("output");
-        MatcherAssert.assertThat(
-            "Metas after fix must match the expected order",
-            new FxUnsortedMetas().apply(
-                new EoProgram(
-                    String.valueOf(input.hashCode()),
-                    new InputOf(input.toString())
-                ).parse()
-            ).nodes("/object/metas/meta").stream().map(
-                m -> String.format(
-                    "%s %s",
-                    m.xpath("head/text()").get(0),
-                    m.xpath("tail/text()").get(0)
-                )
-            ).collect(Collectors.toList()),
-            Matchers.equalTo(
-                new EoProgram(
-                    String.valueOf(output.hashCode()),
-                    new InputOf(output.toString())
-                ).parse().nodes("/object/metas/meta").stream().map(
-                    m -> String.format(
-                        "%s %s",
-                        m.xpath("head/text()").get(0),
-                        m.xpath("tail/text()").get(0)
-                    )
-                ).collect(Collectors.toList())
-            )
+        final XML fixed = new FxUnsortedMetas().apply(
+            new EoProgram(
+                String.valueOf(pack.get("input").hashCode()),
+                new InputOf(pack.get("input").toString())
+            ).parse()
         );
+        final XML expected = new EoProgram(
+            String.valueOf(pack.get("output").hashCode()),
+            new InputOf(pack.get("output").toString())
+        ).parse();
+        MatcherAssert.assertThat(
+            "Full XMIR after fix must exactly match the expected XMIR",
+            FxUnsortedMetasTest.normalize(fixed),
+            Matchers.equalTo(FxUnsortedMetasTest.normalize(expected))
+        );
+    }
+
+    private static String normalize(final XML xmir) {
+        return xmir.toString()
+            .replaceAll("(?s)<!--.*?-->", "")
+            .replaceAll("(?s)<listing>.*?</listing>", "<listing/>")
+            .replaceAll(" time=\"[^\"]*\"", "")
+            .replaceAll(" ms=\"[^\"]*\"", "")
+            .replaceAll(" line=\"\\d+\"", "");
     }
 }
