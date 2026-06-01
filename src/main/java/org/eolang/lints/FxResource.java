@@ -7,9 +7,11 @@ package org.eolang.lints;
 import com.jcabi.xml.XML;
 import java.io.IOException;
 import java.util.Collections;
+import org.cactoos.Text;
 import org.cactoos.scalar.Sticky;
 import org.cactoos.scalar.Synced;
 import org.cactoos.scalar.Unchecked;
+import org.cactoos.text.TextOf;
 
 /**
  * Fix loaded from a classpath resource.
@@ -27,11 +29,19 @@ public final class FxResource implements Fix {
      * Ctor.
      * @param path Classpath path to the XSL fix stylesheet
      */
-    public FxResource(final String path) {
+    FxResource(final String path) {
+        this(new TextOf(path));
+    }
+
+    /**
+     * Ctor.
+     * @param path Classpath path to the XSL fix stylesheet
+     */
+    FxResource(final Text path) {
         this.delegate = new Unchecked<>(
             new Synced<>(
                 new Sticky<>(
-                    () -> FxResource.load(path)
+                    () -> FxResource.load(path.asString())
                 )
             )
         );

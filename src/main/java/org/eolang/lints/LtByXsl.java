@@ -53,12 +53,6 @@ final class LtByXsl implements Lint {
     /**
      * Ctor.
      * @param xsl Relative path of XSL
-     * @todo #896:30min Replace String.format with FormattedText in this constructor.
-     *  FxResource currently accepts a String, so String.format is used here,
-     *  triggering ConstructorsCodeFreeCheck. Change FxResource to accept a Text
-     *  object and pass new FormattedText("org/eolang/fixes/%s.xsl", xsl) instead,
-     *  consistent with how ResourceOf is used for the lint and motive paths above.
-     * @checkstyle ConstructorsCodeFreeCheck (10 lines)
      */
     LtByXsl(final String xsl) {
         this(
@@ -68,7 +62,9 @@ final class LtByXsl implements Lint {
             new ResourceOf(
                 new FormattedText("org/eolang/motives/%s.md", xsl)
             ),
-            new FxResource(String.format("org/eolang/fixes/%s.xsl", xsl))
+            new FxResource(
+                new FormattedText("org/eolang/fixes/%s.xsl", xsl)
+            )
         );
     }
 
