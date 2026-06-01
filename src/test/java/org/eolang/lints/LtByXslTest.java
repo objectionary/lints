@@ -57,7 +57,7 @@ import org.yaml.snakeyaml.Yaml;
 final class LtByXslTest {
 
     @Test
-    void fixProducesExpectedXmir() throws Exception {
+    void producesExpectedXmirWithFix() throws Exception {
         final FixPack pack = new FixPack(
             new TextOf(
                 new ResourceOf(
@@ -66,7 +66,7 @@ final class LtByXslTest {
             ).asString()
         );
         MatcherAssert.assertThat(
-            "Fix from LtByXsl must produce the same result as expected",
+            "LtByXsl fix must produce the same result as expected",
             pack.fixed(new LtByXsl("metas/unsorted-metas").fix()),
             Matchers.equalTo(pack.expected())
         );
