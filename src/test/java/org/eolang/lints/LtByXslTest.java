@@ -56,6 +56,24 @@ import org.yaml.snakeyaml.Yaml;
 final class LtByXslTest {
 
     @Test
+    void returnsFxByXslWhenFixExists() {
+        MatcherAssert.assertThat(
+            "Fix must be FxByXsl when a fix XSL exists on the classpath",
+            new LtByXsl("metas/unsorted-metas").fix(),
+            Matchers.instanceOf(FxByXsl.class)
+        );
+    }
+
+    @Test
+    void returnsFxEmptyWhenNoFixExists() {
+        MatcherAssert.assertThat(
+            "Fix must be FxEmpty when no fix XSL exists on the classpath",
+            new LtByXsl("critical/duplicate-names").fix(),
+            Matchers.instanceOf(FxEmpty.class)
+        );
+    }
+
+    @Test
     void lintsOneFile() {
         MatcherAssert.assertThat(
             "No defects found, while a few of them expected",

@@ -14,6 +14,7 @@ import com.jcabi.xml.XSLDocument;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import org.cactoos.Input;
@@ -46,6 +47,11 @@ final class LtByXsl implements Lint {
     private final Input doc;
 
     /**
+     * Fix for this lint.
+     */
+    private final Fix fixer;
+
+    /**
      * Ctor.
      * @param xsl Relative path of XSL
      */
@@ -56,16 +62,18 @@ final class LtByXsl implements Lint {
             ),
             new ResourceOf(
                 new FormattedText("org/eolang/motives/%s.md", xsl)
-            )
+            ),
+            LtByXsl.fixOf(xsl)
         );
     }
 
     /**
      * Ctor.
-     * @param xsl Relative path of XSL
-     * @param motive Relative path of a motive document
+     * @param xsl XSL content
+     * @param motive Motive document
+     * @param fix Fix for this lint
      */
-    LtByXsl(final Input xsl, final Input motive) {
+    LtByXsl(final Input xsl, final Input motive, final Fix fix) {
         this(
             new Unchecked<>(
                 new Sticky<>(
@@ -74,16 +82,18 @@ final class LtByXsl implements Lint {
                     )
                 )
             ),
-            motive
+            motive,
+            fix
         );
     }
 
     /**
      * Ctor.
      * @param xml XSL stylesheet as XML
-     * @param motive Relative path of a motive document
+     * @param motive Motive document
+     * @param fix Fix for this lint
      */
-    private LtByXsl(final Unchecked<XML> xml, final Input motive) {
+    private LtByXsl(final Unchecked<XML> xml, final Input motive, final Fix fix) {
         this.rule = new Unchecked<>(
             new Sticky<>(
                 () -> new Xnav(xml.value().toString())
@@ -102,6 +112,7 @@ final class LtByXsl implements Lint {
             )
         );
         this.doc = motive;
+        this.fixer = fix;
     }
 
     @Override
@@ -143,7 +154,23 @@ final class LtByXsl implements Lint {
 
     @Override
     public Fix fix() {
-        return new FxEmpty();
+        return this.fixer;
+    }
+
+    /**
+     * Load fix from classpath if available, otherwise return no-op.
+     * @param xsl Relative XSL path (e.g. "metas/unsorted-metas")
+     * @return Fix
+     */
+    static Fix fixOf(final String xsl) {
+        final String path = String.format("org/eolang/fixes/%s.xsl", xsl);
+        final Fix result;
+        if (LtByXsl.class.getClassLoader().getResource(path) != null) {
+            result = new FxByXsl(Collections.singletonList(path));
+        } else {
+            result = new FxEmpty();
+        }
+        return result;
     }
 
     /**

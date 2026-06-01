@@ -22,6 +22,15 @@ import org.junit.jupiter.api.Test;
 final class LtDfStickyTest {
 
     @Test
+    void delegatesFixToOrigin() {
+        MatcherAssert.assertThat(
+            "LtDfSticky must delegate fix() to the wrapped lint",
+            new LtDfSticky(new LtByXsl("metas/unsorted-metas")).fix(),
+            Matchers.instanceOf(FxByXsl.class)
+        );
+    }
+
+    @Test
     void loadsDefectsOnlyOnce() throws IOException {
         final LtCounter counter = new LtDfStickyTest.LtCounter();
         final Lint lint = new LtDfSticky(new LtDfStickyTest.LtFake(counter));

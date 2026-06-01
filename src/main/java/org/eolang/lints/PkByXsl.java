@@ -61,15 +61,17 @@ final class PkByXsl extends IterableEnvelope<Lint> {
             ).map(
                 res -> {
                     try {
+                        final String url = res.getURL().toString();
+                        final String xsl = url.replaceAll(".*org/eolang/lints/", "")
+                            .replaceAll("\\.xsl$", "");
                         return new LtByXsl(
                             new InputOf(res.getInputStream()),
                             new InputOf(
                                 PkByXsl.XSL_PATTERN.matcher(
-                                    PkByXsl.LINTS_PATH.matcher(
-                                        res.getURL().toString()
-                                    ).replaceAll("eolang/motives")
+                                    PkByXsl.LINTS_PATH.matcher(url).replaceAll("eolang/motives")
                                 ).replaceAll(".md")
-                            )
+                            ),
+                            LtByXsl.fixOf(xsl)
                         );
                     } catch (final IOException ex) {
                         throw new IllegalArgumentException(ex);

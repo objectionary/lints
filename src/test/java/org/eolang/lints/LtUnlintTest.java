@@ -20,6 +20,15 @@ import org.junit.jupiter.api.Test;
 final class LtUnlintTest {
 
     @Test
+    void delegatesFixToOrigin() {
+        MatcherAssert.assertThat(
+            "LtUnlint must delegate fix() to the wrapped lint",
+            new LtUnlint(new LtByXsl("metas/unsorted-metas")).fix(),
+            Matchers.instanceOf(FxByXsl.class)
+        );
+    }
+
+    @Test
     void lintsOneFile() throws IOException {
         MatcherAssert.assertThat(
             "failed to return one error",
