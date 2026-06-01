@@ -49,7 +49,7 @@ public final class FxResource implements Fix {
      */
     private static Fix load(final String path) {
         final Fix fix;
-        if (FxResource.class.getClassLoader().getResource(path) != null) {
+        if (Thread.currentThread().getContextClassLoader().getResource(path) != null) {
             fix = new FxByXsl(Collections.singletonList(path));
         } else {
             fix = new FxEmpty();

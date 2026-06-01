@@ -51,7 +51,14 @@ final class PkByXsl extends IterableEnvelope<Lint> {
     /**
      * Load all lints once.
      * @return List of all lints
+     * @todo #896:60min Make FxResource accept full URL strings so that the
+     *  fix path can be derived with the same LINTS_PATH pattern replacement
+     *  used for motives, dropping the intermediate xsl variable. Currently
+     *  FxResource.load() uses ClassLoader.getResource() which expects a
+     *  classpath-relative path, not a full jar:/file: URL, so the two
+     *  derivation approaches cannot be unified yet.
      */
+    @SuppressWarnings("PMD.UnnecessaryLocalRule")
     private static List<Lint> load() {
         try {
             return Arrays.stream(

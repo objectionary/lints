@@ -32,6 +32,7 @@ import org.junit.jupiter.api.Test;
 final class PkByXslTest {
 
     @Test
+    @SuppressWarnings("PMD.UnnecessaryLocalRule")
     void wiresFixForLintWithCorrespondingFixXsl() throws Exception {
         final FixPack pack = new FixPack(
             new TextOf(
