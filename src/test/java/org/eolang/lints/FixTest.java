@@ -11,10 +11,10 @@ import org.hamcrest.Matchers;
 import org.junit.jupiter.params.ParameterizedTest;
 
 /**
- * Tests for {@link FxUnsortedMetas}.
+ * Tests {@link Fix}.
  * @since 0.2.1
  */
-final class FxUnsortedMetasTest {
+final class FixTest {
 
     @ParameterizedTest
     @ClasspathSource(value = "org/eolang/lints/fixes/unsorted-metas/", glob = "**.yaml")
