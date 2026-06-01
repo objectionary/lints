@@ -14,7 +14,6 @@ import com.jcabi.xml.XSLDocument;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import org.cactoos.Input;
@@ -63,7 +62,7 @@ final class LtByXsl implements Lint {
             new ResourceOf(
                 new FormattedText("org/eolang/motives/%s.md", xsl)
             ),
-            LtByXsl.fixOf(xsl)
+            new FxResource(String.format("org/eolang/fixes/%s.xsl", xsl))
         );
     }
 
@@ -155,22 +154,6 @@ final class LtByXsl implements Lint {
     @Override
     public Fix fix() {
         return this.fixer;
-    }
-
-    /**
-     * Load fix from classpath if available, otherwise return no-op.
-     * @param xsl Relative XSL path (e.g. "metas/unsorted-metas")
-     * @return Fix
-     */
-    static Fix fixOf(final String xsl) {
-        final String path = String.format("org/eolang/fixes/%s.xsl", xsl);
-        final Fix result;
-        if (LtByXsl.class.getClassLoader().getResource(path) != null) {
-            result = new FxByXsl(Collections.singletonList(path));
-        } else {
-            result = new FxEmpty();
-        }
-        return result;
     }
 
     /**

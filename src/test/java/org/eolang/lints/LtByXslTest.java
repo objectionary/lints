@@ -10,6 +10,7 @@ import com.jcabi.matchers.XhtmlMatchers;
 import com.jcabi.xml.XMLDocument;
 import fixtures.BytecodeClass;
 import fixtures.EoProgram;
+import fixtures.FixPack;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -56,20 +57,18 @@ import org.yaml.snakeyaml.Yaml;
 final class LtByXslTest {
 
     @Test
-    void returnsFxByXslWhenFixExists() {
-        MatcherAssert.assertThat(
-            "Fix must be FxByXsl when a fix XSL exists on the classpath",
-            new LtByXsl("metas/unsorted-metas").fix(),
-            Matchers.instanceOf(FxByXsl.class)
+    void fixProducesExpectedXmir() throws Exception {
+        final FixPack pack = new FixPack(
+            new TextOf(
+                new ResourceOf(
+                    "org/eolang/lints/fixes/unsorted-metas/sorts-version-and-spdx.yaml"
+                )
+            ).asString()
         );
-    }
-
-    @Test
-    void returnsFxEmptyWhenNoFixExists() {
         MatcherAssert.assertThat(
-            "Fix must be FxEmpty when no fix XSL exists on the classpath",
-            new LtByXsl("critical/duplicate-names").fix(),
-            Matchers.instanceOf(FxEmpty.class)
+            "Fix from LtByXsl must produce the same result as expected",
+            pack.fixed(new LtByXsl("metas/unsorted-metas").fix()),
+            Matchers.equalTo(pack.expected())
         );
     }
 

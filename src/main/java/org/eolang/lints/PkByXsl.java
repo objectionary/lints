@@ -71,7 +71,9 @@ final class PkByXsl extends IterableEnvelope<Lint> {
                                     PkByXsl.LINTS_PATH.matcher(url).replaceAll("eolang/motives")
                                 ).replaceAll(".md")
                             ),
-                            LtByXsl.fixOf(xsl)
+                            new FxResource(
+                                String.format("org/eolang/fixes/%s.xsl", xsl)
+                            )
                         );
                     } catch (final IOException ex) {
                         throw new IllegalArgumentException(ex);

@@ -8,6 +8,7 @@ import com.jcabi.log.Logger;
 import com.jcabi.xml.XML;
 import com.jcabi.xml.XMLDocument;
 import fixtures.EoProgram;
+import fixtures.FixPack;
 import io.github.secretx33.resourceresolver.PathMatchingResourcePatternResolver;
 import io.github.secretx33.resourceresolver.Resource;
 import java.io.IOException;
@@ -16,6 +17,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.function.Predicate;
 import org.cactoos.io.InputOf;
+import org.cactoos.io.ResourceOf;
 import org.cactoos.list.ListOf;
 import org.cactoos.text.TextOf;
 import org.cactoos.text.UncheckedText;
@@ -28,6 +30,26 @@ import org.junit.jupiter.api.Test;
  * @since 0.0.1
  */
 final class PkByXslTest {
+
+    @Test
+    void wiresFixForLintWithCorrespondingFixXsl() throws Exception {
+        final FixPack pack = new FixPack(
+            new TextOf(
+                new ResourceOf(
+                    "org/eolang/lints/fixes/unsorted-metas/sorts-version-and-spdx.yaml"
+                )
+            ).asString()
+        );
+        final Lint lint = new ListOf<>(new PkByXsl()).stream()
+            .filter(l -> "unsorted-metas".equals(l.name()))
+            .findFirst()
+            .orElseThrow();
+        MatcherAssert.assertThat(
+            "PkByXsl must wire up the fix for lints that have a corresponding fix XSL",
+            pack.fixed(lint.fix()),
+            Matchers.equalTo(pack.expected())
+        );
+    }
 
     @Test
     void passesOnSimpleXmir() throws IOException {
