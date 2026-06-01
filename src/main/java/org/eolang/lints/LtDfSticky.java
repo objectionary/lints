@@ -66,4 +66,9 @@ final class LtDfSticky implements Lint {
     public String motive() throws IOException {
         return this.origin.motive();
     }
+
+    @Override
+    public Fix fix() {
+        return this.origin.fix();
+    }
 }

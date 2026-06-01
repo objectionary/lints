@@ -121,5 +121,10 @@ final class WithoutLintsTest {
         public String motive() {
             return "no motive";
         }
+
+        @Override
+        public Fix fix() {
+            return new FxEmpty();
+        }
     }
 }

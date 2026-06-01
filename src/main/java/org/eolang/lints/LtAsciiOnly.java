@@ -70,4 +70,9 @@ final class LtAsciiOnly implements Lint {
     public String motive() throws IOException {
         return new MotiveFrom("comments", this.name()).asString();
     }
+
+    @Override
+    public Fix fix() {
+        return new FxEmpty();
+    }
 }

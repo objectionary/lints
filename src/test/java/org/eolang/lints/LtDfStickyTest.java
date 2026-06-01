@@ -146,5 +146,10 @@ final class LtDfStickyTest {
         public String motive() throws IOException {
             return this.mtve.get();
         }
+
+        @Override
+        public Fix fix() {
+            return new FxEmpty();
+        }
     }
 }

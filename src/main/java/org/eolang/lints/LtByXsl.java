@@ -141,6 +141,11 @@ final class LtByXsl implements Lint {
         return new MotiveFrom(this.doc).asString();
     }
 
+    @Override
+    public Fix fix() {
+        return new FxEmpty();
+    }
+
     /**
      * Defect is experimental?
      * @param defect Defect
