@@ -81,6 +81,20 @@ public final class Source {
     }
 
     /**
+     * Apply all available fixes to the XMIR, returning the corrected document.
+     * Lints without a fix return the XMIR unchanged.
+     * @return Fixed XMIR
+     * @throws IOException If a fix fails to apply
+     */
+    public XML fix() throws IOException {
+        XML result = this.xmir;
+        for (final Lint lint : this.lints) {
+            result = lint.fix().apply(result);
+        }
+        return result;
+    }
+
+    /**
      * Find defects possible defects in the XMIR file.
      * @return All defects found
      * @see <a href="https://news.eolang.org/2022-11-25-xmir-guide.html">XMIR guide</a>
