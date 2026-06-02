@@ -150,7 +150,7 @@ final class LtByXsl implements Lint {
 
     @Override
     public String motive() throws IOException {
-        return new  MotiveFrom(this.doc).asString();
+        return new MotiveFrom(this.doc).asString();
     }
 
     @Override
