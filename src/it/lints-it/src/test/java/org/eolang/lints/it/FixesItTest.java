@@ -27,7 +27,7 @@ final class FixesItTest {
                 "<object>",
                 "<metas>",
                 "<meta line='1'><head>version</head><tail>0.0.0</tail></meta>",
-                "<meta line='2'><head>spdx</head><tail>SPDX-License-Identifier: MIT</tail></meta>",
+                "<meta line='2'><head>home</head><tail>https://www.eolang.org</tail></meta>",
                 "</metas>",
                 "</object>"
             )
