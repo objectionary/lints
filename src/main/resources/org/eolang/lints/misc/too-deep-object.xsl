@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+ * SPDX-License-Identifier: MIT
+-->
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  xmlns:eo="https://www.eolang.org" id="too-deep-object" version="2.0">
+  <xsl:import href="/org/eolang/funcs/lineno.xsl"/>
+  <xsl:import href="/org/eolang/funcs/defect-context.xsl"/>
+  <xsl:import href="/org/eolang/funcs/special-name.xsl"/>
+  <xsl:import href="/org/eolang/funcs/escape.xsl"/>
+  <xsl:output encoding="UTF-8" method="xml"/>
+  <!--
+    Catch deeply nested EO objects (depth > 12).
+    Deep nesting makes code hard to read and reason about.
+    Use the `[] > app` syntax or inline definitions instead.
+  -->
+  <xsl:template match="/">
+    <defects>
+      <xsl:for-each select="//o[not(eo:special(@name)) and count(ancestor::o) &gt; 12]">
+        <xsl:element name="defect">
+          <xsl:variable name="line" select="eo:lineno(@line)"/>
+          <xsl:attribute name="line">
+            <xsl:value-of select="$line"/>
+          </xsl:attribute>
+          <xsl:if test="$line = '0'">
+            <xsl:attribute name="context">
+              <xsl:value-of select="eo:defect-context(.)"/>
+            </xsl:attribute>
+          </xsl:if>
+          <xsl:attribute name="severity">warning</xsl:attribute>
+          <xsl:text>Object </xsl:text>
+          <xsl:choose>
+            <xsl:when test="@name">
+              <xsl:value-of select="eo:escape(@name)"/>
+            </xsl:when>
+            <xsl:otherwise>anonymous</xsl:otherwise>
+          </xsl:choose>
+          <xsl:text> is too deeply nested (depth </xsl:text>
+          <xsl:value-of select="count(ancestor::o)"/>
+          <xsl:text>). Consider refactoring with [] or inline definitions.</xsl:text>
+        </xsl:element>
+      </xsl:for-each>
+    </defects>
+  </xsl:template>
+</xsl:stylesheet>
