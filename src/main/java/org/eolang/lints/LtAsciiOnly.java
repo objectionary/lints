@@ -36,7 +36,7 @@ final class LtAsciiOnly implements Lint {
             .collect(Collectors.toList());
         for (final Xnav comment : comments) {
             final Optional<Character> abusive = comment.text().get().chars()
-                .filter(chr -> (chr < 32 && chr != '\n') || chr > 127)
+                .filter(chr -> chr < 32 && chr != '\n' || chr > 127)
                 .mapToObj(chr -> (char) chr)
                 .findFirst();
             if (!abusive.isPresent()) {
