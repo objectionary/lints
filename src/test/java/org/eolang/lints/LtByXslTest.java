@@ -17,8 +17,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.function.Predicate;
 import matchers.DefectsMatcher;
 import org.cactoos.io.InputOf;
@@ -284,17 +286,21 @@ final class LtByXslTest {
     @Timeout(300L)
     @Test
     void validatesEoPacksForErrors() throws IOException {
+        final List<Path> failures = Files.walk(
+            Paths.get("src/test/resources/org/eolang/lints/packs/single")
+        ).filter(Files::isRegularFile)
+            .filter(LtByXslTest.yamls()).map(
+                (Function<Path, Map<Path, Map<String, Object>>>)
+                    p -> new MapOf<>(p, new Yaml().load(new ReaderOf(p.toFile())))
+            )
+            .filter(pack -> pack.values().stream().findFirst().get().containsKey("input"))
+            .filter(pack -> !LtByXslTest.eoErrorFree(pack))
+            .map(pack -> pack.keySet().iterator().next())
+            .collect(Collectors.toList());
         MatcherAssert.assertThat(
-            "All EO snippets in packs must parse without errors",
-            Files.walk(Paths.get("src/test/resources/org/eolang/lints/packs/single"))
-                .filter(Files::isRegularFile)
-                .filter(LtByXslTest.yamls()).map(
-                    (Function<Path, Map<Path, Map<String, Object>>>)
-                        p -> new MapOf<>(p, new Yaml().load(new ReaderOf(p.toFile())))
-                )
-                .filter(pack -> pack.values().stream().findFirst().get().containsKey("input"))
-                .allMatch(LtByXslTest::eoErrorFree),
-            Matchers.equalTo(true)
+            String.format("These EO packs have parse errors: %s", failures),
+            failures,
+            Matchers.empty()
         );
     }
 
@@ -326,9 +332,10 @@ final class LtByXslTest {
     }
 
     private static boolean eoErrorFree(final Map<Path, Map<String, Object>> pack) {
+        final Path path = pack.keySet().iterator().next();
         final String src = (String) pack.values().stream().findFirst().get().get("input");
         return new Xnav(
-            new EoProgram(src, new InputOf(src)).parse().inner()
+            new EoProgram(path.toString(), new InputOf(src)).parse().inner()
         ).path("/object[errors]").findAny().isEmpty();
     }
 
