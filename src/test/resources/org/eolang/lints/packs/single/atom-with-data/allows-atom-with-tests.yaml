@@ -7,7 +7,7 @@ asserts:
   - /defects[count(defect)=0]
 input: |
   # Boom.
-  [] > boom ?
+  [] > boom /number
     # Test.
     [] +> tests-explosion
       boom 123 4 > @

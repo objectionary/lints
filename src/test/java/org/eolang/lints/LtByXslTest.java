@@ -87,9 +87,12 @@ final class LtByXslTest {
     @Execution(ExecutionMode.CONCURRENT)
     @ParameterizedTest
     @ClasspathSource(value = "org/eolang/lints/packs/single/", glob = "**.yaml")
-    void testsAllLintsByEo(final String yaml) {
+    void testsAllLintsByEo(final String yaml, final String pack) {
         MatcherAssert.assertThat(
-            "Doesn't tell the story as it's expected",
+            String.format(
+                "Pack '%s' doesn't tell the story as expected",
+                pack
+            ),
             new XtSticky(
                 new XtYaml(
                     yaml,
