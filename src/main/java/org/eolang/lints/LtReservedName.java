@@ -65,4 +65,9 @@ final class LtReservedName implements Lint {
     public String motive() throws IOException {
         return new MotiveFrom("names", this.name()).asString();
     }
+
+    @Override
+    public Fix fix() {
+        return new FxEmpty();
+    }
 }

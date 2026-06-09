@@ -41,4 +41,9 @@ final class LtMono implements Lint {
     public String motive() {
         throw new UnsupportedOperationException("#motive()");
     }
+
+    @Override
+    public Fix fix() {
+        return new FxEmpty();
+    }
 }

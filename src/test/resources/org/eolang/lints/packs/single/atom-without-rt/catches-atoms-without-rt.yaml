@@ -16,6 +16,6 @@ input: |
   # Bytes.
   [] > bytes
     # Equals to another object.
-    [x] > eq ?
+    [x] > eq /boolean
 
-    [y] > not ?
+    [y] > not /boolean

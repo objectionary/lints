@@ -7,4 +7,4 @@ asserts:
   - /defects[count(defect)=0]
 input: |
   # Error.
-  [message] > error ?
+  [message] > error /number

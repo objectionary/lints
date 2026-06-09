@@ -33,4 +33,11 @@ public interface Lint {
      * @throws IOException if something went wrong
      */
     String motive() throws IOException;
+
+    /**
+     * Returns a fix for defects found by this lint.
+     * If the lint does not support auto-fixing, return {@link FxEmpty}.
+     * @return Fix for this lint
+     */
+    Fix fix();
 }

@@ -7,7 +7,7 @@ asserts:
   - /defects[count(defect[@severity='critical'])=0]
 input: |
   # Foo atom.
-  [] > foo ?
+  [] > foo /number
     # Test.
     [] +> tests-foo
       foo "x" > @

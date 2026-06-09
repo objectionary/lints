@@ -48,8 +48,18 @@ public final class FixPack {
      * @throws Exception If parsing or fix application fails
      */
     public String fixed() throws Exception {
+        return this.fixed(this.fix());
+    }
+
+    /**
+     * Returns normalized XMIR after applying a custom fix to the input program.
+     * @param fix Fix to apply
+     * @return Normalized XMIR string
+     * @throws Exception If parsing or fix application fails
+     */
+    public String fixed(final Fix fix) throws Exception {
         return FixPack.normalize(
-            this.fix().apply(
+            fix.apply(
                 new EoProgram(
                     String.valueOf(this.pack.get("input").hashCode()),
                     new InputOf(this.pack.get("input").toString())

@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
  *  ConditionalRegexpMultilineCheck from Checkstyle (it doesn't seem to be possible at the moment
  *  <a href="https://github.com/yegor256/qulice/issues/1328">issue 1328</a>)
  * @checkstyle StringLiteralsConcatenationCheck (30 lines)
+ * @checkstyle UnnecessaryParenthesesCheck (30 lines)
  */
 final class LtAsciiOnly implements Lint {
 
@@ -36,7 +37,7 @@ final class LtAsciiOnly implements Lint {
             .collect(Collectors.toList());
         for (final Xnav comment : comments) {
             final Optional<Character> abusive = comment.text().get().chars()
-                .filter(chr -> chr < 32 || chr > 127)
+                .filter(chr -> (chr < 32 && chr != '\n') || chr > 127)
                 .mapToObj(chr -> (char) chr)
                 .findFirst();
             if (!abusive.isPresent()) {
@@ -69,5 +70,10 @@ final class LtAsciiOnly implements Lint {
     @Override
     public String motive() throws IOException {
         return new MotiveFrom("comments", this.name()).asString();
+    }
+
+    @Override
+    public Fix fix() {
+        return new FxEmpty();
     }
 }

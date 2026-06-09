@@ -8,4 +8,4 @@ asserts:
   - /defects/defect[@line='2']
 input: |
   # No comments.
-  [] > foo ?
+  [] > foo /number

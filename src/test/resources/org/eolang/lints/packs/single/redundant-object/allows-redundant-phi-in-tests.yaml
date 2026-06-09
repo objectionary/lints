@@ -8,6 +8,6 @@ asserts:
 input: |
   [] > real
     [] +> tests-sqrt-check-nan-input
-      is-nan. +> @
+      is-nan. > @
         sqrt.
           real nan

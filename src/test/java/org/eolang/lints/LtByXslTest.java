@@ -10,15 +10,18 @@ import com.jcabi.matchers.XhtmlMatchers;
 import com.jcabi.xml.XMLDocument;
 import fixtures.BytecodeClass;
 import fixtures.EoProgram;
+import fixtures.FixPack;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import matchers.DefectsMatcher;
 import org.cactoos.io.InputOf;
 import org.cactoos.io.ReaderOf;
@@ -56,6 +59,22 @@ import org.yaml.snakeyaml.Yaml;
 final class LtByXslTest {
 
     @Test
+    void producesExpectedXmirWithFix() throws Exception {
+        final FixPack pack = new FixPack(
+            new TextOf(
+                new ResourceOf(
+                    "org/eolang/lints/fixes/unsorted-metas/sorts-version-and-spdx.yaml"
+                )
+            ).asString()
+        );
+        MatcherAssert.assertThat(
+            "LtByXsl fix must produce the same result as expected",
+            pack.fixed(new LtByXsl("metas/unsorted-metas").fix()),
+            Matchers.equalTo(pack.expected())
+        );
+    }
+
+    @Test
     void lintsOneFile() {
         MatcherAssert.assertThat(
             "No defects found, while a few of them expected",
@@ -70,13 +89,16 @@ final class LtByXslTest {
     @Execution(ExecutionMode.CONCURRENT)
     @ParameterizedTest
     @ClasspathSource(value = "org/eolang/lints/packs/single/", glob = "**.yaml")
-    void testsAllLintsByEo(final String yaml) {
+    void testsAllLintsByEo(final String yaml, final String pack) {
         MatcherAssert.assertThat(
-            "Doesn't tell the story as it's expected",
+            String.format(
+                "Pack '%s' doesn't tell the story as expected",
+                pack
+            ),
             new XtSticky(
                 new XtYaml(
                     yaml,
-                    eo -> new EoProgram(String.valueOf(eo.hashCode()), new InputOf(eo)).parse()
+                    eo -> new EoProgram(pack, new InputOf(eo)).parse()
                 )
             ),
             new XtoryMatcher(new DefectsMatcher())
@@ -264,17 +286,21 @@ final class LtByXslTest {
     @Timeout(300L)
     @Test
     void validatesEoPacksForErrors() throws IOException {
+        final List<Path> failures = Files.walk(
+            Paths.get("src/test/resources/org/eolang/lints/packs/single")
+        ).filter(Files::isRegularFile)
+            .filter(LtByXslTest.yamls()).map(
+                (Function<Path, Map<Path, Map<String, Object>>>)
+                    p -> new MapOf<>(p, new Yaml().load(new ReaderOf(p.toFile())))
+            )
+            .filter(pack -> pack.values().stream().findFirst().get().containsKey("input"))
+            .filter(pack -> !LtByXslTest.eoErrorFree(pack))
+            .map(pack -> pack.keySet().iterator().next())
+            .collect(Collectors.toList());
         MatcherAssert.assertThat(
-            "All EO snippets in packs must parse without errors",
-            Files.walk(Paths.get("src/test/resources/org/eolang/lints/packs/single"))
-                .filter(Files::isRegularFile)
-                .filter(LtByXslTest.yamls()).map(
-                    (Function<Path, Map<Path, Map<String, Object>>>)
-                        p -> new MapOf<>(p, new Yaml().load(new ReaderOf(p.toFile())))
-                )
-                .filter(pack -> pack.values().stream().findFirst().get().containsKey("input"))
-                .allMatch(LtByXslTest::eoErrorFree),
-            Matchers.equalTo(true)
+            String.format("These EO packs have parse errors: %s", failures),
+            failures,
+            Matchers.empty()
         );
     }
 
@@ -306,9 +332,13 @@ final class LtByXslTest {
     }
 
     private static boolean eoErrorFree(final Map<Path, Map<String, Object>> pack) {
-        final String src = (String) pack.values().stream().findFirst().get().get("input");
         return new Xnav(
-            new EoProgram(src, new InputOf(src)).parse().inner()
+            new EoProgram(
+                pack.keySet().iterator().next().toString(),
+                new InputOf(
+                    (String) pack.values().stream().findFirst().get().get("input")
+                )
+            ).parse().inner()
         ).path("/object[errors]").findAny().isEmpty();
     }
 

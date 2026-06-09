@@ -82,6 +82,11 @@ final class LtUnlintNonExistingDefect implements Lint {
         return new MotiveFrom("misc", this.name()).asString();
     }
 
+    @Override
+    public Fix fix() {
+        return new FxEmpty();
+    }
+
     private Map<String, List<Integer>> existingDefects(final XML xmir) {
         return StreamSupport.stream(this.lints.spliterator(), false).flatMap(
             lint -> {

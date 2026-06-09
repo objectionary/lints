@@ -7,7 +7,7 @@ asserts:
   - /defects[count(defect)=0]
 input: |
   # Some X atom.
-  [] > x ?
+  [] > x /number
     # Test.
     [] +> tests-x
       x "x" > @

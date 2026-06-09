@@ -59,6 +59,11 @@ final class LtTestNotVerb implements Lint {
         return new MotiveFrom("misc", "test-object-is-not-verb-in-singular").asString();
     }
 
+    @Override
+    public Fix fix() {
+        return new FxEmpty();
+    }
+
     /**
      * Check if the test object name is a verb in singular.
      * @param object Object navigator

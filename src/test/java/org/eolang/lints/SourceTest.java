@@ -214,11 +214,15 @@ final class SourceTest {
 
     @Test
     void returnsOnlyOneDefect() {
+        final Collection<Defect> defects = new Source(
+            new EoProgram("org/eolang/lints/main-with-test.eo").parse()
+        ).without("mandatory-spdx").defects();
         MatcherAssert.assertThat(
-            "Only one defect should be found",
-            new Source(new EoProgram("org/eolang/lints/main-with-test.eo").parse())
-                .without("mandatory-spdx")
-                .defects(),
+            String.format(
+                "Only one defect should be found, but got %d: %s",
+                defects.size(), defects
+            ),
+            defects,
             Matchers.hasSize(1)
         );
     }

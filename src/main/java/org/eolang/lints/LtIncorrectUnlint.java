@@ -58,4 +58,9 @@ final class LtIncorrectUnlint implements Lint {
     public String motive() throws IOException {
         return new MotiveFrom("errors", "incorrect-unlint").asString();
     }
+
+    @Override
+    public Fix fix() {
+        return new FxEmpty();
+    }
 }

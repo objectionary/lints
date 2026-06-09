@@ -35,4 +35,9 @@ final class LtAlways implements Lint {
     public String motive() {
         return "";
     }
+
+    @Override
+    public Fix fix() {
+        return new FxEmpty();
+    }
 }

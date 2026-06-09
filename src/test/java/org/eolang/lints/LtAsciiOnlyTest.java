@@ -76,4 +76,15 @@ final class LtAsciiOnlyTest {
             Matchers.equalTo(Severity.WARNING)
         );
     }
+
+    @Test
+    void doesNotFlagNewlinesInMultilineComment() throws IOException {
+        MatcherAssert.assertThat(
+            "Multi-line ASCII comment must not trigger ascii-only false positive",
+            new LtAsciiOnly().defects(
+                new EoProgram("org/eolang/lints/ascii-multiline-comment.eo").parse()
+            ),
+            Matchers.emptyIterable()
+        );
+    }
 }
