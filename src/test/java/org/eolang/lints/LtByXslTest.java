@@ -20,8 +20,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import matchers.DefectsMatcher;
 import org.cactoos.io.InputOf;
 import org.cactoos.io.ReaderOf;
@@ -332,10 +332,13 @@ final class LtByXslTest {
     }
 
     private static boolean eoErrorFree(final Map<Path, Map<String, Object>> pack) {
-        final Path path = pack.keySet().iterator().next();
-        final String src = (String) pack.values().stream().findFirst().get().get("input");
         return new Xnav(
-            new EoProgram(path.toString(), new InputOf(src)).parse().inner()
+            new EoProgram(
+                pack.keySet().iterator().next().toString(),
+                new InputOf(
+                    (String) pack.values().stream().findFirst().get().get("input")
+                )
+            ).parse().inner()
         ).path("/object[errors]").findAny().isEmpty();
     }
 
