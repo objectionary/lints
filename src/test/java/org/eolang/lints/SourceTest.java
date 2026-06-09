@@ -218,7 +218,10 @@ final class SourceTest {
             new EoProgram("org/eolang/lints/main-with-test.eo").parse()
         ).without("mandatory-spdx").defects();
         MatcherAssert.assertThat(
-            String.format("Only one defect should be found, but got %d: %s", defects.size(), defects),
+            String.format(
+                "Only one defect should be found, but got %d: %s",
+                defects.size(), defects
+            ),
             defects,
             Matchers.hasSize(1)
         );
