@@ -8,4 +8,4 @@ asserts:
 input: |
   # Foo
   [spb] > foo
-    [] > bar ?
+    [] > bar /number

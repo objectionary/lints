@@ -8,8 +8,8 @@ asserts:
 input: |
   # Foo.
   [] > foo
-    [] > bar ?
-    [] > buz ?
+    [] > bar /number
+    [] > buz /number
     [] > x
       y > @
     [] > z

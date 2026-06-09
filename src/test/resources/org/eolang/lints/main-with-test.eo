@@ -6,8 +6,8 @@
 
 # No comments.
 [c] > main
-  QQ.io.stdout > @
-    QQ.txt.sprintf
+  Q.io.stdout > @
+    Q.txt.sprintf
       "Hello %s"
       * c
   [] +> starts-correctly
