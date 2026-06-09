@@ -96,7 +96,7 @@ final class LtByXslTest {
             new XtSticky(
                 new XtYaml(
                     yaml,
-                    eo -> new EoProgram(String.valueOf(eo.hashCode()), new InputOf(eo)).parse()
+                    eo -> new EoProgram(pack, new InputOf(eo)).parse()
                 )
             ),
             new XtoryMatcher(new DefectsMatcher())
