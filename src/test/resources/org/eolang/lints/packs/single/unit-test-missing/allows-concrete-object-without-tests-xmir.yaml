@@ -1,0 +1,11 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/tests/unit-test-missing.xsl
+asserts:
+  - /defects[count(defect)=0]
+document: |
+  <object author="tests">
+    <o base="Φ.number" name="nan">7F-F8-00-00-00-00-00-00</o>
+  </object>
