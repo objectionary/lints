@@ -1,0 +1,17 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+# Regression test for objectionary/lints#637.
+# The void attribute "widths" of "tabular" is referenced from inside the
+# nested "[i] > inner" formation as "widths.at i", which the parser turns
+# into "ξ.ρ.widths.at". The lint must recognise this rho-walking reference
+# as a real usage and not flag "widths" as unused.
+sheets:
+  - /org/eolang/lints/misc/unused-void-attr.xsl
+asserts:
+  - /defects[count(defect[contains(., '"widths"')])=0]
+input: |
+  # Foo.
+  [widths] > tabular
+    [i] > inner
+      widths.at i > @
