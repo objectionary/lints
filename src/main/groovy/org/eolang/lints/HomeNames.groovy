@@ -106,7 +106,7 @@ final class HomeNames {
    * objects is located. When `lints` used as a dependency, home repo is accessed from JAR, while,
    * in local tests, we use read as normal file on disk.
    * Both methods: {@link HomeNames#namesInJar} and {@link HomeNames#namesInFile} depend on
-   * the same directory, which we pass in the ctor, the only difference in the term of access - for
+   * the same directory, which we pass in the ctor, the only difference in terms of access - for
    * JAR we need to "mount" the file system using {@link FileSystem}.
    */
   void placeCsv() {
@@ -156,7 +156,7 @@ final class HomeNames {
   /**
    * Names in EO file.
    * @param path Path to EO file
-   * @return Map of names, the key is object name, the value us path
+   * @return Map of names, the key is object name, the value is path
    */
   private static Map<String, String> namesInFile(final Path path) {
     final XML parsed
@@ -172,7 +172,7 @@ final class HomeNames {
   /**
    * Names in EO file from JAR.
    * @param path Path to EO file in JAR
-   * @return Map of names, the key is object name, the value us path
+   * @return Map of names, the key is object name, the value is path
    * @checkstyle IllegalCatchCheck (15 lines)
    */
   @SuppressWarnings("PMD.AvoidCatchingGenericException")
