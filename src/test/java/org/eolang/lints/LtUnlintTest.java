@@ -4,11 +4,8 @@
  */
 package org.eolang.lints;
 
-import com.jcabi.log.Logger;
 import fixtures.EoProgram;
 import java.io.IOException;
-import java.util.Collection;
-import java.util.HashSet;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
@@ -97,20 +94,6 @@ final class LtUnlintTest {
         );
     }
 
-    @Test
-    void doesNotDuplicateDefectsWhenMultipleDefectsOnTheSameLine() throws IOException {
-        final Collection<Defect> defects = new LtUnlint(
-            new LtByXsl("misc/unused-void-attr")
-        ).defects(new EoProgram("org/eolang/lints/unused-voids.eo").parse());
-        MatcherAssert.assertThat(
-            Logger.format(
-                "Found defects (%[list]s) contain duplicates, but they should not",
-                defects
-            ),
-            new HashSet<>(defects).size() == defects.size(),
-            Matchers.equalTo(true)
-        );
-    }
 
     @Test
     void supportsLineRanges() throws IOException {

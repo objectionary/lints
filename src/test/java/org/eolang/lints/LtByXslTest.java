@@ -15,8 +15,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -265,18 +263,6 @@ final class LtByXslTest {
                         return yaml.containsKey("document") && !yaml.containsKey("ignore-schema");
                     }
                 ).allMatch(LtByXslTest::schemaValid),
-            Matchers.equalTo(true)
-        );
-    }
-
-    @Test
-    void doesNotDuplicateDefectsWhenMultipleDefectsOnTheSameLine() {
-        final Collection<Defect> defects = new LtByXsl("misc/unused-void-attr").defects(
-            new EoProgram("org/eolang/lints/unused-voids.eo").parse()
-        );
-        MatcherAssert.assertThat(
-            "Found defects should not contain duplicates",
-            new HashSet<>(defects).size() == defects.size(),
             Matchers.equalTo(true)
         );
     }

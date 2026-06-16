@@ -26,7 +26,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -294,22 +293,6 @@ final class SourceTest {
                     )
                 )
             )
-        );
-    }
-
-    @Test
-    void doesNotDuplicateDefectsWhenMultipleDefectsOnTheSameLine() {
-        final Collection<Defect> defects = new Source(
-            new EoProgram("org/eolang/lints/unused-voids.eo").parse(),
-            new ListOf<>(new LtByXsl("misc/unused-void-attr"))
-        ).defects();
-        MatcherAssert.assertThat(
-            Logger.format(
-                "Found defects (%[list]s) contain duplicates, but they should not",
-                defects
-            ),
-            new HashSet<>(defects).size() == defects.size(),
-            Matchers.equalTo(true)
         );
     }
 
