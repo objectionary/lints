@@ -126,7 +126,7 @@ final class PkByXslTest {
      * @return Parsed XMIR
      */
     private static XML parse() {
-        return new EoProgram("org/eolang/lints/unused-voids.eo").parse();
+        return new EoProgram("org/eolang/lints/canonical.eo").parse();
     }
 
     /**
