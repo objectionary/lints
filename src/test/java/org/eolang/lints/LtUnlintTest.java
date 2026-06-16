@@ -94,7 +94,6 @@ final class LtUnlintTest {
         );
     }
 
-
     @Test
     void supportsLineRanges() throws IOException {
         MatcherAssert.assertThat(
