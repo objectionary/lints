@@ -18,7 +18,7 @@ Correct:
   42 > @
 ```
 
-Comments starting with an `@`-marker, such as `@todo` or `@fixme`, are
+Comments starting with an `@`-marker, such as @todo or @fixme, are
 exempt from this check:
 
 ```eo
