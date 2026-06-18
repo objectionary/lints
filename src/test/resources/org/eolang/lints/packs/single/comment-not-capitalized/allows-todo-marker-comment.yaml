@@ -6,6 +6,6 @@ sheets:
 asserts:
   - /defects[count(defect[@severity='warning'])=0]
 input: |
-  # @todo #4475:35min Enable this feature after resize is implemented.
+  # @todo this comment starts with a lowercase marker.
   [] > foo
     42 > @

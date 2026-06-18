@@ -22,7 +22,7 @@ Comments starting with an `@`-marker, such as `@todo` or `@fixme`, are
 exempt from this check:
 
 ```eo
-# @todo #123:30min Implement this feature.
+# @todo implement this feature.
 [] > foo
   42 > @
 ```
