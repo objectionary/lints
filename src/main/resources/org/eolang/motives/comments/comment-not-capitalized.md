@@ -17,3 +17,12 @@ Correct:
 [] > foo
   42 > @
 ```
+
+Comments starting with an `@`-marker, such as `@todo` or `@fixme`, are
+exempt from this check:
+
+```eo
+# @todo #123:30min Implement this feature.
+[] > foo
+  42 > @
+```
