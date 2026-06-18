@@ -10,7 +10,7 @@
   <xsl:template match="/">
     <xsl:variable name="min" select="32"/>
     <defects>
-      <xsl:for-each select="/object/comments/comment[not(matches(., '^[A-Z]'))]">
+      <xsl:for-each select="/object/comments/comment[not(matches(., '^[A-Z]')) and not(matches(., '^@(todo|fixme)([^A-Z]|$)', 'i'))]">
         <xsl:element name="defect">
           <xsl:variable name="line" select="eo:lineno(@line)"/>
           <xsl:attribute name="line">
