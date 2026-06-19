@@ -1,0 +1,11 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/misc/sparse-decoration.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=0]
+input: |
+  # No comments.
+  [] > func
+    ^.m.put (^.m.as-number.plus 1) > @
