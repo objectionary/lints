@@ -22,7 +22,35 @@
   -->
   <xsl:function name="eo:idiomatic" as="xs:boolean">
     <xsl:param name="name"/>
-    <xsl:sequence select="starts-with($name, 'as-') or starts-with($name, 'is-') or ends-with($name, '-of')"/>
+    <xsl:sequence select="
+      starts-with($name, 'as-') or
+      starts-with($name, 'is-') or
+      starts-with($name, 'has-') or
+      starts-with($name, 'can-') or
+      starts-with($name, 'should-') or
+      starts-with($name, 'will-') or
+      ends-with($name, '-of') or
+      ends-with($name, '-from') or
+      ends-with($name, '-to') or
+      ends-with($name, '-with') or
+      starts-with($name, 'sin') or
+      starts-with($name, 'cos') or
+      starts-with($name, 'tan') or
+      starts-with($name, 'asin') or
+      starts-with($name, 'acos') or
+      starts-with($name, 'atan') or
+      starts-with($name, 'sqrt') or
+      starts-with($name, 'abs') or
+      starts-with($name, 'exp') or
+      starts-with($name, 'log') or
+      $name = 'stdin' or
+      $name = 'stdout' or
+      $name = 'stderr' or
+      $name = 'plus' or
+      $name = 'minus' or
+      $name = 'times' or
+      $name = 'divided'
+    "/>
   </xsl:function>
   <xsl:template match="/">
     <defects>
