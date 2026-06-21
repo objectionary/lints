@@ -1,0 +1,25 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+# yamllint disable rule:line-length
+name: zizmor
+'on':
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+permissions:
+  contents: read
+jobs:
+  zizmor:
+    timeout-minutes: 15
+    runs-on: ubuntu-24.04
+    permissions:
+      security-events: write
+      contents: read
+      actions: read
+    steps:
+      - uses: actions/checkout@v7
+      - uses: zizmorcore/zizmor-action@v0.5.6
