@@ -8,6 +8,7 @@ import com.github.lombrozo.xnav.Xnav;
 import com.jcabi.manifests.Manifests;
 import com.jcabi.matchers.XhtmlMatchers;
 import com.jcabi.xml.XMLDocument;
+import com.yegor256.Together;
 import fixtures.BytecodeClass;
 import fixtures.EoProgram;
 import fixtures.FixPack;
@@ -25,6 +26,7 @@ import org.cactoos.io.InputOf;
 import org.cactoos.io.ReaderOf;
 import org.cactoos.io.ResourceOf;
 import org.cactoos.map.MapOf;
+import org.cactoos.set.SetOf;
 import org.cactoos.text.TextOf;
 import org.cactoos.text.UncheckedText;
 import org.eolang.jucs.ClasspathSource;
@@ -35,6 +37,7 @@ import org.eolang.xax.XtoryMatcher;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
@@ -80,6 +83,23 @@ final class LtByXslTest {
                 new EoProgram("org/eolang/lints/duplicate-names.eo").parse()
             ),
             Matchers.hasSize(Matchers.greaterThan(0))
+        );
+    }
+
+    @Tag("deep")
+    @RepeatedTest(5)
+    void lintsInMultipleThreads() {
+        final LtByXsl lint = new LtByXsl("critical/duplicate-names");
+        MatcherAssert.assertThat(
+            "wrong number of defects found, in parallel",
+            new SetOf<>(
+                new Together<>(
+                    t -> lint.defects(
+                        new EoProgram("org/eolang/lints/duplicate-names.eo").parse()
+                    ).size()
+                ).asList()
+            ).size(),
+            Matchers.equalTo(1)
         );
     }
 
