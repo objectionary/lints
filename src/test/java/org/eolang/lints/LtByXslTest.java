@@ -88,6 +88,7 @@ final class LtByXslTest {
 
     @Tag("deep")
     @RepeatedTest(5)
+    @SuppressWarnings("PMD.UnnecessaryLocalRule")
     void lintsInMultipleThreads() {
         final LtByXsl lint = new LtByXsl("critical/duplicate-names");
         MatcherAssert.assertThat(
