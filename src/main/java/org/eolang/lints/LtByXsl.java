@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 import org.cactoos.Input;
 import org.cactoos.io.ResourceOf;
 import org.cactoos.scalar.Sticky;
+import org.cactoos.scalar.Synced;
 import org.cactoos.scalar.Unchecked;
 import org.cactoos.text.FormattedText;
 import org.cactoos.text.IoCheckedText;
@@ -96,19 +97,24 @@ final class LtByXsl implements Lint {
      */
     private LtByXsl(final Unchecked<XML> xml, final Input motive, final Fix fix) {
         this.rule = new Unchecked<>(
-            new Sticky<>(
-                () -> new Xnav(xml.value().toString())
-                    .element("xsl:stylesheet")
-                    .attribute("id")
-                    .text()
-                    .orElseThrow()
+            new Synced<>(
+                new Sticky<>(
+                    () -> new Xnav(xml.value().toString())
+                        .element("xsl:stylesheet")
+                        .attribute("id")
+                        .text()
+                        .orElseThrow()
+                )
             )
         );
         this.sheet = new Unchecked<>(
-            new Sticky<>(
-                () -> new MeasuredXsl(
-                    this.rule.value(),
-                    new XSLDocument(xml.value(), this.rule.value()).with(new ClasspathSources())
+            new Synced<>(
+                new Sticky<>(
+                    () -> new MeasuredXsl(
+                        this.rule.value(),
+                        new XSLDocument(xml.value(), this.rule.value())
+                            .with(new ClasspathSources())
+                    )
                 )
             )
         );
