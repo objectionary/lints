@@ -1,0 +1,33 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/misc/sprintf-constant-args.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=0]
+document: |
+  <object author="tests">
+    <o name="app">
+      <o base="Φ.io.stdout" name="φ">
+        <o base="Φ.txt.sprintf">
+          <o base="Φ.string">
+            <o base="Φ.bytes">
+              <o>25-73-20-25-73</o>
+            </o>
+          </o>
+          <o base="hello">
+            <o base="Φ.string">
+              <o base="Φ.bytes">
+                <o>68-65-6C-6C-6F</o>
+              </o>
+            </o>
+          </o>
+          <o base="Φ.string">
+            <o base="Φ.bytes">
+              <o>77-6F-72-6C-64-21</o>
+            </o>
+          </o>
+        </o>
+      </o>
+    </o>
+  </object>
