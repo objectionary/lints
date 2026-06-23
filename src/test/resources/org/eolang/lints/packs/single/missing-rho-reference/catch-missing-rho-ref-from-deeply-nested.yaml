@@ -1,0 +1,22 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2025 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+# yamllint disable rule:line-length
+sheets:
+  - /org/eolang/lints/errors/missing-rho-reference.xsl
+asserts:
+  - /defects[count(defect[@severity='error'])=1]
+  - /defects/defect[@line='9']
+  - /defects/defect[1][normalize-space()='The rho reference "messageeee" is missing in "foo" object']
+input: |
+  # Foo.
+  [] > foo
+    [] > bar
+      while > @
+        [i] >>
+          if. > @
+            i.lt 5
+            QQ.io.stdout
+              ^.^.messageeee
+            true
+        true > [i]
