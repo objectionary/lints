@@ -1,0 +1,17 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/misc/redundant-object.xsl
+asserts:
+  - /defects[count(defect)=0]
+input: |
+  # Bytes as input.
+  [bts] > bytes-as-input
+    # Read 'size' amount of bytes from 'bts'.
+    [size] > read
+      ((input-block bts --).read size).self > @
+      # Bytes-as-input block.
+      [data buffer] > input-block
+        buffer > @
+        $ > self
