@@ -1,0 +1,13 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/names/invalid-name-notation.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=1]
+  - /defects/defect[@line='1']
+document: |
+  <object author="tests">
+    <o name="my_object" line="1"/>
+    <o name="valid-name" line="2"/>
+  </object>
