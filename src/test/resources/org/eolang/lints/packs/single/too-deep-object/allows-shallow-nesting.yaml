@@ -1,0 +1,29 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/misc/too-deep-object.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=0]
+document: |
+  <object author="tests">
+    <o name="outer" line="1">
+      <o name="i1" line="2">
+        <o name="i2" line="3">
+          <o name="i3" line="4">
+            <o name="i4" line="5">
+              <o name="i5" line="6">
+                <o name="i6" line="7">
+                  <o name="i7" line="8">
+                    <o name="i8" line="9">
+                      <o name="ok" line="10"/>
+                    </o>
+                  </o>
+                </o>
+              </o>
+            </o>
+          </o>
+        </o>
+      </o>
+    </o>
+  </object>
