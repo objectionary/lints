@@ -26,7 +26,8 @@ final class MonoLints extends IterableEnvelope<Lint> {
             new PkByXsl(),
             List.of(
                 new LtAsciiOnly(),
-                new LtReservedName()
+                new LtReservedName(),
+                new LtSyntaxVersion()
             )
         )
     );
