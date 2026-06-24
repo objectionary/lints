@@ -243,6 +243,27 @@ final class LtByXslTest {
     }
 
     @Test
+    @Timeout(10L)
+    void checksRedundantObjectLintOnLargeXmirInReasonableTime() {
+        final int count = 2000;
+        final Directives dirs = new Directives()
+            .add("object")
+            .add("o").attr("name", "root");
+        for (int idx = 0; idx < count; idx += 1) {
+            dirs.add("o")
+                .attr("name", String.format("obj%d", idx))
+                .attr("base", String.format("ξ.obj%d", (idx + 1) % count))
+                .up();
+        }
+        Assertions.assertDoesNotThrow(
+            () -> new LtByXsl("misc/redundant-object").defects(
+                new XMLDocument(new Xembler(dirs).xml())
+            ),
+            "Large XMIR with many objects must not time out for redundant-object lint"
+        );
+    }
+
+    @Test
     void returnsNonExperimentalWhenXslStaysQuiet() {
         MatcherAssert.assertThat(
             "Experimental flag should be set to false",
