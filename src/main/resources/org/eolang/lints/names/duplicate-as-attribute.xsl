@@ -16,10 +16,7 @@
         <xsl:variable name="oname" select="@name"/>
         <xsl:variable name="line" select="eo:lineno(@line)"/>
         <xsl:variable name="context" select="eo:defect-context(.)"/>
-        <xsl:for-each select="o[@as][
-          count(key('as-key', concat($pid, '|', @as))) &gt; 1
-          and generate-id(.) = generate-id(key('as-key', concat($pid, '|', @as))[1])
-        ]">
+        <xsl:for-each select="o[@as][count(key('as-key', concat($pid, '|', @as))) &gt; 1 and generate-id(.) = generate-id(key('as-key', concat($pid, '|', @as))[1])]">
           <defect>
             <xsl:attribute name="line">
               <xsl:value-of select="$line"/>
