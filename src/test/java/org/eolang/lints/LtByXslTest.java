@@ -264,6 +264,31 @@ final class LtByXslTest {
     }
 
     @Test
+    @Timeout(10L)
+    void checksDuplicateAsAttributeLintOnLargeXmirInReasonableTime()
+        throws ImpossibleModificationException {
+        final int parents = 500;
+        final int args = 500;
+        final Directives dirs = new Directives().add("object");
+        for (int parent = 0; parent < parents; parent += 1) {
+            dirs.add("o").attr("name", String.format("obj%d", parent));
+            for (int arg = 0; arg < args; arg += 1) {
+                dirs.add("o")
+                    .attr("base", String.format("Φ.f%d", arg))
+                    .attr("as", String.format("arg%d", arg))
+                    .up();
+            }
+            dirs.up();
+        }
+        Assertions.assertDoesNotThrow(
+            () -> new LtByXsl("names/duplicate-as-attribute").defects(
+                new XMLDocument(new Xembler(dirs).xml())
+            ),
+            "Large XMIR with many @as attributes must not time out for duplicate-as-attribute lint"
+        );
+    }
+
+    @Test
     void returnsNonExperimentalWhenXslStaysQuiet() {
         MatcherAssert.assertThat(
             "Experimental flag should be set to false",
