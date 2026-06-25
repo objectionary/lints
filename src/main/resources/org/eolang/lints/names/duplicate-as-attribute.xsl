@@ -8,7 +8,7 @@
   <xsl:import href="/org/eolang/funcs/escape.xsl"/>
   <xsl:import href="/org/eolang/funcs/defect-context.xsl"/>
   <xsl:output encoding="UTF-8" method="xml"/>
-  <xsl:key name="as-key" match="o/@as" use="concat(generate-id(../..),  '|', .)"/>
+  <xsl:key name="as-key" match="o[@as]" use="concat(generate-id(..), '|', @as)"/>
   <xsl:template match="/">
     <defects>
       <xsl:for-each select="//o[o[@as]]">
@@ -16,9 +16,9 @@
         <xsl:variable name="oname" select="@name"/>
         <xsl:variable name="line" select="eo:lineno(@line)"/>
         <xsl:variable name="context" select="eo:defect-context(.)"/>
-        <xsl:for-each select="o/@as[
-          count(key('as-key', concat($pid, '|', .))) &gt; 1
-          and generate-id(.) = generate-id(key('as-key', concat($pid, '|', .))[1])
+        <xsl:for-each select="o[@as][
+          count(key('as-key', concat($pid, '|', @as))) &gt; 1
+          and generate-id(.) = generate-id(key('as-key', concat($pid, '|', @as))[1])
         ]">
           <defect>
             <xsl:attribute name="line">
@@ -41,7 +41,7 @@
               </xsl:otherwise>
             </xsl:choose>
             <xsl:text> has duplicated @as attribute </xsl:text>
-            <xsl:value-of select="eo:escape(.)"/>
+            <xsl:value-of select="eo:escape(@as)"/>
           </defect>
         </xsl:for-each>
       </xsl:for-each>
