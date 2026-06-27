@@ -1,0 +1,11 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/comments/comment-starts-with-article.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=0]
+input: |
+  # Object that calculates the sum of two numbers.
+  [] > foo
+    42 > @
