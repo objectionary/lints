@@ -1,0 +1,15 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/errors/unsorted-void-attributes.xsl
+asserts:
+  - /defects[count(defect[@context and @severity='warning'])=1]
+document: |
+  <object author="tests">
+    <o name="foo">
+       <o base="∅" name="b"/>
+       <o base="∅" name="a"/>
+       <o base="Φ.boom" name="φ"/>
+    </o>
+  </object>

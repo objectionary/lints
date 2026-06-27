@@ -1,0 +1,11 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/errors/unsorted-void-attributes.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=1]
+input: |
+  # No comments.
+  [b a c] > foo
+    something > @
