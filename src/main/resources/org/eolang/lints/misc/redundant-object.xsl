@@ -8,12 +8,12 @@
   <xsl:import href="/org/eolang/funcs/escape.xsl"/>
   <xsl:import href="/org/eolang/funcs/defect-context.xsl"/>
   <xsl:output encoding="UTF-8" method="xml"/>
+  <xsl:key name="referenced-by-name" match="o[@base]" use="if (matches(@base, '^ξ(?:\.ρ)*\.')) then tokenize(replace(@base, '^ξ(?:\.ρ)*\.', ''), '\.')[1] else ''"/>
   <xsl:template match="/">
     <defects>
       <xsl:variable name="top" select="/object/o/generate-id()"/>
       <xsl:for-each select="//o[generate-id() != $top and @name and @name != 'φ' and @base and @base != '∅' and not(@base='ξ' and @name='xi🌵')]">
-        <xsl:variable name="usage" select="concat('^ξ(?:\.ρ)*\.', @name, '(?:\.[\w-]+)*$')"/>
-        <xsl:if test="count(//o[matches(@base, $usage)])&lt;=1 and not(@name and o[1]/@base = 'Φ.dataized')">
+        <xsl:if test="count(key('referenced-by-name', @name))&lt;=1 and not(@name and o[1]/@base = 'Φ.dataized')">
           <xsl:element name="defect">
             <xsl:variable name="line" select="eo:lineno(@line)"/>
             <xsl:attribute name="line">

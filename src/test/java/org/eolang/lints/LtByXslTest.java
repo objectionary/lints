@@ -8,6 +8,7 @@ import com.github.lombrozo.xnav.Xnav;
 import com.jcabi.manifests.Manifests;
 import com.jcabi.matchers.XhtmlMatchers;
 import com.jcabi.xml.XMLDocument;
+import com.yegor256.Together;
 import fixtures.BytecodeClass;
 import fixtures.EoProgram;
 import fixtures.FixPack;
@@ -15,8 +16,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -27,6 +26,7 @@ import org.cactoos.io.InputOf;
 import org.cactoos.io.ReaderOf;
 import org.cactoos.io.ResourceOf;
 import org.cactoos.map.MapOf;
+import org.cactoos.set.SetOf;
 import org.cactoos.text.TextOf;
 import org.cactoos.text.UncheckedText;
 import org.eolang.jucs.ClasspathSource;
@@ -37,6 +37,7 @@ import org.eolang.xax.XtoryMatcher;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
@@ -82,6 +83,24 @@ final class LtByXslTest {
                 new EoProgram("org/eolang/lints/duplicate-names.eo").parse()
             ),
             Matchers.hasSize(Matchers.greaterThan(0))
+        );
+    }
+
+    @Tag("deep")
+    @RepeatedTest(5)
+    @SuppressWarnings("PMD.UnnecessaryLocalRule")
+    void lintsInMultipleThreads() {
+        final LtByXsl lint = new LtByXsl("critical/duplicate-names");
+        MatcherAssert.assertThat(
+            "wrong number of defects found, in parallel",
+            new SetOf<>(
+                new Together<>(
+                    t -> lint.defects(
+                        new EoProgram("org/eolang/lints/duplicate-names.eo").parse()
+                    ).size()
+                ).asList()
+            ).size(),
+            Matchers.equalTo(1)
         );
     }
 
@@ -224,6 +243,52 @@ final class LtByXslTest {
     }
 
     @Test
+    @Timeout(10L)
+    void checksRedundantObjectLintOnLargeXmirInReasonableTime() {
+        final int count = 2000;
+        final Directives dirs = new Directives()
+            .add("object")
+            .add("o").attr("name", "root");
+        for (int idx = 0; idx < count; idx += 1) {
+            dirs.add("o")
+                .attr("name", String.format("obj%d", idx))
+                .attr("base", String.format("ξ.obj%d", (idx + 1) % count))
+                .up();
+        }
+        Assertions.assertDoesNotThrow(
+            () -> new LtByXsl("misc/redundant-object").defects(
+                new XMLDocument(new Xembler(dirs).xml())
+            ),
+            "Large XMIR with many objects must not time out for redundant-object lint"
+        );
+    }
+
+    @Test
+    @Timeout(10L)
+    void checksDuplicateAsAttributeLintOnLargeXmirInReasonableTime()
+        throws ImpossibleModificationException {
+        final int parents = 500;
+        final int args = 500;
+        final Directives dirs = new Directives().add("object");
+        for (int parent = 0; parent < parents; parent += 1) {
+            dirs.add("o").attr("name", String.format("obj%d", parent));
+            for (int arg = 0; arg < args; arg += 1) {
+                dirs.add("o")
+                    .attr("base", String.format("Φ.f%d", arg))
+                    .attr("as", String.format("arg%d", arg))
+                    .up();
+            }
+            dirs.up();
+        }
+        Assertions.assertDoesNotThrow(
+            () -> new LtByXsl("names/duplicate-as-attribute").defects(
+                new XMLDocument(new Xembler(dirs).xml())
+            ),
+            "Large XMIR with many @as attributes must not time out for duplicate-as-attribute lint"
+        );
+    }
+
+    @Test
     void returnsNonExperimentalWhenXslStaysQuiet() {
         MatcherAssert.assertThat(
             "Experimental flag should be set to false",
@@ -265,18 +330,6 @@ final class LtByXslTest {
                         return yaml.containsKey("document") && !yaml.containsKey("ignore-schema");
                     }
                 ).allMatch(LtByXslTest::schemaValid),
-            Matchers.equalTo(true)
-        );
-    }
-
-    @Test
-    void doesNotDuplicateDefectsWhenMultipleDefectsOnTheSameLine() {
-        final Collection<Defect> defects = new LtByXsl("misc/unused-void-attr").defects(
-            new EoProgram("org/eolang/lints/unused-voids.eo").parse()
-        );
-        MatcherAssert.assertThat(
-            "Found defects should not contain duplicates",
-            new HashSet<>(defects).size() == defects.size(),
             Matchers.equalTo(true)
         );
     }

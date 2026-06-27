@@ -24,7 +24,7 @@ We use this package as a dependency in the
 <dependency>
   <groupId>org.eolang</groupId>
   <artifactId>lints</artifactId>
-  <version>0.2.2</version>
+  <version>0.2.6</version>
 </dependency>
 ```
 
@@ -84,42 +84,42 @@ Here is the result of linting XMIRs:
 <!-- benchmark_begin -->
 ```text
 Input: com/sun/jna/PointerType.class (S source)
-Lint time: 3s (3373 ms)
+Lint time: 3s (3393 ms)
 
 Input: com/sun/jna/Memory.class (M source)
-Lint time: 5s (5414 ms)
+Lint time: 5s (5406 ms)
 
 Input: com/sun/jna/Pointer.class (L source)
-Lint time: 7s (7358 ms)
+Lint time: 7s (7331 ms)
 
 Input: com/sun/jna/Structure.class (XL source)
-Lint time: 10s (9772 ms)
+Lint time: 11s (10818 ms)
 
 Input: org/apache/hadoop/hdfs/server/namenode/FSNamesystem.class (XXL source)
-Lint time: 39s (38770 ms)
+Lint time: 38s (37705 ms)
 
 
 
-unlint-non-existing-defect (XXL) (15146 ms)
-application-without-as-attributes (XXL) (3014 ms)
-unlint-non-existing-defect (XL) (2770 ms)
-unlint-non-existing-defect (L) (1562 ms)
-object-has-data (XXL) (1290 ms)
-empty-object (XXL) (951 ms)
-duplicate-names-in-diff-context (XXL) (896 ms)
-redundant-object (XXL) (709 ms)
-duplicate-as-attribute (XXL) (680 ms)
-compound-name (XXL) (676 ms)
-unlint-non-existing-defect (M) (600 ms)
-application-without-as-attributes (XL) (569 ms)
-reserved-name (XXL) (551 ms)
-line-is-absent (XXL) (535 ms)
-incorrect-bytes-format (XXL) (504 ms)
-bytes-without-data (XXL) (413 ms)
+unlint-non-existing-defect (XXL) (14577 ms)
+application-without-as-attributes (XXL) (2922 ms)
+unlint-non-existing-defect (XL) (2819 ms)
+unlint-non-existing-defect (L) (1547 ms)
+object-has-data (XXL) (1279 ms)
+empty-object (XXL) (968 ms)
+duplicate-names-in-diff-context (XXL) (933 ms)
+redundant-object (XXL) (711 ms)
+unlint-non-existing-defect (M) (597 ms)
+duplicate-as-attribute (XXL) (590 ms)
+incorrect-bytes-format (XXL) (578 ms)
+application-without-as-attributes (XL) (576 ms)
+compound-name (XXL) (545 ms)
+reserved-name (XXL) (534 ms)
+line-is-absent (XXL) (531 ms)
+bytes-without-data (XXL) (380 ms)
 ```
 
 The results were calculated in [this GHA job][benchmark-gha]
-on 2026-06-08 at 19:43,
+on 2026-06-19 at 06:19,
 on Linux with 4 CPUs.
 <!-- benchmark_end -->
 
@@ -152,4 +152,4 @@ just install it and make sure it's in your `PATH`
 
 [XMIR]: https://news.eolang.org/2022-11-25-xmir-guide.html
 [EO]: https://www.eolang.org
-[benchmark-gha]: https://github.com/objectionary/lints/actions/runs/27162096237
+[benchmark-gha]: https://github.com/objectionary/lints/actions/runs/27808910468

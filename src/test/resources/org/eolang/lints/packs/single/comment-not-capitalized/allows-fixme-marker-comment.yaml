@@ -2,15 +2,10 @@
 # SPDX-License-Identifier: MIT
 ---
 sheets:
-  - /org/eolang/lints/misc/duplicate-names-in-diff-context.xsl
+  - /org/eolang/lints/comments/comment-not-capitalized.xsl
 asserts:
   - /defects[count(defect[@severity='warning'])=0]
 input: |
-  # Foo.
+  # @fixme this code is broken after the refactoring.
   [] > foo
-    [] > bar /number
-    [] > buz /number
-    [] > x
-      y > @
-    [] > z
-      z > @
+    42 > @

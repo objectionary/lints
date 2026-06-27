@@ -1,0 +1,11 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/comments/comment-not-capitalized.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=0]
+input: |
+  # @todo this comment starts with a lowercase marker.
+  [] > foo
+    42 > @

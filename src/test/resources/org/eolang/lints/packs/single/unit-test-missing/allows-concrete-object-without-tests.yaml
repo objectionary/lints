@@ -2,9 +2,9 @@
 # SPDX-License-Identifier: MIT
 ---
 sheets:
-  - /org/eolang/lints/misc/unused-void-attr.xsl
+  - /org/eolang/lints/tests/unit-test-missing.xsl
 asserts:
   - /defects[count(defect)=0]
 input: |
-  # Error.
-  [message] > error /number
+  # The not a number object.
+  number 7F-F8-00-00-00-00-00-00 > nan

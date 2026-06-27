@@ -11,7 +11,7 @@
   <xsl:output encoding="UTF-8" method="xml"/>
   <xsl:template match="/">
     <defects>
-      <xsl:if test="count(//o[starts-with(@name, '+')]) = 0">
+      <xsl:if test="count(//o[starts-with(@name, '+')]) = 0 and not(/object/o/@base)">
         <xsl:element name="defect">
           <xsl:attribute name="line">
             <xsl:value-of select="0"/>
