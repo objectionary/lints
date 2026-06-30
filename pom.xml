@@ -77,6 +77,12 @@
       <groupId>com.jcabi</groupId>
       <artifactId>jcabi-xml</artifactId>
       <version>0.37.1</version>
+      <exclusions>
+        <exclusion>
+          <groupId>com.jcabi</groupId>
+          <artifactId>jcabi-log</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>io.github.secretx33</groupId>
