@@ -11,27 +11,31 @@
   <xsl:variable name="max" select="5"/>
   <xsl:template match="/">
     <defects>
-      <xsl:for-each select="//o[count(o[@name and @base='∅' and not(o)]) &gt; $max]">
-        <xsl:element name="defect">
-          <xsl:variable name="line" select="eo:lineno(@line)"/>
-          <xsl:attribute name="line">
-            <xsl:value-of select="$line"/>
-          </xsl:attribute>
-          <xsl:if test="$line = '0'">
-            <xsl:attribute name="context">
-              <xsl:value-of select="eo:defect-context(.)"/>
-            </xsl:attribute>
-          </xsl:if>
-          <xsl:attribute name="severity">
-            <xsl:text>warning</xsl:text>
-          </xsl:attribute>
-          <xsl:text>The object </xsl:text>
-          <xsl:value-of select="eo:escape(@name)"/>
-          <xsl:text> has more than </xsl:text>
-          <xsl:value-of select="$max"/>
-          <xsl:text> void attributes, it's too many</xsl:text>
-        </xsl:element>
-      </xsl:for-each>
+      <xsl:for-each-group select="//o[@name and @base='∅' and not(o)]" group-by="generate-id(..)">
+        <xsl:if test="count(current-group()) &gt; $max">
+          <xsl:for-each select="current-group()[1]/..">
+            <xsl:element name="defect">
+              <xsl:variable name="line" select="eo:lineno(@line)"/>
+              <xsl:attribute name="line">
+                <xsl:value-of select="$line"/>
+              </xsl:attribute>
+              <xsl:if test="$line = '0'">
+                <xsl:attribute name="context">
+                  <xsl:value-of select="eo:defect-context(.)"/>
+                </xsl:attribute>
+              </xsl:if>
+              <xsl:attribute name="severity">
+                <xsl:text>warning</xsl:text>
+              </xsl:attribute>
+              <xsl:text>The object </xsl:text>
+              <xsl:value-of select="eo:escape(@name)"/>
+              <xsl:text> has more than </xsl:text>
+              <xsl:value-of select="$max"/>
+              <xsl:text> void attributes, it's too many</xsl:text>
+            </xsl:element>
+          </xsl:for-each>
+        </xsl:if>
+      </xsl:for-each-group>
     </defects>
   </xsl:template>
 </xsl:stylesheet>
