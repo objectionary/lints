@@ -59,6 +59,11 @@ import org.yaml.snakeyaml.Yaml;
 @SuppressWarnings("PMD.TooManyMethods")
 final class LtByXslTest {
 
+    /**
+     * XML attribute name.
+     */
+    private static final String NAME = "name";
+
     @Test
     void producesExpectedXmirWithFix() throws Exception {
         final FixPack pack = new FixPack(
@@ -248,10 +253,10 @@ final class LtByXslTest {
         final int count = 2000;
         final Directives dirs = new Directives()
             .add("object")
-            .add("o").attr("name", "root");
+            .add("o").attr(LtByXslTest.NAME, "root");
         for (int idx = 0; idx < count; idx += 1) {
             dirs.add("o")
-                .attr("name", String.format("obj%d", idx))
+                .attr(LtByXslTest.NAME, String.format("obj%d", idx))
                 .attr("base", String.format("ξ.obj%d", (idx + 1) % count))
                 .up();
         }
@@ -271,7 +276,7 @@ final class LtByXslTest {
         final int args = 500;
         final Directives dirs = new Directives().add("object");
         for (int parent = 0; parent < parents; parent += 1) {
-            dirs.add("o").attr("name", String.format("obj%d", parent));
+            dirs.add("o").attr(LtByXslTest.NAME, String.format("obj%d", parent));
             for (int arg = 0; arg < args; arg += 1) {
                 dirs.add("o")
                     .attr("base", String.format("Φ.f%d", arg))
@@ -294,16 +299,12 @@ final class LtByXslTest {
         throws ImpossibleModificationException {
         final int parents = 400;
         final int voids = 400;
-        final int grandchildren = 5;
+        final int depth = 5;
         final Directives dirs = new Directives().add("object");
         for (int parent = 0; parent < parents; parent += 1) {
-            dirs.add("o").attr("name", String.format("obj%d", parent));
+            dirs.add("o").attr(LtByXslTest.NAME, String.format("obj%d", parent));
             for (int idx = 0; idx < voids; idx += 1) {
-                dirs.add("o").attr("name", String.format("a%d", idx)).attr("base", "∅");
-                for (int grand = 0; grand < grandchildren; grand += 1) {
-                    dirs.add("o").attr("base", String.format("Φ.f%d", grand)).up();
-                }
-                dirs.up();
+                LtByXslTest.voidAttr(dirs, String.format("a%d", idx), depth);
             }
             dirs.up();
         }
@@ -382,6 +383,18 @@ final class LtByXslTest {
             failures,
             Matchers.empty()
         );
+    }
+
+    private static void voidAttr(
+        final Directives dirs,
+        final String name,
+        final int children
+    ) throws ImpossibleModificationException {
+        dirs.add("o").attr(LtByXslTest.NAME, name).attr("base", "∅");
+        for (int idx = 0; idx < children; idx += 1) {
+            dirs.add("o").attr("base", String.format("Φ.f%d", idx)).up();
+        }
+        dirs.up();
     }
 
     private static boolean schemaValid(final Map<Path, Map<String, Object>> pack) {
