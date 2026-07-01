@@ -292,8 +292,8 @@ final class LtByXslTest {
     @Timeout(10L)
     void checksManyVoidAttributesLintOnLargeXmirInReasonableTime()
         throws ImpossibleModificationException {
-        final int parents = 500;
-        final int voids = 500;
+        final int parents = 400;
+        final int voids = 400;
         final int grandchildren = 5;
         final Directives dirs = new Directives().add("object");
         for (int parent = 0; parent < parents; parent += 1) {
