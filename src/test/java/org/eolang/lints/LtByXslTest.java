@@ -59,11 +59,6 @@ import org.yaml.snakeyaml.Yaml;
 @SuppressWarnings("PMD.TooManyMethods")
 final class LtByXslTest {
 
-    /**
-     * XML attribute name.
-     */
-    private static final String NAME = "name";
-
     @Test
     void producesExpectedXmirWithFix() throws Exception {
         final FixPack pack = new FixPack(
@@ -253,10 +248,10 @@ final class LtByXslTest {
         final int count = 2000;
         final Directives dirs = new Directives()
             .add("object")
-            .add("o").attr(LtByXslTest.NAME, "root");
+            .add("o").attr("name", "root");
         for (int idx = 0; idx < count; idx += 1) {
             dirs.add("o")
-                .attr(LtByXslTest.NAME, String.format("obj%d", idx))
+                .attr("name", String.format("obj%d", idx))
                 .attr("base", String.format("ξ.obj%d", (idx + 1) % count))
                 .up();
         }
@@ -276,7 +271,7 @@ final class LtByXslTest {
         final int args = 500;
         final Directives dirs = new Directives().add("object");
         for (int parent = 0; parent < parents; parent += 1) {
-            dirs.add("o").attr(LtByXslTest.NAME, String.format("obj%d", parent));
+            dirs.add("o").attr("name", String.format("obj%d", parent));
             for (int arg = 0; arg < args; arg += 1) {
                 dirs.add("o")
                     .attr("base", String.format("Φ.f%d", arg))
@@ -302,7 +297,7 @@ final class LtByXslTest {
         final int depth = 5;
         final Directives dirs = new Directives().add("object");
         for (int parent = 0; parent < parents; parent += 1) {
-            dirs.add("o").attr(LtByXslTest.NAME, String.format("obj%d", parent));
+            dirs.add("o");
             for (int idx = 0; idx < voids; idx += 1) {
                 LtByXslTest.voidAttr(dirs, String.format("a%d", idx), depth);
             }
@@ -390,7 +385,7 @@ final class LtByXslTest {
         final String name,
         final int children
     ) throws ImpossibleModificationException {
-        dirs.add("o").attr(LtByXslTest.NAME, name).attr("base", "∅");
+        dirs.add("o").attr("name", name).attr("base", "∅");
         for (int idx = 0; idx < children; idx += 1) {
             dirs.add("o").attr("base", String.format("Φ.f%d", idx)).up();
         }
