@@ -289,6 +289,33 @@ final class LtByXslTest {
     }
 
     @Test
+    @Timeout(10L)
+    void checksManyVoidAttributesLintOnLargeXmirInReasonableTime()
+        throws ImpossibleModificationException {
+        final int parents = 500;
+        final int voids = 500;
+        final int grandchildren = 5;
+        final Directives dirs = new Directives().add("object");
+        for (int parent = 0; parent < parents; parent += 1) {
+            dirs.add("o").attr("name", String.format("obj%d", parent));
+            for (int idx = 0; idx < voids; idx += 1) {
+                dirs.add("o").attr("name", String.format("a%d", idx)).attr("base", "∅");
+                for (int grand = 0; grand < grandchildren; grand += 1) {
+                    dirs.add("o").attr("base", String.format("Φ.f%d", grand)).up();
+                }
+                dirs.up();
+            }
+            dirs.up();
+        }
+        Assertions.assertDoesNotThrow(
+            () -> new LtByXsl("errors/many-void-attributes").defects(
+                new XMLDocument(new Xembler(dirs).xml())
+            ),
+            "Large XMIR with many void attributes must not time out for many-void-attributes lint"
+        );
+    }
+
+    @Test
     void returnsNonExperimentalWhenXslStaysQuiet() {
         MatcherAssert.assertThat(
             "Experimental flag should be set to false",

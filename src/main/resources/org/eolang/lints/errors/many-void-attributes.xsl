@@ -4,7 +4,6 @@
  * SPDX-License-Identifier: MIT
 -->
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:eo="https://www.eolang.org" id="many-void-attributes" version="2.0">
-  <xsl:import href="/org/eolang/parser/_funcs.xsl"/>
   <xsl:import href="/org/eolang/funcs/lineno.xsl"/>
   <xsl:import href="/org/eolang/funcs/escape.xsl"/>
   <xsl:import href="/org/eolang/funcs/defect-context.xsl"/>
@@ -12,7 +11,7 @@
   <xsl:variable name="max" select="5"/>
   <xsl:template match="/">
     <defects>
-      <xsl:for-each select="//o[count(o[@name and @base='∅' and not(eo:atom(.)) and count(o)=0]) &gt; $max]">
+      <xsl:for-each select="//o[count(o[@name and @base='∅' and count(o)=0]) &gt; $max]">
         <xsl:element name="defect">
           <xsl:variable name="line" select="eo:lineno(@line)"/>
           <xsl:attribute name="line">
