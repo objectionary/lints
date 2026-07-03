@@ -1,0 +1,14 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/names/unsorted-named-attributes.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=0]
+input: |
+  # No comments.
+  [] > app
+    [] +> runs-app
+    [] > alpha
+    [] +> checks-app
+    [] > beta
