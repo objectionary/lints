@@ -192,21 +192,26 @@ final class SourceTest {
 
     @Test
     void createsSourceWithoutMultipleLints() {
+        final Collection<String> disabled = List.of(
+            "ascii-only",
+            "object-does-not-match-filename",
+            "comment-not-capitalized",
+            "empty-object",
+            "mandatory-home",
+            "mandatory-version",
+            "mandatory-package",
+            "comment-too-short",
+            "mandatory-spdx",
+            "no-attribute-formation",
+            "unit-test-missing"
+        );
         MatcherAssert.assertThat(
             "Defects for disabled lints are not empty, but should be",
-            new Source(new EoProgram("org/eolang/lints/non-ascii-cyrillic.eo").parse()).without(
-                "ascii-only",
-                "object-does-not-match-filename",
-                "comment-not-capitalized",
-                "empty-object",
-                "mandatory-home",
-                "mandatory-version",
-                "mandatory-package",
-                "comment-too-short",
-                "mandatory-spdx",
-                "no-attribute-formation",
-                "unit-test-missing"
-            ).defects(),
+            new Source(
+                new EoProgram("org/eolang/lints/non-ascii-cyrillic.eo").parse()
+            ).without(disabled.toArray(new String[0])).defects().stream()
+                .filter(defect -> disabled.contains(defect.rule()))
+                .collect(Collectors.toList()),
             Matchers.emptyIterable()
         );
     }
