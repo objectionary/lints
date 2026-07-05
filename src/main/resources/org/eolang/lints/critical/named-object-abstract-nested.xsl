@@ -11,7 +11,7 @@
   <xsl:output encoding="UTF-8" method="xml"/>
   <xsl:template match="/">
     <defects>
-      <xsl:for-each select="//o[@name]//o[@name and not(parent::o[eo:abstract(.)])]">
+      <xsl:for-each select="//o[@name and ancestor::o[@name] and not(parent::o[eo:abstract(.)])]">
         <defect>
           <xsl:variable name="line" select="eo:lineno(@line)"/>
           <xsl:attribute name="line">

@@ -56,7 +56,7 @@ import org.yaml.snakeyaml.Yaml;
  * @since 0.0.1
  * @checkstyle ClassFanOutComplexityCheck (500 lines)
  */
-@SuppressWarnings("PMD.TooManyMethods")
+@SuppressWarnings({"PMD.TooManyMethods", "PMD.AvoidDuplicateLiterals"})
 final class LtByXslTest {
 
     @Test
@@ -308,6 +308,29 @@ final class LtByXslTest {
                 new XMLDocument(new Xembler(dirs).xml())
             ),
             "Large XMIR with many void attributes must not time out for many-void-attributes lint"
+        );
+    }
+
+    @Test
+    @Timeout(5L)
+    void checksNamedObjectAbstractNestedLintOnLargeXmirInReasonableTime()
+        throws ImpossibleModificationException {
+        final int chains = 500;
+        final int depth = 100;
+        final Directives dirs = new Directives().add("object");
+        for (int chain = 0; chain < chains; chain += 1) {
+            for (int idx = 0; idx < depth; idx += 1) {
+                dirs.add("o").attr("name", String.format("n%d_%d", chain, idx));
+            }
+            for (int idx = 0; idx < depth; idx += 1) {
+                dirs.up();
+            }
+        }
+        Assertions.assertDoesNotThrow(
+            () -> new LtByXsl("critical/named-object-abstract-nested").defects(
+                new XMLDocument(new Xembler(dirs).xml())
+            ),
+            "Large XMIR with many nested named objects must not time out for named-object-abstract-nested lint"
         );
     }
 

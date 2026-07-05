@@ -5,6 +5,12 @@ abstract object.
 
 Incorrect:
 
+```eo
+[] > foo
+  xyz
+    num > abc
+```
+
 ```xml
 <o base="x" name="φ">
   <o base="y" name="a">
@@ -14,6 +20,12 @@ Incorrect:
 ```
 
 Correct:
+
+```eo
+[] > foo
+  num > abc
+  xyz $.abc > @
+```
 
 ```xml
 <o name="f">
