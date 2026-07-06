@@ -10,12 +10,12 @@
   <xsl:output encoding="UTF-8" method="xml"/>
   <xsl:template match="/">
     <defects>
-      <xsl:apply-templates select="//o[normalize-space(string-join(text(), '')) != '']" mode="with-data"/>
+      <xsl:apply-templates select="//o[not(o) and normalize-space()]" mode="with-data"/>
     </defects>
   </xsl:template>
   <xsl:template match="o" mode="with-data">
-    <xsl:variable name="bytes" select="normalize-space(string-join(text(), ''))"/>
-    <xsl:if test="$bytes != '' and not(matches($bytes, '^(--|[0-9A-F]{2}(-|(-[0-9A-F]{2})+))$'))">
+    <xsl:variable name="bytes" select="normalize-space(.)"/>
+    <xsl:if test="not($bytes = '--' or (contains($bytes, '-') and not(starts-with($bytes, '-')) and not(ends-with($bytes, '-')) and translate($bytes, '0123456789ABCDEF-', '') = '' and not(tokenize($bytes, '-')[string-length() != 2])))">
       <defect>
         <xsl:variable name="line" select="eo:lineno(@line)"/>
         <xsl:attribute name="line">
