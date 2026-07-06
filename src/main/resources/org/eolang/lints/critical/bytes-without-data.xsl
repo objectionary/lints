@@ -11,7 +11,7 @@
   <xsl:output encoding="UTF-8" method="xml"/>
   <xsl:template match="/">
     <defects>
-      <xsl:apply-templates select="//o[not(eo:has-data(.)) and parent::o[@base='Φ.bytes'] and eo:abstract(.)]" mode="with-data"/>
+      <xsl:apply-templates select="//o[parent::o[@base='Φ.bytes'] and not(@base) and not(text()[normalize-space()])]" mode="with-data"/>
     </defects>
   </xsl:template>
   <xsl:template match="o" mode="with-data">
