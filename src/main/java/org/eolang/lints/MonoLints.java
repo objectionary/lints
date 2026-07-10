@@ -38,7 +38,8 @@ final class MonoLints extends IterableEnvelope<Lint> {
         new Joined<Lint>(
             MonoLints.LINTS,
             new ListOf<>(
-                new LtUnlintNonExistingDefect(MonoLints.LINTS)
+                new LtUnlintNonExistingDefect(MonoLints.LINTS),
+                new LtIncorrectUnlint(List.of())
             )
         )
     ).stream()
