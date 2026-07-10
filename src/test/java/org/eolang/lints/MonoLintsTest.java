@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.stream.Collectors;
+import org.cactoos.io.InputOf;
 import org.cactoos.list.ListOf;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -45,6 +46,22 @@ final class MonoLintsTest {
             Matchers.hasItem(
                 "incorrect-unlint"
             )
+        );
+    }
+
+    @Test
+    @SuppressWarnings("PMD.UnnecessaryLocalRule")
+    void acceptsIncorrectUnlintSuppression() throws IOException {
+        final String source = "+unlint incorrect-unlint";
+        final Lint lint = new ListOf<>(new MonoLints()).stream()
+            .filter(item -> "incorrect-unlint".equals(item.name()))
+            .findFirst().orElseThrow(
+                () -> new IllegalStateException("Lint `incorrect-unlint` is absent")
+            );
+        MatcherAssert.assertThat(
+            "Valid `incorrect-unlint` suppression must not cause defects",
+            lint.defects(new EoProgram(source, new InputOf(source)).parse()),
+            Matchers.emptyIterable()
         );
     }
 
