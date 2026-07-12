@@ -1,0 +1,14 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/tests/wrong-test-order.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=0]
+document: |
+  <object author="tests">
+    <o name="filtered">
+      <o name="+tests-filtered-with-bools" line="10"/>
+      <o name="a🌵18-4" line="18"/>
+    </o>
+  </object>
