@@ -6,6 +6,7 @@ package org.eolang.lints;
 
 import fixtures.EoProgram;
 import java.io.IOException;
+import org.cactoos.io.InputOf;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
@@ -136,6 +137,23 @@ final class LtUnlintTest {
                 new EoProgram("org/eolang/lints/unlint-ascii-only-out-of-range.eo").parse()
             ),
             Matchers.iterableWithSize(2)
+        );
+    }
+
+    @Test
+    void keepsLineZeroDefectsWhenAnotherLineIsUnlinted() throws IOException {
+        final String src = String.join(
+            "\n",
+            "# This line only exists to place +unlint on a real EO line",
+            "+unlint always:5",
+            "[] > foo"
+        );
+        MatcherAssert.assertThat(
+            "A line-specific unlint must not suppress a line-zero defect",
+            new LtUnlint(new LtAlways()).defects(
+                new EoProgram(src, new InputOf(src)).parse()
+            ),
+            Matchers.hasSize(1)
         );
     }
 }
