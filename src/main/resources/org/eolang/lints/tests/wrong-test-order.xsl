@@ -12,10 +12,7 @@
   <xsl:template match="/">
     <defects>
       <xsl:for-each select="/object//o[starts-with(@name, '+')]">
-        <xsl:variable
-          name="next"
-          select="following-sibling::o[not(starts-with(@name, 'a&#x1F335;'))][1]"
-        />
+        <xsl:variable name="next" select="following-sibling::o[not(starts-with(@name, 'a&#x1F335;'))][1]"/>
         <xsl:if test="$next[self::o] and not(starts-with($next/@name, '+'))">
           <xsl:element name="defect">
             <xsl:variable name="line" select="eo:lineno(@line)"/>
