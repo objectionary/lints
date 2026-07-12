@@ -9,6 +9,6 @@ document: |
   <object author="tests">
     <o name="filtered">
       <o name="+tests-filtered-with-bools" line="10"/>
-      <o name="a🌵18-4" line="18"/>
+      <o name="a&#x1F335;18-4" line="18"/>
     </o>
   </object>
