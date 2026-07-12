@@ -143,7 +143,7 @@ final class LtUnlintTest {
     @Test
     void keepsLineZeroDefectsWhenAnotherLineIsUnlinted() throws IOException {
         final String src = String.join(
-            "\n",
+            System.lineSeparator(),
             "# This line only exists to place +unlint on a real EO line",
             "+unlint always:5",
             "[] > foo"
