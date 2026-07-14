@@ -6,12 +6,14 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:eo="https://www.eolang.org" id="atom-in-atom" version="2.0">
   <xsl:import href="/org/eolang/parser/_funcs.xsl"/>
   <xsl:import href="/org/eolang/funcs/lineno.xsl"/>
-  <xsl:import href="/org/eolang/funcs/escape.xsl"/>
   <xsl:import href="/org/eolang/funcs/defect-context.xsl"/>
+  <xsl:import href="/org/eolang/funcs/escape.xsl"/>
   <xsl:output encoding="UTF-8" method="xml"/>
+  <xsl:key name="atoms" match="o" use="exists(o[@name='lambda'])"/>
+  
   <xsl:template match="/">
     <defects>
-      <xsl:for-each select="//o[eo:atom(.) and o[eo:atom(.)]]">
+      <xsl:for-each select="//o[key('atoms', true()) and o[key('atoms', true())]]">
         <xsl:element name="defect">
           <xsl:variable name="line" select="eo:lineno(@line)"/>
           <xsl:attribute name="line">
@@ -25,15 +27,7 @@
           <xsl:attribute name="severity">
             <xsl:text>error</xsl:text>
           </xsl:attribute>
-          <xsl:text>Atom </xsl:text>
-          <xsl:value-of select="eo:escape(@name)"/>
-          <xsl:text> may not have any attributes, even if they are atoms, which however exist: </xsl:text>
-          <xsl:for-each select="o[eo:atom(.)]">
-            <xsl:if test="position() &gt; 1">
-              <xsl:text>, </xsl:text>
-            </xsl:if>
-            <xsl:value-of select="eo:escape(@name)"/>
-          </xsl:for-each>
+          <xsl:text>Atom object has another atom inside</xsl:text>
         </xsl:element>
       </xsl:for-each>
     </defects>
