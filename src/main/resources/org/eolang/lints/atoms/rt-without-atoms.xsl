@@ -8,9 +8,10 @@
   <xsl:import href="/org/eolang/funcs/lineno.xsl"/>
   <xsl:import href="/org/eolang/funcs/defect-context.xsl"/>
   <xsl:output encoding="UTF-8" method="xml"/>
+  <xsl:key name="atoms" match="o" use="exists(o[@name='lambda'])"/>
   <xsl:template match="/">
     <defects>
-      <xsl:if test="not(//o[eo:atom(.)])">
+      <xsl:if test="not(key('atoms', true()))">
         <xsl:if test="/object/metas/meta[head='rt']">
           <xsl:element name="defect">
             <xsl:variable name="line" select="eo:lineno(/object/metas/meta[head='rt'][1]/@line)"/>
