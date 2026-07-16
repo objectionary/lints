@@ -6,8 +6,11 @@ sheets:
 asserts:
   - /defects[count(defect[@severity='warning'])=1]
   - /defects/defect[@line='3']
-input: |
-  [] > foo
-    [] > bar
-    [] +> runs-program
-    [] > boom
+document: |
+  <object author="tests">
+    <o line="1" name="foo" pos="0">
+      <o line="2" name="bar" pos="2"/>
+      <o line="3" name="+runs-program" pos="2"/>
+      <o line="4" name="boom" pos="2"/>
+    </o>
+  </object>
