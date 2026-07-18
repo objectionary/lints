@@ -1,9 +1,9 @@
 # Same-package alias
 
 An `+alias` meta that points to an object in the same package as the
-current file is redundant. Since the compiler auto-homes a bare
-reference to an object of the same package, the alias adds nothing and
-should be removed.
+current file is redundant. Since the compiler resolves a bare
+reference to an object of the same package on its own, the alias adds
+nothing and should be removed.
 
 Incorrect (the file's package is `org.eolang.txt`):
 
