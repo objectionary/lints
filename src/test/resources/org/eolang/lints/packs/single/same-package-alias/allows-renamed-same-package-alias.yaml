@@ -1,0 +1,14 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/aliases/same-package-alias.xsl
+asserts:
+  - /defects[count(defect[@severity='error'])=0]
+input: |
+  +package org.eolang.txt
+  +alias sp org.eolang.txt.sprintf
+
+  # Foo.
+  [x] > foo
+    sp x > @
