@@ -12,7 +12,7 @@
     <defects>
       <xsl:for-each select="/object/metas/meta[head='alias' and count(part)=2]">
         <xsl:variable name="name" select="tokenize(tail, ' ')[last()]"/>
-        <xsl:if test="count(//o[starts-with(@base, $name)])=0">
+        <xsl:if test="count(//o[@base = $name or starts-with(@base, concat($name, '.'))]) = 0">
           <xsl:element name="defect">
             <xsl:variable name="line" select="eo:lineno(@line)"/>
             <xsl:attribute name="line">
