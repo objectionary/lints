@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
- * SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
- * SPDX-License-Identifier: MIT
+* SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+* SPDX-License-Identifier: MIT
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
@@ -381,10 +381,10 @@
       <activation>
         <activeByDefault>false</activeByDefault>
         <!--
-          @todo #711:45min Enable `hone` profile on all platforms after.
-           For now, `hone-maven-plugin` fails on `macOS` and `Windows` machines.
-           After the issue will be fixed, we should `<os/>` element from the `<activation/>`
-           and keep `activeByDefault=true`.
+        @todo #711:45min Enable `hone` profile on all platforms after.
+        For now, `hone-maven-plugin` fails on `macOS` and `Windows` machines.
+        After the issue will be fixed, we should `<os/>` element from the `<activation/>`
+        and keep `activeByDefault=true`.
         -->
       </activation>
       <build>
@@ -517,7 +517,7 @@
               <fork>true</fork>
               <release>11</release>
               <showWarnings>true</showWarnings>
-              <!--If you want to get all the errors at once, write false here and run-->
+              <!-- If you want to get all the errors at once, write false here and run -->
               <failOnWarning>true</failOnWarning>
               <compilerArgs>
                 <arg>-XDcompilePolicy=simple</arg>
