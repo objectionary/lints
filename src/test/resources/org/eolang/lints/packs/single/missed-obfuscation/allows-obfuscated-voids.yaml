@@ -4,9 +4,15 @@
 sheets:
   - /org/eolang/lints/design/missed-obfuscation.xsl
 defects: 0
-input: |
-  # X.
-  [] > x
-    ? >> a
-    ? >> b
-    foo > @
+document: |
+  <object author="tests">
+    <listing># X.
+  [] &gt; x
+    ? &gt;&gt; a
+    ? &gt;&gt; b
+    foo &gt; @
+    </listing>
+    <o line="2" name="x">
+      <o base="&#x3A6;.foo" line="5" name="&#x3C6;"/>
+    </o>
+  </object>
