@@ -1,0 +1,14 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/design/missed-obfuscation.xsl
+asserts:
+  - /defects[count(defect[@context and @severity='warning'])=1]
+document: |
+  <object author="tests">
+    <o name="risky">
+      <o base="&#x2205;" name="argument"/>
+      <o base="&#x3A6;.foo" name="&#x3C6;"/>
+    </o>
+  </object>
