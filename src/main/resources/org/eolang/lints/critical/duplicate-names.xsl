@@ -7,6 +7,8 @@
   <xsl:import href="/org/eolang/funcs/lineno.xsl"/>
   <xsl:import href="/org/eolang/funcs/escape.xsl"/>
   <xsl:import href="/org/eolang/funcs/defect-context.xsl"/>
+  <!-- Добавляем ключ для группировки по родителю и имени -->
+  <xsl:key name="named-o-by-parent" match="o[@name]" use="concat(generate-id(..), '|', @name)"/>
   <xsl:output encoding="UTF-8" method="xml"/>
   <xsl:template match="/">
     <defects>
@@ -18,7 +20,10 @@
   <xsl:template match="o|object" mode="dups">
     <xsl:for-each select="o[@name]">
       <xsl:variable name="x" select="."/>
-      <xsl:if test="preceding-sibling::o/@name = $x/@name">
+      <!-- Получаем группу по родителю и имени -->
+      <xsl:variable name="group" select="key('named-o-by-parent', concat(generate-id($x/..), '|', $x/@name))"/>
+      <!-- Если это не первый элемент в группе – это дубликат -->
+      <xsl:if test="count($group) > 1 and generate-id($x) != generate-id($group[1])">
         <xsl:element name="defect">
           <xsl:variable name="line" select="eo:lineno(@line)"/>
           <xsl:attribute name="line">
