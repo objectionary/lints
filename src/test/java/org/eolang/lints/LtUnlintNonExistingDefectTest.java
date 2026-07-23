@@ -109,6 +109,22 @@ final class LtUnlintNonExistingDefectTest {
     }
 
     @Test
+    void catchesUnlintWithNonNumericLine() throws IOException {
+        MatcherAssert.assertThat(
+            "Non-numeric unlint line should be reported without an exception",
+            new LtUnlintNonExistingDefect(
+                new ListOf<>(new LtAsciiOnly()),
+                new ListOf<>()
+            ).defects(
+                new EoProgram(
+                    "org/eolang/lints/unlint-ascii-only-non-numeric.eo"
+                ).parse()
+            ),
+            Matchers.iterableWithSize(1)
+        );
+    }
+
+    @Test
     void allowsUnlintForDefectsInTheLineRange() throws IOException {
         MatcherAssert.assertThat(
             "Defects are not empty, but they should",
