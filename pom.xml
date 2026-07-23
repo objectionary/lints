@@ -379,20 +379,14 @@
     <profile>
       <id>hone</id>
       <activation>
-        <activeByDefault>false</activeByDefault>
-        <!--
-        @todo #711:45min Enable `hone` profile on all platforms after.
-        For now, `hone-maven-plugin` fails on `macOS` and `Windows` machines.
-        After the issue will be fixed, we should `<os/>` element from the `<activation/>`
-        and keep `activeByDefault=true`.
-        -->
+        <jdk>[11,)</jdk>
       </activation>
       <build>
         <plugins>
           <plugin>
             <groupId>org.eolang</groupId>
             <artifactId>hone-maven-plugin</artifactId>
-            <version>0.28.0</version>
+            <version>0.29.0</version>
             <executions>
               <execution>
                 <goals>
@@ -403,9 +397,14 @@
                   <rules>streams/*</rules>
                   <timeout>60</timeout>
                   <threads>0</threads>
+                  <skipWithoutDocker>true</skipWithoutDocker>
+                  <skipOnWindows>true</skipOnWindows>
                   <grepIn>(66-69-6C-74-65-72|6D-61-70)</grepIn>
-                  <!-- Used as benchmark resource. -->
-                  <excludes>/target/classes/org/apache/hadoop/hdfs/server/namenode/FSNamesystem.class</excludes>
+                  <excludes>
+                    <!-- Used as benchmark resource. -->
+                    <exclude>/target/classes/org/apache/hadoop/hdfs/server/namenode/FSNamesystem.class</exclude>
+                    <exclude>/target/classes/org/eolang/lints/LtUnlintNonExistingDefect.class</exclude>
+                  </excludes>
                 </configuration>
               </execution>
             </executions>
