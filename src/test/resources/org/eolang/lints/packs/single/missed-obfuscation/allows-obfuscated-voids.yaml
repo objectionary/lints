@@ -1,0 +1,18 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/design/missed-obfuscation.xsl
+defects: 0
+document: |
+  <object author="tests">
+    <listing># X.
+  [] &gt; x
+    ? &gt;&gt; a
+    ? &gt;&gt; b
+    foo &gt; @
+    </listing>
+    <o line="2" name="x">
+      <o base="&#x3A6;.foo" line="5" name="&#x3C6;"/>
+    </o>
+  </object>

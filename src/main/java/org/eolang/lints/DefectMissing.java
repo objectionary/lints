@@ -57,14 +57,33 @@ final class DefectMissing implements Function<String, Boolean> {
                 names = new SetOf<>();
             }
             if (split.length > 1) {
-                missing = (!names.contains(name)
-                    || lines == null
-                    || !lines.contains(Integer.parseInt(split[1])))
-                    && !this.excluded.contains(name);
+                missing = this.missingAtLine(unlint, lines, names);
             } else {
                 missing = !names.contains(name) && !this.excluded.contains(name);
             }
         }
         return missing;
+    }
+
+    /**
+     * Is a defect missing at the requested line?
+     * @param unlint Unlint selector
+     * @param lines Defect lines
+     * @param names Defect names
+     * @return Whether the defect is missing
+     */
+    private boolean missingAtLine(
+        final String unlint,
+        final List<Integer> lines,
+        final Set<String> names
+    ) {
+        final String[] split = unlint.split(":", -1);
+        final String name = split[0];
+        boolean missing = !names.contains(name) || lines == null;
+        if (!missing) {
+            missing = !unlint.matches(String.format("%s:\\d+", name))
+                || !lines.contains(Integer.parseInt(split[1]));
+        }
+        return missing && !this.excluded.contains(name);
     }
 }

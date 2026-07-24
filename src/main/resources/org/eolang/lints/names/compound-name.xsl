@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  * SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
-  * SPDX-License-Identifier: MIT
-  -->
+* SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+* SPDX-License-Identifier: MIT
+-->
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:eo="https://www.eolang.org" id="compound-name" version="2.0">
   <xsl:import href="/org/eolang/funcs/lineno.xsl"/>
   <xsl:import href="/org/eolang/funcs/defect-context.xsl"/>
   <xsl:import href="/org/eolang/funcs/special-name.xsl"/>
   <xsl:import href="/org/eolang/funcs/escape.xsl"/>
   <xsl:output encoding="UTF-8" method="xml"/>
-  <!--Since developers might decide not to use kebab-case, it's better to catch all such cases.-->
+  <!-- Since developers might decide not to use kebab-case, it's better to catch all such cases. -->
   <xsl:function name="eo:compound" as="xs:boolean">
     <xsl:param name="name"/>
     <xsl:sequence select="contains($name, '-') or contains($name, '_') or matches($name, '[A-Z]')"/>
   </xsl:function>
   <!--
-    These prefixes/suffixes are idiomatic in EO standard library:
-    - 'as-' for type conversions (as-bytes, as-i64, as-number, etc.)
-    - 'cant-' for capabilities or restrictions (cant-read, cant-write, etc.)
-    - 'is-' for boolean predicates (is-empty, is-nan, is-finite, etc.)
-    - '-of' for extracting parts (slice-of, value-of, length-of, etc.)
+  These prefixes/suffixes are idiomatic in EO standard library:
+  - 'as-' for type conversions (as-bytes, as-i64, as-number, etc.)
+  - 'cant-' for capabilities or restrictions (cant-read, cant-write, etc.)
+  - 'is-' for boolean predicates (is-empty, is-nan, is-finite, etc.)
+  - '-of' for extracting parts (slice-of, value-of, length-of, etc.)
   -->
   <xsl:function name="eo:idiomatic" as="xs:boolean">
     <xsl:param name="name"/>
