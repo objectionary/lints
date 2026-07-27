@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
- * SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
- * SPDX-License-Identifier: MIT
+* SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+* SPDX-License-Identifier: MIT
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
@@ -379,20 +379,14 @@
     <profile>
       <id>hone</id>
       <activation>
-        <activeByDefault>false</activeByDefault>
-        <!--
-          @todo #711:45min Enable `hone` profile on all platforms after.
-           For now, `hone-maven-plugin` fails on `macOS` and `Windows` machines.
-           After the issue will be fixed, we should `<os/>` element from the `<activation/>`
-           and keep `activeByDefault=true`.
-        -->
+        <jdk>[11,)</jdk>
       </activation>
       <build>
         <plugins>
           <plugin>
             <groupId>org.eolang</groupId>
             <artifactId>hone-maven-plugin</artifactId>
-            <version>0.28.0</version>
+            <version>0.29.0</version>
             <executions>
               <execution>
                 <goals>
@@ -403,9 +397,14 @@
                   <rules>streams/*</rules>
                   <timeout>60</timeout>
                   <threads>0</threads>
+                  <skipWithoutDocker>true</skipWithoutDocker>
+                  <skipOnWindows>true</skipOnWindows>
                   <grepIn>(66-69-6C-74-65-72|6D-61-70)</grepIn>
-                  <!-- Used as benchmark resource. -->
-                  <excludes>/target/classes/org/apache/hadoop/hdfs/server/namenode/FSNamesystem.class</excludes>
+                  <excludes>
+                    <!-- Used as benchmark resource. -->
+                    <exclude>/target/classes/org/apache/hadoop/hdfs/server/namenode/FSNamesystem.class</exclude>
+                    <exclude>/target/classes/org/eolang/lints/LtUnlintNonExistingDefect.class</exclude>
+                  </excludes>
                 </configuration>
               </execution>
             </executions>
@@ -445,7 +444,7 @@
           <plugin>
             <groupId>org.pitest</groupId>
             <artifactId>pitest-maven</artifactId>
-            <version>1.25.7</version>
+            <version>1.25.8</version>
             <executions>
               <execution>
                 <goals>
@@ -517,7 +516,7 @@
               <fork>true</fork>
               <release>11</release>
               <showWarnings>true</showWarnings>
-              <!--If you want to get all the errors at once, write false here and run-->
+              <!-- If you want to get all the errors at once, write false here and run -->
               <failOnWarning>true</failOnWarning>
               <compilerArgs>
                 <arg>-XDcompilePolicy=simple</arg>

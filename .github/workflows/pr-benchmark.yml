@@ -1,0 +1,51 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+# yamllint disable rule:line-length
+name: pr-benchmark
+'on':
+  issue_comment:
+    types: [created]
+concurrency:
+  group: pr-benchmark-${{ github.event.issue.number }}
+  cancel-in-progress: true
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+jobs:
+  pr-benchmark:
+    if: >-
+      github.event.issue.pull_request != null &&
+      startsWith(github.event.comment.body, '/benchmark') &&
+      contains(fromJSON('["OWNER", "MEMBER", "COLLABORATOR"]'), github.event.comment.author_association)
+    timeout-minutes: 30
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Acknowledge
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh api "repos/${{ github.repository }}/issues/comments/${{ github.event.comment.id }}/reactions" -f content=eyes
+      - uses: actions/checkout@v7
+        with:
+          ref: refs/pull/${{ github.event.issue.number }}/head
+      - uses: actions/setup-java@v5
+        with:
+          distribution: 'zulu'
+          java-version: 21
+      - uses: actions/cache@v6
+        with:
+          path: ~/.m2/repository
+          key: ubuntu-jdk-21-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ubuntu-jdk-21-maven-
+      - run: mvn clean test -Pbenchmark --errors --batch-mode
+      - name: Fetch baseline timings from master
+        run: |
+          git fetch origin master
+          git show origin/master:benchmark/timings.csv > /tmp/baseline.csv || printf '"id","ms"\n' > /tmp/baseline.csv
+      - name: Build comparison report
+        run: .github/benchmark-diff.sh /tmp/baseline.csv target/timings.csv "${{ github.event.issue.number }}" > /tmp/report.md
+      - name: Post comment on PR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh pr comment "${{ github.event.issue.number }}" --body-file /tmp/report.md --repo "${{ github.repository }}"

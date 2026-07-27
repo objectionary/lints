@@ -1,0 +1,10 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/design/missed-obfuscation.xsl
+defects: 0
+input: |
+  # X.
+  [] > x
+    foo > @
