@@ -498,7 +498,9 @@
                 <exclude>
                   generated/**
                 </exclude>
-		<exclude>**/org/junit/**</exclude>
+		<exclude>
+                  **/org/junit/**
+		</exclude>
               </excludes>
             </configuration>
           </plugin>
