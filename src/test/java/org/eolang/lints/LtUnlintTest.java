@@ -39,6 +39,19 @@ final class LtUnlintTest {
     }
 
     @Test
+    void ignoresNonNumericLineSelector() throws IOException {
+        MatcherAssert.assertThat(
+            "Malformed unlint must not suppress a real defect",
+            new LtUnlint(new LtAsciiOnly()).defects(
+                new EoProgram(
+                    "org/eolang/lints/unlint-ascii-only-non-numeric.eo"
+                ).parse()
+            ),
+            Matchers.iterableWithSize(1)
+        );
+    }
+
+    @Test
     void unlintsGrainy() throws IOException {
         MatcherAssert.assertThat(
             "Only one defect should be unlinted",

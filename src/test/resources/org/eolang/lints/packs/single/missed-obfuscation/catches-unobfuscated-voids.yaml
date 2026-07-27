@@ -1,0 +1,13 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/design/missed-obfuscation.xsl
+asserts:
+  - /defects[count(defect[@severity='warning' and @experimental])=1]
+  - /defects/defect[@line='2']
+  - /defects/defect[contains(text(), 'must obfuscate its void attributes')]
+input: |
+  # X.
+  [a b] > x
+    foo > @

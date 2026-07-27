@@ -40,6 +40,16 @@ final class DefectMissingTest {
     }
 
     @Test
+    void returnsTrueForNonNumericLine() {
+        MatcherAssert.assertThat(
+            "Non-numeric line selector should be reported as missing",
+            new DefectMissing(new MapOf<>("foo", new ListOf<>(42)), new ListOf<>())
+                .apply("foo:not-a-number"),
+            Matchers.equalTo(true)
+        );
+    }
+
+    @Test
     void returnsTrueWhenLineOutOfRange() {
         MatcherAssert.assertThat(
             "Defect should be missing, but it was not",
