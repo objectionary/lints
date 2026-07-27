@@ -28,6 +28,9 @@ jobs:
           restore-keys: ubuntu-jdk-21-maven-
       - run: mvn clean test -Pbenchmark --errors --batch-mode
       - run: |
+          mkdir -p benchmark
+          cp target/timings.csv benchmark/timings.csv
+      - run: |
           set -x
           sum=$(
             printf "\`\`\`text\n"
