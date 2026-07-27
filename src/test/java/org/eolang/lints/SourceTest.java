@@ -345,7 +345,7 @@ final class SourceTest {
     @Tag("benchmark")
     @ExtendWith(MayBeSlow.class)
     @Timeout(600L)
-    void checksLintTimeFormattingInBenchmarkResults() {
+    void checksLintTimeFormattingInBenchmarkResults() throws Exception {
         MatcherAssert.assertThat(
             "All lint time entries must match the expected format",
             Arrays.stream(
@@ -389,34 +389,40 @@ final class SourceTest {
      * Run benchmark, and output the results.
      * @return Benchmark results
      */
-    private static Map<Map<SourceSize, Collection<Defect>>, String> benchmarkResults() {
-        final List<Map<SourceSize, Collection<Defect>>> results = new ArrayList<>(0);
-        final StringBuilder sum = new StringBuilder();
-        for (final SourceSize source : SourceSize.values()) {
-            final long before = System.currentTimeMillis();
-            final Collection<Defect> defects = new SourceTest.BcSource(
-                new Unchecked<>(new BytecodeClass(source.name(), source.java())).value(),
-                source.type()
-            ).defects();
-            final long msec = System.currentTimeMillis() - before;
-            results.add(new MapOf<>(source, defects));
-            sum.append(
-                String.join(
-                    System.lineSeparator(),
-                    String.format(
-                        "Input: %s (%s source)", source.java(), source.type()
-                    ),
-                    Logger.format(
-                        "Lint time: %[ms]s (%d ms)",
-                        msec, msec
-                    )
+    private static Map<Map<SourceSize, Collection<Defect>>, String> benchmarkResults() throws IOException {
+    final Path tmp = Files.createTempDirectory("lints-bench-");
+    final Path csv = tmp.resolve("timings.csv");
+    final Tojos tojos = new TjCached(new TjDefault(new MnCsv(csv.toFile())));
+    final List<Map<SourceSize, Collection<Defect>>> results = new ArrayList<>(0);
+    final StringBuilder sum = new StringBuilder();
+    final Iterable<Lint> lints = new Synced<>(new Sticky<>(new PkMono()));
+    for (final SourceSize source : SourceSize.values()) {
+        final long before = System.currentTimeMillis();
+        final Collection<Defect> defects = new SourceTest.BcSource(
+            new Unchecked<>(new BytecodeClass(source.name(), source.java())).value(),
+            lints,
+            tojos,
+            source.type()
+        ).defects();
+        final long msec = System.currentTimeMillis() - before;
+        results.add(new MapOf<>(source, defects));
+        sum.append(
+            String.join(
+                System.lineSeparator(),
+                String.format(
+                    "Input: %s (%s source)", source.java(), source.type()
+                ),
+                Logger.format(
+                    "Lint time: %[ms]s (%d ms)",
+                    msec, msec
                 )
-            ).append(System.lineSeparator()).append(System.lineSeparator());
-        }
-        return results.stream().collect(
-            Collectors.toMap(run -> run, run -> sum.toString())
-        );
+            )
+        ).append(System.lineSeparator()).append(System.lineSeparator());
     }
+    return results.stream().collect(
+        Collectors.toMap(run -> run, run -> sum.toString())
+    );
+}
 
     /**
      * Benchmarked source.
