@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import org.cactoos.list.ListOf;
 
@@ -20,11 +19,6 @@ import org.cactoos.list.ListOf;
  * @since 0.0.1
  */
 final class LtUnlint implements Lint {
-
-    /**
-     * Line number to unlint.
-     */
-    private static final Pattern LINE_NUMBER = Pattern.compile(".*:\\d+$");
 
     /**
      * The original lint.
@@ -66,13 +60,13 @@ final class LtUnlint implements Lint {
             unlint -> {
                 if (unlint.matches(String.format("%s:\\d+-\\d+", lname))) {
                     problematic.removeIf(new UnlintInRange(unlint));
-                } else if (LtUnlint.LINE_NUMBER.matcher(unlint).matches()) {
+                } else if (unlint.matches(String.format("%s:\\d+", lname))) {
                     problematic.removeIf(
                         line -> line == Integer.parseInt(
                             new ListOf<>(unlint.split(":")).get(1)
                         )
                     );
-                } else {
+                } else if (unlint.equals(lname)) {
                     problematic.clear();
                 }
             }
