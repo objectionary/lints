@@ -392,7 +392,7 @@
           <plugin>
             <groupId>org.eolang</groupId>
             <artifactId>hone-maven-plugin</artifactId>
-            <version>0.28.0</version>
+            <version>0.29.1</version>
             <executions>
               <execution>
                 <goals>
@@ -495,9 +495,8 @@
               <groups>deep</groups>
               <excludedGroups>benchmark,reserved</excludedGroups>
               <excludes>
-                <exclude>
-                  generated/**
-                </exclude>
+                <exclude>generated/**</exclude>
+		<exclude>**/org/junit/**</exclude>
               </excludes>
             </configuration>
           </plugin>
@@ -744,9 +743,8 @@
               <groups>reserved</groups>
               <excludedGroups>benchmark,deep</excludedGroups>
               <excludes>
-                <exclude>
-                  generated/**
-                </exclude>
+                <exclude>generated/**</exclude>
+		<exclude>**/org/junit/**</exclude>
               </excludes>
             </configuration>
           </plugin>
