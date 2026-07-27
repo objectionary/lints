@@ -1,0 +1,58 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+# yamllint disable rule:line-length
+name: benchmark-pr
+'on':
+  pull_request:
+    branches:
+      - master
+concurrency:
+  group: benchmark-pr-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+jobs:
+  benchmark:
+    timeout-minutes: 45
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          path: base
+          ref: ${{ github.event.pull_request.base.sha }}
+          fetch-depth: 0
+      - uses: actions/checkout@v7
+        with:
+          path: head
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-java@v5
+        with:
+          distribution: 'zulu'
+          java-version: 21
+      - uses: actions/cache@v6
+        with:
+          path: ~/.m2/repository
+          key: ubuntu-jdk-21-maven-${{ hashFiles('base/pom.xml') }}
+          restore-keys: ubuntu-jdk-21-maven-
+      - name: Run benchmark on base
+        working-directory: base
+        run: mvn clean test -Pbenchmark --errors --batch-mode
+      - name: Run benchmark on head
+        working-directory: head
+        run: mvn clean test -Pbenchmark --errors --batch-mode
+      - name: Build benchmark comment
+        run: |
+          mkdir -p pr-number benchmark-comment
+          printf '%s\n' '${{ github.event.pull_request.number }}' > pr-number/pr-number
+          python .github/scripts/benchmark_comment.py base/target/timings.csv head/target/timings.csv > benchmark-comment/benchmark-comment.md
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pr-number
+          path: pr-number
+      - uses: actions/upload-artifact@v4
+        with:
+          name: benchmark-comment
+          path: benchmark-comment
