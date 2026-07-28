@@ -23,7 +23,7 @@ Correct:
 An object referenced only once is *not* redundant when that single reference
 sits inside a recursive formation. Syntactically the name is mentioned once, but
 at runtime the recursion evaluates it many times, and the named attribute lets
-all of those evaluations share a single node. Inlining it would give every level
+all those evaluations share a single node. Inlining it would give every level
 of the recursion its own copy of the subgraph, so the lint skips such objects:
 
 ```eo

@@ -15,4 +15,6 @@ XMIR
 SPDX
 ASCII
 inlined
+[Ii]nlining
+[Ss]ubgraph
 [Aa]pplication
