@@ -1,0 +1,16 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+input: |
+  [] > foo
+    can-do-something > test1
+      nop
+    invalid-name > test2
+      nop
+    accepts-valid > test3
+      nop
+    cannot-fail > test4
+      nop
+defects:
+  - rule: bad-test-name
+    location: /object/o[@name='invalid-name']
+    message: Test object name "invalid-name" does not start with one of: can-, cannot-, accepts-, rejects-, stops-on-
