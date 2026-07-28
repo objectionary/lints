@@ -1,0 +1,15 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/tests/unit-test-missing.xsl
+defects: 0
+ignore-schema: true
+document: |
+  <object author="tests">
+    <o line="2" name="foo" pos="0">
+      <o line="4" name="-throws-on-empty" pos="2">
+        <o base="Q.number" line="5" name="φ" pos="4"/>
+      </o>
+    </o>
+  </object>

@@ -1,0 +1,16 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/names/unsorted-named-attributes.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=0]
+ignore-schema: true
+document: |
+  <object author="tests">
+    <o line="2" name="app" pos="0">
+      <o base="Q.number" line="3" name="alpha" pos="2"/>
+      <o base="Q.true" line="4" name="-mmm-throws" pos="2"/>
+      <o base="Q.number" line="5" name="beta" pos="2"/>
+    </o>
+  </object>
