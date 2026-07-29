@@ -7,11 +7,10 @@
   <xsl:import href="/org/eolang/parser/_funcs.xsl"/>
   <xsl:import href="/org/eolang/funcs/lineno.xsl"/>
   <xsl:import href="/org/eolang/funcs/defect-context.xsl"/>
-  <xsl:key name="atoms" match="o[eo:atom(.)]" use="'1'"/>
   <xsl:output encoding="UTF-8" method="xml"/>
   <xsl:template match="/">
     <defects>
-      <xsl:if test="not(key('atoms', '1'))">
+      <xsl:if test="empty((//o[o[@name='lambda']])[1][eo:atom(.)])">
         <xsl:if test="/object/metas/meta[head='rt']">
           <xsl:element name="defect">
             <xsl:variable name="line" select="eo:lineno(/object/metas/meta[head='rt'][1]/@line)"/>
