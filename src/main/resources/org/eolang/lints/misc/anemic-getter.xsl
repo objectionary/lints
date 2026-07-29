@@ -9,14 +9,11 @@
   <xsl:import href="/org/eolang/funcs/defect-context.xsl"/>
   <xsl:output encoding="UTF-8" method="xml"/>
   <!--
-  A named object that does nothing but give access to a sibling attribute
-  of the same formation is an "anemic getter". Such renaming is redundant,
-  since the original attribute may be used directly. For example:
-
-    [title] > book
-      title > t
-
-  Here 't' just renames 'title' and adds nothing, so it should be removed.
+  A named object whose whole body is a reference to a sibling attribute of
+  the same formation is an "anemic getter". For example, "title > t" inside
+  a "[title] > book" formation just renames "title" without adding anything.
+  Such renaming is redundant, since the original attribute may be used
+  directly, so we complain about it here.
   -->
   <xsl:template match="/">
     <defects>

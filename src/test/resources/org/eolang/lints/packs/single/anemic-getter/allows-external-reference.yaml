@@ -8,4 +8,4 @@ asserts:
 input: |
   # Foo.
   [] > foo
-    QQ.io.stdout > b
+    bar > b
