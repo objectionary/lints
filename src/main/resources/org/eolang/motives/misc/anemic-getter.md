@@ -1,8 +1,8 @@
 # Anemic Getter
 
 A named object that does nothing but give access to a sibling attribute of the
-same formation is an "anemic getter". Such renaming is redundant, since the
-original attribute may be used directly, without an extra name in between.
+same formation is an "anemic getter." Such renaming is redundant, since the
+original attribute may be used directly, with no extra name added.
 
 Incorrect:
 
