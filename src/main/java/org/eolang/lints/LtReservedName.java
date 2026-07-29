@@ -62,21 +62,11 @@ final class LtReservedName implements Lint {
         return new FxEmpty();
     }
 
-    /**
-     * Checks if the given object name is not reserved.
-     * @param obj Xnav object
-     * @return true if not reserved
-     */
     private boolean isNotReserved(final Xnav obj) {
         final String name = obj.attribute("name").text().get();
         return !isLibraryName(name) && this.reserved.containsKey(name);
     }
 
-    /**
-     * Converts Xnav object to Defect.
-     * @param obj Xnav object
-     * @return Defect
-     */
     private Defect toDefect(final Xnav obj) {
         final String name = obj.attribute("name").text().get();
         return new Defect.Default(
@@ -91,11 +81,6 @@ final class LtReservedName implements Lint {
         );
     }
 
-    /**
-     * Checks if the given name belongs to a standard library.
-     * @param name Object name to check
-     * @return Returns {@code true} if the name belongs to a standard library
-     */
     private static boolean isLibraryName(final String name) {
         boolean result = false;
         if (name.startsWith("org.")) {
