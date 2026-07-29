@@ -45,12 +45,12 @@ final class LtReservedName implements Lint {
 
     @Override
     public Collection<Defect> defects(final XML xmir) throws IOException {
-        return new Xnav(xmir.inner()).path("//o[@name]")
+        return new Xnav(xmir.inner())
+            .path("//o[@name]")
             .filter(
                 object -> {
                     final String name = object.attribute("name").text().get();
-                    return !isLibraryName(name)
-                        && this.reserved.containsKey(name);
+                    return !isLibraryName(name) && this.reserved.containsKey(name);
                 }
             )
             .map(
@@ -84,27 +84,22 @@ final class LtReservedName implements Lint {
      * @return True if it's a library name
      */
     private static boolean isLibraryName(final String name) {
+        boolean result = false;
         if (name.startsWith("org.")) {
-            return true;
+            result = true;
+        } else if (name.startsWith("java.")) {
+            result = true;
+        } else if (name.startsWith("javax.")) {
+            result = true;
+        } else if (name.startsWith("junit.")) {
+            result = true;
+        } else if (name.startsWith("com.")) {
+            result = true;
+        } else if (name.startsWith("sun.")) {
+            result = true;
+        } else if (name.startsWith("jdk.")) {
+            result = true;
         }
-        if (name.startsWith("java.")) {
-            return true;
-        }
-        if (name.startsWith("javax.")) {
-            return true;
-        }
-        if (name.startsWith("junit.")) {
-            return true;
-        }
-        if (name.startsWith("com.")) {
-            return true;
-        }
-        if (name.startsWith("sun.")) {
-            return true;
-        }
-        if (name.startsWith("jdk.")) {
-            return true;
-        }
-        return false;
+        return result;
     }
 }
