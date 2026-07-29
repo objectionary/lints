@@ -47,24 +47,8 @@ final class LtReservedName implements Lint {
     public Collection<Defect> defects(final XML xmir) throws IOException {
         return new Xnav(xmir.inner())
             .path("//o[@name]")
-            .filter(
-                object -> {
-                    final String name = object.attribute("name").text().get();
-                    return !isLibraryName(name) && this.reserved.containsKey(name);
-                }
-            )
-            .map(
-                object -> new Defect.Default(
-                    this.name(),
-                    Severity.WARNING,
-                    new LineOf(object).value(),
-                    String.format(
-                        "Object name \"%s\" is already reserved by object in the \"%s\"",
-                        object.attribute("name").text().get(),
-                        this.reserved.get(object.attribute("name").text().get())
-                    )
-                )
-            )
+            .filter(this::isNotReserved)
+            .map(this::toDefect)
             .collect(Collectors.toList());
     }
 
@@ -76,6 +60,35 @@ final class LtReservedName implements Lint {
     @Override
     public Fix fix() {
         return new FxEmpty();
+    }
+
+    /**
+     * Checks if the given object name is not reserved.
+     * @param obj Xnav object
+     * @return true if not reserved
+     */
+    private boolean isNotReserved(final Xnav obj) {
+        final String name = obj.attribute("name").text().get();
+        return !isLibraryName(name) && this.reserved.containsKey(name);
+    }
+
+    /**
+     * Converts Xnav object to Defect.
+     * @param obj Xnav object
+     * @return Defect
+     */
+    private Defect toDefect(final Xnav obj) {
+        final String name = obj.attribute("name").text().get();
+        return new Defect.Default(
+            this.name(),
+            Severity.WARNING,
+            new LineOf(obj).value(),
+            String.format(
+                "Object name \"%s\" is already reserved by object in the \"%s\"",
+                name,
+                this.reserved.get(name)
+            )
+        );
     }
 
     /**
