@@ -1,0 +1,34 @@
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>lints</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="shortcut icon" href="https://www.yegor256.com/images/books/elegant-objects/cactus.png"/><link href="https://cdn.jsdelivr.net/npm/tacit-css@1.8.1/dist/tacit-css.min.css" rel="stylesheet" integrity="sha384-JbsYayq5Otme+gjh/pl7NrA/qMIU0bxbdzKvYqQGHvvag0lHhM62TQnDzz+EyzXj" crossorigin="anonymous"/>
+</head>
+<body><section><article>
+<h1 id="anemic-getter">Anemic Getter</h1>
+<p>A named object that does nothing but give access to a sibling
+attribute of the same formation is an “anemic getter.” Such renaming is
+redundant, since the original attribute may be used directly, with no
+extra name added.</p>
+<p>Incorrect:</p>
+<pre class="eo"><code># Book.
+[title] &gt; book
+  title &gt; t</code></pre>
+<p>Here, <code>t</code> is a getter that only gives access to
+<code>title</code>. It adds nothing and just introduces a second name
+for the same object.</p>
+<p>Correct:</p>
+<pre class="eo"><code># Book.
+[title] &gt; book</code></pre>
+<p>Simply use <code>title</code> directly wherever <code>t</code> was
+needed. The same applies to any sibling attribute, not only void
+ones:</p>
+<pre class="eo"><code># Foo.
+[] &gt; foo
+  42 &gt; x
+  x &gt; y</code></pre>
+<p>Here <code>y</code> is an anemic getter for <code>x</code> and should
+be removed.</p>
+<p>Published on Wed Jul 29 12:42:51 UTC 2026.</p>
+</article></section></body></html>
