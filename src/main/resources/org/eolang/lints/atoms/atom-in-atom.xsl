@@ -1,20 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-* SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
-* SPDX-License-Identifier: MIT
+- SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+- SPDX-License-Identifier: MIT
 -->
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:eo="https://www.eolang.org" id="atom-in-atom" version="2.0">
   <xsl:import href="/org/eolang/parser/_funcs.xsl"/>
   <xsl:import href="/org/eolang/funcs/lineno.xsl"/>
   <xsl:import href="/org/eolang/funcs/escape.xsl"/>
   <xsl:import href="/org/eolang/funcs/defect-context.xsl"/>
-  <xsl:key name="atoms" match="o[eo:atom(.)]" use="'atom'"/>
-  <xsl:key name="atoms-by-parent" match="o[eo:atom(.)]" use="generate-id(..)"/>
+
+  <xsl:key name="atom-parents" match="o[o[@name='λ']]" use="'atom-parent'"/>
+  <xsl:key name="atom-children-by-parent" match="o[o[@name='λ']]" use="generate-id(..)"/>
+
   <xsl:output encoding="UTF-8" method="xml"/>
+
   <xsl:template match="/">
     <defects>
-      <xsl:for-each select="key('atoms', 'atom')[key('atoms-by-parent', generate-id())]">
-        <xsl:element name="defect">
+      <xsl:for-each select="key('atom-parents', 'atom-parent')[key('atom-children-by-parent', generate-id())]">
+        <defect>
           <xsl:variable name="line" select="eo:lineno(@line)"/>
           <xsl:attribute name="line">
             <xsl:value-of select="$line"/>
@@ -24,19 +27,17 @@
               <xsl:value-of select="eo:defect-context(.)"/>
             </xsl:attribute>
           </xsl:if>
-          <xsl:attribute name="severity">
-            <xsl:text>error</xsl:text>
-          </xsl:attribute>
+          <xsl:attribute name="severity">error</xsl:attribute>
           <xsl:text>Atom </xsl:text>
           <xsl:value-of select="eo:escape(@name)"/>
           <xsl:text> may not have any attributes, even if they are atoms, which however exist: </xsl:text>
-          <xsl:for-each select="key('atoms-by-parent', generate-id())">
+          <xsl:for-each select="key('atom-children-by-parent', generate-id())">
             <xsl:if test="position() &gt; 1">
               <xsl:text>, </xsl:text>
             </xsl:if>
             <xsl:value-of select="eo:escape(@name)"/>
           </xsl:for-each>
-        </xsl:element>
+        </defect>
       </xsl:for-each>
     </defects>
   </xsl:template>
