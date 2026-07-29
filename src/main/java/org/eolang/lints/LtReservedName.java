@@ -43,32 +43,46 @@ final class LtReservedName implements Lint {
         return "reserved-name";
     }
 
+    /**
+     * Checks if the given name belongs to a standard library.
+     * @param name Object name to check
+     * @return True if it's a library name
+     */
+    private static boolean isLibraryName(final String name) {
+        return name.startsWith("org.")
+            || name.startsWith("java.")
+            || name.startsWith("javax.")
+            || name.startsWith("junit.")
+            || name.startsWith("com.")
+            || name.startsWith("sun.")
+            || name.startsWith("jdk.");
+    }
+
     @Override
     public Collection<Defect> defects(final XML xmir) throws IOException {
-        return new Xnav(xmir.inner()).path("//o[@name]").filter(
-            object -> {
-                final String name = object.attribute("name").text().get();
-                // Ignore names that start with library prefixes
-                if (name.startsWith("org.") || name.startsWith("java.") ||
-                    name.startsWith("javax.") || name.startsWith("junit.") ||
-                    name.startsWith("com.") || name.startsWith("sun.") ||
-                    name.startsWith("jdk.")) {
-                    return false;
+        return new Xnav(xmir.inner()).path("//o[@name]")
+            .filter(
+                object -> {
+                    final String name = object.attribute("name").text().get();
+                    return !LtReservedName.isLibraryName(name)
+                        && LtReservedName.this.reserved.containsKey(name);
                 }
-                return this.reserved.containsKey(name);
-            }
-        ).map(
-            object -> new Defect.Default(
-                this.name(),
-                Severity.WARNING,
-                new LineOf(object).value(),
-                String.format(
-                    "Object name \"%s\" is already reserved by object in the \"%s\"",
-                    object.attribute("name").text().get(),
-                    this.reserved.get(object.attribute("name").text().get())
+            )
+            .map(
+                object -> new Defect.Default(
+                    this.name(),
+                    Severity.WARNING,
+                    new LineOf(object).value(),
+                    String.format(
+                        "Object name \"%s\" is already reserved by object in the \"%s\"",
+                        object.attribute("name").text().get(),
+                        LtReservedName.this.reserved.get(
+                            object.attribute("name").text().get()
+                        )
+                    )
                 )
             )
-        ).collect(Collectors.toList());
+            .collect(Collectors.toList());
     }
 
     @Override
