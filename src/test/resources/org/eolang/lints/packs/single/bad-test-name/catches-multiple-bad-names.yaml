@@ -1,0 +1,13 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/tests/bad-test-name.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=2]
+input: |
+  [] > foo
+    [] > bar
+    [] +> can-do-something
+    [] +> testing
+    [] +> should-not-pass
