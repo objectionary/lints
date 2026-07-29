@@ -94,7 +94,7 @@ final class LtReservedName implements Lint {
     /**
      * Checks if the given name belongs to a standard library.
      * @param name Object name to check
-     * @return Returns {@code true} if it's a library name
+     * @return Returns {@code true} if the name belongs to a standard library
      */
     private static boolean isLibraryName(final String name) {
         boolean result = false;
