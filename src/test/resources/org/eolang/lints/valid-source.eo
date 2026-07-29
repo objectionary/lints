@@ -9,5 +9,5 @@
 [i] > foo
   i > @
   # This is real unit test for object with no functionality.
-  [] +> does-something
+  [] +> accepts-something
     foo 1 > @

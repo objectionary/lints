@@ -11,5 +11,5 @@
     Q.txt.sprintf
       "Hello %s"
       * c
-  [] +> starts-correctly
+  [] +> accepts-argument
     main 42 > @

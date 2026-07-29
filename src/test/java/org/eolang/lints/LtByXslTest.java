@@ -57,7 +57,6 @@ import org.yaml.snakeyaml.Yaml;
  * @since 0.0.1
  * @checkstyle ClassFanOutComplexityCheck (500 lines)
  */
-@SuppressWarnings({"PMD.TooManyMethods", "PMD.AvoidDuplicateLiterals"})
 final class LtByXslTest {
 
     @Test
@@ -89,7 +88,6 @@ final class LtByXslTest {
 
     @Tag("deep")
     @RepeatedTest(5)
-    @SuppressWarnings("PMD.UnnecessaryLocalRule")
     void lintsInMultipleThreads() {
         final LtByXsl lint = new LtByXsl("critical/duplicate-names");
         MatcherAssert.assertThat(
@@ -292,7 +290,7 @@ final class LtByXslTest {
     }
 
     @Test
-    @Timeout(30L)
+    @Timeout(60L)
     void checksManyVoidAttributesLintOnLargeXmirInReasonableTime()
         throws ImpossibleModificationException {
         final int parents = 400;

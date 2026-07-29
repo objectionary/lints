@@ -7,11 +7,12 @@
   <xsl:import href="/org/eolang/parser/_funcs.xsl"/>
   <xsl:import href="/org/eolang/funcs/lineno.xsl"/>
   <xsl:import href="/org/eolang/funcs/escape.xsl"/>
+  <xsl:import href="/org/eolang/funcs/test-name.xsl"/>
   <xsl:import href="/org/eolang/funcs/defect-context.xsl"/>
   <xsl:output encoding="UTF-8" method="xml"/>
   <xsl:template match="/">
     <defects>
-      <xsl:for-each select="/object//o[starts-with(@name, '+') and eo:abstract(.) and @name and not(o[@name='φ'])]">
+      <xsl:for-each select="/object//o[eo:test-name(@name) and eo:abstract(.) and @name and not(o[@name='φ'])]">
         <xsl:element name="defect">
           <xsl:variable name="line" select="eo:lineno(@line)"/>
           <xsl:attribute name="line">
@@ -26,7 +27,7 @@
             <xsl:text>warning</xsl:text>
           </xsl:attribute>
           <xsl:text>The unit test doesn't have "@" attribute: </xsl:text>
-          <xsl:value-of select="eo:escape(eo:escape-plus(@name))"/>
+          <xsl:value-of select="eo:escape(substring(@name, 2))"/>
         </xsl:element>
       </xsl:for-each>
     </defects>

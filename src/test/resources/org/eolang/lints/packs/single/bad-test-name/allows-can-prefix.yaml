@@ -1,0 +1,11 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/tests/bad-test-name.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=0]
+input: |
+  [] > foo
+    [] > bar
+    [] +> can-add-two-numbers

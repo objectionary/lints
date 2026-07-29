@@ -56,16 +56,21 @@ as_table() {
 }
 
 biggest_movers() {
-  grep -v -e $'\tnew$' -e $'\tremoved$' "${diff}" \
-    | awk -F'\t' '{ d = $4; if (d < 0) { d = -d }; printf "%d\t%s\n", d, $0 }' \
-    | sort -t $'\t' -k1,1 -n -r \
-    | cut -f2- \
-    | head -10
+  # head truncates the pipeline early, which SIGPIPEs the upstream writer;
+  # pipefail would otherwise treat that expected broken pipe as a failure.
+  (
+    set +o pipefail
+    grep -v -e $'\tnew$' -e $'\tremoved$' "${diff}" \
+      | awk -F'\t' '{ d = $4; if (d < 0) { d = -d }; printf "%d\t%s\n", d, $0 }' \
+      | sort -t $'\t' -k1,1 -n -r \
+      | cut -f2- \
+      | head -10
+  )
 }
 
 printf '## Benchmark comparison for #%s\n\n' "${pr}"
 # shellcheck disable=SC2016
-printf 'Comparing this branch against the `master` baseline in `benchmark/timings.csv`. Positive deltas are slower, negative are faster.\n\n'
+printf 'Comparing this branch against the `master` baseline in `benchmark/lint-timings.csv`. Positive deltas are slower, negative are faster.\n\n'
 printf '### Biggest changes\n\n'
 printf '| lint (size) | before | after | delta |\n'
 printf '|---|---|---|---|\n'

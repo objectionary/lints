@@ -331,7 +331,7 @@
           <plugin>
             <groupId>com.qulice</groupId>
             <artifactId>qulice-maven-plugin</artifactId>
-            <version>0.27.6</version>
+            <version>0.27.9</version>
             <configuration>
               <excludes combine.children="append">
                 <exclude>pmd:/src/it/.*</exclude>
@@ -425,9 +425,7 @@
             <configuration>
               <excludedGroups>!benchmark</excludedGroups>
               <excludes>
-                <exclude>
-                  generated/**
-                </exclude>
+                <exclude>generated/**</exclude>
               </excludes>
             </configuration>
           </plugin>
@@ -778,9 +776,7 @@
           <skipTests>${skipUTs}</skipTests>
           <excludedGroups>benchmark,deep,reserved</excludedGroups>
           <excludes>
-            <exclude>
-              generated/**
-            </exclude>
+            <exclude>generated/**</exclude>
           </excludes>
         </configuration>
       </plugin>

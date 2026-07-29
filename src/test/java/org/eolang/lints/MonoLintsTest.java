@@ -66,7 +66,6 @@ final class MonoLintsTest {
     }
 
     @Test
-    @SuppressWarnings("PMD.UnnecessaryLocalRule")
     void lintsProgramCorrectly() throws IOException {
         final XML xmir = MonoLintsTest.parse();
         final Collection<Defect> found = new ListOf<>();
@@ -94,7 +93,6 @@ final class MonoLintsTest {
      * @param xmir Parsed XMIR
      * @param into Accumulator
      */
-    @SuppressWarnings("PMD.UnnecessaryLocalRule")
     private static void collect(
         final Lint lint, final XML xmir, final Collection<Defect> into
     ) {

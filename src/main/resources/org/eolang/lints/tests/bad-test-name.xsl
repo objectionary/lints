@@ -3,18 +3,17 @@
 * SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
 * SPDX-License-Identifier: MIT
 -->
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:eo="https://www.eolang.org" version="2.0" id="unsorted-named-attributes">
-  <xsl:import href="/org/eolang/funcs/special-name.xsl"/>
-  <xsl:import href="/org/eolang/funcs/test-name.xsl"/>
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:eo="https://www.eolang.org" id="bad-test-name" version="2.0">
+  <xsl:import href="/org/eolang/parser/_funcs.xsl"/>
   <xsl:import href="/org/eolang/funcs/lineno.xsl"/>
   <xsl:import href="/org/eolang/funcs/escape.xsl"/>
   <xsl:import href="/org/eolang/funcs/defect-context.xsl"/>
   <xsl:output encoding="UTF-8" method="xml"/>
   <xsl:template match="/">
     <defects>
-      <xsl:for-each select="//o[eo:abstract(.) and @name]/o[@name and @base != '∅' and not(eo:special(@name)) and not(eo:test-name(@name))]">
-        <xsl:variable name="previous" select="(preceding-sibling::o[@name and @base != '∅' and not(eo:special(@name)) and not(eo:test-name(@name))])[last()]"/>
-        <xsl:if test="$previous and @name &lt; $previous/@name">
+      <xsl:for-each select="/object//o[starts-with(@name, '+')]">
+        <xsl:variable name="regexp" select="'^(can|cannot|accepts|rejects|stops-on)-'"/>
+        <xsl:if test="not(matches(eo:escape-plus(@name), $regexp))">
           <defect>
             <xsl:variable name="line" select="eo:lineno(@line)"/>
             <xsl:attribute name="line">
@@ -26,10 +25,10 @@
               </xsl:attribute>
             </xsl:if>
             <xsl:attribute name="severity">warning</xsl:attribute>
-            <xsl:text>Named attribute </xsl:text>
+            <xsl:text>The name of the test object </xsl:text>
             <xsl:value-of select="eo:escape(@name)"/>
-            <xsl:text> is out of order inside formation </xsl:text>
-            <xsl:value-of select="eo:escape(../@name)"/>
+            <xsl:text> must start with one of the prefixes </xsl:text>
+            <xsl:value-of select="eo:escape('can-, cannot-, accepts-, rejects-, stops-on-')"/>
           </defect>
         </xsl:if>
       </xsl:for-each>

@@ -1,0 +1,19 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/tests/wrong-test-order.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=0]
+ignore-schema: true
+document: |
+  <object author="tests">
+    <o line="2" name="foo" pos="0">
+      <o line="4" name="+checks-something" pos="2">
+        <o base="Q.number" line="5" name="φ" pos="4"/>
+      </o>
+      <o line="6" name="-throws-on-empty" pos="2">
+        <o base="Q.number" line="7" name="φ" pos="4"/>
+      </o>
+    </o>
+  </object>

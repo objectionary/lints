@@ -4,16 +4,16 @@
 * SPDX-License-Identifier: MIT
 -->
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:eo="https://www.eolang.org" version="2.0" id="incorrect-test-object-name">
-  <xsl:import href="/org/eolang/parser/_funcs.xsl"/>
   <xsl:import href="/org/eolang/funcs/lineno.xsl"/>
   <xsl:import href="/org/eolang/funcs/escape.xsl"/>
+  <xsl:import href="/org/eolang/funcs/test-name.xsl"/>
   <xsl:import href="/org/eolang/funcs/defect-context.xsl"/>
   <xsl:output encoding="UTF-8" method="xml"/>
   <xsl:template match="/">
     <defects>
-      <xsl:for-each select="/object//o[starts-with(@name, '+')]">
+      <xsl:for-each select="/object//o[eo:test-name(@name)]">
         <xsl:variable name="regexp" select="'^[a-z][a-z0-9]*(-[a-z0-9]+)*$'"/>
-        <xsl:if test="not(matches(eo:escape-plus(@name), $regexp))">
+        <xsl:if test="not(matches(substring(@name, 2), $regexp))">
           <defect>
             <xsl:variable name="line" select="eo:lineno(@line)"/>
             <xsl:attribute name="line">

@@ -10,7 +10,7 @@
   <xsl:output encoding="UTF-8" method="xml"/>
   <xsl:template match="/">
     <defects>
-      <xsl:apply-templates select="(//o[@name='φ'][preceding-sibling::o[not(@base='∅') and not(@base='ξ' and @name='xi🌵')]])[last()]" mode="unordered"/>
+      <xsl:apply-templates select="(//o[@name='φ'][not(@pipe)][preceding-sibling::o[not(@base='∅') and not(@base='ξ' and @name='xi🌵')]])[last()]" mode="unordered"/>
     </defects>
   </xsl:template>
   <xsl:template match="o" mode="unordered">

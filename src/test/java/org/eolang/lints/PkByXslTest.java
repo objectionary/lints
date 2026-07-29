@@ -88,7 +88,6 @@ final class PkByXslTest {
     }
 
     @Test
-    @SuppressWarnings("PMD.UnnecessaryLocalRule")
     void doesNotDuplicateDefectsWhenMultipleDefectsOnTheSameLine() {
         final XML xmir = PkByXslTest.parse();
         final Collection<Defect> aggregated = new ListOf<>();

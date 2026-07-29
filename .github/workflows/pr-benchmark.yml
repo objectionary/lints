@@ -38,14 +38,22 @@ jobs:
           path: ~/.m2/repository
           key: ubuntu-jdk-21-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: ubuntu-jdk-21-maven-
-      - run: mvn clean test -Pbenchmark --errors --batch-mode
+      - run: mvn clean test -P'benchmark,!hone' --errors --batch-mode
       - name: Fetch baseline timings from master
         run: |
           git fetch origin master
-          git show origin/master:benchmark/timings.csv > /tmp/baseline.csv || printf '"id","ms"\n' > /tmp/baseline.csv
+          git show origin/master:benchmark/lint-timings.csv > /tmp/baseline.csv || printf '"id","ms"\n' > /tmp/baseline.csv
       - name: Build comparison report
-        run: .github/benchmark-diff.sh /tmp/baseline.csv target/timings.csv "${{ github.event.issue.number }}" > /tmp/report.md
+        run: .github/benchmark-diff.sh /tmp/baseline.csv target/lint-timings.csv "${{ github.event.issue.number }}" > /tmp/report.md
       - name: Post comment on PR
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: gh pr comment "${{ github.event.issue.number }}" --body-file /tmp/report.md --repo "${{ github.repository }}"
+      - name: Post failure notice on PR
+        if: failure()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr comment "${{ github.event.issue.number }}" \
+            --repo "${{ github.repository }}" \
+            --body "⚠️ The \`/benchmark\` run failed. See [the failed workflow run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) for details."

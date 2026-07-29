@@ -14,6 +14,7 @@ import com.yegor256.Together;
 import com.yegor256.tojos.MnCsv;
 import com.yegor256.tojos.TjCached;
 import com.yegor256.tojos.TjDefault;
+import com.yegor256.tojos.TjSynchronized;
 import com.yegor256.tojos.Tojos;
 import fixtures.BytecodeClass;
 import fixtures.EoProgram;
@@ -67,7 +68,6 @@ import org.objectweb.asm.Opcodes;
  * @checkstyle MethodBodyCommentsCheck (50 lines)
  * @checkstyle ClassFanOutComplexityCheck (500 lines)
  */
-@SuppressWarnings("PMD.TooManyMethods")
 @ExtendWith(MktmpResolver.class)
 final class SourceTest {
 
@@ -322,10 +322,10 @@ final class SourceTest {
 
     @Test
     @Tag("benchmark")
-    @ExtendWith(MktmpResolver.class)
     @ExtendWith(MayBeSlow.class)
     @Timeout(600L)
-    void lintsBenchmarkSourcesFromJava() throws Exception {
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
+    void benchmarksLintPerformance() throws IOException {
         final Map<Map<SourceSize, Collection<Defect>>, String> result =
             SourceTest.benchmarkResults();
         MatcherAssert.assertThat(
@@ -335,29 +335,20 @@ final class SourceTest {
             ),
             Matchers.equalTo(true)
         );
-        Files.write(
-            Paths.get("target").resolve("lint-summary.txt"),
-            result.values().iterator().next().getBytes(StandardCharsets.UTF_8)
-        );
-    }
-
-    @Test
-    @Tag("benchmark")
-    @ExtendWith(MayBeSlow.class)
-    @Timeout(600L)
-    void checksLintTimeFormattingInBenchmarkResults() {
+        final String summary = result.values().iterator().next();
         MatcherAssert.assertThat(
             "All lint time entries must match the expected format",
-            Arrays.stream(
-                Pattern.compile("\\R").split(
-                    SourceTest.benchmarkResults().values().iterator().next()
-                )
-            ).filter(line -> line.startsWith("Lint time:")).allMatch(
-                text -> Pattern.compile(
-                    "^Lint time: (\\d+(?:\\.\\d+)?)(ms|s|min|h) \\(\\d+ ms\\)$"
-                ).matcher(text).matches()
-            ),
+            Arrays.stream(Pattern.compile("\\R").split(summary))
+                .filter(line -> line.startsWith("Lint time:")).allMatch(
+                    text -> Pattern.compile(
+                        "^Lint time: (\\d+(?:\\.\\d+)?)(ms|s|min|h) \\(\\d+ ms\\)$"
+                    ).matcher(text).matches()
+                ),
             Matchers.equalTo(true)
+        );
+        Files.write(
+            Paths.get("target").resolve("lint-summary.txt"),
+            summary.getBytes(StandardCharsets.UTF_8)
         );
     }
 
@@ -427,7 +418,20 @@ final class SourceTest {
         /**
          * Path to timings.
          */
-        private static final Path TIMINGS = Paths.get("target/timings.csv");
+        private static final Path TIMINGS = Paths.get("target/lint-timings.csv");
+
+        /**
+         * Shared timings, one per JVM, so that concurrently running benchmark
+         * tests don't corrupt {@link BcSource#TIMINGS} by opening it through
+         * several unsynchronized {@link Tojos} instances at once.
+         */
+        private static final Tojos SHARED = new TjSynchronized(
+            new TjCached(
+                new TjDefault(
+                    new MnCsv(BcSource.TIMINGS)
+                )
+            )
+        );
 
         /**
          * XMIR.
@@ -458,11 +462,7 @@ final class SourceTest {
             this(
                 source,
                 new Synced<>(new Sticky<>(new PkMono())),
-                new TjCached(
-                    new TjDefault(
-                        new MnCsv(BcSource.TIMINGS)
-                    )
-                ),
+                BcSource.SHARED,
                 size
             );
         }
@@ -564,7 +564,6 @@ final class SourceTest {
          * @return Defects
          * @throws IOException If fails
          */
-        @SuppressWarnings("PMD.UnnecessaryLocalRule")
         Collection<Defect> defects() throws IOException {
             final long before = System.currentTimeMillis();
             try {

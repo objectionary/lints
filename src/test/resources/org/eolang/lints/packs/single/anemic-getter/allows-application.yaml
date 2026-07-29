@@ -1,0 +1,11 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/misc/anemic-getter.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=0]
+input: |
+  # Foo.
+  [x] > foo
+    x.plus 1 > y
