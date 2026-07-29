@@ -45,26 +45,21 @@ final class LtReservedName implements Lint {
 
     @Override
     public Collection<Defect> defects(final XML xmir) throws IOException {
-        return new Xnav(xmir.inner())
-            .path("//o[@name]")
-            .filter(
-                object -> {
-                    final String name = object.attribute("name").text().get();
-                    return !isLibraryName(name) && this.reserved.containsKey(name);
-                }
-            )
-            .map(
-                object -> new Defect.Default(
-                    this.name(),
-                    Severity.WARNING,
-                    new LineOf(object).value(),
-                    String.format(
-                        "Object name \"%s\" is already reserved by object in the \"%s\"",
-                        object.attribute("name").text().get(),
-                        this.reserved.get(object.attribute("name").text().get())
-                    )
+        return new Xnav(xmir.inner()).path("//o[@name]")
+            .filter(object -> {
+                final String name = object.attribute("name").text().get();
+                return !isLibraryName(name) && this.reserved.containsKey(name);
+            })
+            .map(object -> new Defect.Default(
+                this.name(),
+                Severity.WARNING,
+                new LineOf(object).value(),
+                String.format(
+                    "Object name \"%s\" is already reserved by object in the \"%s\"",
+                    object.attribute("name").text().get(),
+                    this.reserved.get(object.attribute("name").text().get())
                 )
-            )
+            ))
             .collect(Collectors.toList());
     }
 
