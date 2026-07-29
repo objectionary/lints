@@ -419,7 +419,7 @@ final class SourceTest {
         /**
          * Path to timings.
          */
-        private static final Path TIMINGS = Paths.get("target/timings.csv");
+        private static final Path TIMINGS = Paths.get("target/lint-timings.csv");
 
         /**
          * Shared timings, one per JVM, so that concurrently running benchmark

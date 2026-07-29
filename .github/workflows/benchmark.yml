@@ -26,10 +26,10 @@ jobs:
           path: ~/.m2/repository
           key: ubuntu-jdk-21-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: ubuntu-jdk-21-maven-
-      - run: mvn clean test -Pbenchmark --errors --batch-mode
+      - run: mvn clean test -P'benchmark,!hone' --errors --batch-mode
       - run: |
           mkdir -p benchmark
-          cp target/timings.csv benchmark/timings.csv
+          cp target/lint-timings.csv benchmark/lint-timings.csv
       - run: |
           set -x
           sum=$(
@@ -45,7 +45,7 @@ jobs:
                 fi
                 printf "%s,%s\n" "$(echo "$id" | tr -d '"')" "$(echo "$ms" | tr -d '"')"
               fi
-            done < target/timings.csv | sort -t, -k2 -n -r | head -16 | while IFS=, read -r id ms; do
+            done < target/lint-timings.csv | sort -t, -k2 -n -r | head -16 | while IFS=, read -r id ms; do
               printf "%s (%s ms)\n" "$id" "$ms"
             done
             printf "\`\`\`\n\n"
