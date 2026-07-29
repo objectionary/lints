@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.function.Predicate;
 import org.cactoos.io.InputOf;
 import org.cactoos.io.ResourceOf;
@@ -140,7 +141,9 @@ final class PkByXslTest {
                 return new XMLDocument(
                     new UncheckedText(new TextOf(new InputOf(res.getInputStream()))).asString()
                 ).xpath("/xsl:stylesheet/@id").get(0).equals(
-                    res.getFilename().replaceAll(".xsl$", "")
+                    Objects.requireNonNull(
+                        res.getFilename(), "Resource filename must not be absent"
+                    ).replaceAll(".xsl$", "")
                 );
             } catch (final IOException ex) {
                 throw new IllegalStateException(ex);
