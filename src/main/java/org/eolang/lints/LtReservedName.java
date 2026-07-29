@@ -46,7 +46,17 @@ final class LtReservedName implements Lint {
     @Override
     public Collection<Defect> defects(final XML xmir) throws IOException {
         return new Xnav(xmir.inner()).path("//o[@name]").filter(
-            object -> this.reserved.containsKey(object.attribute("name").text().get())
+            object -> {
+                final String name = object.attribute("name").text().get();
+                // Ignore names that start with library prefixes
+                if (name.startsWith("org.") || name.startsWith("java.") ||
+                    name.startsWith("javax.") || name.startsWith("junit.") ||
+                    name.startsWith("com.") || name.startsWith("sun.") ||
+                    name.startsWith("jdk.")) {
+                    return false;
+                }
+                return this.reserved.containsKey(name);
+            }
         ).map(
             object -> new Defect.Default(
                 this.name(),

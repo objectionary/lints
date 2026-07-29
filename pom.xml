@@ -495,7 +495,6 @@
               <excludedGroups>benchmark,reserved</excludedGroups>
               <excludes>
                 <exclude>generated/**</exclude>
-                <exclude>**/org/junit/**</exclude>
               </excludes>
             </configuration>
           </plugin>
@@ -743,7 +742,6 @@
               <excludedGroups>benchmark,deep</excludedGroups>
               <excludes>
                 <exclude>generated/**</exclude>
-                <exclude>**/org/junit/**</exclude>
               </excludes>
             </configuration>
           </plugin>
