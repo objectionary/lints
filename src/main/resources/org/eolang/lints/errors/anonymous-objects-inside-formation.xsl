@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
- * SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
- * SPDX-License-Identifier: MIT
+* SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+* SPDX-License-Identifier: MIT
 -->
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:eo="https://www.eolang.org" id="anonymous-objects-inside-formation" version="2.0">
   <xsl:import href="/org/eolang/parser/_funcs.xsl"/>
@@ -11,7 +11,7 @@
   <xsl:output encoding="UTF-8" method="xml"/>
   <xsl:template match="/">
     <defects>
-      <xsl:for-each select="//o[eo:abstract(.) and o[not(@name)]]">
+      <xsl:for-each select="//o[not(@base) and o[not(@name)]]">
         <xsl:element name="defect">
           <xsl:variable name="line" select="eo:lineno(@line)"/>
           <xsl:attribute name="line">
