@@ -14,7 +14,7 @@
   <xsl:template match="/">
     <defects>
       <xsl:for-each select="//o[@base and not(starts-with(@base, '.')) and @base!='ξ' and @base!='ρ']">
-        <xsl:variable name="name" select="replace(@base, '^Φ\.', '')"/>
+        <xsl:variable name="name" select="replace(replace(@base, '^Φ\.', ''), '^ξ\.', '')"/>
         <xsl:variable name="target" select="ancestor::o[1]/o[@name = $name and not(@line)]"/>
         <xsl:if test="$target">
           <defect line="0" severity="error">

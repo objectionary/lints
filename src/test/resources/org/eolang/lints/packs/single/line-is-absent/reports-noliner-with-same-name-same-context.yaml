@@ -8,11 +8,13 @@ asserts:
   - /defects/defect[normalize-space(.)='The @line attribute is absent at foo']
 document: |
   <object author="tests">
-    <o>
-      <o name="foo"/>
-      <o name="bar" base="foo" line="2"/>
-    </o>
-    <o>
-      <o name="foo"/>
+    <o name="app">
+      <o>
+        <o name="foo"/>
+        <o name="bar" base="ξ.foo" line="2"/>
+      </o>
+      <o>
+        <o name="foo"/>
+      </o>
     </o>
   </object>

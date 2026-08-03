@@ -9,6 +9,6 @@ document: |
     <o>
       <o name="foo" line="1"/>
       <o name="boom"/>
-      <o name="bar" base="foo" line="2"/>
+      <o name="bar" base="ξ.foo" line="2"/>
     </o>
   </object>
