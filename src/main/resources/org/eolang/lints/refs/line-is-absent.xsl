@@ -11,12 +11,11 @@
   everything is OK. If we don't, we report an error.
   -->
   <xsl:output encoding="UTF-8" method="xml"/>
-  <xsl:key name="objsNoLineByName" match="o[not(@line)]" use="@name"/>
   <xsl:template match="/">
     <defects>
       <xsl:for-each select="//o[@base and not(starts-with(@base, '.')) and @base!='ξ' and @base!='ρ']">
-        <xsl:variable name="self" select="."/>
-        <xsl:variable name="target" select="key('objsNoLineByName', replace($self/@base, 'Φ.', ''))"/>
+        <xsl:variable name="name" select="replace(@base, '^Φ\.', '')"/>
+        <xsl:variable name="target" select="ancestor::o[1]/o[@name = $name and not(@line)]"/>
         <xsl:if test="$target">
           <defect line="0" severity="error">
             The @line attribute is absent at <xsl:value-of select="$target/@name"/>
