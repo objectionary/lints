@@ -10,7 +10,7 @@
   <xsl:output encoding="UTF-8" method="xml"/>
   <xsl:template match="/">
     <defects>
-      <xsl:if test="not(//o[eo:atom(.)])">
+      <xsl:if test="empty((//o[o[@name='lambda']])[1][eo:atom(.)])">
         <xsl:if test="/object/metas/meta[head='rt']">
           <xsl:element name="defect">
             <xsl:variable name="line" select="eo:lineno(/object/metas/meta[head='rt'][1]/@line)"/>
