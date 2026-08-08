@@ -55,26 +55,28 @@ final class LtUnlintNonExistingDefect implements Lint {
 
     @Override
     public Collection<Defect> defects(final XML xmir) throws IOException {
-        return new Xnav(xmir.inner()).path("/object/metas/meta[head='unlint']/tail")
-            .map(xnav -> xnav.text().get())
-            .distinct()
-            .filter(new DefectMissing(this.existingDefects(xmir), this.excluded)::apply).flatMap(
-                unlint -> new Xnav(xmir.inner()).path(
+        final List<Xnav> unlints = new Xnav(xmir.inner())
+            .path("/object/metas/meta[head='unlint']")
+            .collect(Collectors.toList());
+        return unlints.stream().map(
+            meta -> meta.element("tail").text().orElse("unknown")
+        ).distinct().filter(
+            new DefectMissing(this.existingDefects(xmir), this.excluded)::apply
+        ).flatMap(
+            tail -> unlints.stream().filter(
+                meta -> tail.equals(meta.element("tail").text().orElse("unknown"))
+            ).map(
+                meta -> new Defect.Default(
+                    this.name(),
+                    Severity.WARNING,
+                    Integer.parseInt(meta.attribute("line").text().orElse("0")),
                     String.format(
-                        "object/metas/meta[head='unlint' and tail='%s']/@line", unlint
-                    )
-                ).map(
-                    xnav -> new Defect.Default(
-                        this.name(),
-                        Severity.WARNING,
-                        Integer.parseInt(xnav.text().get()),
-                        String.format(
-                            "Unlinting rule '%s' doesn't make sense, since there are no defects with it",
-                            unlint
-                        )
+                        "Unlinting rule '%s' doesn't make sense, since there are no defects with it",
+                        tail
                     )
                 )
-            ).collect(Collectors.toList());
+            )
+        ).collect(Collectors.toList());
     }
 
     @Override

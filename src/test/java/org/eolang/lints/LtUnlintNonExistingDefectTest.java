@@ -171,4 +171,20 @@ final class LtUnlintNonExistingDefectTest {
             Matchers.iterableWithSize(1)
         );
     }
+
+    @Test
+    void catchesUnlintWithApostrophe() throws IOException {
+        MatcherAssert.assertThat(
+            "An unlint with an apostrophe should be reported, not crash",
+            new LtUnlintNonExistingDefect(
+                new ListOf<>(new LtAsciiOnly()),
+                new ListOf<>()
+            ).defects(
+                new EoProgram(
+                    "org/eolang/lints/unlint-ascii-only-apostrophe.eo"
+                ).parse()
+            ),
+            Matchers.iterableWithSize(1)
+        );
+    }
 }
