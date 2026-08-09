@@ -7,9 +7,11 @@ package org.eolang.lints;
 import com.github.lombrozo.xnav.Xnav;
 import com.jcabi.xml.XML;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 import org.cactoos.list.ListOf;
@@ -55,10 +57,18 @@ final class LtUnlintNonExistingDefect implements Lint {
 
     @Override
     public Collection<Defect> defects(final XML xmir) throws IOException {
-        return new Xnav(xmir.inner()).path("/object/metas/meta[head='unlint']/tail")
+        final List<String> unlints = new Xnav(xmir.inner())
+            .path("/object/metas/meta[head='unlint']/tail")
             .map(xnav -> xnav.text().get())
             .distinct()
-            .filter(new DefectMissing(this.existingDefects(xmir), this.excluded)::apply).flatMap(
+            .collect(Collectors.toList());
+        final Collection<Defect> messages;
+        if (unlints.isEmpty()) {
+            messages = new ArrayList<>(0);
+        } else {
+            messages = unlints.stream().filter(
+                new DefectMissing(this.existing(unlints, xmir), this.excluded)::apply
+            ).flatMap(
                 unlint -> new Xnav(xmir.inner()).path(
                     String.format(
                         "object/metas/meta[head='unlint' and tail='%s']/@line", unlint
@@ -75,6 +85,8 @@ final class LtUnlintNonExistingDefect implements Lint {
                     )
                 )
             ).collect(Collectors.toList());
+        }
+        return messages;
     }
 
     @Override
@@ -87,20 +99,31 @@ final class LtUnlintNonExistingDefect implements Lint {
         return new FxEmpty();
     }
 
-    private Map<String, List<Integer>> existingDefects(final XML xmir) {
-        return StreamSupport.stream(this.lints.spliterator(), false).flatMap(
-            lint -> {
-                try {
-                    return lint.defects(xmir).stream();
-                } catch (final IOException exception) {
-                    throw new IllegalStateException(exception);
+    /**
+     * Build a map of existing defects, checking only lints referenced by
+     * <code>+unlint</code> metas.
+     * @param unlints Tails of all <code>+unlint</code> metas in the document
+     * @param xmir The XMIR document
+     * @return Existing defects grouped by rule and line
+     */
+    private Map<String, List<Integer>> existing(final List<String> unlints, final XML xmir) {
+        final Set<String> names = unlints.stream()
+            .map(unlint -> unlint.split(":", -1)[0])
+            .collect(Collectors.toSet());
+        return StreamSupport.stream(this.lints.spliterator(), false)
+            .filter(lint -> names.contains(lint.name())).flatMap(
+                lint -> {
+                    try {
+                        return lint.defects(xmir).stream();
+                    } catch (final IOException exception) {
+                        throw new IllegalStateException(exception);
+                    }
                 }
-            }
-        ).collect(
-            Collectors.groupingBy(
-                Defect::rule,
-                Collectors.mapping(Defect::line, Collectors.toList())
-            )
-        );
+            ).collect(
+                Collectors.groupingBy(
+                    Defect::rule,
+                    Collectors.mapping(Defect::line, Collectors.toList())
+                )
+            );
     }
 }
