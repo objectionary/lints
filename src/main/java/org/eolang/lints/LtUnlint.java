@@ -74,7 +74,7 @@ final class LtUnlint implements Lint {
         problematic.forEach(
             line -> found.forEach(
                 defect -> {
-                    if (line != 0 && defect.line() == line) {
+                    if (defect.line() == line) {
                         defects.add(defect);
                         added.set(true);
                     }

@@ -151,4 +151,17 @@ final class LtUnlintTest {
             Matchers.iterableWithSize(1)
         );
     }
+
+    @Test
+    void keepsLineZeroDefectWithLineSpecificUnlint() throws IOException {
+        MatcherAssert.assertThat(
+            "A line-0 defect must not be silently dropped by a line-specific unlint",
+            new LtUnlint(new LtByXsl("metas/mandatory-package")).defects(
+                new EoProgram(
+                    "org/eolang/lints/unlint-mandatory-package-line.eo"
+                ).parse()
+            ),
+            Matchers.iterableWithSize(1)
+        );
+    }
 }
