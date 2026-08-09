@@ -1,0 +1,14 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/names/invalid-name-notation.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=0]
+ignore-schema: true
+document: |
+  <object author="tests">
+    <o line="1" name="foo" pos="0">
+      <o base="Q.number" line="2" name="-on-bytes-of-wrong-size-as-i16" pos="2"/>
+    </o>
+  </object>

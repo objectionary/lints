@@ -1,0 +1,19 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/names/invalid-name-notation.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=3]
+  - /defects/defect[@line='2']
+  - /defects/defect[@line='3']
+  - /defects/defect[@line='4']
+ignore-schema: true
+document: |
+  <object author="tests">
+    <o line="1" name="main" pos="0">
+      <o base="Q.foo" line="2" name="x1" pos="2"/>
+      <o base="Q.foo" line="3" name="xApp" pos="2"/>
+      <o base="Q.foo" line="4" name="x_snake" pos="2"/>
+    </o>
+  </object>
