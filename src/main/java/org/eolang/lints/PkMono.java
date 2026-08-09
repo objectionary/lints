@@ -18,11 +18,6 @@ import org.cactoos.list.ListOf;
  * <p>This class is thread-safe.</p>
  *
  * @since 0.23
- * @todo #297:35min Return `LtTestNotVerb` back.
- *  For some reason this lint produces errors in EO-to-Java Compiler. Check
- *  <a href="https://github.com/objectionary/lints/issues/297#issuecomment-2636540673">this</a>
- *  issue for more details. We should return it in the fixed state, once we understand
- *  the root cause of the problem.
  */
 @ThreadSafe
 final class PkMono extends IterableEnvelope<Lint> {

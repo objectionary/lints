@@ -30,9 +30,9 @@ final class Vocabulary {
     private static final Pattern KEBAB = Pattern.compile("-");
 
     /**
-     * Part-Of-Speech tagger.
+     * Part-Of-Speech taggers, one per thread.
      */
-    private final POSTaggerME tagger;
+    private final ThreadLocal<POSTaggerME> taggers;
 
     /**
      * Ctor.
@@ -53,15 +53,12 @@ final class Vocabulary {
      * @param mdl Part-Of-Speech model
      */
     Vocabulary(final POSModel mdl) {
-        this(new POSTaggerME(mdl));
-    }
-
-    /**
-     * Ctor.
-     * @param pos Part-Of-Speech tagger
-     */
-    Vocabulary(final POSTaggerME pos) {
-        this.tagger = pos;
+        this.taggers = new ThreadLocal<>() {
+            @Override
+            protected POSTaggerME initialValue() {
+                return new POSTaggerME(mdl);
+            }
+        };
     }
 
     /**
@@ -75,7 +72,7 @@ final class Vocabulary {
      */
     boolean isVerb(final String name) {
         return "VBZ".equals(
-            this.tagger.tag(
+            this.taggers.get().tag(
                 Stream.concat(
                     Stream.of("It"),
                     Arrays.stream(Vocabulary.KEBAB.split(name))
