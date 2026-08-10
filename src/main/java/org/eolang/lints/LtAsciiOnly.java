@@ -16,10 +16,6 @@ import java.util.stream.Collectors;
 /**
  * A comment must include only ASCII characters.
  * @since 0.1.0
- * @todo #14:35min Calculate comment line number with abusive character.
- *  For now we just reusing object line number (via @line), which is not correct
- *  for specifying on which line of the program comment is located. This issue
- *  can be solved after <a href="https://github.com/objectionary/eo/issues/3536">this one</a>.
  * @checkstyle UnnecessaryParenthesesCheck (30 lines)
  */
 final class LtAsciiOnly implements Lint {
@@ -39,8 +35,10 @@ final class LtAsciiOnly implements Lint {
             if (!abusive.isPresent()) {
                 continue;
             }
-            final int line = new LineOf(comment).value();
             final Character chr = abusive.get();
+            final int pos = comment.text().get().indexOf(chr);
+            final int line = new LineOf(comment).value()
+                - LtAsciiOnly.shifted(comment.text().get(), pos);
             defects.add(
                 new Defect.Default(
                     "ascii-only",
@@ -50,7 +48,7 @@ final class LtAsciiOnly implements Lint {
                         "Only ASCII characters are allowed in comments, while \"%s\" is used at the line no.%s at the position no.%s",
                         chr,
                         line,
-                        comment.text().get().indexOf(chr) + 1
+                        pos + 1
                     )
                 )
             );
@@ -71,5 +69,15 @@ final class LtAsciiOnly implements Lint {
     @Override
     public Fix fix() {
         return new FxEmpty();
+    }
+
+    /**
+     * Number of line shifts from the given position to the end of the comment.
+     * @param text Comment text
+     * @param pos Position of the abusive character
+     * @return How many newlines follow the position
+     */
+    private static int shifted(final String text, final int pos) {
+        return (int) text.substring(pos).chars().filter(chr -> chr == '\n').count();
     }
 }
