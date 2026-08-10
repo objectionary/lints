@@ -2,7 +2,7 @@
 
 Objects, applied in the code, must be defined somewhere in the program,
 be the objects of `org.eolang.*` or be imported via `+alias` meta. Free
-usage of an unknown object is a mystery object — it is almost always a
+usage of an unknown object is a mystery object—it is almost always a
 typo in the name, since this object is not declared anywhere.
 
 Incorrect:
