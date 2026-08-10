@@ -87,4 +87,30 @@ final class LtAsciiOnlyTest {
             Matchers.emptyIterable()
         );
     }
+
+    @Test
+    void reportsCorrectLineInMultilineComment() throws IOException {
+        MatcherAssert.assertThat(
+            "The abusive character is on the second line of the comment",
+            new ListOf<>(
+                new LtAsciiOnly().defects(
+                    new EoProgram("org/eolang/lints/non-ascii-multiline.eo").parse()
+                )
+            ).get(0).line(),
+            Matchers.equalTo(2)
+        );
+    }
+
+    @Test
+    void reportsCorrectLineInTheMiddle() throws IOException {
+        MatcherAssert.assertThat(
+            "The abusive character is on the second line of a three-line comment",
+            new ListOf<>(
+                new LtAsciiOnly().defects(
+                    new EoProgram("org/eolang/lints/non-ascii-middle.eo").parse()
+                )
+            ).get(0).line(),
+            Matchers.equalTo(2)
+        );
+    }
 }
