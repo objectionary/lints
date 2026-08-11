@@ -10,7 +10,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 import org.cactoos.iterable.Sticky;
 import org.cactoos.iterable.Synced;
 
@@ -41,6 +44,11 @@ public final class Source {
     private final Iterable<Lint> lints;
 
     /**
+     * Disabled lint names.
+     */
+    private final Collection<String> disabled;
+
+    /**
      * Ctor.
      * @param file The absolute path of the XMIR file
      * @throws FileNotFoundException If file isn't found
@@ -67,17 +75,47 @@ public final class Source {
      * @param list The lints
      */
     Source(final XML xml, final Iterable<Lint> list) {
+        this(xml, list, new ArrayList<>(0));
+    }
+
+    /**
+     * Ctor.
+     * @param xml The XMIR
+     * @param list The lints
+     * @param names Disabled lint names
+     */
+    private Source(final XML xml, final Iterable<Lint> list, final Collection<String> names) {
         this.xmir = xml;
         this.lints = list;
+        this.disabled = names;
     }
 
     /**
      * Source with disabled lints.
-     * @param names Lint names
-     * @return Program analysis without specific name
+     * @param first Lint name to disable
+     * @param rest Lint names to disable
+     * @return Program analysis without specific names
      */
-    public Source without(final String... names) {
-        return new org.eolang.lints.Source(this.xmir, new MonoWithout(names));
+    public Source without(final String first, final String... rest) {
+        final Collection<String> names = new ArrayList<>(this.disabled);
+        names.add(first);
+        names.addAll(Arrays.asList(rest));
+        final Set<String> known = new HashSet<>(0);
+        for (final Lint lint : new PkMono()) {
+            known.add(lint.name());
+        }
+        for (final String name : names) {
+            if (!known.contains(name)) {
+                throw new IllegalArgumentException(
+                    String.format("Unknown lint name: %s", name)
+                );
+            }
+        }
+        return new org.eolang.lints.Source(
+            this.xmir,
+            new MonoWithout(names.toArray(new String[0])),
+            names
+        );
     }
 
     /**

@@ -204,7 +204,7 @@ final class SourceTest {
     void createsSourceWithoutMultipleLints() {
         final Collection<String> disabled = List.of(
             "ascii-only",
-            "object-does-not-match-filename",
+            "sparse-seq",
             "comment-not-capitalized",
             "empty-object",
             "mandatory-home",
@@ -219,7 +219,10 @@ final class SourceTest {
             "Defects for disabled lints are not empty, but should be",
             new Source(
                 new EoProgram("org/eolang/lints/non-ascii-cyrillic.eo").parse()
-            ).without(disabled.toArray(new String[0])).defects().stream()
+            ).without(
+                disabled.iterator().next(),
+                disabled.stream().skip(1).toArray(String[]::new)
+            ).defects().stream()
                 .filter(defect -> disabled.contains(defect.rule()))
                 .collect(Collectors.toList()),
             Matchers.emptyIterable()
@@ -261,6 +264,32 @@ final class SourceTest {
                 .filter(defect -> defect.rule().startsWith("unlint-non-existing-defect"))
                 .collect(Collectors.toList()),
             Matchers.emptyIterable()
+        );
+    }
+
+    @Test
+    void accumulatesWithoutCalls() {
+        final Collection<Defect> defects = new Source(
+            new EoProgram("org/eolang/lints/non-ascii-cyrillic.eo").parse()
+        ).without("mandatory-home").without("mandatory-version").defects();
+        MatcherAssert.assertThat(
+            String.format(
+                "Disabled lints from both without() calls must stay disabled, got: %s",
+                defects
+            ),
+            defects.stream().map(Defect::rule).collect(Collectors.toList()),
+            Matchers.not(Matchers.hasItems("mandatory-home", "mandatory-version"))
+        );
+    }
+
+    @Test
+    void rejectsUnknownLintName() {
+        Assertions.assertThrows(
+            IllegalArgumentException.class,
+            () -> new Source(
+                new EoProgram("org/eolang/lints/foo-without-dot.eo").parse()
+            ).without("no-such-lint"),
+            "Unknown lint name must be rejected"
         );
     }
 
