@@ -1,0 +1,11 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/misc/redundant-attachment.xsl
+defects: 0
+input: |
+  [] > foo
+    [n] >> helper
+      n.plus 1 > @
+    helper 5 > @
