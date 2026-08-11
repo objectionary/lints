@@ -7,6 +7,7 @@ asserts:
   - /defects[count(defect[@severity='warning'])=0]
 input: |
   [] > foo
+
     [] +> prints-hello-world
       stdout > @
         "Hello, world"

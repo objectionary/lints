@@ -13,7 +13,7 @@ Incorrect:
   52 > @
 ```
 
-Here the test object `checks-something` is just a number literal — there
+Here the test object `checks-something` is just a number literal—there
 is no comparison, no assertion, nothing to verify.
 
 Correct:
