@@ -14,7 +14,8 @@
     <defects>
       <xsl:for-each select="/object//o[eo:test-name(@name)]">
         <xsl:variable name="regexp" select="'^(can|cannot|accepts|rejects|stops-on)-'"/>
-        <xsl:if test="not(matches(substring(@name, 2), $regexp))">
+        <xsl:variable name="bare" select="replace(@name, '^[+-]', '')"/>
+        <xsl:if test="not(matches($bare, $regexp))">
           <defect>
             <xsl:variable name="line" select="eo:lineno(@line)"/>
             <xsl:attribute name="line">
