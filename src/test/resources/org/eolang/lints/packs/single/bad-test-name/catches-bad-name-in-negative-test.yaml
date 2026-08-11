@@ -4,17 +4,9 @@
 sheets:
   - /org/eolang/lints/tests/bad-test-name.xsl
 asserts:
-  - /defects[count(defect[@severity='warning'])=0]
+  - /defects[count(defect[@severity='warning'])=1]
 input: |
   [] > foo
     [] > bar
 
-    [] +> can-do-something
-
-    [] +> accepts-input
-
-    [] -> cannot-do-something
-
-    [] -> rejects-input
-
-    [] -> stops-on-error
+    [] -> throws-on-empty
