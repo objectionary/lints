@@ -401,6 +401,76 @@ final class LtByXslTest {
         );
     }
 
+    @Test
+    void catchesUnrolledBases() throws ImpossibleModificationException {
+        MatcherAssert.assertThat(
+            "An unrolled composite base must be reported",
+            new LtByXsl("misc/roll-bases").defects(
+                new XMLDocument(
+                    new Xembler(
+                        new Directives().add("object")
+                            .add("o").attr("base", ".foo")
+                            .add("o").attr("base", "x").up()
+                            .up().up()
+                    ).xml()
+                )
+            ),
+            Matchers.iterableWithSize(1)
+        );
+    }
+
+    @Test
+    void allowsRolledBase() throws ImpossibleModificationException {
+        MatcherAssert.assertThat(
+            "A rolled composite base must not be reported",
+            new LtByXsl("misc/roll-bases").defects(
+                new XMLDocument(
+                    new Xembler(
+                        new Directives().add("object")
+                            .add("o").attr("base", "x.foo").up().up()
+                    ).xml()
+                )
+            ),
+            Matchers.emptyIterable()
+        );
+    }
+
+    @Test
+    void allowsNestedBaseWithData() throws ImpossibleModificationException {
+        MatcherAssert.assertThat(
+            "A child with data must not be rolled",
+            new LtByXsl("misc/roll-bases").defects(
+                new XMLDocument(
+                    new Xembler(
+                        new Directives().add("object")
+                            .add("o").attr("base", ".foo")
+                            .add("o").attr("base", "x").set("data").up()
+                            .up().up()
+                    ).xml()
+                )
+            ),
+            Matchers.emptyIterable()
+        );
+    }
+
+    @Test
+    void allowsDoubleDotBases() throws ImpossibleModificationException {
+        MatcherAssert.assertThat(
+            "Two dot-prefixed bases must not be rolled",
+            new LtByXsl("misc/roll-bases").defects(
+                new XMLDocument(
+                    new Xembler(
+                        new Directives().add("object")
+                            .add("o").attr("base", ".foo")
+                            .add("o").attr("base", ".bar").up()
+                            .up().up()
+                    ).xml()
+                )
+            ),
+            Matchers.emptyIterable()
+        );
+    }
+
     private static boolean eligibleForValidation(final Map<Path, Map<String, Object>> pack) {
         final Map<String, Object> yaml = pack.values().stream().findFirst().get();
         return yaml.containsKey("input") && !yaml.containsKey("skip-errors");
