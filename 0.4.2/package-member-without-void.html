@@ -1,0 +1,36 @@
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>lints</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="shortcut icon" href="https://www.yegor256.com/images/books/elegant-objects/cactus.png"/><link href="https://cdn.jsdelivr.net/npm/tacit-css@1.8.1/dist/tacit-css.min.css" rel="stylesheet" integrity="sha384-JbsYayq5Otme+gjh/pl7NrA/qMIU0bxbdzKvYqQGHvvag0lHhM62TQnDzz+EyzXj" crossorigin="anonymous"/>
+</head>
+<body><section><article>
+<h1 id="package-member-without-void">Package member without void</h1>
+<p>A member of a package is also implicitly a method of any object whose
+forma matches the package name. <code>bytes.as-number x</code> and
+<code>x.as-number</code> reach the same <code>Φ.bytes.as-number</code>
+object, because the runtime binds the receiver into the member’s first
+void attribute when the implicit, dotted form is used.</p>
+<p>A member that declares no void attributes has no slot for that
+receiver. The implicit form fails at runtime then, even though the
+explicit, package-qualified form works fine.</p>
+<p>Incorrect:</p>
+<pre class="eo"><code>+package bytes
+
+# As number.
+[] &gt; as-number</code></pre>
+<p>Correct:</p>
+<pre class="eo"><code>+package bytes
+
+# As number.
+[b] &gt; as-number</code></pre>
+<p>Only top-level objects of a file that declares <code>+package</code>
+are checked. A void-less formation is fine everywhere else: a ready-made
+constant such as <code>[] &gt; stdin</code>, or a local helper nested
+inside another formation’s body.</p>
+<p>See <a
+href="https://github.com/objectionary/lints/issues/1170">objectionary/lints#1170</a>
+for the discussion that motivated this lint.</p>
+<p>Published on Wed Aug 12 21:28:07 UTC 2026.</p>
+</article></section></body></html>

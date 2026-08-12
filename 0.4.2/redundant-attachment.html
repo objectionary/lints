@@ -1,0 +1,40 @@
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>lints</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="shortcut icon" href="https://www.yegor256.com/images/books/elegant-objects/cactus.png"/><link href="https://cdn.jsdelivr.net/npm/tacit-css@1.8.1/dist/tacit-css.min.css" rel="stylesheet" integrity="sha384-JbsYayq5Otme+gjh/pl7NrA/qMIU0bxbdzKvYqQGHvvag0lHhM62TQnDzz+EyzXj" crossorigin="anonymous"/>
+</head>
+<body><section><article>
+<h1 id="redundant-attachment">Redundant attachment</h1>
+<p>The <code>&gt;&gt;</code> suffix gives an anonymous formation a name
+generated for it, so that it can be referenced from elsewhere: by itself
+recursively (via <code>%</code>), or by another object. If nothing ever
+refers to that generated name, the <code>&gt;&gt;</code> is redundant
+and should be removed.</p>
+<p>Incorrect:</p>
+<pre class="eo"><code>[] &gt; foo
+  test &gt; @
+    [] &gt;&gt;
+      2.plus 2 &gt; @</code></pre>
+<p>Correct:</p>
+<pre class="eo"><code>[] &gt; foo
+  test &gt; @
+    []
+      2.plus 2 &gt; @</code></pre>
+<p>A generated name is <em>not</em> redundant when it is actually used,
+either by a recursive self-reference:</p>
+<pre class="eo"><code>[] &gt; foo
+  test &gt; @
+    [n] &gt;&gt;
+      if. &gt; @
+        n.eq 0
+        0
+        % (n.minus 1)</code></pre>
+<p>or by being called from another part of the same object:</p>
+<pre class="eo"><code>[] &gt; foo
+  [n] &gt;&gt; helper
+    n.plus 1 &gt; @
+  helper 5 &gt; @</code></pre>
+<p>Published on Wed Aug 12 21:28:13 UTC 2026.</p>
+</article></section></body></html>
