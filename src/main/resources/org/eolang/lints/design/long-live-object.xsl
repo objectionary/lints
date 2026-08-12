@@ -8,14 +8,13 @@
   <xsl:import href="/org/eolang/funcs/escape.xsl"/>
   <xsl:import href="/org/eolang/funcs/defect-context.xsl"/>
   <xsl:output encoding="UTF-8" method="xml"/>
-  <xsl:key name="by-name" match="o[@name]" use="@name"/>
   <xsl:template match="/">
     <defects>
       <xsl:for-each select="//o[@name and not(@name='φ')]">
         <xsl:variable name="def" select="."/>
-        <xsl:variable name="usage" select="(//o[@base=concat('ξ.', $def/@name) and number(@line) > number($def/@line)])[1]"/>
+        <xsl:variable name="usage" select="(//o[@base=concat('ξ.', $def/@name) and number(@line) &gt; number($def/@line)])[1]"/>
         <xsl:if test="$usage and not($def/ancestor::o[@name = $def/@name])">
-          <xsl:variable name="between" select="count($def/../o[number(@line) > number($def/@line) and number(@line) &lt; number($usage/@line)])"/>
+          <xsl:variable name="between" select="count($def/../o[number(@line) &gt; number($def/@line) and number(@line) &lt; number($usage/@line)])"/>
           <xsl:if test="$between &gt; 5">
             <defect>
               <xsl:variable name="line" select="eo:lineno($def/@line)"/>
