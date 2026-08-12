@@ -1,0 +1,20 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/design/long-live-object.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=1]
+  - /defects/defect[@line='4']
+input: |
+  # Foo.
+
+  [] > app
+    foo 42 > f
+    x > w1
+    y > w2
+    z > w3
+    q > w4
+    s > w5
+    t > w6
+    52.plus f > r
