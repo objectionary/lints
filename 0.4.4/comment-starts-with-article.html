@@ -1,0 +1,27 @@
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>lints</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="shortcut icon" href="https://www.yegor256.com/images/books/elegant-objects/cactus.png"/><link href="https://cdn.jsdelivr.net/npm/tacit-css@1.8.1/dist/tacit-css.min.css" rel="stylesheet" integrity="sha384-JbsYayq5Otme+gjh/pl7NrA/qMIU0bxbdzKvYqQGHvvag0lHhM62TQnDzz+EyzXj" crossorigin="anonymous"/>
+</head>
+<body><section><article>
+<h1 id="comment-starts-with-article">Comment Starts With Article</h1>
+<p>Comments should not start with an article, such as <code>a</code>,
+<code>an</code>, or <code>the</code>. An article at the beginning of a
+comment adds no information and makes the documentation more verbose
+than necessary.</p>
+<p>Incorrect:</p>
+<pre class="eo"><code># The object that calculates the sum.
+[] &gt; foo
+  42 &gt; @</code></pre>
+<p>Correct:</p>
+<pre class="eo"><code># Object that calculates the sum.
+[] &gt; foo
+  42 &gt; @</code></pre>
+<p>The check is case-insensitive, so <code>A</code>, <code>An</code>,
+and <code>The</code> are flagged as well. Words that merely begin with
+the same letters as an article, such as <code>Another</code> or
+<code>Theory</code>, are not affected.</p>
+<p>Published on Thu Aug 13 15:08:41 UTC 2026.</p>
+</article></section></body></html>
