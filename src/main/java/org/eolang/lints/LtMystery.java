@@ -88,28 +88,67 @@ final class LtMystery implements Lint {
             elem -> elem.attribute("name").text().get()
         ).collect(Collectors.toSet());
         return xnav.path("//o[@base]").filter(
-            elem -> {
-                final Optional<String> base = elem.attribute("base").text();
-                return base.isPresent()
-                    && LtMystery.simple(base.get());
-            }
+            LtMystery::simpleBase
         ).filter(
-            elem -> {
-                final String base = elem.attribute("base").text().get();
-                return !declared.contains(base.substring(2))
-                    && !reserved.containsKey(base.substring(2));
-            }
+            elem -> LtMystery.unknown(elem, declared, reserved)
         ).map(
-            elem -> new Defect.Default(
-                "mystery-object",
-                Severity.ERROR,
-                new LineOf(elem).value(),
-                String.format(
-                    "Object \"%s\" is not defined in the program and is not part of org.eolang",
-                    elem.attribute("base").text().get().substring(2)
-                )
-            )
+            LtMystery::defect
         ).collect(Collectors.toList());
+    }
+
+    /**
+     * Is the {@code @base} a bare single-object reference?
+     * @param elem Object element
+     * @return True if it's a simple object reference
+     */
+    private static boolean simpleBase(final Xnav elem) {
+        final Optional<String> base = elem.attribute("base").text();
+        return base.isPresent()
+            && LtMystery.simple(base.get());
+    }
+
+    /**
+     * Is the referenced object unknown?
+     * The name is the {@code @base} value without the leading two characters,
+     * which are the {@code Φ.} prefix.
+     * @param elem Object element
+     * @param declared Objects declared in the program
+     * @param reserved Reserved org.eolang names
+     * @return True if the object is neither declared nor reserved
+     */
+    private static boolean unknown(final Xnav elem,
+        final Set<String> declared, final Map<String, String> reserved) {
+        final String name = LtMystery.objectName(elem);
+        return !declared.contains(name)
+            && !reserved.containsKey(name);
+    }
+
+    /**
+     * Object name from the {@code @base} attribute.
+     * The name is the value without the leading two characters,
+     * which are the {@code Φ.} prefix.
+     * @param elem Object element
+     * @return Object name
+     */
+    private static String objectName(final Xnav elem) {
+        return elem.attribute("base").text().get().substring(2);
+    }
+
+    /**
+     * Defect for an unknown object.
+     * @param elem Object element
+     * @return Defect
+     */
+    private static Defect defect(final Xnav elem) {
+        return new Defect.Default(
+            "mystery-object",
+            Severity.ERROR,
+            new LineOf(elem).value(),
+            String.format(
+                "Object \"%s\" is not defined in the program and is not part of org.eolang",
+                LtMystery.objectName(elem)
+            )
+        );
     }
 
     /**
