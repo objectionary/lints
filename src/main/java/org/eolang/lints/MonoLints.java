@@ -25,7 +25,7 @@ final class MonoLints extends IterableEnvelope<Lint> {
     private static final Iterable<Lint> LINTS = new Shuffled<>(
         new Joined<Lint>(
             new PkByXsl(),
-            MonoLints.mono()
+            MonoLints.javaLints()
         )
     );
 
@@ -62,7 +62,7 @@ final class MonoLints extends IterableEnvelope<Lint> {
      * Java-based lints.
      * @return Java-based lints
      */
-    private static List<Lint> mono() {
+    private static List<Lint> javaLints() {
         try {
             return List.of(
                 new LtAsciiOnly(),
@@ -71,7 +71,10 @@ final class MonoLints extends IterableEnvelope<Lint> {
                 new LtTestNotVerb()
             );
         } catch (final IOException ex) {
-            throw new IllegalArgumentException(ex);
+            throw new IllegalStateException(
+                "Failed to instantiate Java-based lints (ascii-only, reserved-name, test-not-verb)",
+                ex
+            );
         }
     }
 }

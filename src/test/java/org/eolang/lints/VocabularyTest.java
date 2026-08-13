@@ -4,9 +4,11 @@
  */
 package org.eolang.lints;
 
+import com.yegor256.Together;
 import java.io.IOException;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -106,6 +108,34 @@ final class VocabularyTest {
             "Name should be recognized as a verb in singular, but it was not",
             new Vocabulary().isVerb(name),
             Matchers.is(true)
+        );
+    }
+
+    @Test
+    void worksFromMultipleThreads() throws Exception {
+        final Vocabulary vocab = new Vocabulary();
+        MatcherAssert.assertThat(
+            "The shared Vocabulary must give the same answer in all threads",
+            new org.cactoos.set.SetOf<>(
+                new Together<>(
+                    t -> vocab.isVerb("works-as-expected")
+                )
+            ).size(),
+            Matchers.equalTo(1)
+        );
+    }
+
+    @Test
+    void givesConsistentAnswersAcrossThreads() throws Exception {
+        final Vocabulary vocab = new Vocabulary();
+        MatcherAssert.assertThat(
+            "The shared Vocabulary must stay stable under load",
+            new org.cactoos.set.SetOf<>(
+                new Together<>(
+                    t -> vocab.isVerb("works-as-expected")
+                )
+            ).size(),
+            Matchers.equalTo(1)
         );
     }
 }
