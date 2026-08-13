@@ -46,10 +46,10 @@ or by being called from another part of the same object:
 ```
 
 The name is not redundant either when the body reads objects from the scope
-that encloses it, over and above its own voids. Such an object cannot become
+that encloses it, beyond its own voids. Such an object cannot become
 anonymous, because `anonymous-formation` forbids an anonymous formation from
-reaching outside itself. Here `func` comes from `mapped`, not from `[item idx]`,
-so the `>>` stays:
+reaching outside itself. Here `func` comes from `mapped`, not from
+`[item idx]`, so the `>>` stays:
 
 ```eo
 [sequence func] > mapped
@@ -57,8 +57,8 @@ so the `>>` stays:
     func item > [item idx] >>
 ```
 
-An auto-generated name that the parser invents on its own, rather than for a
-`>>` written in the source, is left alone too. The `!` const suffix on a
-nameless argument is such a case: `m.plus m!` makes the parser wrap `m` into
-a named `.as-bytes` over `Φ.dataized`, and no `>>` exists in the source to
-be removed.
+A generated name that the parser invents on its own, rather than for a `>>`
+written in the source, is left alone too. The `!` suffix on a nameless
+argument is such a case: `m.plus m!` makes the parser wrap `m` into a named
+`.as-bytes` over `Φ.dataized`, and no `>>` exists in the source to be
+removed.
