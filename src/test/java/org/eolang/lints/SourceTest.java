@@ -151,18 +151,6 @@ final class SourceTest {
         );
     }
 
-    /**
-     * Accepts canonical code.
-     * @todo #1101:30min Decide whether canonical.eo should drop the `>>` on
-     *  nested formations like `[i] >>`/`[i1] >>`, or whether
-     *  `redundant-attachment` should gain a documented exception for
-     *  formations that capture outer scope via `^`/`ρ`. The `>>` there is not
-     *  structurally required (parsing and scope resolution work identically
-     *  without it, verified empirically), but it may still be idiomatic for
-     *  closures over outer state. Raise this with the EO language/parser
-     *  maintainers; for now the lint is suppressed on canonical.eo via
-     *  `+unlint redundant-attachment`.
-     */
     @Test
     @Timeout(60L)
     void acceptsCanonicalCode() {
