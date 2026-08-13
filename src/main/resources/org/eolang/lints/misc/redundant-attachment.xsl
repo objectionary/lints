@@ -21,7 +21,14 @@
   </xsl:function>
   <xsl:template match="/">
     <defects>
-      <xsl:for-each select="//o[@name and matches(@name, '^a🌵[0-9]+-[0-9]+$') and not(eo:const-wrapper(.))]">
+      <!--
+      A void attribute written as "? &gt;&gt; name" is skipped for the same
+      reason: its auto-name is minted by the parser, while "name" is only a
+      local alias. There is no nameless void in the grammar, so the "&gt;&gt;"
+      cannot be deleted, and the only other spelling, "? &gt; name", publishes
+      the attribute under that name and thus changes dispatch. See #1266.
+      -->
+      <xsl:for-each select="//o[@name and matches(@name, '^a🌵[0-9]+-[0-9]+$') and not(@base='∅') and not(eo:const-wrapper(.))]">
         <xsl:variable name="refs" select="key('referenced-by-auto-name', @name)"/>
         <xsl:variable name="external" select="$refs except descendant::o"/>
         <!--
