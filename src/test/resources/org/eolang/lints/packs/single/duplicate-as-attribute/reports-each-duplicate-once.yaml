@@ -1,0 +1,19 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/names/duplicate-as-attribute.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=2]
+  - /defects/defect[contains(text(), '"foo"')]
+  - /defects/defect[contains(text(), '"bar"')]
+document: |
+  <object author="tests">
+    <o base="Φ.t" name="tee" line="3">
+      <o base="Φ.f1" as="foo"/>
+      <o base="Φ.f2" as="bar"/>
+      <o base="Φ.f3" as="foo"/>
+      <o base="Φ.f4" as="bar"/>
+      <o base="Φ.f5" as="foo"/>
+    </o>
+  </object>
