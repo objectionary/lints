@@ -4,9 +4,22 @@
 lint: syntax-version
 asserts:
   - /defects[count(defect[@severity='error'])=1]
+<<<<<<< HEAD
 input: |
   +syntax 999.0.0
   +version 0.0.0
 
   # Foo.
   [] > foo
+=======
+document: |
+  <object author="tests">
+    <metas>
+      <meta line="1">
+        <head>syntax</head>
+        <tail>999.0.0</tail>
+      </meta>
+    </metas>
+    <o line="3" name="foo"/>
+  </object>
+>>>>>>> ad92fd53 (fix(#1271): use document packs for meta-based lints, filter lint packs in EO test)
