@@ -1,0 +1,12 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+lint: reserved-name
+asserts:
+  - /defects[count(defect)=0]
+document: |
+  <object author="tests">
+    <o line="1" name="main">
+      <o line="2" name="my-object" base="Φ.foo"/>
+    </o>
+  </object>

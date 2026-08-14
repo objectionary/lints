@@ -1,0 +1,12 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+lint: ascii-only
+asserts:
+  - /defects[count(defect[@severity='warning'])=1]
+document: |
+  <object author="tests">
+    <comments>
+      <comment line="1">привет</comment>
+    </comments>
+  </object>
