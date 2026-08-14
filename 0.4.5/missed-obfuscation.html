@@ -1,0 +1,28 @@
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>lints</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="shortcut icon" href="https://www.yegor256.com/images/books/elegant-objects/cactus.png"/><link href="https://cdn.jsdelivr.net/npm/tacit-css@1.8.1/dist/tacit-css.min.css" rel="stylesheet" integrity="sha384-JbsYayq5Otme+gjh/pl7NrA/qMIU0bxbdzKvYqQGHvvag0lHhM62TQnDzz+EyzXj" crossorigin="anonymous"/>
+</head>
+<body><section><article>
+<h1 id="missed-obfuscation">Missed obfuscation</h1>
+<p>A formation that decorates another object should obfuscate its void
+attributes. Otherwise, an attribute of the formation may shadow an
+attribute with the same name in the decoratee, making attribute access
+ambiguous to a reader.</p>
+<p>Incorrect:</p>
+<pre class="eo"><code>[a b] &gt; x
+  foo &gt; @</code></pre>
+<p>The expression <code>x.a</code> refers to the provided attribute
+<code>a</code>, even when <code>foo</code> also has an attribute named
+<code>a</code>. Obfuscating the void attributes makes this relationship
+explicit:</p>
+<pre class="eo"><code>[] &gt; x
+  ? &gt;&gt; a
+  ? &gt;&gt; b
+  foo &gt; @</code></pre>
+<p>Void attributes whose names start with <code>cant-</code> are
+capabilities or restrictions and don’t have to be obfuscated.</p>
+<p>Published on Fri Aug 14 07:04:33 UTC 2026.</p>
+</article></section></body></html>
