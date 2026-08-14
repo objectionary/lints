@@ -4,14 +4,6 @@
 lint: incorrect-unlint
 asserts:
   - /defects[count(defect[@severity='error'])=1]
-<<<<<<< HEAD
-input: |
-  +unlint non-existent-lint-name:5
-  +version 0.0.0
-
-  # Foo.
-  [] > foo
-=======
 document: |
   <object author="tests">
     <metas>
@@ -22,4 +14,3 @@ document: |
     </metas>
     <o line="3" name="foo"/>
   </object>
->>>>>>> ad92fd53 (fix(#1271): use document packs for meta-based lints, filter lint packs in EO test)
