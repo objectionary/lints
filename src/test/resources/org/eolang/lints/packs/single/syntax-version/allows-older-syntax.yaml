@@ -1,0 +1,12 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+lint: syntax-version
+asserts:
+  - /defects[count(defect)=0]
+input: |
+  +syntax 0.0.1
+  +version 0.0.0
+
+  # Foo.
+  [] > foo
