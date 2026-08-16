@@ -21,7 +21,7 @@
   </xsl:function>
   <xsl:template match="/">
     <defects>
-      <xsl:for-each select="//o[@name and matches(@name, '^a🌵[0-9]+-[0-9]+$') and not(eo:const-wrapper(.))]">
+      <xsl:for-each select="//o[@name and matches(@name, '^a🌵[0-9]+-[0-9]+$') and not(@base='∅') and not(eo:const-wrapper(.))]">
         <xsl:variable name="refs" select="key('referenced-by-auto-name', @name)"/>
         <xsl:variable name="external" select="$refs except descendant::o"/>
         <!--
