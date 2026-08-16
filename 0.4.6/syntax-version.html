@@ -1,0 +1,32 @@
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>lints</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="shortcut icon" href="https://www.yegor256.com/images/books/elegant-objects/cactus.png"/><link href="https://cdn.jsdelivr.net/npm/tacit-css@1.8.1/dist/tacit-css.min.css" rel="stylesheet" integrity="sha384-JbsYayq5Otme+gjh/pl7NrA/qMIU0bxbdzKvYqQGHvvag0lHhM62TQnDzz+EyzXj" crossorigin="anonymous"/>
+</head>
+<body><section><article>
+<h1 id="the-syntax-meta-requires-a-newer-parser-version">The
+<code>+syntax</code> meta requires a newer parser version</h1>
+<p>The <code>+syntax</code> meta declares the minimum EO language
+version the code requires, for example <code>+syntax 0.59.0</code>. If
+the actual EO parser used to compile the code is older than the declared
+version, the code may rely on syntax the parser doesn’t understand, so
+this is reported as an error.</p>
+<p>For now, the comparison is strict. Only the numeric
+<code>major.minor.patch</code> core of both versions is compared.
+Pre-release suffixes, for example <code>-SNAPSHOT</code>, and non-SemVer
+values are ignored, not flagged.</p>
+<p>Incorrect:</p>
+<pre class="eo"><code>+syntax 99.0.0
+
+[] &gt; foo</code></pre>
+<p>Because no such EO version is released yet, the code is necessarily
+being parsed by an older parser.</p>
+<p>Correct:</p>
+<pre class="eo"><code>+syntax 0.1.0
+
+[] &gt; foo</code></pre>
+<p>Because the parser is at least as new as <code>0.1.0</code>.</p>
+<p>Published on Sun Aug 16 13:19:08 UTC 2026.</p>
+</article></section></body></html>
