@@ -28,8 +28,8 @@ final class LtAsciiOnly implements Lint {
     public Collection<Defect> defects(final XML xmir) throws IOException {
         final Collection<Defect> defects = new ArrayList<>(0);
         final Xnav xml = new Xnav(xmir.inner());
-        final Optional<String> listing = xml.path("//listing")
-            .findFirst().map(elem -> elem.text().get());
+        final Optional<Listing> listing = xml.path("//listing")
+            .findFirst().map(elem -> new Listing(elem.text().get()));
         final List<Xnav> comments = xml.path("/object/comments/comment")
             .collect(Collectors.toList());
         for (final Xnav comment : comments) {
@@ -45,15 +45,9 @@ final class LtAsciiOnly implements Lint {
             final int pos = text.indexOf(chr);
             final int line;
             if (listing.isPresent()) {
-                final Optional<Integer> found = LtAsciiOnly.locate(
-                    listing.get(), text
+                line = listing.get().line(text, pos).orElse(
+                    new LineOf(comment).value()
                 );
-                if (found.isPresent()) {
-                    line = found.get() + (int) text.substring(0, pos).chars()
-                        .filter(c -> c == '\n').count();
-                } else {
-                    line = new LineOf(comment).value();
-                }
             } else {
                 line = new LineOf(comment).value();
             }
@@ -87,35 +81,5 @@ final class LtAsciiOnly implements Lint {
     @Override
     public Fix fix() {
         return new FxEmpty();
-    }
-
-    /**
-     * Real source line of the abusive character.
-     * The comment text is located in the program listing, where each line
-     * starts with the {@code #} sign. The line of the character is the line
-     * of the first line of the comment.
-     * @param listing Full program listing
-     * @param text Comment text
-     * @return Real source line of the first line of the comment, if found
-     */
-    private static Optional<Integer> locate(final String listing, final String text) {
-        final int newline = text.indexOf('\n');
-        final String headline;
-        if (newline < 0) {
-            headline = text;
-        } else {
-            headline = text.substring(0, newline);
-        }
-        final int index = listing.indexOf("# ".concat(headline));
-        final Optional<Integer> result;
-        if (index < 0) {
-            result = Optional.empty();
-        } else {
-            result = Optional.of(
-                (int) listing.substring(0, index).chars()
-                    .filter(chr -> chr == '\n').count() + 1
-            );
-        }
-        return result;
     }
 }
