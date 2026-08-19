@@ -5,6 +5,7 @@
 package org.eolang.lints;
 
 import io.github.secretx33.resourceresolver.PathMatchingResourcePatternResolver;
+import io.github.secretx33.resourceresolver.Resource;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -75,8 +76,7 @@ final class PkByXsl extends IterableEnvelope<Lint> {
      * @param res Resource with XSL
      * @return Lint
      */
-    private static Lint lint(
-        final io.github.secretx33.resourceresolver.Resource res) {
+    private static Lint lint(final Resource res) {
         try {
             final String url = res.getURL().toString();
             return new LtByXsl(

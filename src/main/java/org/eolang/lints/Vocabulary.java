@@ -7,6 +7,7 @@ package org.eolang.lints;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Locale;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 import opennlp.tools.postag.POSModel;
@@ -59,7 +60,7 @@ final class Vocabulary {
      */
     Vocabulary(final POSModel mdl) {
         this.taggers = new POSTaggerME(mdl);
-        this.lock = new java.util.concurrent.locks.ReentrantLock();
+        this.lock = new ReentrantLock();
     }
 
     /**

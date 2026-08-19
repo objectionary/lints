@@ -6,6 +6,7 @@ package org.eolang.lints;
 
 import com.yegor256.Together;
 import java.io.IOException;
+import org.cactoos.set.SetOf;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
@@ -116,7 +117,7 @@ final class VocabularyTest {
         final Vocabulary vocab = new Vocabulary();
         MatcherAssert.assertThat(
             "The shared Vocabulary must give the same answer in all threads",
-            new org.cactoos.set.SetOf<>(
+            new SetOf<>(
                 new Together<>(
                     t -> vocab.isVerb("works-as-expected")
                 )
@@ -130,7 +131,7 @@ final class VocabularyTest {
         final Vocabulary vocab = new Vocabulary();
         MatcherAssert.assertThat(
             "The shared Vocabulary must stay stable under load",
-            new org.cactoos.set.SetOf<>(
+            new SetOf<>(
                 new Together<>(
                     t -> vocab.isVerb("works-as-expected")
                 )
