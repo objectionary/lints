@@ -4,6 +4,7 @@
  */
 package benchmarks;
 
+import fixtures.EoProgram;
 import java.util.concurrent.TimeUnit;
 import org.eolang.lints.Source;
 import org.openjdk.jmh.annotations.Benchmark;
@@ -44,5 +45,16 @@ public class SourceBench {
     @Benchmark
     public final void scansXmir(final BenchmarkState state) {
         new Source(state.xmir()).defects();
+    }
+
+    /**
+     * Benchmark for XMIR scanning with {@code +unlint} metas present.
+     * Scans XMIR.
+     */
+    @Benchmark
+    public final void scansXmirWithUnlints() {
+        new Source(
+            new EoProgram("org/eolang/lints/unlint-ascii-only.eo").parse()
+        ).defects();
     }
 }
