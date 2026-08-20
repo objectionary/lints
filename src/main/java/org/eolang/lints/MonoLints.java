@@ -58,10 +58,6 @@ final class MonoLints extends IterableEnvelope<Lint> {
         );
     }
 
-    /**
-     * Java-based lints.
-     * @return Java-based lints
-     */
     private static List<Lint> javaLints() {
         try {
             return List.of(

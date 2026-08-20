@@ -49,11 +49,6 @@ final class PkByXsl extends IterableEnvelope<Lint> {
         super(new Shuffled<>(PkByXsl.LINTS));
     }
 
-    /**
-     * Load all lints once.
-     * @return List of all lints
-     */
-    @SuppressWarnings("PMD.UnnecessaryLocalRule")
     private static List<Lint> load() {
         try {
             return Arrays.stream(
@@ -71,11 +66,6 @@ final class PkByXsl extends IterableEnvelope<Lint> {
         }
     }
 
-    /**
-     * Build a lint for the given XSL resource.
-     * @param res Resource with XSL
-     * @return Lint
-     */
     private static Lint lint(final Resource res) {
         try {
             final String url = res.getURL().toString();
