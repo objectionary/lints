@@ -93,6 +93,16 @@ final class LtTestNotVerbTest {
         );
     }
 
+    @Test
+    @ExtendWith(MayBeSlow.class)
+    void explainsMotive() throws IOException {
+        MatcherAssert.assertThat(
+            "The motive doesn't contain expected string",
+            new LtTestNotVerb().motive(),
+            Matchers.containsString("# Unit test is not a verb")
+        );
+    }
+
     @Tag("deep")
     @RepeatedTest(2)
     void lintsInMultipleThreads() {

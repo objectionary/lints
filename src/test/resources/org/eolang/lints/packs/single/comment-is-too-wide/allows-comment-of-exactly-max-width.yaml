@@ -1,0 +1,13 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+# yamllint disable rule:line-length
+sheets:
+  - /org/eolang/lints/comments/comment-is-too-wide.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=0]
+input: |
+  # This comment sits exactly on the boundary of the maximum allowed width, so the lint must stay quiet.
+
+  [] > foo
+    42 > @

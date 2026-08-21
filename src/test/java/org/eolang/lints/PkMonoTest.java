@@ -19,6 +19,7 @@ import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+import org.cactoos.iterable.Joined;
 import org.cactoos.list.ListOf;
 import org.cactoos.scalar.LengthOf;
 import org.cactoos.set.SetOf;
@@ -85,13 +86,13 @@ final class PkMonoTest {
                 "classpath*:org/eolang/motives/**/*.md"
             )
         ).map(PkMonoTest::shortName)
-            .filter(((Predicate<String>) PkMonoTest.lintNames()::contains).negate())
+            .filter(((Predicate<String>) PkMonoTest.documented()::contains).negate())
             .distinct()
             .sorted()
             .collect(Collectors.toList());
         MatcherAssert.assertThat(
             Logger.format(
-                "Motive files without a corresponding lint: %[list]s. Each .md under src/main/resources/org/eolang/motives/ must match the name() of a lint produced by PkMono.",
+                "Motive files without a corresponding lint: %[list]s. Each .md under src/main/resources/org/eolang/motives/ must match the name() of a lint produced by PkMono, or of a lint that is temporarily detached from it, like unit-test-is-not-verb.",
                 orphans
             ),
             orphans,
@@ -109,6 +110,15 @@ final class PkMonoTest {
                     .withImportOption(new ImportOption.DoNotIncludeTests())
                     .importPackages("org.eolang.lints")
             );
+    }
+
+    private static Set<String> documented() {
+        return new SetOf<>(
+            new Joined<String>(
+                PkMonoTest.lintNames(),
+                new SetOf<>("unit-test-is-not-verb")
+            )
+        );
     }
 
     private static Set<String> lintNames() {

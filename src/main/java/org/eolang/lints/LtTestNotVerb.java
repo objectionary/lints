@@ -56,7 +56,7 @@ final class LtTestNotVerb implements Lint {
 
     @Override
     public String motive() throws IOException {
-        return new MotiveFrom("misc", "test-object-is-not-verb-in-singular").asString();
+        return new MotiveFrom("tests", this.name()).asString();
     }
 
     @Override

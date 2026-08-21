@@ -34,22 +34,4 @@
       </xsl:for-each>
     </defects>
   </xsl:template>
-  <xsl:template match="meta" mode="dups">
-    <xsl:for-each select="/object/metas/meta[head='alias']">
-      <xsl:variable name="x" select="."/>
-      <xsl:if test="preceding-sibling::o/@name = $x/@name">
-        <error>
-          <xsl:attribute name="line">
-            <xsl:value-of select="if (@line) then @line else '0'"/>
-          </xsl:attribute>
-          <xsl:attribute name="severity">
-            <xsl:text>error</xsl:text>
-          </xsl:attribute>
-          <xsl:text>The name </xsl:text>
-          <xsl:value-of select="eo:escape(@name)"/>
-          <xsl:text> is already in use</xsl:text>
-        </error>
-      </xsl:if>
-    </xsl:for-each>
-  </xsl:template>
 </xsl:stylesheet>
