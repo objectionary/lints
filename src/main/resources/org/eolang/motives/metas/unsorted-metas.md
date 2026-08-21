@@ -19,3 +19,9 @@ Correct:
 
 [] > foo
 ```
+
+In the defect message, the meta is quoted with every space replaced by
+`⌴` (U+2314): `The "alias⌴stdout⌴org.eolang.io.stdout" meta is out of
+order`. This is not a stray character. Every lint marks spaces this way
+in quoted text, so a leading, trailing, or repeated space is never
+mistaken for a printing artifact.
