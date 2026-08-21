@@ -7,8 +7,9 @@ sheets:
 asserts:
   - /defects[count(defect[@severity='warning'])=1]
   - /defects/defect[@line='3']
+  - /defects/defect[contains(text(), 'The comment width is 101, while 100 is max allowed')]
 input: |
-  # This is a very long comment that contains more than 100 characters and should be flagged by the lint as too wide.
+  # This comment is one character wider than the limit of 100, therefore the lint reports it as too wide.
 
   [] > foo
     42 > @
