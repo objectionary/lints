@@ -1,0 +1,13 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/misc/anemic-getter.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=0]
+document: |
+  <object author="tests">
+    <o name="foo">
+      <o base="ξ" name="xi🌵"/>
+    </o>
+  </object>
