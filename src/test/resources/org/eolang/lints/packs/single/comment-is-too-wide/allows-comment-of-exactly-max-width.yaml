@@ -7,7 +7,7 @@ sheets:
 asserts:
   - /defects[count(defect[@severity='warning'])=0]
 input: |
-  # This comment sits exactly on the boundary of the maximum allowed width, so the lint must stay quiet.
+  # This comment is exactly 100 characters wide, therefore the lint must not report it as a defect here.
 
   [] > foo
     42 > @

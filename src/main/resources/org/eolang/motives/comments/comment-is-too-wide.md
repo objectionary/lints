@@ -1,11 +1,11 @@
 # Comment Is Too Wide
 
-Each line of a comment should not be wider than 100 characters.
+Each comment should not be wider than 100 characters.
 
 Incorrect:
 
 ```eo
-# This is a very long comment that contains more than one hundred characters and should be flagged by the lint as too wide.
+# This is a very long comment that contains more than 100 characters and should be flagged by the lint as too wide.
 [] > foo
 ```
 

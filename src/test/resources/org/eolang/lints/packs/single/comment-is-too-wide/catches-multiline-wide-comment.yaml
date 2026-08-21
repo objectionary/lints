@@ -9,7 +9,7 @@ asserts:
   - /defects/defect[@line='4']
 input: |
   # This is good line.
-  # This is a very long line that contains more than eighty characters and should be flagged by the lint as too wide.
+  # This is a very long line that contains more than 100 characters and should be flagged by the lint as too wide.
 
   [] > foo
     42 > @
