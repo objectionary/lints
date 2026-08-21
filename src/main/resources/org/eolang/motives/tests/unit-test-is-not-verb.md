@@ -6,8 +6,8 @@ reads as a statement about the object under test: it `runs`, it `parses-dom`,
 it `generates-report`.
 
 A name that starts with a noun, a pronoun, or a verb in plural or gerund
-form says nothing about what the test asserts, and the reader has to open
-the body of the test to learn its purpose.
+form says nothing about what the test asserts. The reader has to open the
+body of the test to learn its purpose.
 
 Incorrect:
 
