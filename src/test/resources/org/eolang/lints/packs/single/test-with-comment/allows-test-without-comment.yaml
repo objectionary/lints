@@ -1,0 +1,12 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/tests/test-with-comment.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=0]
+input: |
+  [] > foo
+
+    [] +> checks-the-app
+      42 > @
