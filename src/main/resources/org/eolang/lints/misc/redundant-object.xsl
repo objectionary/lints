@@ -14,7 +14,8 @@
       <xsl:variable name="top" select="/object/o/generate-id()"/>
       <xsl:for-each select="//o[generate-id() != $top and @name and @name != 'φ' and @base and @base != '∅' and not(@base='ξ' and @name='xi🌵')]">
         <xsl:variable name="in-recursive" select="some $r in key('referenced-by-name', @name), $f in $r/ancestor::o[@name and not(@base)] satisfies exists(key('referenced-by-name', $f/@name) intersect $f/descendant::o)"/>
-        <xsl:if test="count(key('referenced-by-name', @name))&lt;=1 and not(@name and o[1]/@base = 'Φ.dataized') and not($in-recursive)">
+        <xsl:variable name="self-alias-crosses-formation" select="@base = 'ξ' and (some $r in key('referenced-by-name', @name) satisfies matches($r/@base, '^ξ\.ρ\.'))"/>
+        <xsl:if test="count(key('referenced-by-name', @name))&lt;=1 and not(@name and o[1]/@base = 'Φ.dataized') and not($in-recursive) and not($self-alias-crosses-formation)">
           <xsl:element name="defect">
             <xsl:variable name="line" select="eo:lineno(@line)"/>
             <xsl:attribute name="line">
