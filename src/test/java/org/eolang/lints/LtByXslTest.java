@@ -108,6 +108,10 @@ final class LtByXslTest {
     @ParameterizedTest
     @ClasspathSource(value = "org/eolang/lints/packs/single/", glob = "**.yaml")
     void testsAllLintsByEo(final String yaml, final String pack) {
+        org.junit.jupiter.api.Assumptions.assumeTrue(
+            !((Map<?, ?>) new org.yaml.snakeyaml.Yaml().load(yaml)).containsKey("lint"),
+            String.format("Pack '%s' is a Java lint pack", pack)
+        );
         MatcherAssert.assertThat(
             String.format(
                 "Pack '%s' doesn't tell the story as expected",
@@ -116,6 +120,32 @@ final class LtByXslTest {
             new XtDefects(
                 new XtSticky(
                     new XtYaml(
+                        yaml,
+                        eo -> new EoProgram(pack, new InputOf(eo)).parse()
+                    )
+                )
+            ),
+            new XtoryMatcher(new DefectsMatcher())
+        );
+    }
+
+    @SuppressWarnings("JTCOP.RuleNotContainsTestWord")
+    @Execution(ExecutionMode.CONCURRENT)
+    @ParameterizedTest
+    @ClasspathSource(value = "org/eolang/lints/packs/single/", glob = "**.yaml")
+    void testsAllLintsByLintName(final String yaml, final String pack) {
+        org.junit.jupiter.api.Assumptions.assumeTrue(
+            ((Map<?, ?>) new org.yaml.snakeyaml.Yaml().load(yaml)).containsKey("lint"),
+            String.format("Pack '%s' has no lint key", pack)
+        );
+        MatcherAssert.assertThat(
+            String.format(
+                "Pack '%s' doesn't tell the story as expected",
+                pack
+            ),
+            new fixtures.XtDefects(
+                new XtSticky(
+                    new XtLint(
                         yaml,
                         eo -> new EoProgram(pack, new InputOf(eo)).parse()
                     )
@@ -466,22 +496,31 @@ final class LtByXslTest {
 
     @SuppressWarnings("StreamResourceLeak")
     private static boolean hasMatchingXsl(final Path yaml) {
+        final boolean result;
         try {
-            return Files.walk(Paths.get("src/main/resources/org/eolang/lints"))
-                .filter(Files::isRegularFile)
-                .filter(path -> path.toString().endsWith(".xsl"))
-                .map(path -> path.getParent().getFileName().toString()).anyMatch(
-                    group -> Files.exists(
-                        Paths.get("src/main/resources/org/eolang/lints/").resolve(group).resolve(
-                            String.format(
-                                "%s.xsl",
-                                yaml.getParent().getFileName().toString()
-                            )
+            if (((Map<?, ?>) new org.yaml.snakeyaml.Yaml().load(
+                new String(Files.readAllBytes(yaml), java.nio.charset.StandardCharsets.UTF_8)
+            )).containsKey("lint")) {
+                result = true;
+            } else {
+                result = Files.walk(Paths.get("src/main/resources/org/eolang/lints"))
+                    .filter(Files::isRegularFile)
+                    .filter(path -> path.toString().endsWith(".xsl"))
+                    .map(path -> path.getParent().getFileName().toString()).anyMatch(
+                        group -> Files.exists(
+                            Paths.get("src/main/resources/org/eolang/lints/")
+                                .resolve(group).resolve(
+                                    String.format(
+                                        "%s.xsl",
+                                        yaml.getParent().getFileName().toString()
+                                    )
+                                )
                         )
-                    )
-                );
+                    );
+            }
         } catch (final IOException ex) {
             throw new IllegalStateException(ex);
         }
+        return result;
     }
 }
