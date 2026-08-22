@@ -7,6 +7,7 @@ package org.eolang.lints;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Locale;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 import opennlp.tools.postag.POSModel;
@@ -32,7 +33,12 @@ final class Vocabulary {
     /**
      * Part-Of-Speech tagger.
      */
-    private final POSTaggerME tagger;
+    private final POSTaggerME taggers;
+
+    /**
+     * Lock guarding the tagger.
+     */
+    private final java.util.concurrent.locks.ReentrantLock lock;
 
     /**
      * Ctor.
@@ -53,15 +59,8 @@ final class Vocabulary {
      * @param mdl Part-Of-Speech model
      */
     Vocabulary(final POSModel mdl) {
-        this(new POSTaggerME(mdl));
-    }
-
-    /**
-     * Ctor.
-     * @param pos Part-Of-Speech tagger
-     */
-    Vocabulary(final POSTaggerME pos) {
-        this.tagger = pos;
+        this.taggers = new POSTaggerME(mdl);
+        this.lock = new ReentrantLock();
     }
 
     /**
@@ -74,13 +73,18 @@ final class Vocabulary {
      * @return True if the first word is a VBZ-tagged verb
      */
     boolean isVerb(final String name) {
-        return "VBZ".equals(
-            this.tagger.tag(
-                Stream.concat(
-                    Stream.of("It"),
-                    Arrays.stream(Vocabulary.KEBAB.split(name))
-                ).map(s -> s.toLowerCase(Locale.ROOT)).toArray(String[]::new)
-            )[1]
-        );
+        this.lock.lock();
+        try {
+            return "VBZ".equals(
+                this.taggers.tag(
+                    Stream.concat(
+                        Stream.of("It"),
+                        Arrays.stream(Vocabulary.KEBAB.split(name))
+                    ).map(s -> s.toLowerCase(Locale.ROOT)).toArray(String[]::new)
+                )[1]
+            );
+        } finally {
+            this.lock.unlock();
+        }
     }
 }

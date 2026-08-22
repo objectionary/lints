@@ -5,6 +5,7 @@
 package org.eolang.lints;
 
 import io.github.secretx33.resourceresolver.PathMatchingResourcePatternResolver;
+import io.github.secretx33.resourceresolver.Resource;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -48,7 +49,6 @@ final class PkByXsl extends IterableEnvelope<Lint> {
         super(new Shuffled<>(PkByXsl.LINTS));
     }
 
-    @SuppressWarnings("PMD.UnnecessaryLocalRule")
     private static List<Lint> load() {
         try {
             return Arrays.stream(
@@ -56,29 +56,38 @@ final class PkByXsl extends IterableEnvelope<Lint> {
                     "classpath*:org/eolang/lints/**/*.xsl"
                 )
             ).map(
-                res -> {
-                    try {
-                        final String url = res.getURL().toString();
-                        final String xsl = url.replaceAll(".*org/eolang/lints/", "")
-                            .replaceAll("\\.xsl$", "");
-                        return new LtByXsl(
-                            new InputOf(res.getInputStream()),
-                            new InputOf(
-                                PkByXsl.XSL_PATTERN.matcher(
-                                    PkByXsl.LINTS_PATH.matcher(url).replaceAll("eolang/motives")
-                                ).replaceAll(".md")
-                            ),
-                            new FxResource(
-                                String.format("org/eolang/fixes/%s.xsl", xsl)
-                            )
-                        );
-                    } catch (final IOException ex) {
-                        throw new IllegalArgumentException(ex);
-                    }
-                }
+                PkByXsl::lint
             ).collect(Collectors.toList());
         } catch (final IOException ex) {
-            throw new IllegalArgumentException(ex);
+            throw new IllegalArgumentException(
+                "Failed to load XSL lints from the classpath",
+                ex
+            );
+        }
+    }
+
+    private static Lint lint(final Resource res) {
+        try {
+            final String url = res.getURL().toString();
+            return new LtByXsl(
+                new InputOf(res.getInputStream()),
+                new InputOf(
+                    PkByXsl.XSL_PATTERN.matcher(
+                        PkByXsl.LINTS_PATH.matcher(url).replaceAll("eolang/motives")
+                    ).replaceAll(".md")
+                ),
+                new FxResource(
+                    String.format(
+                        "org/eolang/fixes/%s.xsl",
+                        url.replaceAll(".*org/eolang/lints/", "").replaceAll("\\.xsl$", "")
+                    )
+                )
+            );
+        } catch (final IOException ex) {
+            throw new IllegalArgumentException(
+                "Failed to build a fix for an XSL lint",
+                ex
+            );
         }
     }
 }

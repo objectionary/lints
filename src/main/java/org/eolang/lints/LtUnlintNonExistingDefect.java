@@ -120,7 +120,10 @@ final class LtUnlintNonExistingDefect implements Lint {
                     try {
                         return lint.defects(xmir).stream();
                     } catch (final IOException exception) {
-                        throw new IllegalStateException(exception);
+                        throw new IllegalStateException(
+                            String.format("Failed to apply lint %s to XMIR", lint.name()),
+                            exception
+                        );
                     }
                 }
             ).collect(

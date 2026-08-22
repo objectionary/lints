@@ -4,6 +4,7 @@
  */
 package org.eolang.lints;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.cactoos.iterable.IterableEnvelope;
@@ -24,11 +25,7 @@ final class MonoLints extends IterableEnvelope<Lint> {
     private static final Iterable<Lint> LINTS = new Shuffled<>(
         new Joined<Lint>(
             new PkByXsl(),
-            List.of(
-                new LtAsciiOnly(),
-                new LtReservedName(),
-                new LtSyntaxVersion()
-            )
+            MonoLints.javaLints()
         )
     );
 
@@ -59,5 +56,21 @@ final class MonoLints extends IterableEnvelope<Lint> {
                 )
             )
         );
+    }
+
+    private static List<Lint> javaLints() {
+        try {
+            return List.of(
+                new LtAsciiOnly(),
+                new LtReservedName(),
+                new LtSyntaxVersion(),
+                new LtTestNotVerb()
+            );
+        } catch (final IOException ex) {
+            throw new IllegalStateException(
+                "Failed to instantiate Java-based lints (ascii-only, reserved-name, test-not-verb)",
+                ex
+            );
+        }
     }
 }
