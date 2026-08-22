@@ -1,0 +1,26 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/misc/redundant-object.xsl
+defects: 0
+input: |
+  [] > os
+    name > @
+    as-bool. > is-linux
+      exists.
+        next.
+          match.
+            regex "/linux/i"
+            name
+
+    or. ++> can-check-the-os-family
+      os.is-windows.or os.is-macos
+      os.is-linux
+
+    not. ++> can-tell-it-does-not-belong-to-two-os-families-at-once
+      or.
+        or.
+          os.is-linux.and os.is-macos
+          os.is-linux.and os.is-windows
+        os.is-macos.and os.is-windows

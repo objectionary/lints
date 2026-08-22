@@ -8,7 +8,7 @@
   <xsl:import href="/org/eolang/funcs/escape.xsl"/>
   <xsl:import href="/org/eolang/funcs/defect-context.xsl"/>
   <xsl:output encoding="UTF-8" method="xml"/>
-  <xsl:key name="referenced-by-name" match="o[@base]" use="if (matches(@base, '^ξ(?:\.ρ)*\.')) then tokenize(replace(@base, '^ξ(?:\.ρ)*\.', ''), '\.')[1] else ''"/>
+  <xsl:key name="referenced-by-name" match="o[@base]" use="if (matches(@base, '^ξ(?:\.ρ)*\.')) then tokenize(replace(@base, '^ξ(?:\.ρ)*\.', ''), '\.')[1] else if (matches(@base, '^Φ\.[^.]+\.')) then tokenize(@base, '\.')[3] else ''"/>
   <xsl:template match="/">
     <defects>
       <xsl:variable name="top" select="/object/o/generate-id()"/>
