@@ -1,0 +1,19 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/names/invalid-name-notation.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=0]
+ignore-schema: true
+document: |
+  <object author="tests">
+    <o line="1" name="app" pos="0">
+      <o base="Q.x" line="2" name="f" pos="2">
+        <o line="3" name="a🌵3-5" pos="4"/>
+        <o line="4" name="φ" pos="4">
+          <o base="Q.q" line="5" name="ξ" pos="6"/>
+        </o>
+      </o>
+    </o>
+  </object>
