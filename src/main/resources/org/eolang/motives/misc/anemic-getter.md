@@ -47,13 +47,13 @@ redundant:
 Here `s` is an anemic getter for `$`. Write `$` where `s` was used, and drop
 it.
 
-The parent object, reachable by `^` (or a longer chain of hops, such as
-`^.^`), is different: naming it, as in `^ > f`, is not flagged, even though
-`^` already says it. The name survives nesting, where the hop-count spelling
-does not — a name written once as `f` stays `f` no matter how deeply the
-formation ends up nested, while `^.^` silently retargets to whatever
-happens to be two hops up if a block using it is re-indented or wrapped in
-another formation.
+The parent object is different. It is reachable by `^`, or by a longer chain
+of hops such as `^.^`. Naming it, as in `^ > f`, is not flagged, even though
+`^` already says it.
+
+A name survives nesting and a count of hops does not. A name written once as
+`f` stays `f` wherever the formation ends up. A `^.^` always points two hops
+up, so wrapping the block in another formation makes it point elsewhere.
 
 A reference that goes past the hops for an attribute is not a rename either,
 and we leave it alone:
