@@ -3,6 +3,10 @@
 ---
 # objectionary/lints#1299: a void named "ρ" is the receiver, not an
 # argument, so it must not count toward the five-void cap.
+# The released XMIR.xsd does not allow "ρ" as the name of an attribute
+# yet, see objectionary/eo#7500, so this document cannot be validated
+# against it.
+ignore-schema: true
 sheets:
   - /org/eolang/lints/errors/many-void-attributes.xsl
 asserts:
