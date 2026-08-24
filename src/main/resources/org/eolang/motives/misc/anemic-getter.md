@@ -35,22 +35,28 @@ sibling attribute, not only void ones:
 
 Here `y` is an anemic getter for `x` and should be removed.
 
-The parent object and the formation itself are reachable by `^` and `$`, so
-renaming them is just as redundant:
+The formation itself is reachable by `$`, so renaming it is just as
+redundant:
 
 ```eo
 # Foo.
 [] > foo
-  ^ > f
   $ > s
 ```
 
-Here `f` is an anemic getter for `^`, and `s` is one for `$`. Write `^` and
-`$` where `f` and `s` were used, and drop both. A longer chain of hops, such
-as `^.^`, is no different.
+Here `s` is an anemic getter for `$`. Write `$` where `s` was used, and drop
+it.
 
-A reference that goes past the hops for an attribute, though, is not a
-rename, and we leave it alone:
+The parent object, reachable by `^` (or a longer chain of hops, such as
+`^.^`), is different: naming it, as in `^ > f`, is not flagged, even though
+`^` already says it. The name survives nesting, where the hop-count spelling
+does not — a name written once as `f` stays `f` no matter how deeply the
+formation ends up nested, while `^.^` silently retargets to whatever
+happens to be two hops up if a block using it is re-indented or wrapped in
+another formation.
+
+A reference that goes past the hops for an attribute is not a rename either,
+and we leave it alone:
 
 ```eo
 # Foo.

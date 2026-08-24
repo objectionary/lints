@@ -11,13 +11,19 @@
   <!--
   A named object whose whole body is a reference to something the code can
   already reach, unchanged, right where the object sits is an "anemic getter".
-  Two shapes of body qualify: a sibling attribute of the same formation, as in
-  "title > t" inside a "[title] > book" formation, and a bare chain of "ξ" and
-  "ρ" hops, as in "^ > f" or "$ > f", which "^" and "$" already say. Such
-  renaming is redundant, since the original may be used directly, so we
-  complain about it here. A reference that reaches past the hops for an
-  attribute, such as "^.bar", names something other than the hop itself, so it
-  is not a rename and stays out of scope.
+  One shape of body qualifies: a sibling attribute of the same formation, as
+  in "title > t" inside a "[title] > book" formation, which is redundant
+  since the original may be used directly, so we complain about it here. A
+  bare chain of "ρ" hops, as in "^ > f" or "^.^ > f", stays out of scope even
+  though "^" or "^.^" already says it: naming a receiver reached this way
+  adds something a hop count does not, a name that survives nesting, where
+  the hop-count spelling silently retargets when a block using it is
+  re-indented or wrapped (objectionary/lints#1300). "$ > f", a bare reference
+  to the formation itself, is still flagged: "$" is already the shortest
+  possible spelling, so nothing is gained by naming it either way. A
+  reference that reaches past the hops for an attribute, such as "^.bar",
+  names something other than the hop itself, so it is not a rename and stays
+  out of scope too.
   -->
   <xsl:template match="/">
     <defects>
@@ -28,10 +34,6 @@
             <!-- "$", the formation itself -->
             <xsl:when test="@base='ξ'">
               <xsl:text>$</xsl:text>
-            </xsl:when>
-            <!-- "^", "^.^", and so on: one "^" per "ρ" hop -->
-            <xsl:when test="matches(@base, '^ξ(\.ρ)+$')">
-              <xsl:value-of select="replace($ref, 'ρ', '^')"/>
             </xsl:when>
             <!-- a sibling attribute of the same formation -->
             <xsl:when test="matches(@base, '^ξ\.[^.]+$') and ../o[@name=$ref]">
