@@ -1,0 +1,21 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+# objectionary/lints#1299: a void named "ρ" is the receiver, not an
+# argument, so it must not count toward the five-void cap.
+sheets:
+  - /org/eolang/lints/errors/many-void-attributes.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=0]
+document: |
+  <object author="tests">
+    <o name="matched">
+       <o base="∅" name="ρ"/>
+       <o base="∅" name="a"/>
+       <o base="∅" name="b"/>
+       <o base="∅" name="c"/>
+       <o base="∅" name="d"/>
+       <o base="∅" name="e"/>
+       <o base="Φ.boom" name="φ"/>
+    </o>
+  </object>
