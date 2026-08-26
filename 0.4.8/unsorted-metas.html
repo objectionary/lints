@@ -1,0 +1,28 @@
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>lints</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="shortcut icon" href="https://www.yegor256.com/images/books/elegant-objects/cactus.png"/><link href="https://cdn.jsdelivr.net/npm/tacit-css@1.8.1/dist/tacit-css.min.css" rel="stylesheet" integrity="sha384-JbsYayq5Otme+gjh/pl7NrA/qMIU0bxbdzKvYqQGHvvag0lHhM62TQnDzz+EyzXj" crossorigin="anonymous"/>
+</head>
+<body><section><article>
+<h1 id="unsorted-metas">Unsorted metas</h1>
+<p>Metas must be alphabetically ordered.</p>
+<p>Incorrect:</p>
+<pre class="eo"><code>+alias org.eolang.io.stdout
++alias org.eolang.io.stdin
+
+[] &gt; foo</code></pre>
+<p>Correct:</p>
+<pre class="eo"><code>+alias org.eolang.io.stdin
++alias org.eolang.io.stdout
+
+[] &gt; foo</code></pre>
+<p>In the defect message, the meta is quoted with every space replaced
+by <code>⌴</code> (U+2314):
+<code>The "alias⌴stdout⌴org.eolang.io.stdout" meta is out of order</code>.
+This is not a stray character. Every lint marks spaces this way in
+quoted text, so a leading, trailing, or repeated space is never mistaken
+for a printing artifact.</p>
+<p>Published on Wed Aug 26 07:19:10 UTC 2026.</p>
+</article></section></body></html>

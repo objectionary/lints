@@ -1,0 +1,53 @@
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>lints</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="shortcut icon" href="https://www.yegor256.com/images/books/elegant-objects/cactus.png"/><link href="https://cdn.jsdelivr.net/npm/tacit-css@1.8.1/dist/tacit-css.min.css" rel="stylesheet" integrity="sha384-JbsYayq5Otme+gjh/pl7NrA/qMIU0bxbdzKvYqQGHvvag0lHhM62TQnDzz+EyzXj" crossorigin="anonymous"/>
+</head>
+<body><section><article>
+<h1 id="anemic-getter">Anemic Getter</h1>
+<p>A named object that does nothing but give access to something the
+code can already reach at the place where the object sits is an “anemic
+getter.” Such renaming is redundant, since the original may be used
+directly, with no extra name added.</p>
+<p>Incorrect:</p>
+<pre class="eo"><code># Book.
+[title] &gt; book
+  title &gt; t</code></pre>
+<p>Here, <code>t</code> is a getter that only gives access to
+<code>title</code>. It adds nothing and just introduces a second name
+for the same object.</p>
+<p>Correct:</p>
+<pre class="eo"><code># Book.
+[title] &gt; book</code></pre>
+<p>Simply use <code>title</code> directly wherever <code>t</code> was
+needed. The same applies to any sibling attribute, not only void
+ones:</p>
+<pre class="eo"><code># Foo.
+[] &gt; foo
+  42 &gt; x
+  x &gt; y</code></pre>
+<p>Here <code>y</code> is an anemic getter for <code>x</code> and should
+be removed.</p>
+<p>The parent object and the formation itself are reachable by
+<code>^</code> and <code>$</code>, so renaming them is just as
+redundant:</p>
+<pre class="eo"><code># Foo.
+[] &gt; foo
+  ^ &gt; f
+  $ &gt; s</code></pre>
+<p>Here <code>f</code> is an anemic getter for <code>^</code>, and
+<code>s</code> is one for <code>$</code>. Write <code>^</code> and
+<code>$</code> where <code>f</code> and <code>s</code> were used, and
+drop both. A longer chain of hops, such as <code>^.^</code>, is no
+different.</p>
+<p>A reference that goes past the hops for an attribute, though, is not
+a rename, and we leave it alone:</p>
+<pre class="eo"><code># Foo.
+[] &gt; foo
+  ^.bar &gt; f</code></pre>
+<p>Here <code>f</code> is not a second name for <code>^</code>, but a
+name for an attribute of it.</p>
+<p>Published on Wed Aug 26 07:19:10 UTC 2026.</p>
+</article></section></body></html>

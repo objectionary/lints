@@ -1,0 +1,24 @@
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>lints</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="shortcut icon" href="https://www.yegor256.com/images/books/elegant-objects/cactus.png"/><link href="https://cdn.jsdelivr.net/npm/tacit-css@1.8.1/dist/tacit-css.min.css" rel="stylesheet" integrity="sha384-JbsYayq5Otme+gjh/pl7NrA/qMIU0bxbdzKvYqQGHvvag0lHhM62TQnDzz+EyzXj" crossorigin="anonymous"/>
+</head>
+<body><section><article>
+<h1 id="formation-names-must-be-in-kebab-case">Formation Names Must Be
+in Kebab-case</h1>
+<p>Formation names must use kebab-case: all lowercase letters and
+digits, with words separated by hyphens. <code>camelCase</code> and
+<code>snake_case</code> formation names are not allowed.</p>
+<p>Incorrect:</p>
+<pre class="eo"><code># CsvObject.
+[] &gt; csvObject
+
+# Csv object.
+[] &gt; csv_object</code></pre>
+<p>Correct:</p>
+<pre class="eo"><code># Csv object.
+[] &gt; csv-object</code></pre>
+<p>Published on Wed Aug 26 07:19:13 UTC 2026.</p>
+</article></section></body></html>

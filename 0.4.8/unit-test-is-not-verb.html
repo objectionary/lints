@@ -1,0 +1,47 @@
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>lints</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="shortcut icon" href="https://www.yegor256.com/images/books/elegant-objects/cactus.png"/><link href="https://cdn.jsdelivr.net/npm/tacit-css@1.8.1/dist/tacit-css.min.css" rel="stylesheet" integrity="sha384-JbsYayq5Otme+gjh/pl7NrA/qMIU0bxbdzKvYqQGHvvag0lHhM62TQnDzz+EyzXj" crossorigin="anonymous"/>
+</head>
+<body><section><article>
+<h1 id="unit-test-is-not-a-verb">Unit test is not a verb</h1>
+<p>Every unit test object, declared with <code>+&gt;</code>, must be
+named after the behavior it verifies. The name must start with a verb in
+singular form, so that it reads as a statement about the object under
+test: it <code>runs</code>, it <code>parses-dom</code>, it
+<code>generates-report</code>.</p>
+<p>A name that starts with a noun, a pronoun, or a verb in plural or
+gerund form says nothing about what the test asserts. The reader has to
+open the body of the test to learn its purpose.</p>
+<p>Incorrect:</p>
+<pre class="eo"><code># Foo.
+[] &gt; foo
+  # Test.
+  [] +&gt; it-works
+    42 &gt; @
+
+  # Test.
+  [] +&gt; testing
+    42 &gt; @
+
+  # Test.
+  [] +&gt; should-not-pass
+    42 &gt; @</code></pre>
+<p>Correct:</p>
+<pre class="eo"><code># Foo.
+[] &gt; foo
+  # Test.
+  [] +&gt; runs
+    42 &gt; @
+
+  # Test.
+  [] +&gt; parses-dom
+    42 &gt; @
+
+  # Test.
+  [] +&gt; generates-report
+    42 &gt; @</code></pre>
+<p>Published on Wed Aug 26 07:19:15 UTC 2026.</p>
+</article></section></body></html>
