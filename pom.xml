@@ -180,7 +180,7 @@
     <dependency>
       <groupId>org.eolang</groupId>
       <artifactId>eo-parser</artifactId>
-      <version>0.62.1</version>
+      <version>0.63.0</version>
       <!-- Our XSL sheets import /org/eolang/parser/_funcs.xsl from this JAR, so it is needed at runtime, but no main Java code references it -->
       <scope>runtime</scope>
       <exclusions>
