@@ -11,7 +11,7 @@
   <xsl:output encoding="UTF-8" method="xml"/>
   <xsl:template match="/">
     <defects>
-      <xsl:for-each select="//o[eo:abstract(.) and count(o) = 2 and o[1][@base='∅'][@name][not(o)] and o[2][@name='φ'][not(@const)][not(o)][@base=concat('ξ.', o[1]/@name)] and not(@line = o[1]/@line and @line = o[2]/@line and @pos = o[1]/@pos and @pos = o[2]/@pos)]">
+      <xsl:for-each select="//o[eo:abstract(.) and count(o) = 2 and o[1]/@base='∅' and o[1]/@name and not(o[1]/o) and o[2]/@name='φ' and not(o[2]/@const) and not(o[2]/o) and o[2]/@base=concat('ξ.', o[1]/@name) and not(@line = o[1]/@line and @line = o[2]/@line and @pos = o[1]/@pos and @pos = o[2]/@pos)]">
         <xsl:element name="defect">
           <xsl:variable name="line" select="eo:lineno(@line)"/>
           <xsl:attribute name="line">
@@ -36,7 +36,7 @@
               <xsl:text>anonymous formation</xsl:text>
             </xsl:otherwise>
           </xsl:choose>
-          <xsl:text> is a hand-written identity object and may be replaced with the "I" glyph</xsl:text>
+          <xsl:text> is a handwritten identity object and may be replaced with the "I" glyph</xsl:text>
         </xsl:element>
       </xsl:for-each>
     </defects>
