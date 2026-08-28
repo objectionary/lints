@@ -9,7 +9,7 @@ document: |
     <o line="1" pos="1" name="applies">
       <o line="1" pos="2" base="∅" name="x"/>
       <o line="1" pos="3" base="ξ.x" name="φ">
-        <o line="1" pos="4" base="Q.number"/>
+        <o line="1" pos="4" base="Φ.number"/>
       </o>
     </o>
   </object>
