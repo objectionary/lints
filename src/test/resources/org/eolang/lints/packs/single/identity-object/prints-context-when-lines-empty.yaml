@@ -1,0 +1,14 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/misc/identity-object.xsl
+asserts:
+  - /defects[count(defect[@context and @severity='warning'])=1]
+document: |
+  <object author="tests">
+    <o name="pass">
+      <o base="∅" name="value"/>
+      <o base="ξ.value" name="φ"/>
+    </o>
+  </object>

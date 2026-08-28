@@ -1,0 +1,13 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/misc/identity-object.xsl
+defects: 0
+document: |
+  <object author="tests">
+    <o line="3" pos="7" name="i">
+      <o line="3" pos="7" base="∅" name="x"/>
+      <o line="3" pos="7" base="ξ.x" name="φ"/>
+    </o>
+  </object>

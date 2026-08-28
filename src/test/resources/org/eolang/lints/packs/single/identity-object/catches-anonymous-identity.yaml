@@ -1,0 +1,19 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/misc/identity-object.xsl
+asserts:
+  - /defects[count(defect[@severity='warning' and @experimental])=1]
+  - /defects/defect[contains(text(), 'anonymous formation')]
+document: |
+  <object author="tests">
+    <o line="1" pos="1" name="uses-anon-identity">
+      <o line="2" pos="1" base="Φ.foo">
+        <o line="3" pos="1">
+          <o line="3" pos="2" base="∅" name="x"/>
+          <o line="3" pos="3" base="ξ.x" name="φ"/>
+        </o>
+      </o>
+    </o>
+  </object>
