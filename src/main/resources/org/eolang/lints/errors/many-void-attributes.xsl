@@ -9,9 +9,14 @@
   <xsl:import href="/org/eolang/funcs/defect-context.xsl"/>
   <xsl:output encoding="UTF-8" method="xml"/>
   <xsl:variable name="max" select="5"/>
+  <!--
+  A void named "ρ" is the receiver, not an argument: every formation has one
+  whether or not the head spells it out, so counting it toward the cap
+  rewards leaving it implicit (objectionary/lints#1299).
+  -->
   <xsl:template match="/">
     <defects>
-      <xsl:for-each-group select="//o[@name and @base='∅' and not(o)]" group-by="generate-id(..)">
+      <xsl:for-each-group select="//o[@name and @name!='ρ' and @base='∅' and not(o)]" group-by="generate-id(..)">
         <xsl:if test="count(current-group()) &gt; $max">
           <xsl:for-each select="current-group()[1]/..">
             <xsl:element name="defect">
