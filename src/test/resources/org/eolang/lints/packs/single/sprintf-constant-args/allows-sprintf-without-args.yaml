@@ -1,0 +1,13 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/misc/sprintf-constant-args.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=0]
+input: |
+  [] > app
+    io.stdout > @
+      txt.sprintf
+        "%s"
+        *
