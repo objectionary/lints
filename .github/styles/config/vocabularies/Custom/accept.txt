@@ -19,3 +19,5 @@ inlined
 [Ss]ubgraph
 [Aa]pplication
 [Ff]orma(e)?
+[Tt]ranspile(d|s|r)?
+[Uu]noptimizable
