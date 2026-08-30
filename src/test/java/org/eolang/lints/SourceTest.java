@@ -322,7 +322,7 @@ final class SourceTest {
     @Timeout(600L)
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     void benchmarksLintPerformance() throws IOException {
-        final Map<Map<SourceSize, Collection<Defect>>, String> result =
+        final Map<Map<String, Collection<Defect>>, String> result =
             SourceTest.benchmarkResults();
         MatcherAssert.assertThat(
             "All benchmark sources must produce at least one defect",
@@ -372,34 +372,49 @@ final class SourceTest {
         return lines >= src.minAllowed() && lines <= src.maxAllowed();
     }
 
-    private static Map<Map<SourceSize, Collection<Defect>>, String> benchmarkResults() {
+    private static Map<Map<String, Collection<Defect>>, String> benchmarkResults() {
         // @checkstyle ConditionalRegexpMultilineCheck (1 line)
-        final List<Map<SourceSize, Collection<Defect>>> results = new ArrayList<>();
+        final List<Map<String, Collection<Defect>>> results = new ArrayList<>();
         final StringBuilder sum = new StringBuilder();
         for (final SourceSize source : SourceSize.values()) {
-            final long before = System.currentTimeMillis();
-            final Collection<Defect> defects = new SourceTest.BcSource(
-                new Unchecked<>(new BytecodeClass(source.name(), source.java())).value(),
-                source.type()
-            ).defects();
-            final long msec = System.currentTimeMillis() - before;
-            results.add(new MapOf<>(source, defects));
-            sum.append(
-                String.join(
-                    System.lineSeparator(),
-                    String.format(
-                        "Input: %s (%s source)", source.java(), source.type()
-                    ),
-                    Logger.format(
-                        "Lint time: %[ms]s (%d ms)",
-                        msec, msec
-                    )
-                )
-            ).append(System.lineSeparator()).append(System.lineSeparator());
+            SourceTest.benchmark(
+                sum,
+                results,
+                source.type(),
+                source.java(),
+                new Unchecked<>(new BytecodeClass(source.name(), source.java())).value()
+            );
         }
+        SourceTest.benchmark(
+            sum,
+            results,
+            "UNLINT",
+            "org/eolang/lints/unlint-ascii-only.eo",
+            new EoProgram("org/eolang/lints/unlint-ascii-only.eo").parse()
+        );
         return results.stream().collect(
             Collectors.toMap(run -> run, run -> sum.toString())
         );
+    }
+
+    private static void benchmark(
+        final StringBuilder sum,
+        final List<Map<String, Collection<Defect>>> results,
+        final String marker,
+        final String java,
+        final XML xmir
+    ) {
+        final long before = System.currentTimeMillis();
+        final Collection<Defect> defects = new SourceTest.BcSource(xmir, marker).defects();
+        final long msec = System.currentTimeMillis() - before;
+        results.add(new MapOf<>(marker, defects));
+        sum.append(
+            String.join(
+                System.lineSeparator(),
+                String.format("Input: %s (%s source)", java, marker),
+                Logger.format("Lint time: %[ms]s (%d ms)", msec, msec)
+            )
+        ).append(System.lineSeparator()).append(System.lineSeparator());
     }
 
     /**
