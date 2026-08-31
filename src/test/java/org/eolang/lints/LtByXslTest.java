@@ -186,11 +186,7 @@ final class LtByXslTest {
                 .filter(Files::isRegularFile)
                 .filter(path -> path.toString().endsWith(".xsl"))
                 .map(path -> path.getFileName().toString().replace(".xsl", ""))
-                .filter(
-                    lint -> !Files.isDirectory(
-                        Paths.get("src/test/resources/org/eolang/lints/packs/single").resolve(lint)
-                    )
-                )
+                .filter(lint -> !LtByXslTest.hasPacks(lint))
                 .collect(Collectors.toList()),
             Matchers.empty()
         );
@@ -481,6 +477,12 @@ final class LtByXslTest {
     @SuppressWarnings("UnnecessaryLambda")
     private static Predicate<Path> yamls() {
         return path -> path.toString().endsWith(".yaml");
+    }
+
+    private static boolean hasPacks(final String lint) {
+        return Files.isDirectory(
+            Paths.get("src/test/resources/org/eolang/lints/packs/single").resolve(lint)
+        );
     }
 
     @SuppressWarnings("StreamResourceLeak")
