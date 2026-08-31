@@ -179,6 +179,25 @@ final class LtByXslTest {
 
     @Test
     @SuppressWarnings("StreamResourceLeak")
+    void checksThatEveryLintHasPacks() throws IOException {
+        MatcherAssert.assertThat(
+            "Every XSL lint must have a directory of YAML packs named after it",
+            Files.walk(Paths.get("src/main/resources/org/eolang/lints"))
+                .filter(Files::isRegularFile)
+                .filter(path -> path.toString().endsWith(".xsl"))
+                .map(path -> path.getFileName().toString().replace(".xsl", ""))
+                .filter(
+                    lint -> !Files.isDirectory(
+                        Paths.get("src/test/resources/org/eolang/lints/packs/single").resolve(lint)
+                    )
+                )
+                .collect(Collectors.toList()),
+            Matchers.empty()
+        );
+    }
+
+    @Test
+    @SuppressWarnings("StreamResourceLeak")
     void checksFileNaming() throws IOException {
         MatcherAssert.assertThat(
             "All files in packs directory must be YAML",
