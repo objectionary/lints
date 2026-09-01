@@ -29,6 +29,18 @@ final class LintTest {
 
     @Test
     @SuppressWarnings("JTCOP.RuleAssertionMessage")
+    void ensuresEveryLintImplementationHasProperPrefix() {
+        ArchRuleDefinition.classes()
+            .that().implement(Lint.class)
+            .should().haveSimpleNameStartingWith("Lt").check(
+                new ClassFileImporter()
+                    .withImportOption(new ImportOption.DoNotIncludeTests())
+                    .importPackages("org.eolang.lints")
+            );
+    }
+
+    @Test
+    @SuppressWarnings("JTCOP.RuleAssertionMessage")
     void ensuresLintsStayInTheirPackages() {
         ArchRuleDefinition.classes()
             .that().implement(Lint.class)
