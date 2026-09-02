@@ -11,7 +11,8 @@
     <xsl:variable name="max" select="100"/>
     <defects>
       <xsl:for-each select="/object/comments/comment">
-        <xsl:variable name="line" select="if (@line) then @line else '0'"/>
+        <xsl:variable name="comment" select="."/>
+        <xsl:variable name="line" select="eo:lineno(@line)"/>
         <xsl:variable name="lines" select="tokenize(replace(., '\\n', '&#10;'), '&#10;')"/>
         <xsl:for-each select="$lines">
           <xsl:variable name="offset" select="position() - 1"/>
@@ -29,7 +30,7 @@
               </xsl:attribute>
               <xsl:if test="$line = '0'">
                 <xsl:attribute name="context">
-                  <xsl:value-of select="eo:defect-context(.)"/>
+                  <xsl:value-of select="eo:defect-context($comment)"/>
                 </xsl:attribute>
               </xsl:if>
               <xsl:attribute name="severity">
