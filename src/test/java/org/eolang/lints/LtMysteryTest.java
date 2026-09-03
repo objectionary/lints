@@ -107,10 +107,6 @@ final class LtMysteryTest {
         );
     }
 
-    /**
-     * Dummy reserved names for the tests.
-     * @return Reserved names map
-     */
     private Map<String, String> canonical() {
         return new MapOf<>(
             new MapEntry<>("number", "number.eo"),
