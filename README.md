@@ -57,6 +57,44 @@ Whole-program analysis (running lints across a set of XMIR files
 instead of one at a time) lives in a separate package,
 [`org.eolang:wpa`](https://github.com/objectionary/wpa).
 
+## Running Locally on a `.eo` File
+
+There is no standalone CLI in this repository, but you can lint
+a single `.eo` file with a few lines of Java. Besides `lints`,
+add [`eo-parser`](https://github.com/objectionary/eo), which turns
+EO source into [XMIR]:
+
+```xml
+<dependency>
+  <groupId>org.eolang</groupId>
+  <artifactId>eo-parser</artifactId>
+  <version><!-- see "home.version" in this project's pom.xml --></version>
+</dependency>
+```
+
+```java
+import com.jcabi.xml.XML;
+import java.nio.file.Paths;
+import org.cactoos.io.InputOf;
+import org.eolang.lints.Source;
+import org.eolang.parser.EoSyntax;
+
+final class RunLints {
+    public static void main(final String... args) throws Exception {
+        final XML xmir = new EoSyntax(
+            new InputOf(Paths.get("my-program.eo"))
+        ).parsed();
+        new Source(xmir).defects().forEach(System.out::println);
+    }
+}
+```
+
+Each printed defect includes the source line, e.g.
+`[mandatory-spdx/S WARNING]:1 The +spdx meta is mandatory, but is absent`.
+Print `xmir` itself to inspect the parsed object tree, the `<errors>`
+parser diagnostics, and the original `<listing>`, which helps when a
+lint isn't behaving as expected.
+
 ## Design of This Library
 
 The library is designed as a set of lints, each of which
