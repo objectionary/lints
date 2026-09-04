@@ -68,7 +68,8 @@ EO source into [XMIR]:
 <dependency>
   <groupId>org.eolang</groupId>
   <artifactId>eo-parser</artifactId>
-  <version><!-- see "home.version" in this project's pom.xml --></version>
+  <!-- keep this in sync with "home.version" in this project's pom.xml -->
+  <version>0.63.0</version>
 </dependency>
 ```
 
