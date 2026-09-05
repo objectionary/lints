@@ -4,6 +4,7 @@
  */
 package org.eolang.lints;
 
+import java.util.Optional;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
@@ -44,7 +45,7 @@ final class ListingTest {
         MatcherAssert.assertThat(
             "A comment not present in the listing must give an empty result",
             new Listing(String.format("[] > app%n")).line("missing", 0),
-            Matchers.equalTo(java.util.Optional.empty())
+            Matchers.equalTo(Optional.empty())
         );
     }
 }
