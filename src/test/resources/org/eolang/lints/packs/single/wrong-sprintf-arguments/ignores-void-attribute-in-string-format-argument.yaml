@@ -10,7 +10,6 @@ input: |
       *
         stdout
           magenta
-            txt.sprintf
-              fmt
+            fmt.printf
               * 1 2 3
         kid
