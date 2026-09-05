@@ -25,7 +25,7 @@ We use this package as a dependency in the
 <dependency>
   <groupId>org.eolang</groupId>
   <artifactId>lints</artifactId>
-  <version>0.4.2</version>
+  <version>0.4.8</version>
 </dependency>
 ```
 
@@ -69,7 +69,7 @@ EO source into [XMIR]:
   <groupId>org.eolang</groupId>
   <artifactId>eo-parser</artifactId>
   <!-- keep this in sync with "home.version" in this project's pom.xml -->
-  <version>0.63.0</version>
+  <version>0.4.8</version>
 </dependency>
 ```
 
