@@ -24,8 +24,10 @@
             <xsl:value-of select="codepoints-to-string(eo:hex-to-placeholder(.))"/>
           </xsl:for-each>
         </xsl:variable>
-        <!-- A specifier reads as %[N$][flags][width][.precision]conversion, and a
-        doubled percent is a literal one rather than the start of a specifier -->
+        <!--
+        A specifier reads as %[N$][flags][width][.precision]conversion, and a
+        doubled percent is a literal one rather than the start of a specifier
+        -->
         <xsl:if test="not(matches(replace($placeholder, '%%', ''), '%(\d+\$)?[-0]*\d*(\.\d+)?[sdfxb]'))">
           <defect>
             <xsl:variable name="line" select="eo:lineno(@line)"/>
