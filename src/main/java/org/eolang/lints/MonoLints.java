@@ -64,7 +64,8 @@ final class MonoLints extends IterableEnvelope<Lint> {
                 new LtAsciiOnly(),
                 new LtReservedName(),
                 new LtSyntaxVersion(),
-                new LtTestNotVerb()
+                new LtTestNotVerb(),
+                new LtMystery()
             );
         } catch (final IOException ex) {
             throw new IllegalStateException(
