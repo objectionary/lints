@@ -7,5 +7,5 @@ defects: 0
 input: |
   [] > app
     io.stdout > @
-      "Hello, %s! Your account is %d.".printf
-        * name acc
+      "%08.2f is %5d, or %-10s".printf
+        * t acc name

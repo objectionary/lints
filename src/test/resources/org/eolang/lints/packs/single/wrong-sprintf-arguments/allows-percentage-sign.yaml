@@ -6,6 +6,5 @@ sheets:
 defects: 0
 input: |
   [] > app
-    txt.sprintf > @
-      "Water constitutes 0.023%% of Earth mass, which is %d tons"
+    "Water constitutes 0.023%% of Earth mass, which is %d tons".printf > @
       * 1.4e18

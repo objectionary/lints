@@ -7,6 +7,5 @@ defects: 0
 input: |
   [] > app
     io.stdout > @
-      org.eolang.txt.sprintf
-        "Привет, %d"
+      "Привет, %d".printf
         * 52

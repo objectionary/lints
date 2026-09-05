@@ -9,6 +9,5 @@ defects:
 input: |
   [] > app
     io.stdout > @
-      txt.sprintf
-        "Hello, %s! Your account is %d."
+      "Hello, %s! Your account is %d.".printf
         * name

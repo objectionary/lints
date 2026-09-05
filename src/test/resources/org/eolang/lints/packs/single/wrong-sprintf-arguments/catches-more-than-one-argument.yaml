@@ -9,7 +9,6 @@ defects:
 input: |
   [] > app
     io.stdout > @
-      txt.sprintf
-        "Hey, Jeff"
+      "Hey, Jeff".printf
         *
         unnecessary
