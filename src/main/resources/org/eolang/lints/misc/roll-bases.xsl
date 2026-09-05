@@ -23,13 +23,12 @@
             </xsl:attribute>
           </xsl:if>
           <xsl:attribute name="severity">warning</xsl:attribute>
-          <xsl:text>The base "</xsl:text>
+          <xsl:text>The base </xsl:text>
           <xsl:value-of select="eo:escape(concat(o[1]/@base, @base))"/>
-          <xsl:text>" must be written instead of the nested bases "</xsl:text>
+          <xsl:text> must be written instead of the nested bases </xsl:text>
           <xsl:value-of select="eo:escape(@base)"/>
-          <xsl:text>" and "</xsl:text>
+          <xsl:text> and </xsl:text>
           <xsl:value-of select="eo:escape(o[1]/@base)"/>
-          <xsl:text>"</xsl:text>
         </defect>
       </xsl:for-each>
     </defects>
