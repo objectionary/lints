@@ -17,31 +17,16 @@
   </xsl:function>
   <xsl:template match="/">
     <defects>
-      <xsl:for-each select="//o[@base='Φ.txt.sprintf']">
-        <xsl:variable name="text" select="o[1][@base='Φ.string']/o[1][@base='Φ.bytes']/o/text()"/>
-        <xsl:variable name="txt" select="translate($text, '-', '')"/>
-        <xsl:variable name="formatters">
-          <xsl:variable name="txt" select="translate($text, '-', '')"/>
-          <!-- First, replace %% with a unique placeholder to avoid counting it as a formatter -->
-          <xsl:variable name="escaped" select="replace($txt, '(25)(25)', 'ESCAPED_PERCENT')"/>
-          <!-- %s -->
-          <xsl:variable name="strings" select="count(tokenize($escaped, '2573'))"/>
-          <!-- %d -->
-          <xsl:variable name="numbers" select="count(tokenize($escaped, '2564'))"/>
-          <!-- %f -->
-          <xsl:variable name="floats" select="count(tokenize($escaped, '2566'))"/>
-          <!-- %x -->
-          <xsl:variable name="bytes" select="count(tokenize($escaped, '2578'))"/>
-          <!-- %b -->
-          <xsl:variable name="bools" select="count(tokenize($escaped, '2562'))"/>
-          <xsl:value-of select="$strings + $numbers + $floats + $bytes + $bools - 5"/>
+      <xsl:for-each select="//o[@base='.printf'][o[not(@as)][@base='Φ.string']/o[@base='Φ.bytes']/o/text()]">
+        <xsl:variable name="text" select="o[not(@as)][@base='Φ.string']/o[@base='Φ.bytes']/o/text()"/>
+        <xsl:variable name="placeholder">
+          <xsl:for-each select="tokenize($text, '-')">
+            <xsl:value-of select="codepoints-to-string(eo:hex-to-placeholder(.))"/>
+          </xsl:for-each>
         </xsl:variable>
-        <xsl:if test="$formatters = 0">
-          <xsl:variable name="placeholder">
-            <xsl:for-each select="tokenize($text, '-')">
-              <xsl:value-of select="codepoints-to-string(eo:hex-to-placeholder(.))"/>
-            </xsl:for-each>
-          </xsl:variable>
+        <!-- A specifier reads as %[N$][flags][width][.precision]conversion, and a
+        doubled percent is a literal one rather than the start of a specifier -->
+        <xsl:if test="not(matches(replace($placeholder, '%%', ''), '%(\d+\$)?[-0]*\d*(\.\d+)?[sdfxb]'))">
           <defect>
             <xsl:variable name="line" select="eo:lineno(@line)"/>
             <xsl:attribute name="line">
@@ -55,9 +40,9 @@
             <xsl:attribute name="severity">
               <xsl:text>warning</xsl:text>
             </xsl:attribute>
-            <xsl:text>According to the formatting template of the "Φ.txt.sprintf" object, </xsl:text>
+            <xsl:text>According to the formatting template of the ".printf" object, </xsl:text>
             <xsl:value-of select="eo:escape($placeholder)"/>
-            <xsl:text> does not have any supported formatters ("%s", "%d", "%f", "%x", "%b"), which makes no sense to use "Φ.txt.sprintf"</xsl:text>
+            <xsl:text> does not have any supported formatters ("%s", "%d", "%f", "%x", "%b"), which makes no sense to use ".printf"</xsl:text>
           </defect>
         </xsl:if>
       </xsl:for-each>
