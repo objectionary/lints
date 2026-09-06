@@ -29,7 +29,7 @@
             </xsl:attribute>
             <xsl:text>The format of the +version meta is wrong: </xsl:text>
             <xsl:value-of select="eo:escape($meta-tail)"/>
-            <xsl:text> (SemVer expected instead)</xsl:text>
+            <xsl:text> (SemVer or a Maven "X.Y-SNAPSHOT" version expected instead)</xsl:text>
           </xsl:element>
         </xsl:if>
       </xsl:for-each>
