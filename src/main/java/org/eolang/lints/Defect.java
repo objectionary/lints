@@ -188,7 +188,7 @@ public interface Defect {
 
         @Override
         public String version() {
-            return Manifests.read("Lints-Version");
+            return Defect.Default.versionOf("Lints-Version");
         }
 
         @Override
@@ -219,6 +219,16 @@ public interface Defect {
         @Override
         public int hashCode() {
             return Objects.hash(this.rle, this.sev, this.lineno, this.txt);
+        }
+
+        static String versionOf(final String attribute) {
+            String version;
+            try {
+                version = Manifests.read(attribute);
+            } catch (final IllegalArgumentException ex) {
+                version = "";
+            }
+            return version;
         }
     }
 }
