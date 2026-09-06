@@ -82,14 +82,17 @@ public final class Source {
 
     /**
      * Apply all available fixes to the XMIR, returning the corrected document.
-     * Lints without a fix return the XMIR unchanged.
+     * A lint's fix is applied only when the lint reports at least one defect
+     * on the current document, so clean XMIR stays untouched.
      * @return Fixed XMIR
      * @throws IOException If a fix fails to apply
      */
     public XML fix() throws IOException {
         XML result = this.xmir;
         for (final Lint lint : this.lints) {
-            result = lint.fix().apply(result);
+            if (!lint.defects(result).isEmpty()) {
+                result = lint.fix().apply(result);
+            }
         }
         return result;
     }
