@@ -65,6 +65,19 @@ final class LtDfStickyTest {
         );
     }
 
+    @Test
+    void reusesCacheForIdenticalContent() throws IOException {
+        final LtCounter counter = new LtDfStickyTest.LtCounter();
+        final Lint lint = new LtDfSticky(new LtDfStickyTest.LtFake(counter));
+        lint.defects(new XMLDocument("<o/>"));
+        lint.defects(new XMLDocument("<o/>"));
+        MatcherAssert.assertThat(
+            "Two XMLs with identical content should share a cache entry",
+            counter.count(),
+            Matchers.equalTo(1)
+        );
+    }
+
     /**
      * Counter for lint calls.
      * @since 0.0.42
