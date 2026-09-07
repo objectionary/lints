@@ -15,7 +15,7 @@
       <xsl:for-each select="//o[eo:abstract(.) and @name]">
         <xsl:variable name="tests" select="o[eo:test-name(@name)]"/>
         <xsl:if test="exists($tests)">
-          <xsl:for-each select="o[@name and @base and @base != '∅' and @name != 'φ' and not(@local) and not(eo:test-name(@name))]">
+          <xsl:for-each select="o[@name and @base and @base != '∅' and @base != 'Φ.number' and @name != 'φ' and not(@local) and not(eo:test-name(@name))]">
             <xsl:variable name="method" select="@name"/>
             <!--
             A test refers to a sibling method either by calling it on
