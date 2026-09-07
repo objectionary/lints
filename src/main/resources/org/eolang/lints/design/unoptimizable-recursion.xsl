@@ -90,7 +90,7 @@
   -->
   <xsl:template match="/">
     <defects>
-      <xsl:for-each select="//o[eo:abstract(.) and @name and o[@name='φ']]">
+      <xsl:for-each select="//o[eo:abstract(.) and @name and not(contains(@name, '🌵')) and o[@name='φ']]">
         <xsl:variable name="name" select="string(@name)"/>
         <xsl:variable name="root" select="o[@name='φ']"/>
         <xsl:variable name="calls" select=".//o[eo:is-self-call(string(@base), $name)]"/>
