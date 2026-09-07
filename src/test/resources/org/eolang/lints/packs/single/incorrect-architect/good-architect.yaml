@@ -6,6 +6,9 @@ sheets:
 defects: 0
 input: |
   +architect hello@gmail.com
+  +architect yegor@example.info
+  +architect yegor@example.online
+  +architect yegor@eolang.software
 
   [x] > foo
     42 > @
