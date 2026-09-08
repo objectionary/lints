@@ -52,6 +52,36 @@
   a reason of its own, the way the four below are.
   -->
   <!--
+  TRUE when the @base is a self-call of the object with the given name, in
+  any of the three forms the parser emits: the plain name resolves to
+  "Phi.<name>", the "^" form to "xi.rho.<name>", and the "$" form to
+  "xi.<name>". A dispatch on the self-call is also a self-call.
+  -->
+  <xsl:function name="eo:is-self-call" as="xs:boolean">
+    <xsl:param name="base" as="xs:string"/>
+    <xsl:param name="name" as="xs:string"/>
+    <xsl:sequence select="$base = concat('Φ.', $name) or starts-with($base, concat('Φ.', $name, '.')) or $base = concat('ξ.ρ.', $name) or starts-with($base, concat('ξ.ρ.', $name, '.')) or $base = concat('ξ.', $name) or starts-with($base, concat('ξ.', $name, '.'))"/>
+  </xsl:function>
+  <!--
+  TRUE when the @base is a dispatch on a self-call, i.e. the self-call is
+  the receiver and a method is dispatched on it.
+  -->
+  <xsl:function name="eo:is-self-dispatch" as="xs:boolean">
+    <xsl:param name="base" as="xs:string"/>
+    <xsl:param name="name" as="xs:string"/>
+    <xsl:sequence select="starts-with($base, concat('Φ.', $name, '.')) or starts-with($base, concat('ξ.ρ.', $name, '.')) or starts-with($base, concat('ξ.', $name, '.'))"/>
+  </xsl:function>
+  <!--
+  TRUE when the @base is a self-call in a tail position: the plain call of
+  the object, with no method dispatched on it. A dispatch on the self-call
+  is never a tail call, because the receiver is evaluated, not the call.
+  -->
+  <xsl:function name="eo:is-self-tail" as="xs:boolean">
+    <xsl:param name="base" as="xs:string"/>
+    <xsl:param name="name" as="xs:string"/>
+    <xsl:sequence select="$base = concat('Φ.', $name) or $base = concat('ξ.ρ.', $name) or $base = concat('ξ.', $name)"/>
+  </xsl:function>
+  <!--
   A nested formation that calls itself has its recursion turned into a Java
   loop, one copy of the object per step instead of one Java stack block, but
   only when the compiler recognises the shape. When it does not, the program
@@ -60,11 +90,11 @@
   -->
   <xsl:template match="/">
     <defects>
-      <xsl:for-each select="//o[eo:abstract(.) and @name and parent::o and o[@name='φ']]">
-        <xsl:variable name="self" select="concat('ξ.ρ.', @name)"/>
+      <xsl:for-each select="//o[eo:abstract(.) and @name and not(contains(@name, '🌵')) and o[@name='φ']]">
+        <xsl:variable name="name" select="string(@name)"/>
         <xsl:variable name="root" select="o[@name='φ']"/>
-        <xsl:variable name="calls" select=".//o[@base = $self or starts-with(@base, concat($self, '.'))]"/>
-        <xsl:variable name="loops" select="($root | $root//o)[@base = $self and eo:tail(., $root)]"/>
+        <xsl:variable name="calls" select=".//o[eo:is-self-call(string(@base), $name)]"/>
+        <xsl:variable name="loops" select="($root | $root//o)[eo:is-self-tail(string(@base), $name) and eo:tail(., $root)]"/>
         <xsl:if test="exists($calls) and empty($loops)">
           <defect>
             <xsl:variable name="line" select="eo:lineno($calls[1]/@line)"/>
@@ -88,7 +118,7 @@
               <xsl:when test=".//o[contains(@base, 'φ')]">
                 <xsl:text>its body reads its own φ</xsl:text>
               </xsl:when>
-              <xsl:when test="$calls[starts-with(@base, concat($self, '.'))]">
+              <xsl:when test="$calls[eo:is-self-dispatch(string(@base), $name)]">
                 <xsl:text>the self-call is the receiver of a dispatch</xsl:text>
               </xsl:when>
               <xsl:otherwise>

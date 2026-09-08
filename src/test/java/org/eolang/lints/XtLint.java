@@ -24,6 +24,15 @@ import org.xembly.Xembler;
  * as a raw XMIR document (the {@code document} pack key) or as
  * EO source (the {@code input} pack key), same as {@link XtYaml}.
  * @since 1.0
+ * @todo #1419:30min Emit a {@code rule} attribute on each generated
+ *  {@code <defect>} element, carrying {@link Defect#rule()}. Right now
+ *  the produced XML only has {@code line}, {@code severity}, and text,
+ *  so a pack's {@code asserts:} can't check which rule fired a defect.
+ *  This blocks moving Java tests such as
+ *  {@code LtAsciiOnlyTest#setsRuleCorrectly} (and any similar rule-name
+ *  assertion in other {@code Lt*Test} classes) into YAML packs. Once the
+ *  attribute is added, convert those tests into packs with an
+ *  {@code asserts:} XPath checking {@code @rule}.
  */
 public final class XtLint implements Xtory {
 

@@ -29,6 +29,15 @@ final class DefectTest {
     }
 
     @Test
+    void returnsEmptyVersionWhenAttributeIsAbsent() {
+        MatcherAssert.assertThat(
+            "Version must not throw when the manifest attribute is absent",
+            Defect.Default.versionOf("No-Such-Manifest-Attribute"),
+            Matchers.equalTo("")
+        );
+    }
+
+    @Test
     void printsWithoutZeroLineNumber() {
         MatcherAssert.assertThat(
             "toString() prints zero for line number",

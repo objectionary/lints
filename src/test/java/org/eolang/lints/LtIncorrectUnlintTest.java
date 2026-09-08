@@ -80,4 +80,46 @@ final class LtIncorrectUnlintTest {
             Matchers.hasSize(Matchers.greaterThan(0))
         );
     }
+
+    @Test
+    void catchesUnlintWithInvalidLineFormat() throws IOException {
+        MatcherAssert.assertThat(
+            "Unlint with a non-numeric line part should be caught",
+            new LtIncorrectUnlint(new ListOf<>("ascii-only")).defects(
+                new EoProgram(
+                    "+unlint ascii-only:abc",
+                    new InputOf("+unlint ascii-only:abc")
+                ).parse()
+            ),
+            Matchers.hasSize(Matchers.greaterThan(0))
+        );
+    }
+
+    @Test
+    void catchesUnlintWithEmptyLinePart() throws IOException {
+        MatcherAssert.assertThat(
+            "Unlint with an empty line part should be caught",
+            new LtIncorrectUnlint(new ListOf<>("ascii-only")).defects(
+                new EoProgram(
+                    "+unlint ascii-only:",
+                    new InputOf("+unlint ascii-only:")
+                ).parse()
+            ),
+            Matchers.hasSize(Matchers.greaterThan(0))
+        );
+    }
+
+    @Test
+    void allowsUnlintWithRange() throws IOException {
+        MatcherAssert.assertThat(
+            "Unlint with a valid range should be supported",
+            new LtIncorrectUnlint(new ListOf<>("ascii-only")).defects(
+                new EoProgram(
+                    "+unlint ascii-only:5-10",
+                    new InputOf("+unlint ascii-only:5-10")
+                ).parse()
+            ),
+            Matchers.emptyIterable()
+        );
+    }
 }

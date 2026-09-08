@@ -1,0 +1,11 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/metas/prohibited-package.xsl
+defects: 0
+input: |
+  +home https://github.com/objectionary/eo/
+  +package org.eolang
+
+  [] > win32

@@ -20,6 +20,7 @@ import java.util.function.Predicate;
 import org.cactoos.io.InputOf;
 import org.cactoos.io.ResourceOf;
 import org.cactoos.list.ListOf;
+import org.cactoos.text.FormattedText;
 import org.cactoos.text.TextOf;
 import org.cactoos.text.UncheckedText;
 import org.hamcrest.MatcherAssert;
@@ -86,6 +87,27 @@ final class PkByXslTest {
                 Matchers.equalTo(false)
             );
         }
+    }
+
+    @Test
+    void returnsMarkdownContentInsteadOfUrl() throws Exception {
+        final String name = "self-referencing";
+        MatcherAssert.assertThat(
+            "Motive must contain the markdown content, not the classpath URL",
+            new ListOf<>(new PkByXsl()).stream()
+                .filter(l -> name.equals(l.name()))
+                .findFirst()
+                .orElseThrow().motive(),
+            Matchers.equalTo(
+                new TextOf(
+                    new ResourceOf(
+                        new FormattedText(
+                            "org/eolang/motives/critical/%s.md", name
+                        )
+                    )
+                ).asString()
+            )
+        );
     }
 
     @Test
