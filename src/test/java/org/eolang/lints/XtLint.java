@@ -24,15 +24,12 @@ import org.xembly.Xembler;
  * as a raw XMIR document (the {@code document} pack key) or as
  * EO source (the {@code input} pack key), same as {@link XtYaml}.
  * @since 1.0
- * @todo #1419:30min Emit a {@code rule} attribute on each generated
- *  {@code <defect>} element, carrying {@link Defect#rule()}. Right now
- *  the produced XML only has {@code line}, {@code severity}, and text,
- *  so a pack's {@code asserts:} can't check which rule fired a defect.
- *  This blocks moving Java tests such as
- *  {@code LtAsciiOnlyTest#setsRuleCorrectly} (and any similar rule-name
- *  assertion in other {@code Lt*Test} classes) into YAML packs. Once the
- *  attribute is added, convert those tests into packs with an
- *  {@code asserts:} XPath checking {@code @rule}.
+ * @todo #1421:30min Move the rule-name assertions into YAML packs. Now
+ *  that each {@code <defect>} carries {@code @rule}, a pack's
+ *  {@code asserts:} can check which rule fired, so Java tests that exist
+ *  only to assert a rule name, such as
+ *  {@code LtAsciiOnlyTest#setsRuleCorrectly}, can become packs with an
+ *  {@code asserts:} XPath on {@code @rule} and be deleted from Java.
  */
 public final class XtLint implements Xtory {
 
@@ -107,6 +104,7 @@ public final class XtLint implements Xtory {
                     for (final Defect defect : lint.defects(xml)) {
                         dirs.add("defect")
                             .attr("line", defect.line())
+                            .attr("rule", defect.rule())
                             .attr("severity", defect.severity().mnemo())
                             .set(defect.text())
                             .up();
