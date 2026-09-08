@@ -33,10 +33,17 @@ final class LineOf {
     }
 
     /**
-     * Line number, or {@code 0} when the attribute is missing.
+     * Line number, or {@code 0} when the attribute is missing or not an integer.
      * @return Line number
      */
     int value() {
-        return Integer.parseInt(this.element.attribute("line").text().orElse("0"));
+        final String line = this.element.attribute("line").text().orElse("0");
+        final int result;
+        if (line.matches("\\d+")) {
+            result = Integer.parseInt(line);
+        } else {
+            result = 0;
+        }
+        return result;
     }
 }

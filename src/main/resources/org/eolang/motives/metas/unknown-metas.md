@@ -4,6 +4,7 @@ The following metas are supported:
 
 * `+package`
 * `+alias`
+* `+also`
 * `+version`
 * `+rt`
 * `+architect`
@@ -26,6 +27,7 @@ Correct:
 ```eo
 +package com.test
 +alias foo
++also foo
 +version 0.0.0
 +architect yegor256@gmail.com
 +rt jvm

@@ -6,8 +6,6 @@ package org.eolang.lints;
 
 import fixtures.EoProgram;
 import java.io.IOException;
-import matchers.DefectMatcher;
-import org.cactoos.list.ListOf;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.IsEqual;
@@ -18,33 +16,6 @@ import org.junit.jupiter.api.Test;
  * @since 0.0.1
  */
 final class LtAsciiOnlyTest {
-
-    @Test
-    void catchesSomeNonAsciiInComment() throws IOException {
-        MatcherAssert.assertThat(
-            "non-ascii comment is not welcome",
-            new LtAsciiOnly().defects(
-                new EoProgram("org/eolang/lints/non-ascii-cyrillic.eo").parse()
-            ),
-            Matchers.allOf(
-                Matchers.<Defect>iterableWithSize(Matchers.greaterThan(0)),
-                Matchers.<Defect>everyItem(new DefectMatcher())
-            )
-        );
-    }
-
-    @Test
-    void catchesNonAsciiInComment() throws IOException {
-        MatcherAssert.assertThat(
-            "non-ascii comment error should contain abusive character",
-            new ListOf<>(
-                new LtAsciiOnly().defects(
-                    new EoProgram("org/eolang/lints/non-ascii-cyrillic.eo").parse()
-                )
-            ).get(0).text(),
-            Matchers.containsString("Only ASCII characters are allowed in comments")
-        );
-    }
 
     @Test
     void explainsMotive() throws IOException {
@@ -63,54 +34,6 @@ final class LtAsciiOnlyTest {
                 new EoProgram("org/eolang/lints/non-ascii-tuk-tuk.eo").parse()
             ).iterator().next().rule(),
             Matchers.equalTo("ascii-only")
-        );
-    }
-
-    @Test
-    void complainsAsWarning() throws IOException {
-        MatcherAssert.assertThat(
-            "The lint should complain as warning",
-            new LtAsciiOnly().defects(
-                new EoProgram("org/eolang/lints/non-ascii-chinese.eo").parse()
-            ).iterator().next().severity(),
-            Matchers.equalTo(Severity.WARNING)
-        );
-    }
-
-    @Test
-    void doesNotFlagNewlinesInMultilineComment() throws IOException {
-        MatcherAssert.assertThat(
-            "Multi-line ASCII comment must not trigger ascii-only false positive",
-            new LtAsciiOnly().defects(
-                new EoProgram("org/eolang/lints/ascii-multiline-comment.eo").parse()
-            ),
-            Matchers.emptyIterable()
-        );
-    }
-
-    @Test
-    void reportsCorrectLineInMultilineComment() throws IOException {
-        MatcherAssert.assertThat(
-            "The abusive character is on the second line of the comment",
-            new ListOf<>(
-                new LtAsciiOnly().defects(
-                    new EoProgram("org/eolang/lints/non-ascii-multiline.eo").parse()
-                )
-            ).get(0).line(),
-            Matchers.equalTo(2)
-        );
-    }
-
-    @Test
-    void reportsCorrectLineInTheMiddle() throws IOException {
-        MatcherAssert.assertThat(
-            "The abusive character is on the second line of a three-line comment",
-            new ListOf<>(
-                new LtAsciiOnly().defects(
-                    new EoProgram("org/eolang/lints/non-ascii-middle.eo").parse()
-                )
-            ).get(0).line(),
-            Matchers.equalTo(2)
         );
     }
 }

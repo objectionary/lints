@@ -1,11 +1,12 @@
 # SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
 # SPDX-License-Identifier: MIT
 ---
+# yamllint disable rule:line-length
 sheets:
   - /org/eolang/lints/design/too-deep-object.xsl
-defects:
-  - severity: warning
-    line: 16
+asserts:
+  - /defects[count(defect[@severity='warning'])=1]
+  - "/defects/defect[1][normalize-space()='The object \"m\" is nested too deep: 13 levels of nesting, while the maximum is 12']"
 input: |
   # Foo.
 

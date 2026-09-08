@@ -1,0 +1,11 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/misc/wrong-sprintf-arguments.xsl
+defects: 0
+input: |
+  [] > app
+    io.stdout > @
+      "%1$s and %1$s again".printf
+        * name

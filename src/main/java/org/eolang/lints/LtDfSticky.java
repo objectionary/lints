@@ -4,16 +4,18 @@
  */
 package org.eolang.lints;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import com.jcabi.xml.XML;
 import java.io.IOException;
 import java.util.Collection;
-import org.cactoos.Func;
-import org.cactoos.func.IoCheckedFunc;
-import org.cactoos.func.StickyFunc;
-import org.cactoos.func.SyncFunc;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Lint caching decorator that calls defects method only once. Uses in memory storage for caching.
+ *
+ * <p>The cache is bounded and keyed by the XMIR content, so a long-lived JVM does not run
+ * out of memory while repeatedly analyzing the same documents.</p>
  *
  * <p>This class is thread-safe.</p>
  *
@@ -27,29 +29,18 @@ final class LtDfSticky implements Lint {
     private final Lint origin;
 
     /**
-     * Function that caches result of origin.defects().
+     * Cache of the defects, keyed by the document content.
      */
-    private final Func<XML, Collection<Defect>> cache;
+    private final Cache<String, Collection<Defect>> cache;
 
     /**
      * Ctor.
      * @param origin Object wrapped by a decorator
+     * @checkstyle ConstructorsCodeFreeCheck (4 lines)
      */
     LtDfSticky(final Lint origin) {
-        this(
-            origin,
-            new SyncFunc<>(new StickyFunc<>(origin::defects))
-        );
-    }
-
-    /**
-     * Ctor.
-     * @param origin Object wrapped by a decorator
-     * @param cache Defects cache
-     */
-    LtDfSticky(final Lint origin, final Func<XML, Collection<Defect>> cache) {
         this.origin = origin;
-        this.cache = cache;
+        this.cache = LtDfSticky.newCache();
     }
 
     @Override
@@ -59,7 +50,16 @@ final class LtDfSticky implements Lint {
 
     @Override
     public Collection<Defect> defects(final XML xmir) throws IOException {
-        return new IoCheckedFunc<>(this.cache).apply(xmir);
+        final Collection<Defect> defects;
+        try {
+            defects = this.cache.get(
+                xmir.toString(),
+                () -> this.origin.defects(xmir)
+            );
+        } catch (final ExecutionException exc) {
+            throw LtDfSticky.propagate(exc);
+        }
+        return defects;
     }
 
     @Override
@@ -70,5 +70,21 @@ final class LtDfSticky implements Lint {
     @Override
     public Fix fix() {
         return this.origin.fix();
+    }
+
+    private static Cache<String, Collection<Defect>> newCache() {
+        return CacheBuilder.newBuilder()
+            .maximumSize(1_000)
+            .build();
+    }
+
+    private static IOException propagate(final ExecutionException exc) {
+        final IOException result;
+        if (exc.getCause() instanceof IOException) {
+            result = (IOException) exc.getCause();
+        } else {
+            result = new IOException(exc);
+        }
+        return result;
     }
 }

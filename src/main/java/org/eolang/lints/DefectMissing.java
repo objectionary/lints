@@ -47,7 +47,7 @@ final class DefectMissing implements Function<String, Boolean> {
             if (lines == null) {
                 missing = !this.excluded.contains(name);
             } else {
-                missing = !lines.stream().allMatch(new UnlintInRange(unlint));
+                missing = !lines.stream().anyMatch(new UnlintInRange(unlint));
             }
         } else {
             final Set<String> names;

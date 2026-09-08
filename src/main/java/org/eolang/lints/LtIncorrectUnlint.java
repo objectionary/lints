@@ -38,20 +38,12 @@ final class LtIncorrectUnlint implements Lint {
     @Override
     public Collection<Defect> defects(final XML xmir) throws IOException {
         return new Xnav(xmir.inner()).path("/object/metas/meta[head='unlint']").filter(
-            u -> !this.names.contains(
-                u.element("tail").text().orElse("unknown").split(":", -1)[0]
-            )
-        ).map(
-            u -> new Defect.Default(
-                this.name(),
-                Severity.ERROR,
-                new LineOf(u).value(),
-                String.format(
-                    "Suppressing \"%s\" does not make sense, because there is no lint with that name",
-                    u.element("tail").text().orElse("unknown")
-                )
-            )
-        ).collect(Collectors.toList());
+            u -> {
+                final String tail = LtIncorrectUnlint.tail(u);
+                final String name = LtIncorrectUnlint.nameOf(tail);
+                return !this.names.contains(name) || LtIncorrectUnlint.invalid(tail, name);
+            }
+        ).map(u -> this.defect(u)).collect(Collectors.toList());
     }
 
     @Override
@@ -62,5 +54,42 @@ final class LtIncorrectUnlint implements Lint {
     @Override
     public Fix fix() {
         return new FxEmpty();
+    }
+
+    private Defect defect(final Xnav meta) {
+        final String tail = LtIncorrectUnlint.tail(meta);
+        final String name = LtIncorrectUnlint.nameOf(tail);
+        final String msg;
+        if (this.names.contains(name)) {
+            msg = String.format(
+                "Suppressing \"%s\" has an invalid format, use \"%s\", \"%s:N\" or \"%s:N-M\"",
+                tail, name, name, name
+            );
+        } else {
+            msg = String.format(
+                "Suppressing \"%s\" does not make sense, because there is no lint with that name",
+                tail
+            );
+        }
+        return new Defect.Default(
+            this.name(),
+            Severity.ERROR,
+            new LineOf(meta).value(),
+            msg
+        );
+    }
+
+    private static String tail(final Xnav meta) {
+        return meta.element("tail").text().orElse("unknown");
+    }
+
+    private static String nameOf(final String tail) {
+        return tail.split(":", -1)[0];
+    }
+
+    private static boolean invalid(final String tail, final String name) {
+        return !tail.equals(name)
+            && !tail.matches(String.format("%s:\\d+", name))
+            && !tail.matches(String.format("%s:\\d+-\\d+", name));
     }
 }

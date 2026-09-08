@@ -16,7 +16,7 @@
   </xsl:template>
   <xsl:template match="/">
     <defects>
-      <xsl:for-each select="//o[@base='Φ.txt.sprintf'][count(o)=2][o[2][@base='Φ.tuple']]">
+      <xsl:for-each select="//o[@base='.printf' or @base='Φ.txt.sprintf'][count(o)=2][o[2][@base='Φ.tuple']]">
         <xsl:variable name="text" select="o[1][@base='Φ.string']/o[1][@base='Φ.bytes']/o/text()"/>
         <xsl:if test="$text">
           <xsl:variable name="formatters">
@@ -52,7 +52,7 @@
               <xsl:attribute name="severity">
                 <xsl:text>warning</xsl:text>
               </xsl:attribute>
-              <xsl:text>The "Φ.txt.sprintf" object is used with a constant format template and constant string arguments only; since the result is already known, a plain literal string should be used instead</xsl:text>
+              <xsl:text>The ".printf" object is used with a constant format template and constant string arguments only; since the result is already known, a plain literal string should be used instead</xsl:text>
             </defect>
           </xsl:if>
         </xsl:if>

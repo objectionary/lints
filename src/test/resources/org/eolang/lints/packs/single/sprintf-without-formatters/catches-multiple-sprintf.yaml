@@ -7,13 +7,11 @@ defects:
   - severity: warning
     line: 3
   - severity: warning
-    line: 6
+    line: 5
 input: |
   [] > app
     io.stdout > @
-      txt.sprintf
-        "Hello, Jeff Your account is $200"
+      "Hello, Jeff Your account is $200".printf
         *
-      txt.sprintf
-        "We are good"
+      "We are good".printf
         * f

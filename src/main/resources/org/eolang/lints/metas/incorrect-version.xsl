@@ -13,7 +13,7 @@
       <xsl:for-each select="/object/metas/meta">
         <xsl:variable name="meta-head" select="head"/>
         <xsl:variable name="meta-tail" select="tail"/>
-        <xsl:if test="$meta-head='version' and not(matches($meta-tail, '^\d+\.\d+\.\d+(-[a-zA-Z0-9-]+)?$|^\d+\.\d+-SNAPSHOT$'))">
+        <xsl:if test="$meta-head='version' and not(matches($meta-tail, '^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(-((0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(\.(0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(\+([0-9a-zA-Z-]+(\.[0-9a-zA-Z-]+)*))?$|^\d+\.\d+-SNAPSHOT$'))">
           <xsl:element name="defect">
             <xsl:variable name="line" select="eo:lineno(@line)"/>
             <xsl:attribute name="line">
@@ -29,7 +29,7 @@
             </xsl:attribute>
             <xsl:text>The format of the +version meta is wrong: </xsl:text>
             <xsl:value-of select="eo:escape($meta-tail)"/>
-            <xsl:text> (SemVer expected instead)</xsl:text>
+            <xsl:text> (SemVer or a Maven "X.Y-SNAPSHOT" version expected instead)</xsl:text>
           </xsl:element>
         </xsl:if>
       </xsl:for-each>

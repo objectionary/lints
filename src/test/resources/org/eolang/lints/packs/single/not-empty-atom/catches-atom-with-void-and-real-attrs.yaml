@@ -1,0 +1,17 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+# yamllint disable rule:line-length
+sheets:
+  - /org/eolang/lints/atoms/not-empty-atom.xsl
+asserts:
+  - /defects[count(defect[@severity='error'])=1]
+  - /defects/defect[not(contains(., 'foo'))]
+document: |
+  <object author="tests">
+    <o line="1" name="number">
+      <o base="∅" name="λ"/>
+      <o base="∅" name="foo"/>
+      <o base="Φ.bar" name="baz"/>
+    </o>
+  </object>
