@@ -1,0 +1,24 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/metas/unique-metas.xsl
+asserts:
+  - /defects[count(defect[@context and @severity='error'])=1]
+  - /defects/defect[contains(@context, '<head>version</head>')]
+document: |
+  <object author="tests">
+    <metas>
+      <meta>
+        <head>version</head>
+        <tail>0.0.1</tail>
+        <part>0.0.1</part>
+      </meta>
+      <meta>
+        <head>version</head>
+        <tail>0.0.2</tail>
+        <part>0.0.2</part>
+      </meta>
+    </metas>
+    <o name="foo"/>
+  </object>

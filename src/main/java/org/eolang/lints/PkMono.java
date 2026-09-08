@@ -5,10 +5,10 @@
 package org.eolang.lints;
 
 import javax.annotation.concurrent.ThreadSafe;
-import org.cactoos.func.Chained;
 import org.cactoos.iterable.IterableEnvelope;
 import org.cactoos.iterable.Joined;
 import org.cactoos.iterable.Mapped;
+import org.cactoos.iterable.Sticky;
 import org.cactoos.list.ListOf;
 
 /**
@@ -39,17 +39,17 @@ final class PkMono extends IterableEnvelope<Lint> {
      * @param lints Lints
      */
     PkMono(final Iterable<Lint> lints) {
-        super(
-            new Joined<>(
-                new Mapped<Lint>(
-                    new Chained<>(LtUnlint::new, LtDfSticky::new),
-                    new Joined<Lint>(
-                        lints,
-                        new ListOf<>(
-                            new LtUnlintNonExistingDefect(lints)
-                        )
-                    )
-                )
+        super(PkMono.build(lints));
+    }
+
+    private static Iterable<Lint> build(final Iterable<Lint> lints) {
+        final Iterable<Lint> cached = new Sticky<>(
+            new Mapped<Lint>(LtDfSticky::new, lints)
+        );
+        return new Joined<Lint>(
+            new Mapped<Lint>(LtUnlint::new, cached),
+            new ListOf<>(
+                new LtDfSticky(new LtUnlint(new LtUnlintNonExistingDefect(cached)))
             )
         );
     }

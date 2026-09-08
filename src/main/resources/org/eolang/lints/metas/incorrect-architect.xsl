@@ -13,7 +13,7 @@
       <xsl:for-each select="/object/metas/meta">
         <xsl:variable name="meta-head" select="head"/>
         <xsl:variable name="meta-tail" select="tail"/>
-        <xsl:if test="$meta-head='architect' and not(matches(upper-case($meta-tail),'^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$'))">
+        <xsl:if test="$meta-head='architect' and not(matches(upper-case($meta-tail),'^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$'))">
           <xsl:element name="defect">
             <xsl:variable name="line" select="eo:lineno(@line)"/>
             <xsl:attribute name="line">

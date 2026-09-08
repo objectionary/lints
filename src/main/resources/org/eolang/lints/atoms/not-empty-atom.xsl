@@ -28,7 +28,7 @@
           <xsl:text>The atom </xsl:text>
           <xsl:value-of select="eo:escape(@name)"/>
           <xsl:text> may not have any attributes, which however exist: </xsl:text>
-          <xsl:for-each select="o[@base and not(@name='λ')]">
+          <xsl:for-each select="o[@base and @base!='∅' and not(@name='λ') and not(@base='ξ' and @name='xi🌵')]">
             <xsl:if test="position() &gt; 1">
               <xsl:text>, </xsl:text>
             </xsl:if>

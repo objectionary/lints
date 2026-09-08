@@ -1,0 +1,12 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+lint: incorrect-unlint
+asserts:
+  - /defects[count(defect[@severity='error'])=1]
+input: |
+  +unlint ascii-only:abc
+  +spdx SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+  +spdx SPDX-License-Identifier: MIT
+
+  [] > foo
