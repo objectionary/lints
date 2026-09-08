@@ -173,6 +173,19 @@ final class SourceTest {
     }
 
     @Test
+    void doesNotApplyFixWithoutDefects() throws IOException {
+        final XML before = new XMLDocument("<object><o name='x'/></object>");
+        MatcherAssert.assertThat(
+            "fix() must not apply a lint's fix when the lint reports no defects",
+            new Source(
+                before,
+                new ListOf<>(new SourceTest.DestructiveLint())
+            ).fix().toString(),
+            Matchers.equalTo(before.toString())
+        );
+    }
+
+    @Test
     void createsSourceWithoutOneLint() {
         MatcherAssert.assertThat(
             "Defects for disabled lint are not empty, but should be",
@@ -595,6 +608,33 @@ final class SourceTest {
          */
         int total() {
             return this.count;
+        }
+    }
+
+    /**
+     * A lint that reports no defects but mutates the XMIR when its fix is applied.
+     * @since 0.1.0
+     */
+    private static final class DestructiveLint implements Lint {
+
+        @Override
+        public String name() {
+            return "destructive";
+        }
+
+        @Override
+        public Collection<Defect> defects(final XML entity) {
+            return new ListOf<>();
+        }
+
+        @Override
+        public String motive() {
+            return "Motive";
+        }
+
+        @Override
+        public Fix fix() {
+            return entity -> new XMLDocument("<object><o name='mutated'/></object>");
         }
     }
 }

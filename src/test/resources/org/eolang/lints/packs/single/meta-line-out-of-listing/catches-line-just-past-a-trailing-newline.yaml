@@ -1,0 +1,19 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/lines/meta-line-out-of-listing.xsl
+defects:
+  - severity: error
+document: |
+  <object author="tests">
+    <listing>first line
+  second line
+  </listing>
+    <metas>
+      <meta line="3">
+        <head>hello</head>
+        <tail/>
+      </meta>
+    </metas>
+  </object>

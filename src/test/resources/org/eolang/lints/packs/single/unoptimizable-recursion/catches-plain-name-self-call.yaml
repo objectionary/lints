@@ -1,0 +1,15 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+# yamllint disable rule:line-length
+sheets:
+  - /org/eolang/lints/design/unoptimizable-recursion.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=1]
+  - /defects/defect[1][normalize-space()='The recursion in "calc" cannot be turned into a loop, no self-call sits in a tail position']
+input: |
+  [] > calc
+    if. > @
+      n.eq 0
+      1
+      n.mul (calc (n.sub 1))

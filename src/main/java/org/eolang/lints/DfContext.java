@@ -57,11 +57,15 @@ final class DfContext implements Defect {
 
     @Override
     public String context() {
-        return this.ctxt.replace("&lt;", "<")
+        return this.ctxt.replace("&amp;", "&")
+            .replace("&lt;", "<")
             .replace("&gt;", ">")
             .replace("&#34;", "\"")
-            .replace("&#xA;", System.lineSeparator())
-            .replace("&amp;", "&");
+            .replace("&quot;", "\"")
+            .replace("&#39;", "'")
+            .replace("&apos;", "'")
+            .replace("&#10;", String.valueOf('\n'))
+            .replace("&#xA;", String.valueOf('\n'));
     }
 
     @Override
