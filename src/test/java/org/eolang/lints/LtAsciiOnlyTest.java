@@ -4,10 +4,8 @@
  */
 package org.eolang.lints;
 
-import fixtures.EoProgram;
 import java.io.IOException;
 import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
 import org.hamcrest.core.IsEqual;
 import org.junit.jupiter.api.Test;
 
@@ -23,17 +21,6 @@ final class LtAsciiOnlyTest {
             "The motive doesn't contain expected string",
             new LtAsciiOnly().motive().contains("# ASCII-Only Characters in Comments"),
             new IsEqual<>(true)
-        );
-    }
-
-    @Test
-    void setsRuleCorrectly() throws IOException {
-        MatcherAssert.assertThat(
-            "The rule name is set right",
-            new LtAsciiOnly().defects(
-                new EoProgram("org/eolang/lints/non-ascii-tuk-tuk.eo").parse()
-            ).iterator().next().rule(),
-            Matchers.equalTo("ascii-only")
         );
     }
 }

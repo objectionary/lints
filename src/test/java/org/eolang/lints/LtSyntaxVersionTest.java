@@ -67,17 +67,6 @@ final class LtSyntaxVersionTest {
     }
 
     @Test
-    void setsRuleCorrectly() throws IOException {
-        final String src = LtSyntaxVersionTest.program("+syntax 999.0.0");
-        MatcherAssert.assertThat(
-            "the rule name is set right",
-            new LtSyntaxVersion().defects(new EoProgram(src, new InputOf(src)).parse())
-                .iterator().next().rule(),
-            Matchers.equalTo("syntax-version")
-        );
-    }
-
-    @Test
     void ignoresMalformedSyntaxValue() throws IOException {
         final String src = LtSyntaxVersionTest.program("+syntax abracadabra");
         MatcherAssert.assertThat(

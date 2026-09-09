@@ -4,6 +4,7 @@
 lint: syntax-version
 asserts:
   - /defects[count(defect[@severity='error'])=1]
+  - /defects/defect[@rule='syntax-version']
 input: |
   +syntax 999.0.0
   +spdx SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
