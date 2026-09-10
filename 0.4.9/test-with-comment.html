@@ -1,0 +1,25 @@
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>lints</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="shortcut icon" href="https://www.yegor256.com/images/books/elegant-objects/cactus.png"/><link href="https://cdn.jsdelivr.net/npm/tacit-css@1.8.1/dist/tacit-css.min.css" rel="stylesheet" integrity="sha384-JbsYayq5Otme+gjh/pl7NrA/qMIU0bxbdzKvYqQGHvvag0lHhM62TQnDzz+EyzXj" crossorigin="anonymous"/>
+</head>
+<body><section><article>
+<h1 id="test-with-comment">Test with comment</h1>
+<p>A test object must not have a comment before it. A comment usually
+just duplicates the test name: if the test is named
+<code>checks-the-app</code>, a comment like “This test checks the app”
+adds nothing. Instead of documenting a test, make its name short and
+self-explanatory.</p>
+<p>Incorrect:</p>
+<pre class="eo"><code># This test checks the app.
+
+[] +&gt; checks-the-app
+  42 &gt; @</code></pre>
+<p>Correct:</p>
+<pre class="eo"><code>[] +&gt; checks-the-app
+  42 &gt; @</code></pre>
+<p>The name says it all; the comment is redundant.</p>
+<p>Published on Thu Sep 10 09:06:52 UTC 2026.</p>
+</article></section></body></html>

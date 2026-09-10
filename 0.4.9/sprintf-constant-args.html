@@ -1,0 +1,27 @@
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>lints</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="shortcut icon" href="https://www.yegor256.com/images/books/elegant-objects/cactus.png"/><link href="https://cdn.jsdelivr.net/npm/tacit-css@1.8.1/dist/tacit-css.min.css" rel="stylesheet" integrity="sha384-JbsYayq5Otme+gjh/pl7NrA/qMIU0bxbdzKvYqQGHvvag0lHhM62TQnDzz+EyzXj" crossorigin="anonymous"/>
+</head>
+<body><section><article>
+<h1
+id="qq.txt.sprintf-with-constant-string-arguments-only"><code>QQ.txt.sprintf</code>
+With Constant String Arguments Only</h1>
+<p>Using <code>QQ.txt.sprintf</code> makes no sense when the format
+template and all the arguments filling its placeholders are constant
+strings. The result is already known, so a plain literal string can be
+used instead.</p>
+<p>Incorrect:</p>
+<pre class="eo"><code>[] &gt; app
+  QQ.io.stdout &gt; @
+    QQ.txt.sprintf
+      &quot;%s %s&quot;
+      * &quot;hello&quot; &quot;world!&quot;</code></pre>
+<p>Correct:</p>
+<pre class="eo"><code>[] &gt; app
+  QQ.io.stdout &gt; @
+    &quot;hello world!&quot;</code></pre>
+<p>Published on Thu Sep 10 09:06:49 UTC 2026.</p>
+</article></section></body></html>

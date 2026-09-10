@@ -1,0 +1,32 @@
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>lints</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="shortcut icon" href="https://www.yegor256.com/images/books/elegant-objects/cactus.png"/><link href="https://cdn.jsdelivr.net/npm/tacit-css@1.8.1/dist/tacit-css.min.css" rel="stylesheet" integrity="sha384-JbsYayq5Otme+gjh/pl7NrA/qMIU0bxbdzKvYqQGHvvag0lHhM62TQnDzz+EyzXj" crossorigin="anonymous"/>
+</head>
+<body><section><article>
+<h1 id="excessive-visibility">Excessive visibility</h1>
+<p>A method that no unit test refers to is not part of the object’s
+public interface: nothing outside the object depends on it being
+callable from outside. Such a method should be declared private
+(obfuscated with <code>&gt;&gt;</code>) instead of public
+(<code>&gt;</code>), so its scope matches how it is actually used.</p>
+<p>Incorrect:</p>
+<pre class="eo"><code>[t] &gt; phrase
+  pos.gte 0 &gt; multi-words
+  t.index-of &quot; &quot; &gt; pos
+
+  [] +&gt; checks-phrase
+    (phrase &quot;Object Thinking&quot;).multi-words &gt; @</code></pre>
+<p>Here, <code>pos</code> is never referred to by
+<code>checks-phrase</code> or by any other test, so it should be
+private:</p>
+<pre class="eo"><code>[t] &gt; phrase
+  pos.gte 0 &gt; multi-words
+  t.index-of &quot; &quot; &gt;&gt; pos
+
+  [] +&gt; checks-phrase
+    (phrase &quot;Object Thinking&quot;).multi-words &gt; @</code></pre>
+<p>Published on Thu Sep 10 09:06:40 UTC 2026.</p>
+</article></section></body></html>

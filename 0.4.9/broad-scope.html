@@ -1,0 +1,27 @@
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>lints</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="shortcut icon" href="https://www.yegor256.com/images/books/elegant-objects/cactus.png"/><link href="https://cdn.jsdelivr.net/npm/tacit-css@1.8.1/dist/tacit-css.min.css" rel="stylesheet" integrity="sha384-JbsYayq5Otme+gjh/pl7NrA/qMIU0bxbdzKvYqQGHvvag0lHhM62TQnDzz+EyzXj" crossorigin="anonymous"/>
+</head>
+<body><section><article>
+<h1 id="broad-scope">Broad scope</h1>
+<p>A private attribute should be declared as close as possible to its
+only usage. If a private attribute is used only inside a single nested
+object, declaring it on the level of the parent object makes its scope
+unnecessarily broad.</p>
+<p>Incorrect:</p>
+<pre class="eo"><code>[] &gt; foo
+  42 &gt;&gt; a
+  [] &gt;&gt; b
+    a.plus 1 &gt; c</code></pre>
+<p>Here, the scope of <code>a</code> is too broad: it is used only
+inside <code>b</code>. It should be moved closer, into
+<code>b</code>:</p>
+<pre class="eo"><code>[] &gt; foo
+  [] &gt;&gt; b
+    42 &gt;&gt; a
+    a.plus 1 &gt; c</code></pre>
+<p>Published on Thu Sep 10 09:06:40 UTC 2026.</p>
+</article></section></body></html>

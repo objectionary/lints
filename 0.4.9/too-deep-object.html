@@ -1,0 +1,33 @@
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>lints</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="shortcut icon" href="https://www.yegor256.com/images/books/elegant-objects/cactus.png"/><link href="https://cdn.jsdelivr.net/npm/tacit-css@1.8.1/dist/tacit-css.min.css" rel="stylesheet" integrity="sha384-JbsYayq5Otme+gjh/pl7NrA/qMIU0bxbdzKvYqQGHvvag0lHhM62TQnDzz+EyzXj" crossorigin="anonymous"/>
+</head>
+<body><section><article>
+<h1 id="too-deep-object">Too deep object</h1>
+<p>Objects nested deeper than twelve levels are hard to read and to
+debug. The nesting level of an object is the number of its ancestor
+objects. If it exceeds twelve, a warning is raised.</p>
+<p>Incorrect:</p>
+<pre class="eo"><code># Foo.
+[] &gt; foo
+  a &gt; x
+    b
+      c
+        d
+          e
+            f
+              g
+                h
+                  i
+                    j
+                      k
+                        l
+                          m</code></pre>
+<p>Here, <code>m</code> is nested thirteen levels deep, which is hard to
+follow. It should be refactored by extracting some of the nested objects
+into their own top-level objects.</p>
+<p>Published on Thu Sep 10 09:06:41 UTC 2026.</p>
+</article></section></body></html>

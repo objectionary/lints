@@ -1,0 +1,39 @@
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>lints</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="shortcut icon" href="https://www.yegor256.com/images/books/elegant-objects/cactus.png"/><link href="https://cdn.jsdelivr.net/npm/tacit-css@1.8.1/dist/tacit-css.min.css" rel="stylesheet" integrity="sha384-JbsYayq5Otme+gjh/pl7NrA/qMIU0bxbdzKvYqQGHvvag0lHhM62TQnDzz+EyzXj" crossorigin="anonymous"/>
+</head>
+<body><section><article>
+<h1 id="unoptimizable-recursion">Unoptimizable recursion</h1>
+<p>A nested formation that calls itself in a tail position is turned
+into a Java loop at transpile time: the compiler wraps the copies into
+<code>PhLoop</code> and the calls into <code>PhAgain</code>, so a run
+takes one object per step instead of one Java stack block per step.</p>
+<p>The compiler recognises two tail positions, a branch of an
+<code>if.</code> and the last step of a <code>seq *</code>:</p>
+<pre class="eo"><code>[] &gt; app
+  [n] &gt; rec
+    if. &gt; @
+      n.lt 1
+      0
+      ^.rec (n.minus 1)
+  rec 5 &gt; @</code></pre>
+<p>Every other shape runs as plain recursion, which is correct but
+deeper and slower, and the compiler says nothing about it. This lint
+says it, naming the reason it found. A self-call under an operation, for
+example, is not in a tail position, because the operation has work left
+to do after the call answers:</p>
+<pre class="eo"><code>[] &gt; app
+  [n] &gt; rec
+    if. &gt; @
+      n.lt 1
+      0
+      n.plus (^.rec (n.minus 1))
+  rec 5 &gt; @</code></pre>
+<p>Rewrite such an object with an accumulator, the way
+<code>repeated</code> was rewritten by hand, and the recursion becomes a
+loop again.</p>
+<p>Published on Thu Sep 10 09:06:41 UTC 2026.</p>
+</article></section></body></html>

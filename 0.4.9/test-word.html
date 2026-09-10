@@ -1,0 +1,28 @@
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>lints</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="shortcut icon" href="https://www.yegor256.com/images/books/elegant-objects/cactus.png"/><link href="https://cdn.jsdelivr.net/npm/tacit-css@1.8.1/dist/tacit-css.min.css" rel="stylesheet" integrity="sha384-JbsYayq5Otme+gjh/pl7NrA/qMIU0bxbdzKvYqQGHvvag0lHhM62TQnDzz+EyzXj" crossorigin="anonymous"/>
+</head>
+<body><section><article>
+<h1 id="test-word">Test word</h1>
+<p>Names of objects in test files must not contain the word ‘test’. If
+an object is a unit test, or a helper inside a unit test, or lives in a
+file whose top object name ends with <code>-tests</code>, its name
+should describe the behavior it verifies instead of repeating the word
+‘test’.</p>
+<p>Incorrect:</p>
+<pre class="eo"><code># Tests for foo.
+[] &gt; foo-tests
+  # Test.
+  [] +&gt; can-test-add
+    42 &gt; @</code></pre>
+<p>Correct:</p>
+<pre class="eo"><code># Tests for foo.
+[] &gt; foo-tests
+  # Test.
+  [] +&gt; can-add-two-and-two
+    42 &gt; @</code></pre>
+<p>Published on Thu Sep 10 09:06:52 UTC 2026.</p>
+</article></section></body></html>
