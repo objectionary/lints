@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Tests for {@link DefectMissing}.
+ *
  * @since 0.0.44
  */
 final class DefectMissingTest {

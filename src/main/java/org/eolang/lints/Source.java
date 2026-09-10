@@ -16,6 +16,7 @@ import org.cactoos.iterable.Synced;
 
 /**
  * A single source XMIR to analyze.
+ *
  * @see <a href="https://news.eolang.org/2022-11-25-xmir-guide.html">XMIR</a>
  * @since 0.1.0
  */
@@ -42,6 +43,7 @@ public final class Source {
 
     /**
      * Ctor.
+     *
      * @param file The absolute path of the XMIR file
      * @throws FileNotFoundException If file isn't found
      */
@@ -51,6 +53,7 @@ public final class Source {
 
     /**
      * Ctor.
+     *
      * @param xml The XMIR
      */
     public Source(final XML xml) {
@@ -73,6 +76,7 @@ public final class Source {
 
     /**
      * Source with disabled lints.
+     *
      * @param names Lint names
      * @return Program analysis without specific name
      */
@@ -84,6 +88,7 @@ public final class Source {
      * Apply all available fixes to the XMIR, returning the corrected document.
      * A lint's fix is applied only when the lint reports at least one defect
      * on the current document, so clean XMIR stays untouched.
+     *
      * @return Fixed XMIR
      * @throws IOException If a fix fails to apply
      */
@@ -99,6 +104,7 @@ public final class Source {
 
     /**
      * Find defects possible defects in the XMIR file.
+     *
      * @return All defects found
      * @see <a href="https://news.eolang.org/2022-11-25-xmir-guide.html">XMIR guide</a>
      * @see <a href="https://www.eolang.org/XMIR.html">XMIR specification</a>

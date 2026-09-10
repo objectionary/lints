@@ -11,6 +11,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 /**
  * Tests for {@link VoidXpath}.
+ *
  * @since 0.0.50
  */
 final class VoidXpathTest {

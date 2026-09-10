@@ -18,6 +18,7 @@ import org.cactoos.text.TextOf;
 
 /**
  * Fix implemented by a sequence of XSL stylesheets.
+ *
  * @since 0.2.1
  */
 public final class FxByXsl implements Fix {
@@ -29,6 +30,7 @@ public final class FxByXsl implements Fix {
 
     /**
      * Constructor.
+     *
      * @param paths Classpath resource paths to XSL stylesheets (leading slash optional)
      * @checkstyle ConstructorsCodeFreeCheck (5 lines)
      */

@@ -12,6 +12,7 @@ import org.cactoos.list.ListOf;
 
 /**
  * XPath expression to the void attribute reference.
+ *
  * @since 0.0.50
  */
 final class VoidXpath implements Text {
@@ -23,6 +24,7 @@ final class VoidXpath implements Text {
 
     /**
      * Ctor.
+     *
      * @param base Void FQN
      */
     VoidXpath(final String base) {

@@ -22,6 +22,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 /**
  * Tests for {@link WithoutLints}.
+ *
  * @since 0.0.46
  */
 final class WithoutLintsTest {
@@ -90,6 +91,7 @@ final class WithoutLintsTest {
 
     /**
      * Fake lint.
+     *
      * @since 0.0.57
      */
     static final class LtFake implements Lint {
@@ -101,6 +103,7 @@ final class WithoutLintsTest {
 
         /**
          * Ctor.
+         *
          * @param nme The lint name
          */
         LtFake(final String nme) {

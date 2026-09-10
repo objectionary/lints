@@ -20,6 +20,7 @@ import org.junit.jupiter.api.Test;
  * they depend on the real reserved-name list downloaded by the
  * {@code reserved} Maven profile, which is unavailable to the generic
  * pack runner.
+ *
  * @since 0.0.44
  */
 final class LtReservedNameTest {

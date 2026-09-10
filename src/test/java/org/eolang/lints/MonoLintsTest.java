@@ -22,6 +22,7 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Tests for {@link MonoLints}.
+ *
  * @since 0.0.43
  */
 final class MonoLintsTest {

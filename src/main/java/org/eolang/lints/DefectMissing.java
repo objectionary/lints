@@ -13,6 +13,7 @@ import org.cactoos.set.SetOf;
 
 /**
  * Is defect missing?
+ *
  * @since 0.0.44
  */
 final class DefectMissing implements Function<String, Boolean> {
@@ -29,6 +30,7 @@ final class DefectMissing implements Function<String, Boolean> {
 
     /**
      * Ctor.
+     *
      * @param present Present defects
      * @param exld Excluded lints
      */

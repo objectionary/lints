@@ -24,6 +24,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 /**
  * Tests for {@link LtTestNotVerb}.
+ *
  * @since 0.0.22
  */
 final class LtTestNotVerbTest {

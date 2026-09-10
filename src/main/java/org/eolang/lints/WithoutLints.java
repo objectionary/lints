@@ -11,12 +11,14 @@ import org.cactoos.list.ListOf;
 
 /**
  * Lints without some lints.
+ *
  * @since 0.0.46
  */
 final class WithoutLints extends IterableEnvelope<Lint> {
 
     /**
      * Ctor.
+     *
      * @param origin Origin
      * @param names Lint names to exclude
      */
@@ -26,6 +28,7 @@ final class WithoutLints extends IterableEnvelope<Lint> {
 
     /**
      * Ctor.
+     *
      * @param origin Origin lints
      * @param names Lint names to exclude
      */

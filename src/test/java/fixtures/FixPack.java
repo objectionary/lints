@@ -15,6 +15,7 @@ import org.yaml.snakeyaml.Yaml;
 /**
  * A YAML test pack for a fix, exposing the normalized fixed and
  * expected XMIR for comparison in tests.
+ *
  * @since 0.2.1
  */
 public final class FixPack {
@@ -26,6 +27,7 @@ public final class FixPack {
 
     /**
      * Constructor.
+     *
      * @param yaml Raw YAML string containing 'sheets', 'input' and 'output' fields
      */
     @SuppressWarnings("unchecked")
@@ -35,6 +37,7 @@ public final class FixPack {
 
     /**
      * Constructor.
+     *
      * @param pack Parsed YAML map
      */
     private FixPack(final Map<String, Object> pack) {
@@ -43,6 +46,7 @@ public final class FixPack {
 
     /**
      * Returns normalized XMIR after applying the fix to the input program.
+     *
      * @return Normalized XMIR string
      * @throws Exception If parsing or fix application fails
      */
@@ -52,6 +56,7 @@ public final class FixPack {
 
     /**
      * Returns normalized XMIR after applying a custom fix to the input program.
+     *
      * @param fix Fix to apply
      * @return Normalized XMIR string
      * @throws Exception If parsing or fix application fails
@@ -69,6 +74,7 @@ public final class FixPack {
 
     /**
      * Returns normalized XMIR of the expected output program.
+     *
      * @return Normalized XMIR string
      */
     public String expected() {

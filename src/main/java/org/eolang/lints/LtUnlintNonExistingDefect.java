@@ -18,6 +18,7 @@ import org.cactoos.list.ListOf;
 
 /**
  * Lint for checking `+unlint` meta to suppress non-existing defects in single XMIR scope.
+ *
  * @since 0.0.40
  */
 final class LtUnlintNonExistingDefect implements Lint {
@@ -34,6 +35,7 @@ final class LtUnlintNonExistingDefect implements Lint {
 
     /**
      * Ctor.
+     *
      * @param lnts Lints
      */
     LtUnlintNonExistingDefect(final Iterable<Lint> lnts) {
@@ -42,6 +44,7 @@ final class LtUnlintNonExistingDefect implements Lint {
 
     /**
      * Ctor.
+     *
      * @param lnts Lints
      * @param exld Lint names to exclude
      */

@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Tests for {@link LtUnlintNonExistingDefect}.
+ *
  * @since 0.0.40
  */
 final class LtUnlintNonExistingDefectTest {
@@ -52,6 +53,7 @@ final class LtUnlintNonExistingDefectTest {
 
     /**
      * Fake lint that explodes when invoked.
+     *
      * @since 0.0.40
      */
     private static final class Boom implements Lint {

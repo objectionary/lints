@@ -12,6 +12,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 
 /**
  * Tests {@link Fix}.
+ *
  * @since 0.2.1
  */
 final class FixTest {

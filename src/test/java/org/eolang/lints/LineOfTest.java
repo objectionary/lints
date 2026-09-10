@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Tests for {@link LineOf}.
+ *
  * @since 0.0.50
  */
 final class LineOfTest {

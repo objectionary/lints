@@ -11,6 +11,7 @@ import com.jcabi.xml.XSL;
 
 /**
  * XSL that measures the time of transformation.
+ *
  * @since 0.1
  */
 final class MeasuredXsl implements XSL {
@@ -32,6 +33,7 @@ final class MeasuredXsl implements XSL {
 
     /**
      * Ctor.
+     *
      * @param name Rule name
      * @param decorated Decorated XSL
      */
@@ -41,6 +43,7 @@ final class MeasuredXsl implements XSL {
 
     /**
      * Ctor.
+     *
      * @param name Rule name
      * @param decorated Decorated XSL
      * @param threshold Custom threshold in milliseconds

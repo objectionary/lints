@@ -25,7 +25,6 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import matchers.DefectsMatcher;
 import org.cactoos.io.InputOf;
-import org.cactoos.io.ReaderOf;
 import org.cactoos.io.ResourceOf;
 import org.cactoos.map.MapOf;
 import org.cactoos.set.SetOf;
@@ -56,6 +55,7 @@ import org.yaml.snakeyaml.Yaml;
 
 /**
  * Test for {@link LtByXsl}.
+ *
  * @since 0.0.1
  * @checkstyle ClassFanOutComplexityCheck (500 lines)
  */
@@ -366,7 +366,7 @@ final class LtByXslTest {
                 .filter(Files::isRegularFile)
                 .filter(LtByXslTest.yamls()).map(
                     (Function<Path, Map<Path, Map<String, Object>>>)
-                        p -> new MapOf<>(p, new Yaml().load(new ReaderOf(p.toFile())))
+                        p -> new MapOf<>(p, LtByXslTest.yaml(p))
                 ).filter(
                     pack -> {
                         final Map<String, Object> yaml = pack.values().stream().findFirst().get();
@@ -387,7 +387,7 @@ final class LtByXslTest {
         ).filter(Files::isRegularFile)
             .filter(LtByXslTest.yamls()).map(
                 (Function<Path, Map<Path, Map<String, Object>>>)
-                    p -> new MapOf<>(p, new Yaml().load(new ReaderOf(p.toFile())))
+                    p -> new MapOf<>(p, LtByXslTest.yaml(p))
             )
             .filter(LtByXslTest::eligibleForValidation)
             .filter(pack -> !LtByXslTest.eoErrorFree(pack))
@@ -453,6 +453,10 @@ final class LtByXslTest {
                 )
             ).parse().inner()
         ).path("/object[errors]").findAny().isEmpty();
+    }
+
+    private static Map<String, Object> yaml(final Path path) {
+        return new Yaml().load(new UncheckedText(new TextOf(path)).asString());
     }
 
     @SuppressWarnings("UnnecessaryLambda")

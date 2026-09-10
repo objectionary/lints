@@ -26,6 +26,7 @@ final class LineOf {
 
     /**
      * Ctor.
+     *
      * @param elem XML element to read from
      */
     LineOf(final Xnav elem) {
@@ -34,6 +35,7 @@ final class LineOf {
 
     /**
      * Line number, or {@code 0} when the attribute is missing or not an integer.
+     *
      * @return Line number
      */
     int value() {

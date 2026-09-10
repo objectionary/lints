@@ -33,6 +33,7 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Tests for {@link PkMono}.
+ *
  * @since 0.23
  */
 final class PkMonoTest {

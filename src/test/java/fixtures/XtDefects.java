@@ -14,6 +14,7 @@ import org.eolang.xax.Xtory;
 
 /**
  * A story with a short defect-count assertion.
+ *
  * @since 1.0
  */
 public final class XtDefects implements Xtory {
@@ -25,6 +26,7 @@ public final class XtDefects implements Xtory {
 
     /**
      * New story.
+     *
      * @param story Original story
      */
     public XtDefects(final Xtory story) {

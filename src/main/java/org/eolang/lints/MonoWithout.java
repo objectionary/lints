@@ -8,6 +8,7 @@ import org.cactoos.iterable.IterableEnvelope;
 
 /**
  * Mono lints without lint names.
+ *
  * @since 0.0.46
  */
 final class MonoWithout extends IterableEnvelope<Lint> {
@@ -19,6 +20,7 @@ final class MonoWithout extends IterableEnvelope<Lint> {
 
     /**
      * Ctor.
+     *
      * @param names Lints to exclude
      */
     MonoWithout(final String... names) {

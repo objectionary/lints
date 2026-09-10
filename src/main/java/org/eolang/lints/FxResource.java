@@ -16,6 +16,7 @@ import org.cactoos.text.TextOf;
 /**
  * Fix loaded from a classpath resource.
  * If the resource does not exist, the XMIR is returned unchanged.
+ *
  * @since 0.2.1
  */
 public final class FxResource implements Fix {
@@ -27,6 +28,7 @@ public final class FxResource implements Fix {
 
     /**
      * Ctor.
+     *
      * @param path Classpath path to the XSL fix stylesheet
      */
     FxResource(final String path) {
@@ -35,6 +37,7 @@ public final class FxResource implements Fix {
 
     /**
      * Ctor.
+     *
      * @param path Classpath path to the XSL fix stylesheet
      */
     FxResource(final Text path) {

@@ -17,6 +17,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 /**
  * Tests for {@link Vocabulary}.
+ *
  * @since 0.2.0
  */
 final class VocabularyTest {

@@ -61,6 +61,7 @@ import org.objectweb.asm.Opcodes;
 
 /**
  * Test for {@link Source}.
+ *
  * @since 0.0.1
  */
 @ExtendWith(MktmpResolver.class)
@@ -417,6 +418,7 @@ final class SourceTest {
 
     /**
      * Benchmarked source.
+     *
      * @since 0.0.29
      */
     private static final class BcSource {
@@ -461,6 +463,7 @@ final class SourceTest {
 
         /**
          * Ctor.
+         *
          * @param source XMIR source to lint
          * @param size Source size
          */
@@ -475,6 +478,7 @@ final class SourceTest {
 
         /**
          * Ctor.
+         *
          * @param source XMIR source file to lint
          * @param lnts Lints to apply
          * @param tmngs Timings
@@ -491,6 +495,7 @@ final class SourceTest {
 
         /**
          * Defects.
+         *
          * @return Defects
          */
         Collection<Defect> defects() {
@@ -506,6 +511,7 @@ final class SourceTest {
 
     /**
      * Wrapper for timed lint execution.
+     *
      * @since 0.0.45
      */
     private static final class TimedLint implements Lint {
@@ -527,6 +533,7 @@ final class SourceTest {
 
         /**
          * Ctor.
+         *
          * @param lnt Lint
          * @param tmngs Timings
          * @param mrkr Marker
@@ -570,6 +577,7 @@ final class SourceTest {
      * Here, we count executable lines from Java bytecode class. However, if compiler
      * decides to skip them, we will get 0 here. Thus, all classes must be compiled with
      * lines.
+     *
      * @since 0.0.45
      */
     private static final class LineCountVisitor extends ClassVisitor {
@@ -604,6 +612,7 @@ final class SourceTest {
 
         /**
          * Total found.
+         *
          * @return Lines count
          */
         int total() {
@@ -613,6 +622,7 @@ final class SourceTest {
 
     /**
      * A lint that reports no defects but mutates the XMIR when its fix is applied.
+     *
      * @since 0.1.0
      */
     private static final class DestructiveLint implements Lint {

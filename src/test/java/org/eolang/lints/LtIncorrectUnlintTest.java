@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Tests for {@link LtIncorrectUnlint}.
+ *
  * @since 0.0.38
  */
 final class LtIncorrectUnlintTest {

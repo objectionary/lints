@@ -47,6 +47,7 @@ final class MarkedName {
 
     /**
      * Ctor.
+     *
      * @param name The name of the attribute, with the marker
      */
     MarkedName(final String name) {
@@ -56,6 +57,7 @@ final class MarkedName {
     /**
      * The name with its marker removed, e.g. {@code can-do-it} for
      * {@code p🌵can-do-it}. A name that is not a test comes back untouched.
+     *
      * @return The name, without the marker
      */
     String title() {
@@ -71,6 +73,7 @@ final class MarkedName {
 
     /**
      * XPath that selects every truthy test attribute of an XMIR document.
+     *
      * @return XPath expression
      */
     static String positives() {

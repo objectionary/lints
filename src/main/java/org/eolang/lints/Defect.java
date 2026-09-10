@@ -80,6 +80,7 @@ public interface Defect {
 
     /**
      * Experimental?
+     *
      * @return Experimental
      */
     boolean experimental();
@@ -120,6 +121,7 @@ public interface Defect {
 
         /**
          * Ctor.
+         *
          * @param rule Rule name
          * @param severity Severity level
          * @param line Line number

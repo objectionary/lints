@@ -35,6 +35,7 @@ final class LtDfSticky implements Lint {
 
     /**
      * Ctor.
+     *
      * @param origin Object wrapped by a decorator
      * @checkstyle ConstructorsCodeFreeCheck (4 lines)
      */

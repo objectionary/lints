@@ -29,6 +29,7 @@ import org.xembly.Xembler;
  * generic {@code params} map; when present, {@link #lint()} builds
  * the matching lint from those parameters directly, instead of
  * using the default one from {@link PkMono}.
+ *
  * @since 1.0
  */
 public final class XtLint implements Xtory {
@@ -40,6 +41,7 @@ public final class XtLint implements Xtory {
 
     /**
      * Ctor.
+     *
      * @param yaml YAML pack
      * @param parser Parser
      */
@@ -49,6 +51,7 @@ public final class XtLint implements Xtory {
 
     /**
      * Ctor.
+     *
      * @param origin Original story
      */
     private XtLint(final Xtory origin) {

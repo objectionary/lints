@@ -6,6 +6,7 @@ package org.eolang.lints;
 
 /**
  * Defect with context.
+ *
  * @since 0.0.40
  */
 final class DfContext implements Defect {
@@ -22,6 +23,7 @@ final class DfContext implements Defect {
 
     /**
      * Ctor.
+     *
      * @param orgn Origin defect
      * @param context Context
      */

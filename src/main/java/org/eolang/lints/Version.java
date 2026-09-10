@@ -10,6 +10,7 @@ import java.util.regex.Pattern;
 
 /**
  * A strict {@code major.minor.patch} version.
+ *
  * @since 0.2.11
  */
 final class Version {
@@ -36,6 +37,7 @@ final class Version {
 
     /**
      * Ctor.
+     *
      * @param mjr Major version
      * @param mnr Minor version
      * @param pch Patch version

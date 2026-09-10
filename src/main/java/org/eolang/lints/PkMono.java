@@ -36,6 +36,7 @@ final class PkMono extends IterableEnvelope<Lint> {
 
     /**
      * Ctor.
+     *
      * @param lints Lints
      */
     PkMono(final Iterable<Lint> lints) {

@@ -11,6 +11,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 /**
  * Tests for {@link UnlintInRange}.
+ *
  * @since 0.0.54
  */
 final class UnlintInRangeTest {

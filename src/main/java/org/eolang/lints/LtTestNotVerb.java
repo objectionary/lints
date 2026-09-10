@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
  * This lint uses <a href="https://opennlp.apache.org/">OpenNLP models</a>
  * with POS tagging capabilities in order to determine the part of speech and
  * tense for test object name.
+ *
  * @since 0.0.22
  */
 final class LtTestNotVerb implements Lint {
@@ -26,6 +27,7 @@ final class LtTestNotVerb implements Lint {
 
     /**
      * Ctor.
+     *
      * @throws IOException If fails
      */
     LtTestNotVerb() throws IOException {
@@ -34,6 +36,7 @@ final class LtTestNotVerb implements Lint {
 
     /**
      * Ctor.
+     *
      * @param vocab Vocabulary to use for name checks
      */
     LtTestNotVerb(final Vocabulary vocab) {

@@ -13,6 +13,7 @@ import org.cactoos.set.SetOf;
 
 /**
  * Lint that all unlint metas point to existing lint.
+ *
  * @since 0.0.38
  */
 final class LtIncorrectUnlint implements Lint {
@@ -24,6 +25,7 @@ final class LtIncorrectUnlint implements Lint {
 
     /**
      * Ctor.
+     *
      * @param lints All possible lint names
      */
     LtIncorrectUnlint(final Iterable<String> lints) {

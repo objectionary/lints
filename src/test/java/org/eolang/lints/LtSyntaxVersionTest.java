@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Test for {@link LtSyntaxVersion}.
+ *
  * @since 0.2.11
  */
 final class LtSyntaxVersionTest {

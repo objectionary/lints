@@ -17,6 +17,7 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Tests for {@link LtDfSticky}.
+ *
  * @since 0.0.42
  */
 final class LtDfStickyTest {
@@ -80,6 +81,7 @@ final class LtDfStickyTest {
 
     /**
      * Counter for lint calls.
+     *
      * @since 0.0.42
      */
     private static final class LtCounter implements Function<XML, Collection<Defect>> {
@@ -102,6 +104,7 @@ final class LtDfStickyTest {
 
     /**
      * Fake class for Lint class.
+     *
      * @since 0.0.42
      */
     private static final class LtFake implements Lint {
@@ -123,6 +126,7 @@ final class LtDfStickyTest {
 
         /**
          * Constructor. Name and motive are hardcoded.
+         *
          * @param defects Lint defects supplier
          */
         LtFake(final Function<XML, Collection<Defect>> defects) {
@@ -131,6 +135,7 @@ final class LtDfStickyTest {
 
         /**
          * Constructor.
+         *
          * @param name Lint name supplier
          * @param defects Lint defects supplier
          * @param motive Lint motive supplier

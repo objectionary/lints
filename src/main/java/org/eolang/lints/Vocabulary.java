@@ -5,6 +5,7 @@
 package org.eolang.lints;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.concurrent.locks.ReentrantLock;
@@ -42,20 +43,16 @@ final class Vocabulary {
 
     /**
      * Ctor.
+     *
      * @throws IOException If fails to load the POS model resource
      */
     Vocabulary() throws IOException {
-        this(
-            new POSModel(
-                new InputStreamOf(
-                    new ResourceOf("en-pos-perceptron.bin")
-                )
-            )
-        );
+        this(Vocabulary.model());
     }
 
     /**
      * Ctor.
+     *
      * @param mdl Part-Of-Speech model
      */
     Vocabulary(final POSModel mdl) {
@@ -64,6 +61,7 @@ final class Vocabulary {
 
     /**
      * Ctor.
+     *
      * @param pos Part-Of-Speech tagger
      */
     Vocabulary(final POSTaggerME pos) {
@@ -93,6 +91,12 @@ final class Vocabulary {
             );
         } finally {
             this.lock.unlock();
+        }
+    }
+
+    private static POSModel model() throws IOException {
+        try (InputStream stream = new InputStreamOf(new ResourceOf("en-pos-perceptron.bin"))) {
+            return new POSModel(stream);
         }
     }
 }

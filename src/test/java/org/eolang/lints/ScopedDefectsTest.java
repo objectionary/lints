@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Tests for {@link ScopedDefects}.
+ *
  * @since 0.0.48
  */
 final class ScopedDefectsTest {
