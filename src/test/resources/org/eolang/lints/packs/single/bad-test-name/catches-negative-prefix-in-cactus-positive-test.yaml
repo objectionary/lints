@@ -5,11 +5,11 @@ sheets:
   - /org/eolang/lints/tests/bad-test-name.xsl
 asserts:
   - /defects[count(defect[@severity='warning'])=1]
-  - /defects/defect[contains(text(), 'positive test object "cannot-do-something"')]
+  - /defects/defect[contains(text(), 'positive test object "cannot-run"')]
 ignore-schema: true
 document: |
   <object author="tests">
     <o line="1" name="foo">
-      <o line="2" name="p🌵cannot-do-something"/>
+      <o line="2" name="p🌵cannot-run"/>
     </o>
   </object>
