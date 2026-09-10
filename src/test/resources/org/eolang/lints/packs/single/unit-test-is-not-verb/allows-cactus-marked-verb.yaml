@@ -1,0 +1,16 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+lint: unit-test-is-not-verb
+asserts:
+  - /defects[count(defect)=0]
+document: |
+  <object author="tests">
+    <o line="1" name="foo">
+      <o line="2" name="p🌵generates-report">
+        <o base="Φ.number" line="3" name="φ">
+          <o base="Φ.bytes" line="3">40-14-00-00-00-00-00-00</o>
+        </o>
+      </o>
+    </o>
+  </object>

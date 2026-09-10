@@ -1,0 +1,21 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/misc/sparse-decoration.xsl
+defects: 0
+document: |
+  <object author="tests">
+    <o line="1" name="foo">
+      <o line="2" name="p🌵can-do-something">
+        <o base="Φ.number" line="3" name="φ">
+          <o base="Φ.bytes" line="3">40-14-00-00-00-00-00-00</o>
+        </o>
+      </o>
+      <o line="5" name="n🌵cannot-do-something">
+        <o base="Φ.number" line="6" name="φ">
+          <o base="Φ.bytes" line="6">40-14-00-00-00-00-00-00</o>
+        </o>
+      </o>
+    </o>
+  </object>

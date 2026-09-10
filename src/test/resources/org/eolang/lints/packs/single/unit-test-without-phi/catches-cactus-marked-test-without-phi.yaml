@@ -1,0 +1,17 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/tests/unit-test-without-phi.xsl
+asserts:
+  - /defects[count(defect[@severity='warning' and @line='4'])=1]
+  - /defects/defect[contains(text(), '"runs-without-phi"')]
+ignore-schema: true
+document: |
+  <object author="tests">
+    <o line="2" name="foo" pos="0">
+      <o line="4" name="p🌵runs-without-phi" pos="2">
+        <o base="Q.number" line="5" name="x" pos="4"/>
+      </o>
+    </o>
+  </object>

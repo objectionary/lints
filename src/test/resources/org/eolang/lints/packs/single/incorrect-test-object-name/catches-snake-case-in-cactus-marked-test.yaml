@@ -1,0 +1,14 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/misc/incorrect-test-object-name.xsl
+asserts:
+  - /defects[count(defect[@severity='warning' and @line='2'])=1]
+ignore-schema: true
+document: |
+  <object author="tests">
+    <o line="1" name="foo">
+      <o line="2" name="p🌵test_abc"/>
+    </o>
+  </object>
