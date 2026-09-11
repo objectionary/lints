@@ -124,42 +124,44 @@ Here is the result of linting XMIRs:
 <!-- benchmark_begin -->
 ```text
 Input: com/sun/jna/PointerType.class (S source)
-Lint time: 10s (10054 ms)
+Lint time: 6s (6315 ms)
 
 Input: com/sun/jna/Memory.class (M source)
-Lint time: 7s (7167 ms)
+Lint time: 2s (2251 ms)
 
 Input: com/sun/jna/Pointer.class (L source)
-Lint time: 9s (8715 ms)
+Lint time: 4s (3776 ms)
 
 Input: com/sun/jna/Structure.class (XL source)
-Lint time: 11s (10952 ms)
+Lint time: 5s (5443 ms)
 
 Input: org/apache/hadoop/hdfs/server/namenode/FSNamesystem.class (XXL source)
-Lint time: 38s (37742 ms)
+Lint time: 26s (25826 ms)
+
+Input: org/eolang/lints/unlint-ascii-only.eo (UNLINT source)
+Lint time: 296ms (296 ms)
 
 
-
-unlint-non-existing-defect (XXL) (14513 ms)
-application-without-as-attributes (XXL) (3157 ms)
-unlint-non-existing-defect (XL) (2790 ms)
-unlint-non-existing-defect (L) (1559 ms)
-object-has-data (XXL) (1413 ms)
-unlint-non-existing-defect (M) (1256 ms)
-empty-object (XXL) (1065 ms)
-duplicate-as-attribute (XXL) (797 ms)
-redundant-object (XXL) (686 ms)
-reserved-name (XXL) (611 ms)
-application-without-as-attributes (XL) (597 ms)
-line-is-absent (XXL) (569 ms)
-incorrect-bytes-format (XXL) (548 ms)
-application-without-as-attributes (M) (507 ms)
-compound-name (XXL) (469 ms)
-bytes-without-data (XXL) (376 ms)
+application-without-as-attributes (XXL) (5405 ms)
+object-has-data (XXL) (2065 ms)
+duplicate-as-attribute (XXL) (1929 ms)
+empty-object (XXL) (1596 ms)
+redundant-object (XXL) (1233 ms)
+incorrect-bytes-format (XXL) (1226 ms)
+application-without-as-attributes (XL) (1025 ms)
+line-is-absent (XXL) (927 ms)
+reserved-name (XXL) (880 ms)
+application-without-as-attributes (L) (845 ms)
+compound-name (XXL) (755 ms)
+duplicate-as-attribute (XL) (687 ms)
+application-without-as-attributes (M) (558 ms)
+anonymous-formation (XXL) (471 ms)
+object-has-data (L) (448 ms)
+compound-name (S) (437 ms)
 ```
 
 The results were calculated in [this GHA job][benchmark-gha]
-on 2026-07-30 at 05:24,
+on 2026-08-30 at 22:38,
 on Linux with 4 CPUs.
 <!-- benchmark_end -->
 
