@@ -12,6 +12,7 @@ document: |
         <o line="3" name="a🌵3-5" pos="4"/>
         <o line="4" name="φ" pos="4">
           <o base="Q.q" line="5" name="ξ" pos="6"/>
+          <o line="6" name="ρ" pos="6"/>
         </o>
       </o>
     </o>
