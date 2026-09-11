@@ -72,7 +72,7 @@
     <!-- This is the flag that allows to skip all tests -->
     <skipTests/>
     <!-- Pinned objectionary/home tag; keep in sync with the eo-parser version below -->
-    <home.version>0.63.0</home.version>
+    <home.version>0.63.1</home.version>
   </properties>
   <dependencyManagement>
     <dependencies>
