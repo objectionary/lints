@@ -42,14 +42,12 @@
     </xsl:choose>
   </xsl:function>
   <!--
-  @todo #1321:60min Name the shapes this lint still misses.
-  The compiler also leaves the recursion alone when the self-call is
-  spelled "Phi.name" instead of "^.name", when the formation is reached
-  other than by a plain application, as a decoratee or as the receiver of
-  a dispatch, when an attribute holding a self-call is read from outside
-  the formation, as in "range", and when two formations call each other.
-  Each of those is syntactic, so each can be found here and reported with
-  a reason of its own, the way the four below are.
+  @todo #1321:60min Name the two shapes this lint still misses.
+  The compiler also leaves the recursion alone when the formation is
+  reached as a decoratee instead of by a plain application, and when two
+  formations call each other instead of one calling itself. Both are
+  syntactic, so both can be found here and reported with a reason of
+  their own, the way the ones below are.
   -->
   <!--
   TRUE when the @base is a self-call of the object with the given name, in
@@ -120,6 +118,11 @@
               </xsl:when>
               <xsl:when test="$calls[eo:is-self-dispatch(string(@base), $name)]">
                 <xsl:text>the self-call is the receiver of a dispatch</xsl:text>
+              </xsl:when>
+              <xsl:when test="$calls[@name and @name != 'φ']">
+                <xsl:text>the self-call is bound to the attribute </xsl:text>
+                <xsl:value-of select="eo:escape($calls[@name and @name != 'φ'][1]/@name)"/>
+                <xsl:text>, read from outside the formation instead of returned</xsl:text>
               </xsl:when>
               <xsl:otherwise>
                 <xsl:text>no self-call sits in a tail position</xsl:text>
