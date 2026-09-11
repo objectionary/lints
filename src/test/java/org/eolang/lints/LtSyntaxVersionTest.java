@@ -78,6 +78,18 @@ final class LtSyntaxVersionTest {
     }
 
     @Test
+    void ignoresOverflowingSyntaxValue() throws IOException {
+        final String src = LtSyntaxVersionTest.program(
+            "+syntax 999999999999999999999999.2.3"
+        );
+        MatcherAssert.assertThat(
+            "an overflowing +syntax value must be treated as malformed, not crash linting",
+            new LtSyntaxVersion().defects(new EoProgram(src, new InputOf(src)).parse()),
+            Matchers.emptyIterable()
+        );
+    }
+
+    @Test
     void ignoresProgramsWithoutSyntaxMeta() throws IOException {
         final String src = LtSyntaxVersionTest.program("+home https://example.com");
         MatcherAssert.assertThat(

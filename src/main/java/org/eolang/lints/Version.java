@@ -57,13 +57,19 @@ final class Version {
         final Matcher matcher = Version.CORE.matcher(text.trim());
         final Optional<Version> result;
         if (matcher.find()) {
-            result = Optional.of(
-                new Version(
-                    Integer.parseInt(matcher.group(1)),
-                    Integer.parseInt(matcher.group(2)),
-                    Integer.parseInt(matcher.group(3))
-                )
-            );
+            Optional<Version> parsed;
+            try {
+                parsed = Optional.of(
+                    new Version(
+                        Integer.parseInt(matcher.group(1)),
+                        Integer.parseInt(matcher.group(2)),
+                        Integer.parseInt(matcher.group(3))
+                    )
+                );
+            } catch (final NumberFormatException ignored) {
+                parsed = Optional.empty();
+            }
+            result = parsed;
         } else {
             result = Optional.empty();
         }
