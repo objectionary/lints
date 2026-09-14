@@ -8,6 +8,7 @@
   <xsl:import href="/org/eolang/funcs/lineno.xsl"/>
   <xsl:import href="/org/eolang/funcs/escape.xsl"/>
   <xsl:import href="/org/eolang/funcs/defect-context.xsl"/>
+  <xsl:import href="/org/eolang/funcs/test-name.xsl"/>
   <xsl:output encoding="UTF-8" method="xml"/>
   <!--
   Is the object in a tail position of the expression rooted at $root? It is
@@ -93,7 +94,7 @@
       <xsl:for-each select="//o[eo:abstract(.) and @name and not(contains(@name, '🌵')) and o[@name='φ']]">
         <xsl:variable name="name" select="string(@name)"/>
         <xsl:variable name="root" select="o[@name='φ']"/>
-        <xsl:variable name="calls" select=".//o[eo:is-self-call(string(@base), $name)]"/>
+        <xsl:variable name="calls" select=".//o[eo:is-self-call(string(@base), $name) and not(ancestor::o[eo:test-name(@name)])]"/>
         <xsl:variable name="loops" select="($root | $root//o)[eo:is-self-tail(string(@base), $name) and eo:tail(., $root)]"/>
         <xsl:if test="exists($calls) and empty($loops)">
           <defect>
