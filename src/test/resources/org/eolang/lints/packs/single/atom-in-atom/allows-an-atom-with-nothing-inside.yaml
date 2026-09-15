@@ -1,0 +1,13 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/atoms/atom-in-atom.xsl
+asserts:
+  - /defects[count(defect)=0]
+document: |
+  <object author="tests">
+    <o name="lonely" line="1">
+      <o name="λ" atom="Φ.bytes"/>
+    </o>
+  </object>
