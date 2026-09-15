@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
+import java.util.OptionalInt;
 import java.util.stream.Collectors;
 
 /**
@@ -33,15 +33,14 @@ final class LtAsciiOnly implements Lint {
         final List<Xnav> comments = xml.path("/object/comments/comment")
             .collect(Collectors.toList());
         for (final Xnav comment : comments) {
-            final Optional<Character> abusive = comment.text().get().chars()
+            final OptionalInt abusive = comment.text().get().codePoints()
                 .filter(chr -> (chr < 32 && chr != '\n') || chr > 127)
-                .mapToObj(chr -> (char) chr)
                 .findFirst();
             if (!abusive.isPresent()) {
                 continue;
             }
             final int line = new LineOf(comment).value();
-            final Character chr = abusive.get();
+            final String chr = String.valueOf(Character.toChars(abusive.getAsInt()));
             defects.add(
                 new Defect.Default(
                     "ascii-only",
