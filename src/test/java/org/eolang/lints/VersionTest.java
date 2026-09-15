@@ -44,6 +44,15 @@ final class VersionTest {
     }
 
     @Test
+    void parsesPreReleaseWithBuildMetadata() {
+        MatcherAssert.assertThat(
+            "Pre-release with build metadata is not read by its core",
+            Version.parsed("1.2.3-rc.1+exp.sha.1").map(Version::toString),
+            Matchers.equalTo(Optional.of("1.2.3"))
+        );
+    }
+
+    @Test
     void rejectsTrailingGarbage() {
         MatcherAssert.assertThat(
             "Trailing text must not be read as a version",
