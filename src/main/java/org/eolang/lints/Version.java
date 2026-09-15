@@ -20,9 +20,7 @@ final class Version {
      * core, optionally followed by a SemVer pre-release or build suffix.
      */
     private static final Pattern CORE = Pattern.compile(
-        "(\\d+)\\.(\\d+)\\.(\\d+)"
-        + "(?:-[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?"
-        + "(?:\\+[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?"
+        "(\\d+)\\.(\\d+)\\.(\\d+)(?:[-+][0-9A-Za-z.+-]+)?"
     );
 
     /**
