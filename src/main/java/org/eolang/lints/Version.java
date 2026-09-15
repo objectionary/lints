@@ -16,9 +16,12 @@ import java.util.regex.Pattern;
 final class Version {
 
     /**
-     * Matches the numeric {@code major.minor.patch} core of a version string.
+     * Matches a complete version: the numeric {@code major.minor.patch}
+     * core, optionally followed by a SemVer pre-release or build suffix.
      */
-    private static final Pattern CORE = Pattern.compile("^(\\d+)\\.(\\d+)\\.(\\d+)");
+    private static final Pattern CORE = Pattern.compile(
+        "(\\d+)\\.(\\d+)\\.(\\d+)(?:[-+][0-9A-Za-z.+-]+)?"
+    );
 
     /**
      * Major version.
@@ -56,7 +59,7 @@ final class Version {
     static Optional<Version> parsed(final String text) {
         final Matcher matcher = Version.CORE.matcher(text.trim());
         final Optional<Version> result;
-        if (matcher.find()) {
+        if (matcher.matches()) {
             Optional<Version> parsed;
             try {
                 parsed = Optional.of(
