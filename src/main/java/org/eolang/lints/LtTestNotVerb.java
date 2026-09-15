@@ -68,7 +68,8 @@ final class LtTestNotVerb implements Lint {
     }
 
     private boolean isVerb(final Xnav object) {
-        return this.vocabulary.isVerb(LtTestNotVerb.title(object));
+        final String title = LtTestNotVerb.title(object);
+        return title.startsWith("can-") || this.vocabulary.isVerb(title);
     }
 
     private static Defect verbDefect(final Xnav object) {
