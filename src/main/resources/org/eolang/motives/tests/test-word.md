@@ -1,9 +1,9 @@
 # Test word
 
-Names of objects in test files must not contain the word 'test'. If an object
-is a unit test, or a helper inside a unit test, or lives in a file whose top
-object name ends with `-tests`, its name should describe the behavior it
-verifies instead of repeating the word 'test'.
+Names of objects in test files must not contain the word 'test'. This
+applies to a unit test itself, a helper inside one, or any object in a
+file whose top object name ends with `-tests`. Its name should describe
+the behavior it verifies instead of repeating the word 'test'.
 
 Incorrect:
 

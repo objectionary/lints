@@ -23,4 +23,4 @@ Correct:
     42 > @
 ```
 
-The name says it all; the comment is redundant.
+The name says it all. The comment is redundant.
