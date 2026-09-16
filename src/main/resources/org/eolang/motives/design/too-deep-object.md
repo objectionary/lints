@@ -8,6 +8,7 @@ Incorrect:
 
 ```eo
 # Foo.
+
 [] > foo
   a > x
     b

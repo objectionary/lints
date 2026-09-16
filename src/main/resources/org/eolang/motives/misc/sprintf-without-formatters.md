@@ -1,24 +1,22 @@
-# `Φ.txt.sprintf` without formatters
+# `.printf` without formatters
 
-Using the `Φ.txt.sprintf` object makes no sense if there are no
+Using the `.printf` object makes no sense if there are no
 format specifiers in the template string.
 
 Incorrect:
 
 ```eo
 [] > app
-QQ.io.stdout > @
-  QQ.txt.sprintf
-    "Hello Jeff!"
-    *
+  io.stdout > @
+    "Hello Jeff!".printf
+      *
 ```
 
 Correct:
 
 ```eo
 [] > app
-QQ.io.stdout > @
-  QQ.txt.sprintf
-    "Hello %s!"
-    * "Jeff"
+  io.stdout > @
+    "Hello %s!".printf
+      * "Jeff"
 ```

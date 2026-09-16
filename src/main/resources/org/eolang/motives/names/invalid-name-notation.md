@@ -8,6 +8,7 @@ Incorrect:
 
 ```eo
 # App.
+
 [] > mainApp
   foo > x1
   bar > y_
@@ -17,6 +18,7 @@ Correct:
 
 ```eo
 # App.
+
 [] > main-app
   foo > x
   bar > y

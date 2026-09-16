@@ -9,8 +9,9 @@ Incorrect:
 
 ```eo
 # Tests for foo.
+
 [] > foo-tests
-  # Test.
+
   [] +> can-test-add
     42 > @
 ```
@@ -19,8 +20,9 @@ Correct:
 
 ```eo
 # Tests for foo.
+
 [] > foo-tests
-  # Test.
+
   [] +> can-add-two-and-two
     42 > @
 ```

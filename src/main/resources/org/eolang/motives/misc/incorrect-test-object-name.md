@@ -10,36 +10,30 @@ Incorrect:
 
 ```eo
 # Foo.
+
 [] > foo
-  # Test.
+
   [] +> tEst
     42 > foo
 
-  # Test.
   [] +> test123
     42 > fooB
 
-  # Test.
   [] +> test--
     42 > foo
 
-  # Test.
   [] +> test--test
     42 > foo
 
-  # Test.
   [] +> t
     42 > foo
 
-  # Test.
   [] +> test-test-
     42 > foo
 
-  # Test.
   [] +> test-Test
     42 > foo
 
-  # Test.
   [] +> test_abc
     42 > foo
 ```
@@ -48,20 +42,18 @@ Correct:
 
 ```eo
 # Foo.
+
 [] > foo
-  # Test.
+
   [] +> runs
     42 > foo
 
-  # Test.
   [] +> runs-something
     42 > fooB
 
-  # Test.
   [] +> good-one
     42 > foo
 
-  # Test.
   [] +> ok
     42 > foo
 ```

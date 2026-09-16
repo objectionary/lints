@@ -13,16 +13,15 @@ Incorrect:
 
 ```eo
 # Foo.
+
 [] > foo
-  # Test.
+
   [] +> it-works
     42 > @
 
-  # Test.
   [] +> testing
     42 > @
 
-  # Test.
   [] +> should-not-pass
     42 > @
 ```
@@ -31,16 +30,15 @@ Correct:
 
 ```eo
 # Foo.
+
 [] > foo
-  # Test.
+
   [] +> runs
     42 > @
 
-  # Test.
   [] +> parses-dom
     42 > @
 
-  # Test.
   [] +> generates-report
     42 > @
 ```
