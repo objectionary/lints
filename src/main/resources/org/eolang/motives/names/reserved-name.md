@@ -7,6 +7,7 @@ Incorrect:
 
 ```eo
 # Foo.
+
 [] > foo
   52 > true
 ```

@@ -12,11 +12,9 @@ Incorrect:
 Correct:
 
 ```eo
-[] > decorates-app
-  if > @
-    true
-    5
-    five
+[] > decorates-and-extends
+  five > @
+  99 > extra
 ```
 
 ```eo
@@ -28,6 +26,7 @@ Also, it's possible to have sparse decoration in tests:
 
 ```eo
 # This is my unit test.
+
 [] > runs-analysis
   assert > @
     foo.eq 42

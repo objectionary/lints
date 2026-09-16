@@ -8,10 +8,11 @@ an alias only adds noise.
 Incorrect:
 
 ```eo
+# Foo.
+
 +package org.eolang.txt
 +alias org.eolang.txt.sprintf
 
-# Foo.
 [x] > foo
   sprintf x > @
 ```
@@ -19,9 +20,10 @@ Incorrect:
 Correct:
 
 ```eo
+# Foo.
+
 +package org.eolang.txt
 
-# Foo.
 [x] > foo
   sprintf x > @
 ```
@@ -30,10 +32,11 @@ An alias that points to a different package, or one that renames the
 object to a new local name, is not redundant and is left alone:
 
 ```eo
+# Foo.
+
 +package org.eolang.txt
 +alias sp org.eolang.txt.sprintf
 
-# Foo.
 [x] > foo
   sp x > @
 ```

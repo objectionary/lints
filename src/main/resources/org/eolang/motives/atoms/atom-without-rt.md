@@ -11,9 +11,8 @@ Incorrect:
 +version 0.0.0
 
 [] > bytes
-  [x] > eq ?
-
-  [y] > not ?
+  [] > eq /Q.boolean
+  [] > not /Q.boolean
 ```
 
 Correct:
@@ -26,7 +25,6 @@ Correct:
 +rt jvm org.eolang:eo-runtime:0.43.2
 
 [] > bytes
-  [x] > eq ?
-
-  [y] > not ?
+  [] > eq /Q.boolean
+  [] > not /Q.boolean
 ```

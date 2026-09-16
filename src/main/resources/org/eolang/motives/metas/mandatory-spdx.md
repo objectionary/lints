@@ -6,15 +6,17 @@ Incorrect:
 
 ```eo
 # Foo.
+
 [] > foo
 ```
 
 Correct:
 
 ```eo
+# Foo.
+
 +spdx SPDX-License-Identifier: MIT
 
-# Foo.
 [] > foo
 ```
 

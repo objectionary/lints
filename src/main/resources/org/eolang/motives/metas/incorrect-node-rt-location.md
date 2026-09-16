@@ -9,21 +9,23 @@ The Node.js runtime location must follow this regular expression:
 Incorrect:
 
 ```eo
+# No comments.
+
 +rt node foo
 +rt node hello, world!
 +rt node bar-test:test:1.2.3
 
-# No comments.
 [] > foo
 ```
 
 Correct:
 
 ```eo
+# No comments.
+
 +rt node eo2js-runtime:0.0.0
-+rt node bar-test:1.1
++rt node bar-test:1.1.0
 +rt node foo:1.2.3
 
-# No comments.
 [] > foo
 ```

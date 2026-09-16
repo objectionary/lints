@@ -8,13 +8,6 @@ Incorrect:
 [] > foo
 ```
 
-```eo
-+package org.eolang
-+package org.eo
-
-[] > foo
-```
-
 Correct:
 
 ```eo

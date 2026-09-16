@@ -5,20 +5,22 @@ Object aliases must not be empty.
 Incorrect:
 
 ```eo
+# Foo.
+
 +alias
 
-# Foo.
 [] > foo
 ```
 
 Correct:
 
 ```eo
-+alias a
-+alias a b
-+alias a b c
-+alias a b c d
-
 # Foo.
+
++alias a
++alias b c
++alias d e f
++alias g h i j
+
 [] > foo
 ```

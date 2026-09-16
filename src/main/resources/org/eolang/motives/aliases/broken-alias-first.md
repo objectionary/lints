@@ -4,11 +4,12 @@ The first part of the `+alias` meta must contain only the object name,
 not its fully qualified name (FQN). Here is an example in EO:
 
 ```eo
+# Basic object.
+
 +alias stdout org.eolang.io.stdout
 
-# Basic object.
 [] > foo
-  stdout
+  stdout > @
     "Hello, world!\n"
 ```
 

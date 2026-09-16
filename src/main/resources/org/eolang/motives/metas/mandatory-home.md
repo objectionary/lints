@@ -8,13 +8,6 @@ Incorrect:
 [] > foo
 ```
 
-```eo
-+home https://github.com/objectionary/eo
-+home https://github.com/objectionary/eolang
-
-[] > foo
-```
-
 Correct:
 
 ```eo

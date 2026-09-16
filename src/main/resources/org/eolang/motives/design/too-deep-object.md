@@ -8,6 +8,7 @@ Incorrect:
 
 ```eo
 # Foo.
+
 [] > foo
   a > x
     b
@@ -25,5 +26,5 @@ Incorrect:
 ```
 
 Here, `m` is nested thirteen levels deep, which is hard to follow.
-It should be refactored by extracting some of the nested objects into
+It should be refactored by extracting some nested objects into
 their own top-level objects.

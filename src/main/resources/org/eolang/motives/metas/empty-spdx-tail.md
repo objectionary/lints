@@ -5,17 +5,19 @@ The special meta attribute `+spdx` cannot have an empty value.
 Incorrect:
 
 ```eo
+# Foo.
+
 +spdx
 
-# Foo.
 [] > foo
 ```
 
 Correct:
 
 ```eo
+# Foo.
+
 +spdx foo
 
-# Foo.
 [] > foo
 ```

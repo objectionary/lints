@@ -6,6 +6,7 @@ Incorrect:
 
 ```eo
 # Foo.
+
 [] > foo
   x > bar
   y > @
@@ -16,6 +17,7 @@ Correct:
 
 ```eo
 # Foo.
+
 [] > foo
   y > @
   x > bar
@@ -26,6 +28,7 @@ The position of `@` after void attributes is also allowed:
 
 ```eo
 # Foo.
+
 [] > foo
   [i] >>
     boom > @
