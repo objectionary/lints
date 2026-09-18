@@ -65,7 +65,9 @@ final class VocabularyTest {
             "i-think-its-ok",
             "chicken-as-expected",
             "please-reboot",
-            "hope-it-works"
+            "hope-it-works",
+            "can",
+            "can-42-things"
         }
     )
     void detectsNonVerbName(final String name) throws IOException {
@@ -102,7 +104,9 @@ final class VocabularyTest {
             "is-never-called",
             "is-kind-of-slow",
             "is-totally-broken",
-            "is-almost-correct"
+            "is-almost-correct",
+            "can-add-report",
+            "can-read-bytes"
         }
     )
     void recognizesVerbName(final String name) throws IOException {
