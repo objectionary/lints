@@ -17,7 +17,8 @@ install: |
   pdd --file=/dev/null
 merge:
   script: |
-    mvn clean install -ntp -P!hone,qulice --errors -Dstyle.color=never
+    export MAVEN_OPTS="--add-opens java.base/java.util=ALL-UNNAMED --add-opens java.base/java.lang.reflect=ALL-UNNAMED"
+    mvn clean install -ntp -P!hone,!proguard,qulice --errors -Dstyle.color=never
 release:
   pre: false
   script: |-
