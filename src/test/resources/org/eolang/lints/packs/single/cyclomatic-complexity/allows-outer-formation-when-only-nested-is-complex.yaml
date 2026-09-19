@@ -1,0 +1,62 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+# yamllint disable rule:line-length
+sheets:
+  - /org/eolang/lints/design/cyclomatic-complexity.xsl
+asserts:
+  - /defects[count(defect)=1]
+  - /defects/defect[1][normalize-space()='The object "bar" has a cyclomatic complexity of 12, while the maximum is 10']
+input: |
+  [x] > foo
+    0 > @
+    if. > a1
+      x
+      1
+      2
+    [y] > bar
+      0 > @
+      if. > b1
+        y
+        1
+        2
+      if. > b2
+        y
+        1
+        2
+      if. > b3
+        y
+        1
+        2
+      if. > b4
+        y
+        1
+        2
+      if. > b5
+        y
+        1
+        2
+      if. > b6
+        y
+        1
+        2
+      if. > b7
+        y
+        1
+        2
+      if. > b8
+        y
+        1
+        2
+      if. > b9
+        y
+        1
+        2
+      if. > b10
+        y
+        1
+        2
+      if. > b11
+        y
+        1
+        2

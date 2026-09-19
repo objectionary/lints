@@ -53,7 +53,7 @@ public final class GrammarMatcher extends BaseMatcher<String> {
             if (rule instanceof SpellingCheckRule) {
                 ((SpellingCheckRule) rule).addIgnoreTokens(
                     Arrays.asList(
-                        "decoratee", "eolang", "spdx", "SPDX-compliant", "Unlinting"
+                        "decoratee", "eolang", "spdx", "SPDX-compliant", "Unlinting", "cyclomatic"
                     )
                 );
             }
