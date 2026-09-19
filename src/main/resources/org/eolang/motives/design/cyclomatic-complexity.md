@@ -1,16 +1,15 @@
 # Cyclomatic complexity
 
-EO has no loops or `goto`, so the only decision points a formation can
-have are a standalone `while` and an `if`, `and`, or `or` dispatched on
-something. Whether the receiver of such a dispatch is really a boolean,
-as opposed to some other object that happens to define a method with the
-same name, cannot be decided without type inference, so this lint counts
-any dispatch whose method name is `if`, `and`, or `or`, together with a
-standalone `while`, as a decision point. This is a heuristic and the
-defect is marked `experimental`.
+EO has no loops or `goto`. The only decision points a formation can have
+are a standalone `while` and an `if`, `and`, or `or` dispatched on
+something. Whether the receiver of such a dispatch is a boolean, as
+opposed to some other object with a method of the same name, cannot be
+decided without type inference. So this lint counts any dispatch named
+`if`, `and`, or `or`, together with a standalone `while`, as a decision
+point. This is a heuristic, and the defect is marked `experimental`.
 
 The cyclomatic complexity of a formation is one plus the number of its
-own decision points; a decision point that belongs to a nested formation
+own decision points. A decision point that belongs to a nested formation
 counts for that formation, not for the one around it. When the
 complexity exceeds ten, a warning is raised.
 
@@ -52,6 +51,6 @@ Incorrect:
                       0
 ```
 
-Here, `foo` has eleven `if` dispatches, which is a cyclomatic complexity
-of twelve. It should be refactored, for example by extracting some of the
-branches into their own objects.
+Here, `foo` has eleven `if` dispatches, a cyclomatic complexity of
+twelve. It should be refactored, for example by extracting some branches
+into their own objects.
