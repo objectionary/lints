@@ -43,14 +43,12 @@
     </xsl:choose>
   </xsl:function>
   <!--
-  @todo #1321:60min Name the shapes this lint still misses.
-  The compiler also leaves the recursion alone when the self-call is
-  spelled "Phi.name" instead of "^.name", when the formation is reached
-  other than by a plain application, as a decoratee or as the receiver of
-  a dispatch, when an attribute holding a self-call is read from outside
-  the formation, as in "range", and when two formations call each other.
-  Each of those is syntactic, so each can be found here and reported with
-  a reason of its own, the way the four below are.
+  One shape the compiler also leaves unoptimized is not named below:
+  mutual recursion, where formation A calls formation B and B calls A
+  back, possibly through a longer chain of formations. That is not
+  decidable from a single formation's own subtree the way the others
+  are; it needs a call graph over the whole document, which is a
+  different kind of lint from this one.
   -->
   <!--
   TRUE when the @base is a self-call of the object with the given name, in
@@ -96,6 +94,7 @@
         <xsl:variable name="root" select="o[@name='φ']"/>
         <xsl:variable name="calls" select=".//o[eo:is-self-call(string(@base), $name) and not(ancestor::o[eo:test-name(@name)])]"/>
         <xsl:variable name="loops" select="($root | $root//o)[eo:is-self-tail(string(@base), $name) and eo:tail(., $root)]"/>
+        <xsl:variable name="elsewhere" select="$calls except ($root/descendant-or-self::o)"/>
         <xsl:if test="exists($calls) and empty($loops)">
           <defect>
             <xsl:variable name="line" select="eo:lineno($calls[1]/@line)"/>
@@ -121,6 +120,9 @@
               </xsl:when>
               <xsl:when test="$calls[eo:is-self-dispatch(string(@base), $name)]">
                 <xsl:text>the self-call is the receiver of a dispatch</xsl:text>
+              </xsl:when>
+              <xsl:when test="exists($elsewhere)">
+                <xsl:text>the self-call is kept in an attribute other than φ</xsl:text>
               </xsl:when>
               <xsl:otherwise>
                 <xsl:text>no self-call sits in a tail position</xsl:text>
