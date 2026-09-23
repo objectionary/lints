@@ -28,9 +28,9 @@ it should be private:
     (phrase "Object Thinking").multi-words > @
 ```
 
-A number, string, byte array, boolean or tuple bound directly to the
-attribute is a constant, not a method, so it is never reported even when no
-test refers to it: there is nothing to call on it, and other files may
+A number, string, byte array, Boolean, or tuple bound directly to the
+attribute is a constant, not a method. There is nothing to call on it, so
+it is never reported even when no test refers to it. Other files may still
 legitimately read it as published data.
 
 ```eo
