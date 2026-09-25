@@ -17,13 +17,48 @@ fi
 diff=$(mktemp)
 trap 'rm -f "${diff}"' EXIT
 
-awk -F, '
-  function unquote(s) { gsub(/"/, "", s); return s }
+awk '
+  function csv(line, fields,    i, c, field, quoted, count) {
+    field = ""
+    quoted = 0
+    count = 0
+    for (i = 1; i <= length(line); i++) {
+      c = substr(line, i, 1)
+      if (quoted) {
+        if (c == "\"") {
+          if (substr(line, i + 1, 1) == "\"") {
+            field = field "\""
+            i++
+          } else {
+            quoted = 0
+          }
+        } else {
+          field = field c
+        }
+      } else if (c == "\"") {
+        quoted = 1
+      } else if (c == ",") {
+        fields[++count] = field
+        field = ""
+      } else {
+        field = field c
+      }
+    }
+    fields[++count] = field
+    return count
+  }
   FNR == 1 { next }
-  NR == FNR { base[unquote($1)] = unquote($2); next }
+  NR == FNR {
+    delete fields
+    csv($0, fields)
+    base[fields[1]] = fields[2]
+    next
+  }
   {
-    id = unquote($1)
-    curr[id] = unquote($2)
+    delete fields
+    csv($0, fields)
+    id = fields[1]
+    curr[id] = fields[2]
     seen[id] = 1
   }
   END {
