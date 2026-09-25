@@ -36,3 +36,16 @@ after the call answers:
 
 Rewrite such an object with an accumulator, the way `repeated` was
 rewritten by hand, and the recursion becomes a loop again.
+
+The compiler only recognises the self-call spelled through the receiver,
+`^.rec`. A self-call spelled with the bare name or with `$`, even in a
+tail position, is never turned into a loop, because the compiler looks
+for `xi.rho.<name>` and nothing else:
+
+```eo
+[] > calc
+  seq > @
+    *
+      1
+      calc (n.minus 1)
+```
