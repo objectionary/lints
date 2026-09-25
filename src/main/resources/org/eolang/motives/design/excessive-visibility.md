@@ -27,3 +27,17 @@ it should be private:
   [] +> checks-phrase
     (phrase "Object Thinking").multi-words > @
 ```
+
+A number, string, byte array, Boolean, or tuple bound directly to the
+attribute is a constant, not a method. There is nothing to call on it, so
+it is never reported even when no test refers to it. Other files may still
+legitimately read it as published data.
+
+```eo
+[] > win32
+  8 > append
+  256 > creat
+
+  [] +> checks-win32
+    42 > @
+```
