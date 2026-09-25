@@ -12,16 +12,11 @@ Incorrect:
 Correct:
 
 ```eo
-[] > decorates-app
+[free] > decorates-app
   if > @
     true
     5
     five
-```
-
-```eo
-[free] > decorates-with-free-args
-  five > @
 ```
 
 Also, it's possible to have sparse decoration in tests:
