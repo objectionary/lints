@@ -10,6 +10,7 @@ name: shellcheck
   pull_request:
     branches:
       - master
+permissions: {}
 jobs:
   shellcheck:
     timeout-minutes: 15

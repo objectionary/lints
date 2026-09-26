@@ -10,6 +10,7 @@ name: hone
   pull_request:
     branches:
       - master
+permissions: {}
 jobs:
   hone:
     timeout-minutes: 45

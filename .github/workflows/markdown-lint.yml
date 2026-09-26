@@ -10,6 +10,7 @@ name: markdown-lint
   pull_request:
     branches:
       - master
+permissions: {}
 jobs:
   markdown-lint:
     timeout-minutes: 15

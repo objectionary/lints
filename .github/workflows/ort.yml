@@ -12,6 +12,7 @@ name: ort
       - master
 env:
   RUN_WORKFLOW: false
+permissions: {}
 jobs:
   ort:
     timeout-minutes: 15

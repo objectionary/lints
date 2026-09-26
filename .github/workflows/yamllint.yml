@@ -10,6 +10,7 @@ name: yamllint
   pull_request:
     branches:
       - master
+permissions: {}
 jobs:
   yamllint:
     timeout-minutes: 15

@@ -8,6 +8,7 @@ name: comment
     workflows: ["jmh"]
     types:
       - completed
+permissions: {}
 jobs:
   comment:
     timeout-minutes: 15
