@@ -1,7 +1,7 @@
 # Long live object
 
 An object located too far from where it's used is hard to keep in mind
-while reading the code in between. If more than five lines separate an
+while reading the code between. If more than five lines separate an
 attribute's declaration from the last line, in the same formation, that
 uses it, a warning is raised.
 

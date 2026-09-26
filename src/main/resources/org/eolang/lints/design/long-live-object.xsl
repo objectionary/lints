@@ -22,12 +22,7 @@
         <xsl:for-each select="o[@name and @base and @base != '∅' and @name != 'φ' and not(eo:test-name(@name))]">
           <xsl:variable name="name" select="@name"/>
           <xsl:variable name="declared" select="number(eo:lineno(@line))"/>
-          <xsl:variable name="usages" select="
-            $formation//o[
-              (@base = concat('ξ.', $name) or starts-with(@base, concat('ξ.', $name, '.')))
-              and not(ancestor::o[generate-id(.) != generate-id($formation) and eo:abstract(.)])
-              and not(ancestor-or-self::o[eo:test-name(@name)])
-            ]"/>
+          <xsl:variable name="usages" select="$formation//o[(@base = concat('ξ.', $name) or starts-with(@base, concat('ξ.', $name, '.'))) and not(ancestor::o[generate-id(.) != generate-id($formation) and eo:abstract(.)]) and not(ancestor-or-self::o[eo:test-name(@name)])]"/>
           <xsl:variable name="last" select="max($usages/number(eo:lineno(@line)))"/>
           <xsl:if test="$declared &gt; 0 and exists($usages) and $last - $declared &gt; $max">
             <defect>
