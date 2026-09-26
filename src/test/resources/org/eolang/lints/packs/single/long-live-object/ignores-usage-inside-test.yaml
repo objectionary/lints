@@ -14,4 +14,5 @@ input: |
     5 > e
     6 > g
     52 > r
-    f.eq 42 ++> can-add-f
+
+    f.eq 42 +> can-add-f
