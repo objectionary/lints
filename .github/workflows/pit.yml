@@ -7,6 +7,7 @@ name: pit
   push:
     branches:
       - master
+permissions: {}
 jobs:
   pit:
     timeout-minutes: 90

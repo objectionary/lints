@@ -10,6 +10,7 @@ name: motives
 concurrency:
   group: motives-${{ github.ref }}
   cancel-in-progress: true
+permissions: {}
 jobs:
   motives:
     timeout-minutes: 15

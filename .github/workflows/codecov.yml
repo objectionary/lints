@@ -10,6 +10,7 @@ name: codecov
 concurrency:
   group: codecov-${{ github.ref }}
   cancel-in-progress: true
+permissions: {}
 jobs:
   codecov:
     timeout-minutes: 15

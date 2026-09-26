@@ -12,6 +12,7 @@ name: up
 concurrency:
   group: up-${{ github.ref }}
   cancel-in-progress: true
+permissions: {}
 jobs:
   up:
     timeout-minutes: 15

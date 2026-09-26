@@ -9,6 +9,7 @@ name: jmh
       - master
 env:
   RUN_WORKFLOW: false
+permissions: {}
 jobs:
   jmh:
     timeout-minutes: 45

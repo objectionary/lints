@@ -10,6 +10,7 @@ name: xcop
   pull_request:
     branches:
       - master
+permissions: {}
 jobs:
   xcop:
     timeout-minutes: 15

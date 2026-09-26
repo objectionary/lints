@@ -1,0 +1,39 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+# yamllint disable rule:line-length
+name: permissions
+'on':
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+permissions: {}
+jobs:
+  permissions:
+    timeout-minutes: 15
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - run: |
+          error=false
+          for f in .github/workflows/*.yml; do
+            if [ "$(basename "$f")" = "permissions.yml" ]; then
+              continue
+            fi
+            if ! head -30 "$f" | grep -q '^permissions:'; then
+              echo "Missing 'permissions:' in $f"
+              error=true
+            fi
+          done
+          if [ "$error" = "true" ]; then
+            echo ""
+            echo "Every workflow must declare a top-level 'permissions:' block."
+            echo "Use 'permissions: {}' for read-only, or list explicit scopes."
+            exit 1
+          fi
+          echo "All workflows have a 'permissions:' declaration."

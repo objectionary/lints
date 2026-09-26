@@ -10,6 +10,7 @@ name: mvn
   pull_request:
     branches:
       - master
+permissions: {}
 jobs:
   mvn:
     strategy:
