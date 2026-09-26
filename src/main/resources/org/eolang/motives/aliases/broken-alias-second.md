@@ -1,6 +1,6 @@
 # Broken alias (second part)
 
-The second part of the `+alias` meta must contain only the fully qualified name (FQN)
+The second part of the `+alias` meta must contain the fully qualified name (FQN)
 of the object. Here is an example in EO:
 
 ```eo

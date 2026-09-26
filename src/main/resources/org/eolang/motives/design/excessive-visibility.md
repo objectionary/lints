@@ -3,7 +3,7 @@
 A method that no unit test refers to is not part of the object's
 public interface: nothing outside the object depends on it being callable
 from outside. Such a method should be declared private (obfuscated with
-`>>`) instead of public (`>`), so its scope matches how it is actually used.
+`>>`) instead of public (`>`), so its scope matches how the method actually gets used.
 
 Incorrect:
 
