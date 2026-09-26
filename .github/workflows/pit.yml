@@ -10,7 +10,7 @@ name: pit
 jobs:
   pit:
     timeout-minutes: 90
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-java@v6
@@ -27,7 +27,7 @@ jobs:
     name: Create issue on failure
     needs: pit
     if: failure() && github.event.pull_request == null
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - uses: jayqi/failed-build-issue-action@v1
         with:
