@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
-import org.cactoos.set.SetOf;
 
 /**
  * Is defect missing?
@@ -52,12 +51,7 @@ final class DefectMissing implements Function<String, Boolean> {
                 missing = !lines.stream().anyMatch(new UnlintInRange(unlint));
             }
         } else {
-            final Set<String> names;
-            if (this.defects != null) {
-                names = this.defects.keySet();
-            } else {
-                names = new SetOf<>();
-            }
+            final Set<String> names = this.defects.keySet();
             if (split.length > 1) {
                 missing = this.missingAtLine(unlint, lines, names);
             } else {
