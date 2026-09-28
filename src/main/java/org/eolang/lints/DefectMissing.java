@@ -45,7 +45,7 @@ final class DefectMissing implements Function<String, Boolean> {
         } else {
             final Set<String> names = this.defects.keySet();
             if (split.length > 1) {
-                missing = this.missingAtLine(unlint, lines, names);
+                missing = DefectMissing.missingAtLine(unlint, lines, names);
             } else {
                 missing = !names.contains(name);
             }
@@ -53,7 +53,7 @@ final class DefectMissing implements Function<String, Boolean> {
         return missing;
     }
 
-    private boolean missingAtLine(
+    private static boolean missingAtLine(
         final String unlint,
         final List<Integer> lines,
         final Set<String> names
