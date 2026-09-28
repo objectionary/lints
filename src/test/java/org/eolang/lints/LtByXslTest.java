@@ -13,6 +13,7 @@ import fixtures.BytecodeClass;
 import fixtures.EoProgram;
 import fixtures.FixPack;
 import fixtures.XtDefects;
+import fixtures.YamlPack;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -25,7 +26,6 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import matchers.DefectsMatcher;
 import org.cactoos.io.InputOf;
-import org.cactoos.io.ReaderOf;
 import org.cactoos.io.ResourceOf;
 import org.cactoos.map.MapOf;
 import org.cactoos.set.SetOf;
@@ -56,6 +56,7 @@ import org.yaml.snakeyaml.Yaml;
 
 /**
  * Test for {@link LtByXsl}.
+ *
  * @since 0.0.1
  * @checkstyle ClassFanOutComplexityCheck (500 lines)
  */
@@ -105,11 +106,10 @@ final class LtByXslTest {
         );
     }
 
-    @SuppressWarnings("JTCOP.RuleNotContainsTestWord")
     @Execution(ExecutionMode.CONCURRENT)
     @ParameterizedTest
     @ClasspathSource(value = "org/eolang/lints/packs/single/", glob = "**.yaml")
-    void testsAllLints(final String yaml, final String pack) {
+    void checksAllLints(final String yaml, final String pack) {
         MatcherAssert.assertThat(
             String.format(
                 "Pack '%s' doesn't tell the story as expected",
@@ -140,6 +140,21 @@ final class LtByXslTest {
                 .filter(Files::isRegularFile)
                 .allMatch(LtByXslTest::hasMatchingXsl),
             Matchers.equalTo(true)
+        );
+    }
+
+    @Test
+    @SuppressWarnings("StreamResourceLeak")
+    void catchesLostXsls() throws IOException {
+        MatcherAssert.assertThat(
+            "Every XSL lint must have a directory of YAML packs named after it",
+            Files.walk(Paths.get("src/main/resources/org/eolang/lints"))
+                .filter(Files::isRegularFile)
+                .filter(path -> path.toString().endsWith(".xsl"))
+                .map(path -> path.getFileName().toString().replaceAll("\\.xsl$", ""))
+                .filter(lint -> !LtByXslTest.hasPacks(lint))
+                .collect(Collectors.toList()),
+            Matchers.empty()
         );
     }
 
@@ -183,6 +198,27 @@ final class LtByXslTest {
                 .filter(Files::isRegularFile)
                 .allMatch(path -> path.toFile().toString().endsWith(".yaml")),
             Matchers.equalTo(true)
+        );
+    }
+
+    @Test
+    @SuppressWarnings("StreamResourceLeak")
+    void checksDocumentUsageIsJustified() throws IOException {
+        final List<Path> unjustified = Files.walk(
+            Paths.get("src/test/resources/org/eolang/lints/packs")
+        ).filter(Files::isRegularFile)
+            .filter(LtByXslTest.yamls())
+            .map(YamlPack::new)
+            .filter(pack -> !pack.documentUsageJustified())
+            .map(YamlPack::path)
+            .collect(Collectors.toList());
+        MatcherAssert.assertThat(
+            String.format(
+                "These packs use 'document' (raw XMIR) instead of 'input' (EO) without an 'xml-reason' key explaining why: %s",
+                unjustified
+            ),
+            unjustified,
+            Matchers.empty()
         );
     }
 
@@ -367,7 +403,7 @@ final class LtByXslTest {
                 .filter(Files::isRegularFile)
                 .filter(LtByXslTest.yamls()).map(
                     (Function<Path, Map<Path, Map<String, Object>>>)
-                        p -> new MapOf<>(p, new Yaml().load(new ReaderOf(p.toFile())))
+                        p -> new MapOf<>(p, LtByXslTest.yaml(p))
                 ).filter(
                     pack -> {
                         final Map<String, Object> yaml = pack.values().stream().findFirst().get();
@@ -388,7 +424,7 @@ final class LtByXslTest {
         ).filter(Files::isRegularFile)
             .filter(LtByXslTest.yamls()).map(
                 (Function<Path, Map<Path, Map<String, Object>>>)
-                    p -> new MapOf<>(p, new Yaml().load(new ReaderOf(p.toFile())))
+                    p -> new MapOf<>(p, LtByXslTest.yaml(p))
             )
             .filter(LtByXslTest::eligibleForValidation)
             .filter(pack -> !LtByXslTest.eoErrorFree(pack))
@@ -456,9 +492,19 @@ final class LtByXslTest {
         ).path("/object[errors]").findAny().isEmpty();
     }
 
+    private static Map<String, Object> yaml(final Path path) {
+        return new Yaml().load(new UncheckedText(new TextOf(path)).asString());
+    }
+
     @SuppressWarnings("UnnecessaryLambda")
     private static Predicate<Path> yamls() {
         return path -> path.toString().endsWith(".yaml");
+    }
+
+    private static boolean hasPacks(final String lint) {
+        return Files.isDirectory(
+            Paths.get("src/test/resources/org/eolang/lints/packs/single").resolve(lint)
+        );
     }
 
     @SuppressWarnings("StreamResourceLeak")

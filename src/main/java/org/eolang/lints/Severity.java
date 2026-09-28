@@ -6,6 +6,7 @@ package org.eolang.lints;
 
 /**
  * Severity.
+ *
  * @since 0.0.1
  */
 public enum Severity {
@@ -32,6 +33,7 @@ public enum Severity {
 
     /**
      * Ctor.
+     *
      * @param txt Name of it
      */
     Severity(final String txt) {
@@ -40,6 +42,7 @@ public enum Severity {
 
     /**
      * Mnemo of it.
+     *
      * @return Mnemo
      */
     public String mnemo() {
@@ -48,6 +51,7 @@ public enum Severity {
 
     /**
      * Parse it from the text.
+     *
      * @param text Text of it
      * @return Severity
      */

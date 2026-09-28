@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 
 /**
  * Lint for reserved names.
+ *
  * @since 0.0.44
  */
 final class LtReservedName implements Lint {
@@ -32,6 +33,7 @@ final class LtReservedName implements Lint {
 
     /**
      * Ctor.
+     *
      * @param names Reserved names
      */
     LtReservedName(final Map<String, String> names) {

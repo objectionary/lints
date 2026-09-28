@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Tests for {@link FxEmpty}.
+ *
  * @since 0.2.1
  */
 final class FxEmptyTest {

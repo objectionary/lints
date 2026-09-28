@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Tests for {@link LineOf}.
+ *
  * @since 0.0.50
  */
 final class LineOfTest {
@@ -41,6 +42,17 @@ final class LineOfTest {
         MatcherAssert.assertThat(
             "Non-numeric line should not throw",
             new LineOf(LineOfTest.element("<o name=\"x\" line=\"abc\"/>")).value(),
+            Matchers.equalTo(0)
+        );
+    }
+
+    @Test
+    void returnsZeroWhenLineExceedsIntRange() {
+        MatcherAssert.assertThat(
+            "Line exceeding Integer.MAX_VALUE should not throw",
+            new LineOf(
+                LineOfTest.element("<o name=\"x\" line=\"999999999999999999999999\"/>")
+            ).value(),
             Matchers.equalTo(0)
         );
     }

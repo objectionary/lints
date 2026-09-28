@@ -6,6 +6,7 @@ package fixtures;
 
 /**
  * Program size.
+ *
  * @since 0.0.45
  */
 public enum SourceSize {
@@ -62,6 +63,7 @@ public enum SourceSize {
 
     /**
      * Ctor.
+     *
      * @param txt Txt largeness
      * @param start Minimum size in executable lines
      * @param end Maximum size in executable lines
@@ -76,6 +78,7 @@ public enum SourceSize {
 
     /**
      * Source largeness.
+     *
      * @return Program type as string
      */
     public String type() {
@@ -84,6 +87,7 @@ public enum SourceSize {
 
     /**
      * Min allowed count of executable lines.
+     *
      * @return Lines count
      */
     public int minAllowed() {
@@ -92,6 +96,7 @@ public enum SourceSize {
 
     /**
      * Max allowed count of executable lines.
+     *
      * @return Lines count
      */
     public int maxAllowed() {
@@ -100,6 +105,7 @@ public enum SourceSize {
 
     /**
      * Java path.
+     *
      * @return Path to Java bytecode class
      */
     public String java() {

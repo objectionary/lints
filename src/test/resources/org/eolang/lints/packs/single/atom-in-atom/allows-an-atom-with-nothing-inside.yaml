@@ -1,0 +1,14 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/atoms/atom-in-atom.xsl
+defects: 0
+input: |
+  +architect yegor256@gmail.com
+  +home https://github.com/objectionary/eo
+  +package org.eolang
+  +version 0.0.0
+
+  [] > bytes
+    [] > eq /Q.boolean

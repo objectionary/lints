@@ -5,7 +5,10 @@
 package org.eolang.lints;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Locale;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.regex.Pattern;
@@ -31,6 +34,13 @@ final class Vocabulary {
     private static final Pattern KEBAB = Pattern.compile("-");
 
     /**
+     * Modal verbs that are followed by a base-form verb rather than
+     * being a verb themselves, e.g. "can-add-report" reads as
+     * "It can add report", where "add" (not "can") is the verb.
+     */
+    private static final Collection<String> MODALS = Collections.singletonList("can");
+
+    /**
      * Part-Of-Speech tagger.
      */
     private final POSTaggerME tagger;
@@ -42,20 +52,16 @@ final class Vocabulary {
 
     /**
      * Ctor.
+     *
      * @throws IOException If fails to load the POS model resource
      */
     Vocabulary() throws IOException {
-        this(
-            new POSModel(
-                new InputStreamOf(
-                    new ResourceOf("en-pos-perceptron.bin")
-                )
-            )
-        );
+        this(Vocabulary.model());
     }
 
     /**
      * Ctor.
+     *
      * @param mdl Part-Of-Speech model
      */
     Vocabulary(final POSModel mdl) {
@@ -64,6 +70,7 @@ final class Vocabulary {
 
     /**
      * Ctor.
+     *
      * @param pos Part-Of-Speech tagger
      */
     Vocabulary(final POSTaggerME pos) {
@@ -72,27 +79,43 @@ final class Vocabulary {
     }
 
     /**
-     * Check if the given kebab-case name starts with a verb in third-person singular.
+     * Check if the given kebab-case name starts with a verb in third-person singular,
+     * or with a modal verb followed by a verb in its base form.
      *
      * <p>The check uses the "It [verb]s" rule: "It generates-report" -> the
-     * first word must be tagged {@code VBZ} (verb, 3rd-person singular present).</p>
+     * first word must be tagged {@code VBZ} (verb, 3rd-person singular present).
+     * When the first word is the modal "can", the "It can [verb]" rule applies
+     * instead: "It can add-report" -> the second word must be tagged
+     * {@code VB} (verb, base form), since a modal is never itself conjugated
+     * in the third person.</p>
      *
      * @param name Kebab-case name without any leading {@code +} sigil
-     * @return True if the first word is a VBZ-tagged verb
+     * @return True if the name starts with a verb, plain or after a modal
      */
     boolean isVerb(final String name) {
         this.lock.lock();
         try {
-            return "VBZ".equals(
-                this.tagger.tag(
-                    Stream.concat(
-                        Stream.of("It"),
-                        Arrays.stream(Vocabulary.KEBAB.split(name))
-                    ).map(s -> s.toLowerCase(Locale.ROOT)).toArray(String[]::new)
-                )[1]
+            final String[] words = Arrays.stream(Vocabulary.KEBAB.split(name))
+                .map(s -> s.toLowerCase(Locale.ROOT))
+                .toArray(String[]::new);
+            final String[] tags = this.tagger.tag(
+                Stream.concat(Stream.of("It"), Arrays.stream(words)).toArray(String[]::new)
             );
+            final boolean verb;
+            if (words.length > 1 && Vocabulary.MODALS.contains(words[0])) {
+                verb = "VB".equals(tags[2]);
+            } else {
+                verb = "VBZ".equals(tags[1]);
+            }
+            return verb;
         } finally {
             this.lock.unlock();
+        }
+    }
+
+    private static POSModel model() throws IOException {
+        try (InputStream stream = new InputStreamOf(new ResourceOf("en-pos-perceptron.bin"))) {
+            return new POSModel(stream);
         }
     }
 }

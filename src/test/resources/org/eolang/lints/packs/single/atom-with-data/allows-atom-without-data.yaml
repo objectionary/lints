@@ -4,6 +4,7 @@
 sheets:
   - /org/eolang/lints/critical/atom-with-data.xsl
 defects: 0
+xml-reason: "not yet converted to an EO input test"
 document: |
   <object author="tests">
     <o name="obj">

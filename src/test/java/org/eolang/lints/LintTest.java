@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Tests for {@link Lint}.
+ *
  * @since 0.23
  */
 final class LintTest {

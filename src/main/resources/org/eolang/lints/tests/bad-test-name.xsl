@@ -17,9 +17,9 @@
         while a throwing test asserts that something fails, thus it is a
         negative one. Each kind has its own set of allowed prefixes.
         -->
-        <xsl:variable name="positive" as="xs:boolean" select="starts-with(@name, '+')"/>
+        <xsl:variable name="positive" as="xs:boolean" select="eo:positive-test(@name)"/>
         <xsl:variable name="regexp" as="xs:string" select="if ($positive) then '^(can|accepts)-' else '^(cannot|rejects|stops-on)-'"/>
-        <xsl:if test="not(matches(substring(@name, 2), $regexp))">
+        <xsl:if test="not(matches(eo:test-title(@name), $regexp))">
           <defect>
             <xsl:variable name="line" select="eo:lineno(@line)"/>
             <xsl:attribute name="line">
@@ -34,7 +34,7 @@
             <xsl:text>The name of the </xsl:text>
             <xsl:value-of select="if ($positive) then 'positive' else 'negative'"/>
             <xsl:text> test object </xsl:text>
-            <xsl:value-of select="eo:escape(substring(@name, 2))"/>
+            <xsl:value-of select="eo:escape(eo:test-title(@name))"/>
             <xsl:text> must start with one of the prefixes </xsl:text>
             <xsl:value-of select="eo:escape(if ($positive) then 'can-, accepts-' else 'cannot-, rejects-, stops-on-')"/>
           </defect>

@@ -10,18 +10,21 @@ import java.util.Collection;
 
 /**
  * A single checker for an {@code .xmir} file.
+ *
  * @since 0.0.1
  */
 public interface Lint {
 
     /**
      * Name of the lint.
+     *
      * @return Lint name
      */
     String name();
 
     /**
      * Find and return defects.
+     *
      * @param xmir The XMIR to analyze
      * @return Defects
      * @throws IOException if something went wrong
@@ -30,6 +33,7 @@ public interface Lint {
 
     /**
      * Returns motive for a lint, explaining why this lint exists.
+     *
      * @return Motive text about lint
      * @throws IOException if something went wrong
      */
@@ -38,6 +42,7 @@ public interface Lint {
     /**
      * Returns a fix for defects found by this lint.
      * If the lint does not support auto-fixing, return {@link FxEmpty}.
+     *
      * @return Fix for this lint
      */
     Fix fix();

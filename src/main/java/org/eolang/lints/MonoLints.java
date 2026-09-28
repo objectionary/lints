@@ -15,6 +15,7 @@ import org.cactoos.list.ListOf;
 /**
  * Mono lints.
  * Mono lints represent a list of lints for single XMIR scope.
+ *
  * @since 0.0.43
  */
 final class MonoLints extends IterableEnvelope<Lint> {

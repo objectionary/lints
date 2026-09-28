@@ -20,6 +20,7 @@ import org.cactoos.text.FormattedText;
  * All lints defined by XSLs.
  * Caches all XSL-based lint instances statically to avoid repeated
  * expensive parsing of XSL files during Program instantiation.
+ *
  * @since 0.1.0
  */
 final class PkByXsl extends IterableEnvelope<Lint> {

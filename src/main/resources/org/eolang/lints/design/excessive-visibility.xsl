@@ -24,7 +24,7 @@
             other expression, e.g. "(phrase "x").multi-words", which the
             parser resolves into a "."-prefixed postfix base.
             -->
-            <xsl:variable name="used" select="$tests//o[@base and matches(@base, concat('^(ξ(\.ρ)+\.|\.)', $method, '(\.|$)'))]"/>
+            <xsl:variable name="used" select="$tests//o[@base and matches(@base, concat('^(ξ(\.ρ)+\.|\.)', $attr, '(\.|$)'))]"/>
             <xsl:if test="empty($used)">
               <xsl:element name="defect">
                 <xsl:variable name="line" select="eo:lineno(@line)"/>
@@ -42,8 +42,8 @@
                 <xsl:attribute name="experimental">
                   <xsl:text>true</xsl:text>
                 </xsl:attribute>
-                <xsl:text>The method </xsl:text>
-                <xsl:value-of select="eo:escape($method)"/>
+                <xsl:text>The attribute </xsl:text>
+                <xsl:value-of select="eo:escape($attr)"/>
                 <xsl:text> is public, but no unit test refers to it; obfuscate it with &gt;&gt; instead of &gt;</xsl:text>
               </xsl:element>
             </xsl:if>

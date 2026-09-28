@@ -13,7 +13,7 @@
     <defects>
       <xsl:for-each select="/object//o[eo:test-name(@name)]">
         <xsl:variable name="regexp" select="'^[a-z][a-z0-9]*(-[a-z0-9]+)*$'"/>
-        <xsl:if test="not(matches(substring(@name, 2), $regexp))">
+        <xsl:if test="not(matches(eo:test-title(@name), $regexp))">
           <defect>
             <xsl:variable name="line" select="eo:lineno(@line)"/>
             <xsl:attribute name="line">

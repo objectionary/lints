@@ -5,6 +5,7 @@
 
 /**
  * Lints (style checkers).
+ *
  * @since 0.0.1
  */
 package org.eolang.lints;

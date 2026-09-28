@@ -14,6 +14,7 @@ import org.hamcrest.Matchers;
 
 /**
  * Hamcrest matcher for a single defect.
+ *
  * @since 0.0.34
  */
 public final class DefectMatcher extends BaseMatcher<Defect> {

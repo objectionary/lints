@@ -10,14 +10,18 @@ import java.util.regex.Pattern;
 
 /**
  * A strict {@code major.minor.patch} version.
+ *
  * @since 0.2.11
  */
 final class Version {
 
     /**
-     * Matches the numeric {@code major.minor.patch} core of a version string.
+     * Matches a complete version: the numeric {@code major.minor.patch}
+     * core, optionally followed by a SemVer pre-release or build suffix.
      */
-    private static final Pattern CORE = Pattern.compile("^(\\d+)\\.(\\d+)\\.(\\d+)");
+    private static final Pattern CORE = Pattern.compile(
+        "(\\d+)\\.(\\d+)\\.(\\d+)(?:[-+][0-9A-Za-z.+-]+)?"
+    );
 
     /**
      * Major version.
@@ -36,6 +40,7 @@ final class Version {
 
     /**
      * Ctor.
+     *
      * @param mjr Major version
      * @param mnr Minor version
      * @param pch Patch version
@@ -54,14 +59,20 @@ final class Version {
     static Optional<Version> parsed(final String text) {
         final Matcher matcher = Version.CORE.matcher(text.trim());
         final Optional<Version> result;
-        if (matcher.find()) {
-            result = Optional.of(
-                new Version(
-                    Integer.parseInt(matcher.group(1)),
-                    Integer.parseInt(matcher.group(2)),
-                    Integer.parseInt(matcher.group(3))
-                )
-            );
+        if (matcher.matches()) {
+            Optional<Version> parsed;
+            try {
+                parsed = Optional.of(
+                    new Version(
+                        Integer.parseInt(matcher.group(1)),
+                        Integer.parseInt(matcher.group(2)),
+                        Integer.parseInt(matcher.group(3))
+                    )
+                );
+            } catch (final NumberFormatException ignored) {
+                parsed = Optional.empty();
+            }
+            result = parsed;
         } else {
             result = Optional.empty();
         }

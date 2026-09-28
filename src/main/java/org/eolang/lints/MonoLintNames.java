@@ -12,6 +12,7 @@ import org.cactoos.list.ListOf;
  * Mono lint names.
  * Caches the lint names collection statically to avoid repeated
  * expensive iteration over MonoLints during Program instantiation.
+ *
  * @since 0.0.43
  */
 final class MonoLintNames extends IterableEnvelope<String> {

@@ -19,6 +19,7 @@ import org.xembly.Xembler;
 
 /**
  * XMIR document from Java bytecode.
+ *
  * @since 0.0.31
  */
 public final class BytecodeClass implements Scalar<XML> {
@@ -35,6 +36,7 @@ public final class BytecodeClass implements Scalar<XML> {
 
     /**
      * Constructor.
+     *
      * @param jclass Java class to transform
      */
     public BytecodeClass(final String jclass) {
@@ -43,6 +45,7 @@ public final class BytecodeClass implements Scalar<XML> {
 
     /**
      * Constructor.
+     *
      * @param nme Program name
      * @param jclass Java class to transform
      */

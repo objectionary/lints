@@ -22,6 +22,7 @@ import org.languagetool.rules.spelling.SpellingCheckRule;
 /**
  * Hamcrest matcher for a single piece of text, to make sure it's
  * grammatically valid.
+ *
  * @since 0.0.34
  */
 public final class GrammarMatcher extends BaseMatcher<String> {

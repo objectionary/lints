@@ -5,6 +5,7 @@ sheets:
   - /org/eolang/lints/critical/schema-is-absent.xsl
 defects: 0
 ignore-schema: true
+xml-reason: "not yet converted to an EO input test"
 document: |
   <object xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="https://www.eolang.org/xsd/XMIR-anything.xsd"

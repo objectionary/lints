@@ -1,0 +1,13 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/misc/sprintf-constant-args.xsl
+defects:
+  - severity: warning
+    line: 3
+input: |
+  [] > app
+    io.stdout > @
+      "%08.2f".printf
+        * "3.14"

@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Tests for {@link Defect}.
+ *
  * @since 0.0.12
  */
 final class DefectTest {

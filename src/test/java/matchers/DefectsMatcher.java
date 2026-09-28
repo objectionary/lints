@@ -16,6 +16,7 @@ import org.hamcrest.Matchers;
 
 /**
  * Hamcrest matcher for defects in XML.
+ *
  * @since 0.0.34
  */
 public final class DefectsMatcher extends BaseMatcher<XML> {

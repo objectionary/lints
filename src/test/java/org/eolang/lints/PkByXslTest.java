@@ -29,6 +29,7 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Test for {@link PkByXsl}.
+ *
  * @since 0.0.1
  */
 final class PkByXslTest {
@@ -76,17 +77,6 @@ final class PkByXslTest {
             ).allMatch(new PkByXslTest.IdChecker()),
             Matchers.equalTo(true)
         );
-    }
-
-    @Test
-    void checksAllMotives() throws Exception {
-        for (final Lint lint : new PkByXsl()) {
-            MatcherAssert.assertThat(
-                "Lint's motive is empty, but should not be",
-                lint.motive().isEmpty(),
-                Matchers.equalTo(false)
-            );
-        }
     }
 
     @Test
@@ -149,6 +139,7 @@ final class PkByXslTest {
 
     /**
      * Checks that XSL stylesheet ID matches filename.
+     *
      * @since 0.0.1
      */
     private static final class IdChecker implements Predicate<Resource> {

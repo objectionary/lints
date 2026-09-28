@@ -18,6 +18,7 @@ import org.openjdk.jmh.annotations.Warmup;
 
 /**
  * Benchmark for {@link Source}.
+ *
  * @since 0.0.34
  * @checkstyle NonStaticMethodCheck (100 lines)
  */
@@ -39,6 +40,7 @@ public class SourceBench {
     /**
      * Benchmark for XMIR scanning.
      * Scans XMIR.
+     *
      * @param state State
      */
     @Benchmark

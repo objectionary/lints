@@ -5,6 +5,7 @@ sheets:
   - /org/eolang/lints/critical/void-attributes-not-higher-than-other.xsl
 asserts:
   - /defects[count(defect[@context and @severity='critical'])=1]
+xml-reason: "non-void before void is a parse error (R-3.4.9)"
 document: |
   <object author="tests">
     <o name="foo">

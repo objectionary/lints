@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Test for {@link LtAlways}.
+ *
  * @since 0.0.1
  */
 final class LtAlwaysTest {

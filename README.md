@@ -185,7 +185,7 @@ You will need [Maven 3.3+](https://maven.apache.org) and Java 11+ installed.
 Also, if you have [xcop](https://github.com/yegor256/xcop) installed, make sure
 it is version `0.8.0`+.
 If you want the code to be checked using
-[error-prone](https://errorprone.info/), use Java 17+
+[error-prone](https://errorprone.info/), use Java 21+
 If you want to check [markdown files](src/main/resources/org/eolang/motives)
 using [vale](https://vale.sh/docs/install),
 just install it and make sure it's in your `PATH`

@@ -16,6 +16,7 @@ import org.cactoos.list.ListOf;
 
 /**
  * Lint that ignores linting if {@code +unlint} meta is present.
+ *
  * @since 0.0.1
  */
 final class LtUnlint implements Lint {
@@ -27,6 +28,7 @@ final class LtUnlint implements Lint {
 
     /**
      * Ctor.
+     *
      * @param lint The lint to decorate
      */
     LtUnlint(final Lint lint) {

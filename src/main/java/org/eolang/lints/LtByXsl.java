@@ -27,6 +27,7 @@ import org.cactoos.text.TextOf;
 
 /**
  * Lint by XSL.
+ *
  * @since 0.0.1
  */
 final class LtByXsl implements Lint {
@@ -53,6 +54,7 @@ final class LtByXsl implements Lint {
 
     /**
      * Ctor.
+     *
      * @param xsl Relative path of XSL
      */
     LtByXsl(final String xsl) {
@@ -71,6 +73,7 @@ final class LtByXsl implements Lint {
 
     /**
      * Ctor.
+     *
      * @param xsl XSL content
      * @param motive Motive document
      * @param fix Fix for this lint
@@ -91,6 +94,7 @@ final class LtByXsl implements Lint {
 
     /**
      * Ctor.
+     *
      * @param xml XSL stylesheet as XML
      * @param motive Motive document
      * @param fix Fix for this lint

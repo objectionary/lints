@@ -2,8 +2,8 @@
 # SPDX-License-Identifier: MIT
 ---
 lint: syntax-version
-asserts:
-  - /defects[count(defect[@severity='error'])=1]
+defects:
+  - severity: error
 input: |
   +syntax 999.0.0
   +spdx SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com

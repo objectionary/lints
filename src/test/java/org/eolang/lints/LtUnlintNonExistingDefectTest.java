@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Tests for {@link LtUnlintNonExistingDefect}.
+ *
  * @since 0.0.40
  */
 final class LtUnlintNonExistingDefectTest {
@@ -24,8 +25,7 @@ final class LtUnlintNonExistingDefectTest {
         MatcherAssert.assertThat(
             "Lints should not be executed when there are no +unlint metas",
             new LtUnlintNonExistingDefect(
-                new ListOf<>(new LtUnlintNonExistingDefectTest.Boom()),
-                new ListOf<>()
+                new ListOf<>(new LtUnlintNonExistingDefectTest.Boom())
             ).defects(
                 new EoProgram("org/eolang/lints/non-ascii-bar.eo").parse()
             ),
@@ -41,8 +41,7 @@ final class LtUnlintNonExistingDefectTest {
                 new ListOf<>(
                     new LtAsciiOnly(),
                     new LtUnlintNonExistingDefectTest.Boom()
-                ),
-                new ListOf<>()
+                )
             ).defects(
                 new EoProgram("org/eolang/lints/unlint-ascii-only-no-defect.eo").parse()
             ),
@@ -52,6 +51,7 @@ final class LtUnlintNonExistingDefectTest {
 
     /**
      * Fake lint that explodes when invoked.
+     *
      * @since 0.0.40
      */
     private static final class Boom implements Lint {

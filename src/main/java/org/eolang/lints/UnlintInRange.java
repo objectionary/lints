@@ -11,6 +11,7 @@ import org.cactoos.list.ListOf;
 
 /**
  * Does unlint in the range?
+ *
  * @since 0.0.54
  */
 final class UnlintInRange implements Predicate<Integer> {
@@ -22,6 +23,7 @@ final class UnlintInRange implements Predicate<Integer> {
 
     /**
      * Ctor.
+     *
      * @param unlt The unlint expression
      */
     UnlintInRange(final String unlt) {
