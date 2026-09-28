@@ -8,6 +8,7 @@ defects:
     line: 2
   - severity: critical
     line: 3
+xml-reason: "non-void before void is a parse error (R-3.4.9)"
 document: |
   <object author="tests">
     <o name="foo">

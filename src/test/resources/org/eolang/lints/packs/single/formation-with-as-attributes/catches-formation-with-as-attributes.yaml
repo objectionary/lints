@@ -5,6 +5,7 @@ sheets:
   - /org/eolang/lints/critical/formation-with-as-attributes.xsl
 defects:
   - severity: critical
+xml-reason: "@as only appears on vapplication args, which need @base"
 document: |
   <object author="tests">
     <o name='a'>

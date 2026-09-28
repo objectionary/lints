@@ -17,13 +17,48 @@ fi
 diff=$(mktemp)
 trap 'rm -f "${diff}"' EXIT
 
-awk -F, '
-  function unquote(s) { gsub(/"/, "", s); return s }
+awk '
+  function csv(line, fields,    i, c, field, quoted, count) {
+    field = ""
+    quoted = 0
+    count = 0
+    for (i = 1; i <= length(line); i++) {
+      c = substr(line, i, 1)
+      if (quoted) {
+        if (c == "\"") {
+          if (substr(line, i + 1, 1) == "\"") {
+            field = field "\""
+            i++
+          } else {
+            quoted = 0
+          }
+        } else {
+          field = field c
+        }
+      } else if (c == "\"") {
+        quoted = 1
+      } else if (c == ",") {
+        fields[++count] = field
+        field = ""
+      } else {
+        field = field c
+      }
+    }
+    fields[++count] = field
+    return count
+  }
   FNR == 1 { next }
-  NR == FNR { base[unquote($1)] = unquote($2); next }
+  NR == FNR {
+    delete fields
+    csv($0, fields)
+    base[fields[1]] = fields[2]
+    next
+  }
   {
-    id = unquote($1)
-    curr[id] = unquote($2)
+    delete fields
+    csv($0, fields)
+    id = fields[1]
+    curr[id] = fields[2]
     seen[id] = 1
   }
   END {
@@ -31,7 +66,7 @@ awk -F, '
     for (id in seen) {
       if ((id in base) && (id in curr)) {
         delta = curr[id] - base[id]
-        printf "%s\t%s\t%s\t%d\n", id, base[id], curr[id], delta
+        printf "%s\t%s\t%s\t%.3f\n", id, base[id], curr[id], delta
       } else if (id in curr) {
         printf "%s\t%s\t%s\t%s\n", id, "-", curr[id], "new"
       } else {
@@ -50,7 +85,7 @@ as_table() {
     elif [ "${delta}" = "removed" ]; then
       printf '| %s | %s ms | - | removed |\n' "${id}" "${before}"
     else
-      printf '| %s | %s ms | %s ms | %+d ms |\n' "${id}" "${before}" "${after}" "${delta}"
+      printf '| %s | %s ms | %s ms | %+.3f ms |\n' "${id}" "${before}" "${after}" "${delta}"
     fi
   done
 }
@@ -61,7 +96,7 @@ biggest_movers() {
   (
     set +o pipefail
     grep -v -e $'\tnew$' -e $'\tremoved$' "${diff}" \
-      | awk -F'\t' '{ d = $4; if (d < 0) { d = -d }; printf "%d\t%s\n", d, $0 }' \
+      | awk -F'\t' '{ d = $4; if (d < 0) { d = -d }; printf "%.3f\t%s\n", d, $0 }' \
       | sort -t $'\t' -k1,1 -n -r \
       | cut -f2- \
       | head -10

@@ -14,7 +14,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
-import org.cactoos.list.ListOf;
 
 /**
  * Lint for checking `+unlint` meta to suppress non-existing defects in single XMIR scope.
@@ -29,28 +28,12 @@ final class LtUnlintNonExistingDefect implements Lint {
     private final Iterable<Lint> lints;
 
     /**
-     * Lints to exclude.
-     */
-    private final Collection<String> excluded;
-
-    /**
      * Ctor.
      *
      * @param lnts Lints
      */
     LtUnlintNonExistingDefect(final Iterable<Lint> lnts) {
-        this(lnts, new ListOf<>());
-    }
-
-    /**
-     * Ctor.
-     *
-     * @param lnts Lints
-     * @param exld Lint names to exclude
-     */
-    LtUnlintNonExistingDefect(final Iterable<Lint> lnts, final Collection<String> exld) {
         this.lints = lnts;
-        this.excluded = exld;
     }
 
     @Override
@@ -71,7 +54,7 @@ final class LtUnlintNonExistingDefect implements Lint {
             messages = new ArrayList<>();
         } else {
             messages = unlints.stream().filter(
-                new DefectMissing(this.existing(unlints, xmir), this.excluded)::apply
+                new DefectMissing(this.existing(unlints, xmir))::apply
             ).flatMap(
                 unlint -> new Xnav(xmir.inner()).path(
                     String.format(

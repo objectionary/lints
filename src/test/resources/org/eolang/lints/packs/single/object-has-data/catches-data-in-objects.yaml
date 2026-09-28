@@ -8,6 +8,7 @@ asserts:
   - /defects[count(defect[@severity='critical'])=2]
   - /defects/defect[1][normalize-space()='Only object that have parent object with @base equal to "Φ.bytes" may contain data, while parent object with @base "Φ.x" provided']
   - /defects/defect[2][normalize-space()='Only object that have parent object with @base equal to "Φ.bytes" may contain data, while parent object with @base "Φ.y" provided']
+xml-reason: "data with wrong/missing @base is unreachable via valid EO parse"
 document: |
   <object author="tests">
     <o name="a">

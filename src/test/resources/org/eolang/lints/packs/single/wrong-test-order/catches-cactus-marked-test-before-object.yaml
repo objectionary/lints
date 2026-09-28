@@ -7,6 +7,7 @@ asserts:
   - /defects[count(defect[@severity='warning' and @line='3'])=1]
   - /defects/defect[contains(text(), '"runs-program"')]
 ignore-schema: true
+xml-reason: "vars-float-up always sorts tests after other attrs"
 document: |
   <object author="tests">
     <o line="1" name="foo">

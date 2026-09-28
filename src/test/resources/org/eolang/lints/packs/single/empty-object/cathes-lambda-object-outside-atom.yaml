@@ -5,6 +5,7 @@ sheets:
   - /org/eolang/lints/errors/empty-object.xsl
 defects:
   - severity: warning
+xml-reason: "a λ marker outside an atom is unreachable via valid EO parse"
 document: |
   <object author="tests">
     <o name="λ"/>

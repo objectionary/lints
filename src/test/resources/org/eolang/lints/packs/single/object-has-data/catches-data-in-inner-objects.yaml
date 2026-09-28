@@ -6,6 +6,7 @@ sheets:
 defects:
   - severity: critical
     line: 2
+xml-reason: "data with wrong/missing @base is unreachable via valid EO parse"
 document: |
   <object author="tests">
     <o base="Φ.foo" name="o" line="1">

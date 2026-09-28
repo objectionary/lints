@@ -15,8 +15,16 @@
       <xsl:for-each select="//o[eo:abstract(.) and @name]">
         <xsl:variable name="tests" select="o[eo:test-name(@name)]"/>
         <xsl:if test="exists($tests)">
-          <xsl:for-each select="o[@name and @base and @base != '∅' and @name != 'φ' and not(@local) and not(eo:test-name(@name))]">
-            <xsl:variable name="method" select="@name"/>
+          <!--
+          A number, string, byte array, boolean or tuple bound directly to
+          the attribute is a constant, not a method: there is nothing to
+          call on it from outside, so it is never "excessively visible" in
+          the sense this rule is about, and obfuscating it with ">>" would
+          only hide a value other files may legitimately read.
+          -->
+          <xsl:variable name="literals" select="('Φ.number', 'Φ.string', 'Φ.bytes', 'Φ.true', 'Φ.false', 'Φ.tuple')"/>
+          <xsl:for-each select="o[@name and @base and @base != '∅' and not(@base = $literals) and @name != 'φ' and not(@local) and not(eo:test-name(@name))]">
+            <xsl:variable name="attr" select="@name"/>
             <!--
             A test refers to a sibling method either by calling it on
             itself, which the parser resolves into a "ξ.ρ."-prefixed chain
@@ -24,7 +32,7 @@
             other expression, e.g. "(phrase "x").multi-words", which the
             parser resolves into a "."-prefixed postfix base.
             -->
-            <xsl:variable name="used" select="$tests//o[@base and matches(@base, concat('^(ξ(\.ρ)+\.|\.)', $method, '(\.|$)'))]"/>
+            <xsl:variable name="used" select="$tests//o[@base and matches(@base, concat('^(ξ(\.ρ)+\.|\.)', $attr, '(\.|$)'))]"/>
             <xsl:if test="empty($used)">
               <xsl:element name="defect">
                 <xsl:variable name="line" select="eo:lineno(@line)"/>
@@ -42,8 +50,8 @@
                 <xsl:attribute name="experimental">
                   <xsl:text>true</xsl:text>
                 </xsl:attribute>
-                <xsl:text>The method </xsl:text>
-                <xsl:value-of select="eo:escape($method)"/>
+                <xsl:text>The attribute </xsl:text>
+                <xsl:value-of select="eo:escape($attr)"/>
                 <xsl:text> is public, but no unit test refers to it; obfuscate it with &gt;&gt; instead of &gt;</xsl:text>
               </xsl:element>
             </xsl:if>
