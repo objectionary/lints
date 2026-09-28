@@ -4,7 +4,6 @@
  */
 package org.eolang.lints;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -23,19 +22,12 @@ final class DefectMissing implements Function<String, Boolean> {
     private final Map<String, List<Integer>> defects;
 
     /**
-     * Excluded lints.
-     */
-    private final Collection<String> excluded;
-
-    /**
      * Ctor.
      *
      * @param present Present defects
-     * @param exld Excluded lints
      */
-    DefectMissing(final Map<String, List<Integer>> present, final Collection<String> exld) {
+    DefectMissing(final Map<String, List<Integer>> present) {
         this.defects = present;
-        this.excluded = exld;
     }
 
     @Override
@@ -46,7 +38,7 @@ final class DefectMissing implements Function<String, Boolean> {
         final List<Integer> lines = this.defects.get(name);
         if (unlint.matches(String.format("%s:\\d+-\\d+", name))) {
             if (lines == null) {
-                missing = !this.excluded.contains(name);
+                missing = true;
             } else {
                 missing = !lines.stream().anyMatch(new UnlintInRange(unlint));
             }
@@ -55,7 +47,7 @@ final class DefectMissing implements Function<String, Boolean> {
             if (split.length > 1) {
                 missing = this.missingAtLine(unlint, lines, names);
             } else {
-                missing = !names.contains(name) && !this.excluded.contains(name);
+                missing = !names.contains(name);
             }
         }
         return missing;
@@ -73,6 +65,6 @@ final class DefectMissing implements Function<String, Boolean> {
             missing = !unlint.matches(String.format("%s:\\d+", name))
                 || !lines.contains(Integer.parseInt(split[1]));
         }
-        return missing && !this.excluded.contains(name);
+        return missing;
     }
 }

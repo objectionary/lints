@@ -25,8 +25,7 @@ final class LtUnlintNonExistingDefectTest {
         MatcherAssert.assertThat(
             "Lints should not be executed when there are no +unlint metas",
             new LtUnlintNonExistingDefect(
-                new ListOf<>(new LtUnlintNonExistingDefectTest.Boom()),
-                new ListOf<>()
+                new ListOf<>(new LtUnlintNonExistingDefectTest.Boom())
             ).defects(
                 new EoProgram("org/eolang/lints/non-ascii-bar.eo").parse()
             ),
@@ -42,8 +41,7 @@ final class LtUnlintNonExistingDefectTest {
                 new ListOf<>(
                     new LtAsciiOnly(),
                     new LtUnlintNonExistingDefectTest.Boom()
-                ),
-                new ListOf<>()
+                )
             ).defects(
                 new EoProgram("org/eolang/lints/unlint-ascii-only-no-defect.eo").parse()
             ),

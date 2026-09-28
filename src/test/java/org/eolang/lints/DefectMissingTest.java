@@ -23,7 +23,7 @@ final class DefectMissingTest {
         MatcherAssert.assertThat(
             "Input should not match, since defect is present",
             new DefectMissing(
-                new MapOf<>(new MapEntry<>("foo", new ListOf<>(42, 43))), new ListOf<>()
+                new MapOf<>(new MapEntry<>("foo", new ListOf<>(42, 43)))
             ).apply("foo:42"),
             Matchers.equalTo(false)
         );
@@ -34,7 +34,7 @@ final class DefectMissingTest {
         MatcherAssert.assertThat(
             "Input should match",
             new DefectMissing(
-                new MapOf<>(new MapEntry<>("bar", new ListOf<>(42, 43))), new ListOf<>()
+                new MapOf<>(new MapEntry<>("bar", new ListOf<>(42, 43)))
             ).apply("foo:52"),
             Matchers.equalTo(true)
         );
@@ -44,7 +44,7 @@ final class DefectMissingTest {
     void returnsTrueForNonNumericLine() {
         MatcherAssert.assertThat(
             "Non-numeric line selector should be reported as missing",
-            new DefectMissing(new MapOf<>("foo", new ListOf<>(42)), new ListOf<>())
+            new DefectMissing(new MapOf<>("foo", new ListOf<>(42)))
                 .apply("foo:not-a-number"),
             Matchers.equalTo(true)
         );
@@ -54,7 +54,7 @@ final class DefectMissingTest {
     void returnsTrueWhenLineOutOfRange() {
         MatcherAssert.assertThat(
             "Defect should be missing, but it was not",
-            new DefectMissing(new MapOf<>("app", new ListOf<>(1, 3, 5)), new ListOf<>()).apply(
+            new DefectMissing(new MapOf<>("app", new ListOf<>(1, 3, 5))).apply(
                 "app:6-15"
             ),
             Matchers.equalTo(true)
@@ -65,7 +65,7 @@ final class DefectMissingTest {
     void returnsFalseWhenLineInTheRange() {
         MatcherAssert.assertThat(
             "Defect should not be missing, but it was",
-            new DefectMissing(new MapOf<>("div-by-zero", new ListOf<>(3, 6)), new ListOf<>())
+            new DefectMissing(new MapOf<>("div-by-zero", new ListOf<>(3, 6)))
                 .apply("div-by-zero:3-6"),
             Matchers.equalTo(false)
         );
@@ -75,7 +75,7 @@ final class DefectMissingTest {
     void returnsFalseWhenRangeCoversTheLine() {
         MatcherAssert.assertThat(
             "Defect should not be missing, but it was",
-            new DefectMissing(new MapOf<>("something", new ListOf<>(3, 6)), new ListOf<>())
+            new DefectMissing(new MapOf<>("something", new ListOf<>(3, 6)))
                 .apply("something:3-10"),
             Matchers.equalTo(false)
         );
@@ -85,7 +85,7 @@ final class DefectMissingTest {
     void returnsFalseWhenSomeLineIsInTheRange() {
         MatcherAssert.assertThat(
             "Defect should not be missing, since at least one defect is covered by the range",
-            new DefectMissing(new MapOf<>("noisy-lint", new ListOf<>(4, 6)), new ListOf<>())
+            new DefectMissing(new MapOf<>("noisy-lint", new ListOf<>(4, 6)))
                 .apply("noisy-lint:6-10"),
             Matchers.equalTo(false)
         );
@@ -95,18 +95,8 @@ final class DefectMissingTest {
     void returnsTrueWhenRangeReferencesAbsentLint() {
         MatcherAssert.assertThat(
             "Defect should be missing when range pattern references an absent lint",
-            new DefectMissing(new MapOf<>(), new ListOf<>()).apply("ascii-only:1-5"),
+            new DefectMissing(new MapOf<>()).apply("ascii-only:1-5"),
             Matchers.equalTo(true)
-        );
-    }
-
-    @Test
-    void returnsFalseWhenRangeReferencesExcludedAbsentLint() {
-        MatcherAssert.assertThat(
-            "Defect should not be missing when the absent lint is excluded",
-            new DefectMissing(new MapOf<>(), new ListOf<>("ascii-only"))
-                .apply("ascii-only:1-5"),
-            Matchers.equalTo(false)
         );
     }
 }
