@@ -7,6 +7,8 @@ name: pit
   push:
     branches:
       - master
+permissions:
+  contents: read
 jobs:
   pit:
     timeout-minutes: 90
@@ -24,6 +26,8 @@ jobs:
           restore-keys: ubuntu-jdk-21-maven-
       - run: mvn clean install "-Ppit"
   report:
+    permissions:
+      issues: write
     name: Create issue on failure
     needs: pit
     if: failure() && github.event.pull_request == null

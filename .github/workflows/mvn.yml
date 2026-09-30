@@ -10,6 +10,8 @@ name: mvn
   pull_request:
     branches:
       - master
+permissions:
+  contents: read
 jobs:
   mvn:
     strategy:
@@ -40,6 +42,7 @@ jobs:
     if: ${{ always() && github.ref == 'refs/heads/master' }}
     permissions:
       actions: read
+      contents: read
     steps:
       - uses: yegor256/terald-action@master
         with:

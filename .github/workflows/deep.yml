@@ -10,6 +10,8 @@ name: deep
   pull_request:
     branches:
       - master
+permissions:
+  contents: read
 jobs:
   deep:
     timeout-minutes: 30
