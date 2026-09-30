@@ -47,7 +47,7 @@ jobs:
       actions: read
       contents: read
     steps:
-      - uses: yegor256/terald-action@0.1.0
+      - uses: yegor256/terald-action@741ad5d9e54537cc72c5a9a31f71be3163b6fd59 # 0.1.0
         with:
           token: ${{ secrets.TELEGRAM_TOKEN }}
           chat: ${{ secrets.TELEGRAM_CHAT }}
