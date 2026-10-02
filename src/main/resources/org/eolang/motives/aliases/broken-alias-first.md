@@ -1,6 +1,6 @@
 # Broken alias (first part)
 
-The first part of the `+alias` meta must contain only the object name,
+The first part of the `+alias` meta must contain the object name,
 not its fully qualified name (FQN). Here is an example in EO:
 
 ```eo
@@ -16,7 +16,7 @@ Here, the `stdout` part of the `+alias` meta is the name of the
 object used later in the code. It will automatically be replaced
 with `org.eolang.io.stdout`.
 
-This error may also indicate incorrect usage of the `<meta>` element
+This error may also signal incorrect usage of the `<meta>` element
 in XMIR. The alias definition should look like this in XMIR:
 
 ```xml
