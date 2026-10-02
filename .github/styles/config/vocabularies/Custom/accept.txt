@@ -23,3 +23,5 @@ inlined
 [Uu]noptimizable
 [Dd]ataiz(e|es|ed|ation)
 [Ss]yscall(s)?
+[Cc]yclomatic
+[Bb]oolean(s)?
