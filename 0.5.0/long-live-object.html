@@ -1,0 +1,40 @@
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>lints</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="shortcut icon" href="https://www.yegor256.com/images/books/elegant-objects/cactus.png"/><link href="https://cdn.jsdelivr.net/npm/tacit-css@1.8.1/dist/tacit-css.min.css" rel="stylesheet" integrity="sha384-JbsYayq5Otme+gjh/pl7NrA/qMIU0bxbdzKvYqQGHvvag0lHhM62TQnDzz+EyzXj" crossorigin="anonymous"/>
+</head>
+<body><section><article>
+<h1 id="long-live-object">Long live object</h1>
+<p>An object located too far from where it’s used is hard to keep in
+mind while reading the code between. If more than five lines separate an
+attribute’s declaration from the last line, in the same formation, that
+uses it, a warning is raised.</p>
+<p>Incorrect:</p>
+<pre class="eo"><code># Foo.
+[] &gt; app
+  foo 42 &gt; f
+  1 &gt; a
+  2 &gt; b
+  3 &gt; c
+  4 &gt; d
+  5 &gt; e
+  6 &gt; g
+  52.plus f &gt; r</code></pre>
+<p>Here, <code>f</code> is declared on the first line but not used until
+the eighth, seven lines away. It should be moved closer to
+<code>52.plus f &gt; r</code>, or extracted into its own object.</p>
+<p>Correct:</p>
+<pre class="eo"><code># Foo.
+[] &gt; app
+  1 &gt; a
+  2 &gt; b
+  3 &gt; c
+  4 &gt; d
+  5 &gt; e
+  6 &gt; g
+  foo 42 &gt; f
+  52.plus f &gt; r</code></pre>
+<p>Published on Fri Oct  2 12:30:32 UTC 2026.</p>
+</article></section></body></html>

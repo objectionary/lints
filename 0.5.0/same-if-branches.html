@@ -1,0 +1,27 @@
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>lints</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="shortcut icon" href="https://www.yegor256.com/images/books/elegant-objects/cactus.png"/><link href="https://cdn.jsdelivr.net/npm/tacit-css@1.8.1/dist/tacit-css.min.css" rel="stylesheet" integrity="sha384-JbsYayq5Otme+gjh/pl7NrA/qMIU0bxbdzKvYqQGHvvag0lHhM62TQnDzz+EyzXj" crossorigin="anonymous"/>
+</head>
+<body><section><article>
+<h1 id="same-if-branches">Same if branches</h1>
+<p>Both branches of an <code>if</code> should not run the same code.
+When the true branch and the false branch do the same thing, the
+condition makes no difference to the outcome. The duplicated code also
+hides that fact from the reader.</p>
+<p>Incorrect:</p>
+<pre class="eo"><code>[x] &gt; foo
+  if. &gt; @
+    x.gt 0
+    stdout &quot;Boom!&quot;
+    stdout &quot;Boom!&quot;</code></pre>
+<p>Here, <code>foo</code> prints <code>"Boom!"</code> no matter what
+<code>x</code> is, since both branches of the <code>if</code> are
+identical. The condition should be removed and the shared code moved
+before it:</p>
+<pre class="eo"><code>[x] &gt; foo
+  stdout &quot;Boom!&quot; &gt; @</code></pre>
+<p>Published on Fri Oct  2 12:30:33 UTC 2026.</p>
+</article></section></body></html>

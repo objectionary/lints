@@ -1,0 +1,50 @@
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>lints</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="shortcut icon" href="https://www.yegor256.com/images/books/elegant-objects/cactus.png"/><link href="https://cdn.jsdelivr.net/npm/tacit-css@1.8.1/dist/tacit-css.min.css" rel="stylesheet" integrity="sha384-JbsYayq5Otme+gjh/pl7NrA/qMIU0bxbdzKvYqQGHvvag0lHhM62TQnDzz+EyzXj" crossorigin="anonymous"/>
+</head>
+<body><section><article>
+<h1 id="misplaced-dataization">Misplaced dataization</h1>
+<p>The cache of a <code>!</code> lives in the formation that holds it.
+When a nested formation dataizes an object of the formation around it,
+every copy of the nested formation starts with an empty cache and
+dataizes the same object again. A recursive formation makes a new copy
+on every step, so the delimiter below is dataized once per step, though
+it never changes:</p>
+<pre class="eo"><code>[^ items] &gt; joined
+  [^ acc tup] &gt;&gt; with-delimiter
+    if. &gt; @
+      tup.length.eq 0
+      acc
+      ^.with-delimiter
+        concat.
+          concat. (dataized tup.head) ^.^!
+          acc
+        tup.tail</code></pre>
+<p>The lint warns when two things hold. First, the target of a
+<code>!</code> or of a <code>dataized</code> is a plain chain of
+attribute reads that goes through <code>^</code>. Second, the formation
+that holds it sits inside another formation of the same file. Move the
+dataization up into the enclosing formation, where it runs once per
+call:</p>
+<pre class="eo"><code>[^ items] &gt; joined
+  ^ &gt;&gt; delimiter!
+  [^ acc tup] &gt;&gt; with-delimiter
+    if. &gt; @
+      tup.length.eq 0
+      acc
+      ^.with-delimiter
+        concat.
+          concat. (dataized tup.head) ^.delimiter
+          acc
+        tup.tail</code></pre>
+<p>The lint stays silent on an application, such as
+<code>^.sys.accept &gt;&gt;!</code> with its arguments, because a
+syscall must run on every call, and moving it up would run it only once.
+It also stays silent on a global, such as <code>eol!</code>, on a
+top-level formation, whose enclosing object lives in another file, and
+inside a test.</p>
+<p>Published on Fri Oct  2 12:30:32 UTC 2026.</p>
+</article></section></body></html>

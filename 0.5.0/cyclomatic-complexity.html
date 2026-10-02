@@ -1,0 +1,61 @@
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>lints</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="shortcut icon" href="https://www.yegor256.com/images/books/elegant-objects/cactus.png"/><link href="https://cdn.jsdelivr.net/npm/tacit-css@1.8.1/dist/tacit-css.min.css" rel="stylesheet" integrity="sha384-JbsYayq5Otme+gjh/pl7NrA/qMIU0bxbdzKvYqQGHvvag0lHhM62TQnDzz+EyzXj" crossorigin="anonymous"/>
+</head>
+<body><section><article>
+<h1 id="cyclomatic-complexity">Cyclomatic complexity</h1>
+<p>EO has no loops or <code>goto</code>. The only decision points a
+formation can have are a standalone <code>while</code> and an
+<code>if</code>, <code>and</code>, or <code>or</code> dispatched on
+something. Whether the receiver of such a dispatch is a boolean, as
+opposed to some other object with a method of the same name, cannot be
+decided without type inference. So this lint counts any dispatch named
+<code>if</code>, <code>and</code>, or <code>or</code>, together with a
+standalone <code>while</code>, as a decision point. This is a heuristic,
+and the defect is marked <code>experimental</code>.</p>
+<p>The cyclomatic complexity of a formation is one plus the number of
+its own decision points. A decision point that belongs to a nested
+formation counts for that formation, not for the one around it. When the
+complexity exceeds ten, a warning is raised.</p>
+<p>Incorrect:</p>
+<pre class="eo"><code># Foo.
+[x] &gt; foo
+  x.eq 1 &gt; c1
+  x.eq 2 &gt; c2
+  x.eq 3 &gt; c3
+  x.eq 4 &gt; c4
+  x.eq 5 &gt; c5
+  x.eq 6 &gt; c6
+  x.eq 7 &gt; c7
+  x.eq 8 &gt; c8
+  x.eq 9 &gt; c9
+  x.eq 10 &gt; c10
+  c1.if &gt; @
+    1
+    c2.if
+      2
+      c3.if
+        3
+        c4.if
+          4
+          c5.if
+            5
+            c6.if
+              6
+              c7.if
+                7
+                c8.if
+                  8
+                  c9.if
+                    9
+                    c10.if
+                      10
+                      0</code></pre>
+<p>Here, <code>foo</code> has eleven <code>if</code> dispatches, a
+cyclomatic complexity of twelve. It should be refactored, for example by
+extracting some branches into their own objects.</p>
+<p>Published on Fri Oct  2 12:30:31 UTC 2026.</p>
+</article></section></body></html>
