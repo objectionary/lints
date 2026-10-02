@@ -1,0 +1,14 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/design/misplaced-dataization.xsl
+defects: 0
+input: |
+  [] > foo
+    42 > bar
+
+    [] +> reads-bar-once
+      eq. > @
+        ^.bar!
+        42

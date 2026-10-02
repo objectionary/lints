@@ -1,0 +1,19 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+# yamllint disable rule:line-length
+sheets:
+  - /org/eolang/lints/design/misplaced-dataization.xsl
+asserts:
+  - /defects[count(defect)=1]/defect[@line='8' and @severity='warning' and normalize-space()='The dataization in "with-delimiter" reads only objects outside of it and runs again in every copy, move it up into "joined"']
+input: |
+  [^ items] > joined
+    [^ acc tup] >> with-delimiter
+      if. > @
+        tup.length.eq 0
+        acc
+        ^.with-delimiter
+          concat.
+            concat. (dataized tup.head) ^.^!
+            acc
+          tup.tail

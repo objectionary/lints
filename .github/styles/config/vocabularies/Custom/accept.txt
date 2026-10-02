@@ -21,3 +21,5 @@ inlined
 [Ff]orma(e)?
 [Tt]ranspile(d|s|r)?
 [Uu]noptimizable
+[Dd]ataiz(e|es|ed|ation)
+[Ss]yscall(s)?
