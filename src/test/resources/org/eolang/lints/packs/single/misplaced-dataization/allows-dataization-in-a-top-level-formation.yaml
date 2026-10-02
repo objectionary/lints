@@ -1,0 +1,11 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/design/misplaced-dataization.xsl
+defects: 0
+input: |
+  [^ substring] > contains
+    ^ >> txt!
+    ^.as-bytes >> mine!
+    txt.eq substring > @

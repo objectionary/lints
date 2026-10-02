@@ -1,0 +1,13 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+# yamllint disable rule:line-length
+sheets:
+  - /org/eolang/lints/design/misplaced-dataization.xsl
+asserts:
+  - /defects/defect[normalize-space()='The dataization in "climb" reads only objects outside of it and runs again in every copy, move it up into "node"']
+input: |
+  [] > tree
+    [^ left] > node
+      [^ depth] >> climb
+        depth.lt ^.^.height! > @
