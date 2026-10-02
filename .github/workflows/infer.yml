@@ -10,6 +10,8 @@ name: infer
   pull_request:
     branches:
       - master
+permissions:
+  contents: read
 jobs:
   infer:
     timeout-minutes: 15
