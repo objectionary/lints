@@ -1,0 +1,14 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/design/excessive-visibility.xsl
+defects: 0
+input: |
+  [x] > app
+    y.times > @
+      x.plus 1 >> y!
+
+    eq. ++> can-square-the-successor
+      app 1
+      4

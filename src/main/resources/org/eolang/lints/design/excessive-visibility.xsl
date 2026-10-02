@@ -23,7 +23,7 @@
           only hide a value other files may legitimately read.
           -->
           <xsl:variable name="literals" select="('Φ.number', 'Φ.string', 'Φ.bytes', 'Φ.true', 'Φ.false', 'Φ.tuple')"/>
-          <xsl:for-each select="o[@name and @base and @base != '∅' and not(@base = $literals) and @name != 'φ' and not(@local) and not(eo:test-name(@name))]">
+          <xsl:for-each select="o[@name and @base and @base != '∅' and not(@base = $literals) and @name != 'φ' and not(contains(@name, '🌵')) and not(eo:test-name(@name))]">
             <xsl:variable name="attr" select="@name"/>
             <!--
             A test refers to a sibling method either by calling it on
