@@ -21,3 +21,5 @@ inlined
 [Ff]orma(e)?
 [Tt]ranspile(d|s|r)?
 [Uu]noptimizable
+[Cc]yclomatic
+[Bb]oolean(s)?
