@@ -32,8 +32,14 @@ final class UnlintInRange implements Predicate<Integer> {
 
     @Override
     public boolean test(final Integer line) {
-        return line >= Integer.parseInt(this.range().get(0))
-            && line <= Integer.parseInt(this.range().get(1));
+        boolean result = false;
+        try {
+            result = line >= Integer.parseInt(this.range().get(0))
+                && line <= Integer.parseInt(this.range().get(1));
+        } catch (final NumberFormatException exception) {
+            // The incorrect-unlint lint reports this range.
+        }
+        return result;
     }
 
     private List<String> range() {

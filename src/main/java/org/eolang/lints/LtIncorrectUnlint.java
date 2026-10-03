@@ -8,6 +8,7 @@ import com.github.lombrozo.xnav.Xnav;
 import com.jcabi.xml.XML;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import org.cactoos.set.SetOf;
 
@@ -90,8 +91,30 @@ final class LtIncorrectUnlint implements Lint {
     }
 
     private static boolean invalid(final String tail, final String name) {
-        return !tail.equals(name)
-            && !tail.matches(String.format("%s:\\d+", name))
-            && !tail.matches(String.format("%s:\\d+-\\d+", name));
+        final boolean invalid;
+        if (tail.equals(name)) {
+            invalid = false;
+        } else {
+            final String quoted = Pattern.quote(name);
+            if (tail.matches(String.format("%s:\\d+", quoted))) {
+                invalid = !LtIncorrectUnlint.fitsInt(tail.substring(name.length() + 1));
+            } else if (tail.matches(String.format("%s:\\d+-\\d+", quoted))) {
+                final String[] bounds = tail.substring(name.length() + 1).split("-", -1);
+                invalid = !LtIncorrectUnlint.fitsInt(bounds[0])
+                    || !LtIncorrectUnlint.fitsInt(bounds[1]);
+            } else {
+                invalid = true;
+            }
+        }
+        return invalid;
+    }
+
+    private static boolean fitsInt(final String value) {
+        try {
+            Integer.parseInt(value);
+            return true;
+        } catch (final NumberFormatException exception) {
+            return false;
+        }
     }
 }
