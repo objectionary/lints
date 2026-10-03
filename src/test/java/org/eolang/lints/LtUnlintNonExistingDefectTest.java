@@ -9,6 +9,7 @@ import com.jcabi.xml.XMLDocument;
 import fixtures.EoProgram;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.stream.Collectors;
 import org.cactoos.list.ListOf;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -55,9 +56,8 @@ final class LtUnlintNonExistingDefectTest {
         MatcherAssert.assertThat(
             "A malformed suppression should produce a defect instead of breaking XPath",
             new LtUnlintNonExistingDefect(new ListOf<>()).defects(
-                new XMLDocument(
-                    "<object><metas><meta line='1'><head>unlint</head>"
-                        + "<tail>missing\"and'bad</tail></meta></metas></object>"
+                LtUnlintNonExistingDefectTest.unlint(
+                    "missing\"and'bad", "<meta line='1'>"
                 )
             ),
             Matchers.hasSize(1)
@@ -66,23 +66,25 @@ final class LtUnlintNonExistingDefectTest {
 
     @Test
     void reportsMissingDefectWhenUnlintMetaHasNoLine() throws IOException {
-        final Collection<Defect> defects = new LtUnlintNonExistingDefect(
-            new ListOf<>()
-        ).defects(
-            new XMLDocument(
-                "<object><metas><meta><head>unlint</head><tail>ascii-only:999</tail>"
-                    + "</meta></metas></object>"
-            )
-        );
         MatcherAssert.assertThat(
             "A suppression without a line should still report its missing defect",
-            defects,
-            Matchers.hasSize(1)
+            new LtUnlintNonExistingDefect(new ListOf<>()).defects(
+                LtUnlintNonExistingDefectTest.unlint("ascii-only:999", "<meta>")
+            ).stream().map(Defect::line).collect(Collectors.toList()),
+            Matchers.contains(0)
         );
-        MatcherAssert.assertThat(
-            "Missing source line falls back to line zero",
-            defects.iterator().next().line(),
-            Matchers.equalTo(0)
+    }
+
+    private static XMLDocument unlint(final String tail, final String meta) {
+        return new XMLDocument(
+            String.join(
+                "",
+                "<object><metas>",
+                meta,
+                "<head>unlint</head><tail>",
+                tail,
+                "</tail></meta></metas></object>"
+            )
         );
     }
 
