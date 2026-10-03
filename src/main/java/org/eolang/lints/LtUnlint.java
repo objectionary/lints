@@ -11,8 +11,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import org.cactoos.list.ListOf;
 
 /**
  * Lint that ignores linting if {@code +unlint} meta is present.
@@ -61,14 +61,14 @@ final class LtUnlint implements Lint {
         final AtomicBoolean added = new AtomicBoolean(false);
         granular.forEach(
             unlint -> {
-                if (unlint.matches(String.format("%s:\\d+-\\d+", lname))) {
+                final String quoted = Pattern.quote(lname);
+                if (unlint.matches(String.format("%s:\\d+-\\d+", quoted))) {
                     problematic.removeIf(new UnlintInRange(unlint));
-                } else if (unlint.matches(String.format("%s:\\d+", lname))) {
-                    problematic.removeIf(
-                        line -> line == Integer.parseInt(
-                            new ListOf<>(unlint.split(":")).get(1)
-                        )
-                    );
+                } else if (unlint.matches(String.format("%s:\\d+", quoted))) {
+                    final String selected = unlint.substring(lname.length() + 1);
+                    if (LtUnlint.fitsInt(selected)) {
+                        problematic.removeIf(line -> line == Integer.parseInt(selected));
+                    }
                 } else if (unlint.equals(lname)) {
                     problematic.clear();
                 }
@@ -98,5 +98,16 @@ final class LtUnlint implements Lint {
     @Override
     public Fix fix() {
         return this.origin.fix();
+    }
+
+    private static boolean fitsInt(final String value) {
+        boolean result;
+        try {
+            Integer.parseInt(value);
+            result = true;
+        } catch (final NumberFormatException exception) {
+            result = false;
+        }
+        return result;
     }
 }
