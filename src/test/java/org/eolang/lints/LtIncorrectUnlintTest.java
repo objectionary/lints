@@ -23,10 +23,7 @@ final class LtIncorrectUnlintTest {
         MatcherAssert.assertThat(
             "An unrepresentable line selector should be reported as invalid",
             new LtIncorrectUnlint(new ListOf<>("ascii-only")).defects(
-                new XMLDocument(
-                    "<object><metas><meta line='1'><head>unlint</head>"
-                        + "<tail>ascii-only:2147483648</tail></meta></metas></object>"
-                )
+                LtIncorrectUnlintTest.unlint("ascii-only:2147483648")
             ),
             Matchers.hasSize(1)
         );
@@ -37,10 +34,7 @@ final class LtIncorrectUnlintTest {
         MatcherAssert.assertThat(
             "An unrepresentable range selector should be reported as invalid",
             new LtIncorrectUnlint(new ListOf<>("ascii-only")).defects(
-                new XMLDocument(
-                    "<object><metas><meta line='1'><head>unlint</head>"
-                        + "<tail>ascii-only:1-2147483648</tail></meta></metas></object>"
-                )
+                LtIncorrectUnlintTest.unlint("ascii-only:1-2147483648")
             ),
             Matchers.hasSize(1)
         );
@@ -51,12 +45,20 @@ final class LtIncorrectUnlintTest {
         MatcherAssert.assertThat(
             "A valid rule name must not be interpreted as a regex",
             new LtIncorrectUnlint(new ListOf<>("[bad")).defects(
-                new XMLDocument(
-                    "<object><metas><meta line='1'><head>unlint</head>"
-                        + "<tail>[bad:1</tail></meta></metas></object>"
-                )
+                LtIncorrectUnlintTest.unlint("[bad:1")
             ),
             Matchers.emptyIterable()
+        );
+    }
+
+    private static XMLDocument unlint(final String selector) {
+        return new XMLDocument(
+            String.join(
+                "",
+                "<object><metas><meta line='1'><head>unlint</head><tail>",
+                selector,
+                "</tail></meta></metas></object>"
+            )
         );
     }
 }

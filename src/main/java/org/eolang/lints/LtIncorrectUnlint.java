@@ -110,11 +110,13 @@ final class LtIncorrectUnlint implements Lint {
     }
 
     private static boolean fitsInt(final String value) {
+        boolean result;
         try {
             Integer.parseInt(value);
-            return true;
+            result = true;
         } catch (final NumberFormatException exception) {
-            return false;
+            result = false;
         }
+        return result;
     }
 }

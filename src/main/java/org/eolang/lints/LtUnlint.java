@@ -65,12 +65,9 @@ final class LtUnlint implements Lint {
                 if (unlint.matches(String.format("%s:\\d+-\\d+", quoted))) {
                     problematic.removeIf(new UnlintInRange(unlint));
                 } else if (unlint.matches(String.format("%s:\\d+", quoted))) {
-                    final String[] split = unlint.split(":", -1);
-                    try {
-                        final int selected = Integer.parseInt(split[1]);
-                        problematic.removeIf(line -> line == selected);
-                    } catch (final NumberFormatException exception) {
-                        // The incorrect-unlint lint reports this selector.
+                    final String selected = unlint.substring(lname.length() + 1);
+                    if (LtUnlint.fitsInt(selected)) {
+                        problematic.removeIf(line -> line == Integer.parseInt(selected));
                     }
                 } else if (unlint.equals(lname)) {
                     problematic.clear();
@@ -101,5 +98,16 @@ final class LtUnlint implements Lint {
     @Override
     public Fix fix() {
         return this.origin.fix();
+    }
+
+    private static boolean fitsInt(final String value) {
+        boolean result;
+        try {
+            Integer.parseInt(value);
+            result = true;
+        } catch (final NumberFormatException exception) {
+            result = false;
+        }
+        return result;
     }
 }

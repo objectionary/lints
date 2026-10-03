@@ -22,18 +22,23 @@ final class LtUnlintTest {
 
     @Test
     void keepsFindingsWhenSelectorDoesNotFitAnInteger() throws IOException {
-        final Collection<Defect> defects = new LtUnlint(
-            new LtUnlintTest.FakeLint()
-        ).defects(
-            new XMLDocument(
-                "<object><metas><meta line='1'><head>unlint</head>"
-                    + "<tail>fake:2147483648</tail></meta></metas></object>"
-            )
-        );
         MatcherAssert.assertThat(
             "An invalid selector must not suppress findings or crash the lint",
-            defects,
+            new LtUnlint(new LtUnlintTest.FakeLint()).defects(
+                LtUnlintTest.unlint("fake:2147483648")
+            ),
             Matchers.hasSize(1)
+        );
+    }
+
+    private static XMLDocument unlint(final String selector) {
+        return new XMLDocument(
+            String.join(
+                "",
+                "<object><metas><meta line='1'><head>unlint</head><tail>",
+                selector,
+                "</tail></meta></metas></object>"
+            )
         );
     }
 
