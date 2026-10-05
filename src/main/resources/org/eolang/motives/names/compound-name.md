@@ -1,7 +1,7 @@
 # Attribute Names Should Not Be Compound
 
 All objects that are not formations must have single-word names.
-Compound names indicate that the program context is too large
+Compound names signal that the program context is too large
 and needs to be decomposed.
 
 Incorrect:
@@ -22,7 +22,7 @@ Correct:
     read file
 ```
 
-There are exceptions for idiomatic prefixes and suffixes.
+Exceptions exist for idiomatic prefixes and suffixes.
 The `as-` prefix is for type conversions: `as-bytes`, `as-i64`, `as-number`.
 The `cant-` prefix is for capability or restriction names: `cant-read`, `cant-write`.
 The `is-` prefix is for predicates: `is-empty`, `is-nan`, `is-finite`.
