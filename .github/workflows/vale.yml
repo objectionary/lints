@@ -5,6 +5,9 @@ name: vale
 'on': [pull_request]
 permissions:
   contents: read
+concurrency:
+  group: vale-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   vale:
     runs-on: ubuntu-latest

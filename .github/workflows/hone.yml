@@ -12,6 +12,9 @@ name: hone
       - master
 permissions:
   contents: read
+concurrency:
+  group: hone-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   hone:
     timeout-minutes: 45

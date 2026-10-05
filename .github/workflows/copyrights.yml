@@ -12,6 +12,9 @@ name: copyrights
       - master
 permissions:
   contents: read
+concurrency:
+  group: copyrights-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   copyrights:
     timeout-minutes: 15

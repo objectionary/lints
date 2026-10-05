@@ -9,6 +9,9 @@ name: pit
       - master
 permissions:
   contents: read
+concurrency:
+  group: pit-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   pit:
     timeout-minutes: 90

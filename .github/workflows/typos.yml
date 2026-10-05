@@ -12,6 +12,9 @@ name: typos
       - master
 permissions:
   contents: read
+concurrency:
+  group: typos-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   typos:
     timeout-minutes: 15

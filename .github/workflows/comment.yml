@@ -10,6 +10,9 @@ name: comment
       - completed
 permissions:
   contents: read
+concurrency:
+  group: comment-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   comment:
     permissions:

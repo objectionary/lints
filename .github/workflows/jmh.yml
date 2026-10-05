@@ -11,6 +11,9 @@ env:
   RUN_WORKFLOW: false
 permissions:
   contents: read
+concurrency:
+  group: jmh-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   jmh:
     timeout-minutes: 45

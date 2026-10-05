@@ -20,6 +20,9 @@ name: qulice
       - '.github/workflows/qulice.yml'
 permissions:
   contents: read
+concurrency:
+  group: qulice-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   qulice:
     timeout-minutes: 15

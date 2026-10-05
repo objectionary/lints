@@ -12,6 +12,9 @@ name: infer
       - master
 permissions:
   contents: read
+concurrency:
+  group: infer-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   infer:
     timeout-minutes: 15

@@ -18,6 +18,9 @@ name: bashate
       - '.github/workflows/bashate.yml'
 permissions:
   contents: read
+concurrency:
+  group: bashate-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   bashate:
     timeout-minutes: 15
