@@ -8,3 +8,6 @@ input: |
   [] > main-app
     x > x
     y > y
+    x1 > x1
+    as-u8 > as-u8
+    i64 > i64
