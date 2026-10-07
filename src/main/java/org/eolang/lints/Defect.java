@@ -213,6 +213,7 @@ public interface Defect {
                 result = this.lineno == defect.lineno
                     && Objects.equals(this.rle, defect.rle)
                     && this.sev == defect.sev
+                    && this.experiment == defect.experiment
                     && Objects.equals(this.txt, defect.txt);
             }
             return result;
@@ -220,7 +221,9 @@ public interface Defect {
 
         @Override
         public int hashCode() {
-            return Objects.hash(this.rle, this.sev, this.lineno, this.txt);
+            return Objects.hash(
+                this.rle, this.sev, this.lineno, this.txt, this.experiment
+            );
         }
 
         static String versionOf(final String attribute) {
