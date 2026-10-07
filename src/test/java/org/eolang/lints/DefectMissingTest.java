@@ -99,4 +99,24 @@ final class DefectMissingTest {
             Matchers.equalTo(true)
         );
     }
+
+    @Test
+    void returnsTrueWhenSingleLineDoesNotFitAnInteger() {
+        MatcherAssert.assertThat(
+            "An oversized line selector should be treated as a missing defect",
+            new DefectMissing(
+                new MapOf<>(new MapEntry<>("foo", new ListOf<>(42)))
+            ).apply("foo:2147483648"),
+            Matchers.equalTo(true)
+        );
+    }
+
+    @Test
+    void treatsRegexCharactersInRuleNamesAsLiteralText() {
+        MatcherAssert.assertThat(
+            "Rule names must not be interpreted as regular expressions",
+            new DefectMissing(new MapOf<>()).apply("[bad:1-2"),
+            Matchers.equalTo(true)
+        );
+    }
 }
