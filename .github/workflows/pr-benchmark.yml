@@ -11,24 +11,35 @@ concurrency:
   cancel-in-progress: true
 permissions:
   contents: read
-  issues: write
-  pull-requests: write
 jobs:
+  acknowledge:
+    if: >-
+      github.event.issue.pull_request != null &&
+      startsWith(github.event.comment.body, '/benchmark') &&
+      contains(fromJSON('["OWNER", "MEMBER", "COLLABORATOR"]'), github.event.comment.author_association)
+    permissions:
+      issues: write
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Acknowledge benchmark request
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh api "repos/${{ github.repository }}/issues/comments/${{ github.event.comment.id }}/reactions" -f content=eyes
+
   pr-benchmark:
     if: >-
       github.event.issue.pull_request != null &&
       startsWith(github.event.comment.body, '/benchmark') &&
       contains(fromJSON('["OWNER", "MEMBER", "COLLABORATOR"]'), github.event.comment.author_association)
+    permissions:
+      contents: read
     timeout-minutes: 30
     runs-on: ubuntu-24.04
     steps:
-      - name: Acknowledge
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh api "repos/${{ github.repository }}/issues/comments/${{ github.event.comment.id }}/reactions" -f content=eyes
       - uses: actions/checkout@v7
         with:
           ref: refs/pull/${{ github.event.issue.number }}/head
+          persist-credentials: false
       - uses: actions/setup-java@v6
         with:
           distribution: 'zulu'
@@ -44,13 +55,35 @@ jobs:
           git fetch origin master
           git show origin/master:benchmark/lint-timings.csv > /tmp/baseline.csv || printf '"id","ms"\n' > /tmp/baseline.csv
       - name: Build comparison report
-        run: .github/benchmark-diff.sh /tmp/baseline.csv target/lint-timings.csv "${{ github.event.issue.number }}" > /tmp/report.md
-      - name: Post comment on PR
+        run: .github/benchmark-diff.sh /tmp/baseline.csv target/lint-timings.csv "${{ github.event.issue.number }}" > "$RUNNER_TEMP/report.md"
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: benchmark-report
+          path: ${{ runner.temp }}/report.md
+          retention-days: 1
+
+  report:
+    needs: pr-benchmark
+    if: >-
+      always() && contains(fromJSON('["success", "failure"]'), needs.pr-benchmark.result)
+    permissions:
+      issues: write
+      pull-requests: write
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Download comparison report
+        if: needs.pr-benchmark.result == 'success'
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+        with:
+          name: benchmark-report
+          path: ${{ runner.temp }}/benchmark-report
+      - name: Post comparison report on PR
+        if: needs.pr-benchmark.result == 'success'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh pr comment "${{ github.event.issue.number }}" --body-file /tmp/report.md --repo "${{ github.repository }}"
+        run: gh pr comment "${{ github.event.issue.number }}" --body-file "$RUNNER_TEMP/benchmark-report/report.md" --repo "${{ github.repository }}"
       - name: Post failure notice on PR
-        if: failure()
+        if: needs.pr-benchmark.result == 'failure'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
