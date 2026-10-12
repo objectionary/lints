@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.regex.Pattern;
 
 /**
  * Is defect missing?
@@ -36,7 +37,7 @@ final class DefectMissing implements Function<String, Boolean> {
         final String[] split = unlint.split(":", -1);
         final String name = split[0];
         final List<Integer> lines = this.defects.get(name);
-        if (unlint.matches(String.format("%s:\\d+-\\d+", name))) {
+        if (unlint.matches(String.format("%s:\\d+-\\d+", Pattern.quote(name)))) {
             if (lines == null) {
                 missing = true;
             } else {
@@ -62,8 +63,16 @@ final class DefectMissing implements Function<String, Boolean> {
         final String name = split[0];
         boolean missing = !names.contains(name) || lines == null;
         if (!missing) {
-            missing = !unlint.matches(String.format("%s:\\d+", name))
-                || !lines.contains(Integer.parseInt(split[1]));
+            missing = !unlint.matches(
+                String.format("%s:\\d+", Pattern.quote(name))
+            );
+            if (!missing) {
+                try {
+                    missing = !lines.contains(Integer.parseInt(split[1]));
+                } catch (final NumberFormatException exception) {
+                    missing = true;
+                }
+            }
         }
         return missing;
     }
