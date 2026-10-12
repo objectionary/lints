@@ -43,9 +43,11 @@ final class LtUnlintNonExistingDefect implements Lint {
 
     @Override
     public Collection<Defect> defects(final XML xmir) throws IOException {
-        final List<String> unlints = new Xnav(xmir.inner())
-            .path("/object/metas/meta[head='unlint']/tail")
-            .map(xnav -> xnav.text().get())
+        final List<Xnav> metas = new Xnav(xmir.inner())
+            .path("/object/metas/meta[head='unlint']")
+            .collect(Collectors.toList());
+        final List<String> unlints = metas.stream()
+            .map(LtUnlintNonExistingDefect::tail)
             .distinct()
             .collect(Collectors.toList());
         final Collection<Defect> messages;
@@ -56,16 +58,13 @@ final class LtUnlintNonExistingDefect implements Lint {
             messages = unlints.stream().filter(
                 new DefectMissing(this.existing(unlints, xmir))::apply
             ).flatMap(
-                unlint -> new Xnav(xmir.inner()).path(
-                    String.format(
-                        "object/metas/meta[head='unlint' and tail=%s]/@line",
-                        LtUnlintNonExistingDefect.quoted(unlint)
-                    )
+                unlint -> metas.stream().filter(
+                    meta -> LtUnlintNonExistingDefect.tail(meta).equals(unlint)
                 ).map(
-                    xnav -> new Defect.Default(
+                    meta -> new Defect.Default(
                         this.name(),
                         Severity.WARNING,
-                        Integer.parseInt(xnav.text().get()),
+                        new LineOf(meta).value(),
                         String.format(
                             "Unlinting rule \"%s\" doesn't make sense, since there are no defects with it",
                             unlint
@@ -87,14 +86,8 @@ final class LtUnlintNonExistingDefect implements Lint {
         return new FxEmpty();
     }
 
-    private static String quoted(final String value) {
-        final String result;
-        if (value.contains("\"")) {
-            result = String.format("'%s'", value);
-        } else {
-            result = String.format("\"%s\"", value);
-        }
-        return result;
+    private static String tail(final Xnav meta) {
+        return meta.element("tail").text().get();
     }
 
     private Map<String, List<Integer>> existing(final List<String> unlints, final XML xmir) {

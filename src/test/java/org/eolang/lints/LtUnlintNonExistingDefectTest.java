@@ -5,9 +5,11 @@
 package org.eolang.lints;
 
 import com.jcabi.xml.XML;
+import com.jcabi.xml.XMLDocument;
 import fixtures.EoProgram;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.stream.Collectors;
 import org.cactoos.list.ListOf;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -46,6 +48,43 @@ final class LtUnlintNonExistingDefectTest {
                 new EoProgram("org/eolang/lints/unlint-ascii-only-no-defect.eo").parse()
             ),
             Matchers.hasSize(Matchers.greaterThan(0))
+        );
+    }
+
+    @Test
+    void quotesUnlintValuesContainingBothQuoteCharacters() throws IOException {
+        MatcherAssert.assertThat(
+            "A malformed suppression should produce a defect instead of breaking XPath",
+            new LtUnlintNonExistingDefect(new ListOf<>()).defects(
+                LtUnlintNonExistingDefectTest.unlint(
+                    "missing\"and'bad", "<meta line='1'>"
+                )
+            ),
+            Matchers.hasSize(1)
+        );
+    }
+
+    @Test
+    void reportsMissingDefectWhenUnlintMetaHasNoLine() throws IOException {
+        MatcherAssert.assertThat(
+            "A suppression without a line should still report its missing defect",
+            new LtUnlintNonExistingDefect(new ListOf<>()).defects(
+                LtUnlintNonExistingDefectTest.unlint("ascii-only:999", "<meta>")
+            ).stream().map(Defect::line).collect(Collectors.toList()),
+            Matchers.contains(0)
+        );
+    }
+
+    private static XMLDocument unlint(final String tail, final String meta) {
+        return new XMLDocument(
+            String.join(
+                "",
+                "<object><metas>",
+                meta,
+                "<head>unlint</head><tail>",
+                tail,
+                "</tail></meta></metas></object>"
+            )
         );
     }
 
