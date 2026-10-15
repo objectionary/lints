@@ -32,7 +32,7 @@
             other expression, e.g. "(phrase "x").multi-words", which the
             parser resolves into a "."-prefixed postfix base.
             -->
-            <xsl:variable name="used" select="$tests//o[@base and matches(@base, concat('^(ξ(\.ρ)+\.|\.)', $attr, '(\.|$)'))]"/>
+            <xsl:variable name="used" select="$tests//o[@base and matches(@base, '^(ξ(\.ρ)+\.|\.)') and (replace(@base, '^(ξ(\.ρ)+\.|\.)', '') = $attr or starts-with(replace(@base, '^(ξ(\.ρ)+\.|\.)', ''), concat($attr, '.')))]"/>
             <xsl:if test="empty($used)">
               <xsl:element name="defect">
                 <xsl:variable name="line" select="eo:lineno(@line)"/>
