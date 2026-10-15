@@ -6,6 +6,6 @@ sheets:
 defects: []
 input: |
   +home https://example.com/?q=%D0%AF%2f
-  
+
   [] > app
     1 > @

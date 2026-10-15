@@ -8,6 +8,6 @@ defects:
     line: 1
 input: |
   +home https://example.com/bad%2G
-  
+
   [] > app
     1 > @
