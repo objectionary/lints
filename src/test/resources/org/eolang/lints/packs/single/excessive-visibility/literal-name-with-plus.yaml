@@ -7,6 +7,6 @@ defects: []
 input: |
   [t] > phrase
     t.index-of " " > po+s
-  
+
     [] +> checks-phrase
       ^.po+s > @
