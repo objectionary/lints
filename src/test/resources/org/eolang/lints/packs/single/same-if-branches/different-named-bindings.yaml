@@ -1,0 +1,12 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/design/same-if-branches.xsl
+defects: []
+input: |
+  [condition f] > foo
+    if. > @
+      condition
+      f 1:x 2:y
+      f 1:y 2:x
