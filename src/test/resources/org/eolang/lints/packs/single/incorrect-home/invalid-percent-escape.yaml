@@ -1,0 +1,13 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/metas/incorrect-home.xsl
+defects:
+  - severity: warning
+    line: 1
+input: |
+  +home https://example.com/bad%2G
+  
+  [] > app
+    1 > @
