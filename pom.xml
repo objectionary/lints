@@ -158,7 +158,7 @@
     <dependency>
       <groupId>org.languagetool</groupId>
       <artifactId>languagetool-core</artifactId>
-      <version>6.5</version>
+      <version>6.8</version>
       <scope>test</scope>
     </dependency>
     <dependency>
