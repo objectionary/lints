@@ -1,0 +1,16 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/design/cyclomatic-complexity.xsl
+defects: 0
+input: |
+  [num] > foo
+    0 > @
+    43-30-00-00-00-00-00-00.or (num.as-bytes.and 00-00-00-00-FF-FF-FF-FF) > m1
+    (num.as-bytes.and 01-).or 02- > m2
+    (num.as-bytes.left 3).and 0F- > m3
+    (num.as-bytes.right 2).or F0- > m4
+    num.as-bytes.not.and 0F- > m5
+    num.as-bytes.xor 0F- > m6
+    (0F-.and 03-).or (num.as-bytes.or 01-) > m7
