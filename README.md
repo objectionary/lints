@@ -124,42 +124,42 @@ Here is the result of linting XMIRs:
 <!-- benchmark_begin -->
 ```text
 Input: com/sun/jna/PointerType.class (S source)
-Lint time: 10s (10054 ms)
+Lint time: 16s (16315 ms)
 
 Input: com/sun/jna/Memory.class (M source)
-Lint time: 7s (7167 ms)
+Lint time: 10s (10377 ms)
 
 Input: com/sun/jna/Pointer.class (L source)
-Lint time: 9s (8715 ms)
+Lint time: 14s (13696 ms)
 
 Input: com/sun/jna/Structure.class (XL source)
-Lint time: 11s (10952 ms)
+Lint time: 20s (19623 ms)
 
 Input: org/apache/hadoop/hdfs/server/namenode/FSNamesystem.class (XXL source)
-Lint time: 38s (37742 ms)
+Lint time: 1min (69591 ms)
 
 
 
-unlint-non-existing-defect (XXL) (14513 ms)
-application-without-as-attributes (XXL) (3157 ms)
-unlint-non-existing-defect (XL) (2790 ms)
-unlint-non-existing-defect (L) (1559 ms)
-object-has-data (XXL) (1413 ms)
-unlint-non-existing-defect (M) (1256 ms)
-empty-object (XXL) (1065 ms)
-duplicate-as-attribute (XXL) (797 ms)
-redundant-object (XXL) (686 ms)
-reserved-name (XXL) (611 ms)
-application-without-as-attributes (XL) (597 ms)
-line-is-absent (XXL) (569 ms)
-incorrect-bytes-format (XXL) (548 ms)
-application-without-as-attributes (M) (507 ms)
-compound-name (XXL) (469 ms)
-bytes-without-data (XXL) (376 ms)
+application-without-as-attributes (XXL) (3115 ms)
+duplicate-as-attribute (XXL) (1907 ms)
+too-deep-object (XXL) (1859 ms)
+object-has-data (XXL) (1604 ms)
+empty-object (XXL) (1242 ms)
+redundant-object (XXL) (1190 ms)
+line-is-absent (XXL) (1041 ms)
+unit-test-is-not-verb (XXL) (1006 ms)
+incorrect-bytes-format (XXL) (999 ms)
+reserved-name (XXL) (979 ms)
+compound-name (XXL) (978 ms)
+invalid-name-notation (XXL) (959 ms)
+rt-without-atoms (XXL) (710 ms)
+lambda-with-inners (XXL) (710 ms)
+atom-in-atom (XXL) (689 ms)
+anonymous-formation (XXL) (683 ms)
 ```
 
 The results were calculated in [this GHA job][benchmark-gha]
-on 2026-07-30 at 05:24,
+on 2026-10-16 at 06:40,
 on Linux with 4 CPUs.
 <!-- benchmark_end -->
 
@@ -192,4 +192,4 @@ just install it and make sure it's in your `PATH`
 
 [XMIR]: https://news.eolang.org/2022-11-25-xmir-guide.html
 [EO]: https://www.eolang.org
-[benchmark-gha]: https://github.com/objectionary/lints/actions/runs/30516431954
+[benchmark-gha]: https://github.com/objectionary/lints/actions/runs/38860636995
