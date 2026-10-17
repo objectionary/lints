@@ -279,7 +279,7 @@ final class SourceTest {
     void rejectsLintsWhenOneOfThemDoesNotExist() {
         final long seed = System.nanoTime();
         final String name = String.format(
-            "unit-test-mis%ssing", "s".repeat((int) (seed % 64L) + 1)
+            "unit-test-missing%s", "s".repeat((int) (seed % 64L) + 1)
         );
         Assertions.assertThrows(
             IllegalArgumentException.class,
