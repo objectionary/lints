@@ -203,7 +203,6 @@ final class SourceTest {
     void createsSourceWithoutMultipleLints() {
         final Collection<String> disabled = List.of(
             "ascii-only",
-            "object-does-not-match-filename",
             "comment-not-capitalized",
             "empty-object",
             "mandatory-home",
@@ -260,6 +259,32 @@ final class SourceTest {
                 .filter(defect -> defect.rule().startsWith("unlint-non-existing-defect"))
                 .collect(Collectors.toList()),
             Matchers.emptyIterable()
+        );
+    }
+
+    @Test
+    void rejectsLintThatDoesNotExist() {
+        final long seed = System.nanoTime();
+        final String name = Long.toString(seed, 32).chars().map(c -> c + 0x0400).collect(
+            StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append
+        ).toString();
+        Assertions.assertThrows(
+            IllegalArgumentException.class,
+            () -> new Source(new XMLDocument("<object/>")).without(name),
+            String.format("Unknown lint name \"%s\" from seed %d is not rejected", name, seed)
+        );
+    }
+
+    @Test
+    void rejectsLintsWhenOneOfThemDoesNotExist() {
+        final long seed = System.nanoTime();
+        final String name = String.format(
+            "unit-test-missing%s", "s".repeat((int) (seed % 64L) + 1)
+        );
+        Assertions.assertThrows(
+            IllegalArgumentException.class,
+            () -> new Source(new XMLDocument("<object/>")).without("ascii-only", name, ""),
+            String.format("Misspelled lint name \"%s\" from seed %d is not rejected", name, seed)
         );
     }
 
