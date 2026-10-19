@@ -16,7 +16,7 @@
         <xsl:variable name="in-recursive" select="some $r in key('referenced-by-name', @name), $f in $r/ancestor::o[@name and not(@base)] satisfies exists(key('referenced-by-name', $f/@name) intersect $f/descendant::o)"/>
         <xsl:variable name="self-alias-crosses-formation" select="@base = 'ξ' and (some $r in key('referenced-by-name', @name) satisfies matches($r/@base, '^ξ\.ρ\.'))"/>
         <xsl:variable name="candidate-name" select="@name"/>
-        <xsl:variable name="self-used-via-chained-dot" select="@base = 'ξ' and exists(//o[matches(@base, concat('^\.', $candidate-name, '(?:\.[\w-]+)*$'))])"/>
+        <xsl:variable name="self-used-via-chained-dot" select="@base = 'ξ' and exists(//o[@base = concat('.', $candidate-name)])"/>
         <xsl:if test="count(key('referenced-by-name', @name))&lt;=1 and not(@name and o[1]/@base = 'Φ.dataized') and not($in-recursive) and not($self-alias-crosses-formation) and not($self-used-via-chained-dot)">
           <xsl:element name="defect">
             <xsl:variable name="line" select="eo:lineno(@line)"/>
