@@ -24,7 +24,7 @@
     <xsl:param name="formation" as="element()"/>
     <xsl:variable name="allowed" as="xs:string*">
       <xsl:for-each select="$formation/o[@base='∅']">
-        <xsl:sequence select="concat('ξ(\.ρ)+\.', @name, '(?:\.\w+)?')"/>
+        <xsl:sequence select="concat('ξ(\.ρ)+\.', @name, '\.')"/>
       </xsl:for-each>
     </xsl:variable>
     <xsl:for-each select="$formation//o[starts-with(@base, 'ξ.ρ.') and not(some $pattern in $allowed satisfies matches(@base, $pattern))]">
