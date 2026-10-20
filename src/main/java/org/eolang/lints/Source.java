@@ -10,9 +10,13 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.cactoos.iterable.Sticky;
 import org.cactoos.iterable.Synced;
+import org.cactoos.set.SetOf;
 
 /**
  * A single source XMIR to analyze.
@@ -81,6 +85,18 @@ public final class Source {
      * @return Program analysis without specific name
      */
     public Source without(final String... names) {
+        final Collection<String> known = new SetOf<>(new MonoLintNames());
+        final List<String> unknown = Arrays.stream(names)
+            .filter(name -> !known.contains(name))
+            .collect(Collectors.toList());
+        if (!unknown.isEmpty()) {
+            throw new IllegalArgumentException(
+                String.format(
+                    "Lints %s cannot be disabled, since there are no lints with such names",
+                    unknown
+                )
+            );
+        }
         return new org.eolang.lints.Source(this.xmir, new MonoWithout(names));
     }
 
