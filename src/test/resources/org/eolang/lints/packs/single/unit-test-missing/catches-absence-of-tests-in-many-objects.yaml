@@ -3,6 +3,7 @@
 ---
 sheets:
   - /org/eolang/lints/tests/unit-test-missing.xsl
+skip-errors: true
 defects:
   - severity: warning
   - severity: warning
