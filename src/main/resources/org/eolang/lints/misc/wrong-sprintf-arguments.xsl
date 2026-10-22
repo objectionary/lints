@@ -61,6 +61,7 @@
               <xsl:text> provided</xsl:text>
             </defect>
           </xsl:when>
+          <xsl:when test="not(o[@as])"/>
           <xsl:otherwise>
             <!--
             The bytes of the template, with a doubled percent taken out,
