@@ -24,6 +24,11 @@ import org.languagetool.rules.spelling.SpellingCheckRule;
  * grammatically valid.
  *
  * @since 0.0.34
+ * @todo #1571:30min Skip empty quoted text in defect messages. The pattern in
+ *  annotated() skips only non-empty quotes, so in a message with "" the quotes
+ *  pair up wrongly and the quoted formatters get spell-checked. That is why
+ *  sprintf-without-formatters has no pack for an empty template, which it
+ *  reports as ""; add one once such quotes are skipped.
  */
 public final class GrammarMatcher extends BaseMatcher<String> {
 

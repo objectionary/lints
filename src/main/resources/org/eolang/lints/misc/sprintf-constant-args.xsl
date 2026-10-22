@@ -27,8 +27,9 @@
         <xsl:variable name="text" select="o[1][@base='Φ.string']/o[1][@base='Φ.bytes']/o/text()"/>
         <xsl:if test="$text">
           <xsl:variable name="placeholder">
-            <xsl:for-each select="tokenize($text, '-')">
-              <xsl:value-of select="codepoints-to-string(eo:hex-to-placeholder(.))"/>
+            <xsl:for-each select="tokenize($text, '-')[. != '']">
+              <xsl:variable name="code" select="eo:hex-to-placeholder(.)"/>
+              <xsl:value-of select="codepoints-to-string(if ($code = (9, 10, 13) or $code &gt;= 32) then $code else 65533)"/>
             </xsl:for-each>
           </xsl:variable>
           <!--
