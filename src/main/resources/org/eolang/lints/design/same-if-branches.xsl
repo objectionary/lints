@@ -12,16 +12,16 @@
   TRUE when the two objects have the same structure: the same base, the
   same name, the same leaf text (when both are leaves), and the same
   children, pairwise, in the same order. Positional attributes that only
-  record where a node sits in the source ("line", "loc", "pos", "as") are
-  ignored, so two branches built from the same code, but copy-pasted onto
-  different lines or bound to different attributes, still compare equal.
+  record where a node sits in the source ("line", "loc", "pos") are
+  ignored. The outer branch bindings are ignored, while argument bindings
+  inside the branches remain part of their structure.
   -->
   <xsl:function name="eo:same" as="xs:boolean">
     <xsl:param name="a" as="element()"/>
     <xsl:param name="b" as="element()"/>
     <xsl:variable name="kids-a" select="$a/o"/>
     <xsl:variable name="kids-b" select="$b/o"/>
-    <xsl:sequence select="((not($a/@base) and not($b/@base)) or string($a/@base) = string($b/@base)) and ((not($a/@name) and not($b/@name)) or string($a/@name) = string($b/@name)) and count($kids-a) = count($kids-b) and (count($kids-a) &gt; 0 or normalize-space($a) = normalize-space($b)) and (every $i in 1 to count($kids-a) satisfies eo:same($kids-a[$i], $kids-b[$i]))"/>
+    <xsl:sequence select="((not($a/@base) and not($b/@base)) or string($a/@base) = string($b/@base)) and ((not($a/@name) and not($b/@name)) or string($a/@name) = string($b/@name)) and count($kids-a) = count($kids-b) and (count($kids-a) &gt; 0 or normalize-space($a) = normalize-space($b)) and (every $i in 1 to count($kids-a) satisfies (string($kids-a[$i]/@as) = string($kids-b[$i]/@as) and eo:same($kids-a[$i], $kids-b[$i])))"/>
   </xsl:function>
   <!--
   An "if" whose two branches, "α0" (taken when the condition is true) and
