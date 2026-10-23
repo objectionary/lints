@@ -3,7 +3,10 @@
 ---
 sheets:
   - /org/eolang/lints/misc/wrong-sprintf-arguments.xsl
-defects: 0
+defects:
+  - severity: warning
+    line: 3
 input: |
   [] > app
-    "ab %d and %s".printf > @
+    io.stdout > @
+      "Hello, %s!".printf
