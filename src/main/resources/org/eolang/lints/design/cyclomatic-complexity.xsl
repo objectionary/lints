@@ -31,7 +31,7 @@
   -->
   <xsl:function name="eo:owner" as="element()?">
     <xsl:param name="o" as="element()"/>
-    <xsl:sequence select="$o/ancestor::o[eo:abstract(.) and o[@name='φ']][1]"/>
+    <xsl:sequence select="$o/ancestor::o[eo:abstract(.)][1]"/>
   </xsl:function>
   <xsl:variable name="eo:max" as="xs:integer" select="10"/>
   <xsl:template match="/">

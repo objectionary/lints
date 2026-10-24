@@ -1,0 +1,54 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/design/cyclomatic-complexity.xsl
+defects: 0
+input: |
+  [x] > foo
+    0 > @
+    [y] > bar
+      if. > b1
+        y
+        1
+        2
+      if. > b2
+        y
+        1
+        2
+      if. > b3
+        y
+        1
+        2
+      if. > b4
+        y
+        1
+        2
+      if. > b5
+        y
+        1
+        2
+      if. > b6
+        y
+        1
+        2
+      if. > b7
+        y
+        1
+        2
+      if. > b8
+        y
+        1
+        2
+      if. > b9
+        y
+        1
+        2
+      if. > b10
+        y
+        1
+        2
+      if. > b11
+        y
+        1
+        2
