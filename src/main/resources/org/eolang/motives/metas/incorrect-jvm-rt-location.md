@@ -22,7 +22,7 @@ Correct:
 ```eo
 +rt jvm org.eolang:eo-runtime:0.0.0
 +rt jvm foo:bar:0.0.1
-+rt jvm the:great:gatsby:1.2.3
++rt jvm the.great:gatsby:1.2.3
 
 # No comments.
 [] > foo
