@@ -1,0 +1,12 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/metas/unsorted-metas.xsl
+defects: 0
+input: |
+  +alias org.eolang.io.stdout
+  +alias org.eolang.txt.sprintf
+
+  [] > foo
+    42 > @
