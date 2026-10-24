@@ -70,7 +70,14 @@
             <!-- A specifier is %[N$][flags][width][.precision]conversion, in bytes -->
             <xsl:variable name="declared" select="count(tokenize($escaped, $eo:specifier)) - 1"/>
             <xsl:variable name="used">
-              <xsl:apply-templates select="o[@as][1]" mode="arguments"/>
+              <xsl:choose>
+                <xsl:when test="o[@as]">
+                  <xsl:apply-templates select="o[@as][1]" mode="arguments"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="0"/>
+                </xsl:otherwise>
+              </xsl:choose>
             </xsl:variable>
             <xsl:choose>
               <xsl:when test="$used=-1">
