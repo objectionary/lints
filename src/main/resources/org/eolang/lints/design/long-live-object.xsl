@@ -19,7 +19,9 @@
     <defects>
       <xsl:for-each select="//o[eo:abstract(.)]">
         <xsl:variable name="formation" select="."/>
-        <xsl:for-each select="o[@name and @base and @base != '∅' and @name != 'φ' and not(eo:test-name(@name))]">
+        <xsl:variable name="attributes" select="o[@name and @base and @base != '∅' and @name != 'φ' and not(eo:test-name(@name))]"/>
+        <xsl:variable name="sorted" select="every $i in 2 to count($attributes) satisfies string($attributes[$i - 1]/@name) le string($attributes[$i]/@name)"/>
+        <xsl:for-each select="$attributes[not($sorted)]">
           <xsl:variable name="name" select="@name"/>
           <xsl:variable name="declared" select="number(eo:lineno(@line))"/>
           <xsl:variable name="usages" select="$formation//o[(@base = concat('ξ.', $name) or starts-with(@base, concat('ξ.', $name, '.'))) and not(ancestor::o[. &gt;&gt; $formation and eo:abstract(.)]) and not(ancestor-or-self::o[eo:test-name(@name)])]"/>
