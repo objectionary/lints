@@ -8,7 +8,8 @@ defects:
     line: 2
   - severity: error
     line: 5
-xml-reason: "Checks dotted alias prefixes independently of parser alias expansion"
+xml-reason: >-
+  Checks dotted alias prefixes independently of parser alias expansion.
 document: |
   <object author="tests">
     <metas>
