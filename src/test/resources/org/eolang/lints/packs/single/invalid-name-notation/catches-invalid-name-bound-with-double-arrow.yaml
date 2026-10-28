@@ -1,0 +1,12 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/names/invalid-name-notation.xsl
+defects:
+  - severity: warning
+    line: 3
+input: |
+  [x] > app
+    x.plus my_value > @
+    x.times 2 >> my_value
