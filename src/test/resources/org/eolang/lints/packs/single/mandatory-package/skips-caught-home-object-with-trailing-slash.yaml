@@ -1,0 +1,13 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+# Root object 'caught' with trailing slash home URL
+# does not require +package meta (#1539).
+---
+sheets:
+  - /org/eolang/lints/metas/mandatory-package.xsl
+defects: 0
+input: |
+  +home https://github.com/objectionary/eo/
+
+  # Root runtime caught object
+  [] > caught
