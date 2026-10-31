@@ -80,6 +80,7 @@ public interface Defect {
 
     /**
      * Experimental?
+     *
      * @return Experimental
      */
     boolean experimental();
@@ -120,6 +121,7 @@ public interface Defect {
 
         /**
          * Ctor.
+         *
          * @param rule Rule name
          * @param severity Severity level
          * @param line Line number
@@ -188,7 +190,7 @@ public interface Defect {
 
         @Override
         public String version() {
-            return Manifests.read("Lints-Version");
+            return Defect.Default.versionOf("Lints-Version");
         }
 
         @Override
@@ -211,6 +213,7 @@ public interface Defect {
                 result = this.lineno == defect.lineno
                     && Objects.equals(this.rle, defect.rle)
                     && this.sev == defect.sev
+                    && this.experiment == defect.experiment
                     && Objects.equals(this.txt, defect.txt);
             }
             return result;
@@ -218,7 +221,19 @@ public interface Defect {
 
         @Override
         public int hashCode() {
-            return Objects.hash(this.rle, this.sev, this.lineno, this.txt);
+            return Objects.hash(
+                this.rle, this.sev, this.lineno, this.txt, this.experiment
+            );
+        }
+
+        static String versionOf(final String attribute) {
+            String version;
+            try {
+                version = Manifests.read(attribute);
+            } catch (final IllegalArgumentException ex) {
+                version = "";
+            }
+            return version;
         }
     }
 }

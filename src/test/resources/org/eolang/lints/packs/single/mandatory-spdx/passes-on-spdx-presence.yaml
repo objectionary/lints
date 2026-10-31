@@ -3,8 +3,7 @@
 ---
 sheets:
   - /org/eolang/lints/metas/mandatory-spdx.xsl
-asserts:
-  - /defects[count(defect[@severity='warning'])=0]
+defects: 0
 input: |
   +spdx SPDX-License-Identifier MIT
   +architect jeff@google.com

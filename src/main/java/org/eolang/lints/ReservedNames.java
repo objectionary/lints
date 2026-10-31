@@ -16,6 +16,7 @@ import org.cactoos.map.MapOf;
 
 /**
  * Reserved EO top object names.
+ *
  * @since 0.0.49
  */
 final class ReservedNames extends MapEnvelope<String, String> {
@@ -29,6 +30,7 @@ final class ReservedNames extends MapEnvelope<String, String> {
 
     /**
      * Ctor.
+     *
      * @param path Path to reserved names
      */
     ReservedNames(final String path) {

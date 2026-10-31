@@ -1,0 +1,13 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+lint: comment-without-dot
+defects: 0
+input: |
+  # Foo
+
+  +spdx SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+  +spdx SPDX-License-Identifier: MIT
+  +unlint comment-without-dot
+
+  [] > four

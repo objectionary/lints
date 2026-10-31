@@ -3,9 +3,6 @@
 ---
 sheets:
   - /org/eolang/lints/critical/void-attributes-not-higher-than-other.xsl
-asserts:
-  - /defects[count(defect[@severity='critical'])=0]
-document: |
-  <object author="tests">
-    <o name="foo"/>
-  </object>
+defects: 0
+input: |
+  [] > foo

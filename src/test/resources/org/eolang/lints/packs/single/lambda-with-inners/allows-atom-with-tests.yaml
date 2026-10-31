@@ -3,8 +3,7 @@
 ---
 sheets:
   - /org/eolang/lints/atoms/lambda-with-inners.xsl
-asserts:
-  - /defects[count(defect[@severity='critical'])=0]
+defects: 0
 input: |
   [] > foo /number
 

@@ -4,8 +4,7 @@
 # yamllint disable rule:line-length
 sheets:
   - /org/eolang/lints/comments/comment-is-too-wide.xsl
-asserts:
-  - /defects[count(defect[@severity='warning'])=0]
+defects: 0
 input: |
   # This comment is exactly 100 characters wide, therefore the lint must not report it as a defect here.
 

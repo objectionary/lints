@@ -3,9 +3,10 @@
 ---
 sheets:
   - /org/eolang/lints/atoms/not-empty-atom.xsl
-asserts:
-  - /defects[count(defect[@severity='error'])=1]
-  - /defects/defect[@line='1']
+defects:
+  - severity: error
+    line: 1
+xml-reason: "atom body rejects non-test attrs at parse time"
 document: |
   <object author="tests">
     <o line="1" name="number">

@@ -3,18 +3,15 @@
 ---
 sheets:
   - /org/eolang/lints/misc/wrong-sprintf-arguments.xsl
-asserts:
-  - /defects[count(defect[@severity='warning'])=0]
+defects: 0
 input: |
   [fmt args kid] > log
     seq > @
       *
         stdout
           magenta
-            txt.sprintf
-              "\033[90m%s\033[0m\n"
+            "\033[90m%s\033[0m\n".printf
               *
-                txt.sprintf
-                  fmt
+                fmt.printf
                   * args
         kid

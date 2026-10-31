@@ -4,8 +4,8 @@
 sheets:
   - /org/eolang/lints/tests/test-with-comment.xsl
 skip-errors: true
-asserts:
-  - /defects[count(defect[@severity='warning'])=1]
+defects:
+  - severity: warning
 input: |
   # This test checks the app.
 

@@ -3,8 +3,15 @@
 ---
 sheets:
   - /org/eolang/lints/aliases/broken-alias-second.xsl
-asserts:
-  - /defects[count(defect[@severity='error'])=4]
+defects:
+  - severity: error
+    line: 1
+  - severity: error
+    line: 2
+  - severity: error
+    line: 3
+  - severity: error
+    line: 4
 input: |
   +alias good1 Capital.Letters.Prohibited.Here
   +alias good2 Should.Be.Small

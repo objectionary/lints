@@ -16,6 +16,7 @@ import org.openjdk.jmh.annotations.State;
 
 /**
  * Benchmark state.
+ *
  * @since 0.0.45
  */
 @State(Scope.Benchmark)
@@ -52,6 +53,7 @@ public class BenchmarkState {
 
     /**
      * The XMIR to scan.
+     *
      * @return The XMIR
      */
     public XML xmir() {

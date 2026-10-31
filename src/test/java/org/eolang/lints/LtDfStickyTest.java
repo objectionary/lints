@@ -17,6 +17,7 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Tests for {@link LtDfSticky}.
+ *
  * @since 0.0.42
  */
 final class LtDfStickyTest {
@@ -65,8 +66,22 @@ final class LtDfStickyTest {
         );
     }
 
+    @Test
+    void reusesCacheForIdenticalContent() throws IOException {
+        final LtCounter counter = new LtDfStickyTest.LtCounter();
+        final Lint lint = new LtDfSticky(new LtDfStickyTest.LtFake(counter));
+        lint.defects(new XMLDocument("<o/>"));
+        lint.defects(new XMLDocument("<o/>"));
+        MatcherAssert.assertThat(
+            "Two XMLs with identical content should share a cache entry",
+            counter.count(),
+            Matchers.equalTo(1)
+        );
+    }
+
     /**
      * Counter for lint calls.
+     *
      * @since 0.0.42
      */
     private static final class LtCounter implements Function<XML, Collection<Defect>> {
@@ -89,6 +104,7 @@ final class LtDfStickyTest {
 
     /**
      * Fake class for Lint class.
+     *
      * @since 0.0.42
      */
     private static final class LtFake implements Lint {
@@ -110,6 +126,7 @@ final class LtDfStickyTest {
 
         /**
          * Constructor. Name and motive are hardcoded.
+         *
          * @param defects Lint defects supplier
          */
         LtFake(final Function<XML, Collection<Defect>> defects) {
@@ -118,6 +135,7 @@ final class LtDfStickyTest {
 
         /**
          * Constructor.
+         *
          * @param name Lint name supplier
          * @param defects Lint defects supplier
          * @param motive Lint motive supplier

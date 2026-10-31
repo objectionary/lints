@@ -14,7 +14,7 @@
         <xsl:variable name="meta-head" select="head"/>
         <xsl:variable name="meta-tail" select="tail"/>
         <xsl:variable name="first" select="normalize-space(substring-before(concat($meta-tail, ' '), ' '))"/>
-        <xsl:if test="$meta-head='package' and not(matches($first, '^[a-zA-Z0-9_]+(\.[a-zA-Z0-9_]+|\$[a-zA-Z0-9_]*)*$|[\p{L}\p{M}\p{N}_]+(\.[\p{L}\p{M}\p{N}_]+)*$'))">
+        <xsl:if test="$meta-head='package' and not(matches($first, '^[a-zA-Z0-9_]+(\.[a-zA-Z0-9_]+|\$[a-zA-Z0-9_]*)*$|^[\p{L}\p{M}\p{N}_@][\p{L}\p{M}\p{N}_@-]*(\.[\p{L}\p{M}\p{N}_@][\p{L}\p{M}\p{N}_@-]*)*$'))">
           <xsl:element name="defect">
             <xsl:variable name="line" select="eo:lineno(@line)"/>
             <xsl:attribute name="line">

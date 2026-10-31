@@ -3,13 +3,17 @@
 ---
 sheets:
   - /org/eolang/lints/metas/incorrect-architect.xsl
-asserts:
-  - /defects[count(defect[@severity='warning'])=5]
-  - /defects/defect[@line='1']
-  - /defects/defect[@line='2']
-  - /defects/defect[@line='3']
-  - /defects/defect[@line='4']
-  - /defects/defect[@line='6']
+defects:
+  - severity: warning
+    line: 1
+  - severity: warning
+    line: 2
+  - severity: warning
+    line: 3
+  - severity: warning
+    line: 4
+  - severity: warning
+    line: 6
 input: |
   +architect hello
   +architect hello@mail

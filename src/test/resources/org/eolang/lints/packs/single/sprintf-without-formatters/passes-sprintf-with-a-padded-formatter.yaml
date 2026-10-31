@@ -1,0 +1,11 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/misc/sprintf-without-formatters.xsl
+defects: 0
+input: |
+  [] > app
+    io.stdout > @
+      "Total: %08.2f".printf
+        * 42.0

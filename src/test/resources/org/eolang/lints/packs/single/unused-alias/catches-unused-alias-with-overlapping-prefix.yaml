@@ -3,9 +3,9 @@
 ---
 sheets:
   - /org/eolang/lints/aliases/unused-alias.xsl
-asserts:
-  - /defects[count(defect[@severity='error'])=1]
-  - /defects/defect[@line='1']
+defects:
+  - severity: error
+    line: 1
 input: |
   +alias first org.example.alpha
   +alias second org.example.alphabet

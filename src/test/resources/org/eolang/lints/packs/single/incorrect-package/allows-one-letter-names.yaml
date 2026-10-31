@@ -3,8 +3,7 @@
 ---
 sheets:
   - /org/eolang/lints/metas/incorrect-package.xsl
-asserts:
-  - /defects[count(defect[@severity='warning'])=0]
+defects: 0
 input: |
   +package a.b.c
   +package X.Y.Z

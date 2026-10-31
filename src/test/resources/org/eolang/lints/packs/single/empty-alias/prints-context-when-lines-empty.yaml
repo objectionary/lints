@@ -5,6 +5,7 @@ sheets:
   - /org/eolang/lints/aliases/empty-alias.xsl
 asserts:
   - /defects[count(defect[@context and @severity='error'])=1]
+xml-reason: "not yet converted to an EO input test"
 document: |
   <object author="tests">
     <metas>

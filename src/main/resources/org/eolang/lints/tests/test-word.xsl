@@ -12,7 +12,7 @@
   <xsl:template match="/">
     <defects>
       <xsl:variable name="top" select="/object/o[1]"/>
-      <xsl:for-each select="//o[@name and not(@name='φ') and matches(@name, 'test', 'i') and not(generate-id() = generate-id($top))]">
+      <xsl:for-each select="//o[@name and not(@name='φ') and matches(@name, '(^|-)test[a-z]*(-|$)', 'i') and not(generate-id() = generate-id($top))]">
         <xsl:if test="eo:test-name(@name) or ancestor::o[eo:test-name(@name)] or matches($top/@name, '-tests$')">
           <xsl:element name="defect">
             <xsl:variable name="line" select="eo:lineno(@line)"/>

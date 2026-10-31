@@ -3,16 +3,15 @@
 ---
 sheets:
   - /org/eolang/lints/misc/sprintf-without-formatters.xsl
-asserts:
-  - /defects[count(defect[@severity='warning'])=2]
-  - /defects/defect[@line='3']
-  - /defects/defect[@line='6']
+defects:
+  - severity: warning
+    line: 3
+  - severity: warning
+    line: 5
 input: |
   [] > app
     io.stdout > @
-      txt.sprintf
-        "Hello, Jeff Your account is $200"
+      "Hello, Jeff Your account is $200".printf
         *
-      txt.sprintf
-        "We are good"
+      "We are good".printf
         * f

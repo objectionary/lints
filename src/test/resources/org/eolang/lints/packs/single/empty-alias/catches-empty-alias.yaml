@@ -3,8 +3,8 @@
 ---
 sheets:
   - /org/eolang/lints/aliases/empty-alias.xsl
-asserts:
-  - /defects[count(defect[@severity='error'])=1]
+defects:
+  - severity: error
 input: |
   +alias
 

@@ -3,8 +3,7 @@
 ---
 sheets:
   - /org/eolang/lints/metas/unique-metas.xsl
-asserts:
-  - /defects[count(defect[@severity='error'])=0]
+defects: 0
 input: |
   +architect jeff@google.com
 

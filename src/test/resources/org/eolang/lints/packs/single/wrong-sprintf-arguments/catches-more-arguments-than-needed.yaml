@@ -3,12 +3,11 @@
 ---
 sheets:
   - /org/eolang/lints/misc/wrong-sprintf-arguments.xsl
-asserts:
-  - /defects[count(defect[@severity='warning'])=1]
-  - /defects/defect[@line='3']
+defects:
+  - severity: warning
+    line: 3
 input: |
   [] > app
     io.stdout > @
-      txt.sprintf
-        "Hello, %s! Your account is %d."
+      "Hello, %s! Your account is %d.".printf
         * name acc foo bar

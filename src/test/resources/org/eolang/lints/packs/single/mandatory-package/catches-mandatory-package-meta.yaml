@@ -3,8 +3,8 @@
 ---
 sheets:
   - /org/eolang/lints/metas/mandatory-package.xsl
-asserts:
-  - /defects[count(defect[@severity='warning'])=1]
+defects:
+  - severity: warning
 input: |
   +alias stdin org.eolang.io.stdin
   +alias stdout org.eolang.io.stdout

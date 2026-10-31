@@ -3,8 +3,13 @@
 ---
 sheets:
   - /org/eolang/lints/tests/bad-test-name.xsl
-asserts:
-  - /defects[count(defect[@severity='warning'])=3]
+defects:
+  - severity: warning
+    line: 4
+  - severity: warning
+    line: 6
+  - severity: warning
+    line: 8
 input: |
   [] > foo
     [] > bar

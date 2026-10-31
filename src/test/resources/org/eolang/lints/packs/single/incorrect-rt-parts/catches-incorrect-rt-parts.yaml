@@ -3,12 +3,15 @@
 ---
 sheets:
   - /org/eolang/lints/critical/incorrect-rt-parts.xsl
-asserts:
-  - /defects[count(defect[@severity='critical'])=4]
-  - /defects/defect[@line='1']
-  - /defects/defect[@line='2']
-  - /defects/defect[@line='3']
-  - /defects/defect[@line='4']
+defects:
+  - severity: critical
+    line: 1
+  - severity: critical
+    line: 2
+  - severity: critical
+    line: 3
+  - severity: critical
+    line: 4
 input: |
   +rt hello
   +rt a b c d e f

@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
  * Tests for {@link ReservedNames}.
  * The tests should be executed only in deep profile, since, we reserved name processing
  * happens only in that profile.
+ *
  * @since 0.0.49
  */
 @Tag("reserved")

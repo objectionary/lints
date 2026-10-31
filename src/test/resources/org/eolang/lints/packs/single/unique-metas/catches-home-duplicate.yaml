@@ -3,9 +3,9 @@
 ---
 sheets:
   - /org/eolang/lints/metas/unique-metas.xsl
-asserts:
-  - /defects[count(defect[@severity='error'])=1]
-  - /defects/defect[@line='2']
+defects:
+  - severity: error
+    line: 2
 input: |
   +home https://github.com/objectionary/eo
   +home https://github.com/objectionary/eo-strings

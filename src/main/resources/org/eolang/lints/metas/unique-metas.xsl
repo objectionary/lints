@@ -22,7 +22,7 @@
             </xsl:attribute>
             <xsl:if test="$line = '0'">
               <xsl:attribute name="context">
-                <xsl:value-of select="eo:defect-context(.)"/>
+                <xsl:value-of select="eo:defect-context($metas[head = $head][2])"/>
               </xsl:attribute>
             </xsl:if>
             <xsl:attribute name="severity">

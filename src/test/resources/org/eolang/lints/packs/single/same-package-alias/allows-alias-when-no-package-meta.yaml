@@ -3,8 +3,7 @@
 ---
 sheets:
   - /org/eolang/lints/aliases/same-package-alias.xsl
-asserts:
-  - /defects[count(defect[@severity='error'])=0]
+defects: 0
 input: |
   +alias org.eolang.txt.sprintf
 

@@ -3,8 +3,7 @@
 ---
 sheets:
   - /org/eolang/lints/names/unsorted-named-attributes.xsl
-asserts:
-  - /defects[count(defect[@severity='warning'])=0]
+defects: 0
 input: |
   [x] > app
     x > @

@@ -3,10 +3,11 @@
 ---
 sheets:
   - /org/eolang/lints/aliases/unused-alias.xsl
-asserts:
-  - /defects[count(defect[@severity='error'])=2]
-  - /defects/defect[@line='1']
-  - /defects/defect[@line='3']
+defects:
+  - severity: error
+    line: 1
+  - severity: error
+    line: 3
 input: |
   +alias err org.eolang.io.stderr
   +alias in org.eolang.io.stdin

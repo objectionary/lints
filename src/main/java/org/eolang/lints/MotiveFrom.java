@@ -30,6 +30,7 @@ final class MotiveFrom {
 
     /**
      * Ctor, picking the document by dimension and lint name.
+     *
      * @param dimension Motive dimension (e.g. {@code "errors"}, {@code "misc"}, {@code "names"})
      * @param lint Lint name, used as the markdown file basename
      */
@@ -43,6 +44,7 @@ final class MotiveFrom {
 
     /**
      * Ctor.
+     *
      * @param src Raw input of the motive document
      */
     MotiveFrom(final Input src) {
@@ -51,6 +53,7 @@ final class MotiveFrom {
 
     /**
      * Read the motive document as a string.
+     *
      * @return Motive content
      * @throws IOException If reading the resource fails
      */

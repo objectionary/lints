@@ -3,8 +3,8 @@
 ---
 sheets:
   - /org/eolang/lints/design/no-attribute-formation.xsl
-asserts:
-  - /defects[count(defect[@severity='warning'])=1]
-  - /defects/defect[@line='1']
+defects:
+  - severity: warning
+    line: 1
 input: |
   [] > foo /number

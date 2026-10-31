@@ -3,11 +3,9 @@
 ---
 sheets:
   - /org/eolang/lints/misc/sprintf-without-formatters.xsl
-asserts:
-  - /defects[count(defect[@severity='warning'])=0]
+defects: 0
 input: |
   [] > app
     io.stdout > @
-      txt.sprintf
-        "Hello, %s!"
+      "Hello, %s!".printf
         * "Jeff"

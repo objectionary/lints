@@ -1,0 +1,15 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/metas/incorrect-package.xsl
+defects:
+  - severity: warning
+    line: 1
+  - severity: warning
+    line: 2
+input: |
+  +package -bad
+  +package org..example
+
+  [] > foo

@@ -3,11 +3,6 @@
 ---
 sheets:
   - /org/eolang/lints/errors/empty-object.xsl
-asserts:
-  - /defects[count(defect[@severity='warning'])=0]
-document: |
-  <object author="tests">
-    <o name="φ">
-      <o name="λ"/>
-    </o>
-  </object>
+defects: 0
+input: |
+  [] > foo /int

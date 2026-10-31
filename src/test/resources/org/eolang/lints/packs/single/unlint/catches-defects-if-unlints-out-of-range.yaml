@@ -1,0 +1,16 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+lint: alias-too-long
+defects:
+  - severity: error
+    line: 4
+input: |
+  +alias x f a
+  +spdx SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+  +spdx SPDX-License-Identifier: MIT
+  +alias a b c
+  +unlint alias-too-long:1-3
+
+  [] > x
+    [] > y

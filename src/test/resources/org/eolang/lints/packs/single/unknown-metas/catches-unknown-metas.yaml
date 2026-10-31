@@ -3,17 +3,20 @@
 ---
 sheets:
   - /org/eolang/lints/metas/unknown-metas.xsl
-asserts:
-  - /defects[count(defect[@severity='warning'])=3]
-  - /defects/defect[@line='1']
-  - /defects/defect[@line='2']
-  - /defects/defect[@line='3']
+defects:
+  - severity: warning
+    line: 1
+  - severity: warning
+    line: 2
+  - severity: warning
+    line: 3
 input: |
   +foo
   +bar
   +bad
   +package test
   +alias foo
+  +also foo
   +version 0.0.0
   +architect yegor256@gmail.com
   +rt node

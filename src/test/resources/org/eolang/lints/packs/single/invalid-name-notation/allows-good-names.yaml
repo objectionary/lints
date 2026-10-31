@@ -3,9 +3,11 @@
 ---
 sheets:
   - /org/eolang/lints/names/invalid-name-notation.xsl
-asserts:
-  - /defects[count(defect[@severity='warning'])=0]
+defects: 0
 input: |
   [] > main-app
     x > x
     y > y
+    x1 > x1
+    as-u8 > as-u8
+    i64 > i64

@@ -3,10 +3,12 @@
 ---
 sheets:
   - /org/eolang/lints/critical/named-object-abstract-nested.xsl
-asserts:
-  - /defects[count(defect[@severity='critical'])=2]
-  - /defects/defect[@line='2']
-  - /defects/defect[@line='3']
+defects:
+  - severity: critical
+    line: 2
+  - severity: critical
+    line: 3
+xml-reason: "vars-float-up relocates named nested objects to top"
 document: |
   <object author="tests">
     <o base="Φ.x" name="φ" line="1">

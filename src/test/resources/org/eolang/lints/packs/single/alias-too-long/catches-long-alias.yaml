@@ -3,8 +3,8 @@
 ---
 sheets:
   - /org/eolang/lints/aliases/alias-too-long.xsl
-asserts:
-  - /defects[count(defect[@severity='error'])=1]
+defects:
+  - severity: error
 input: |
   # Foo.
 

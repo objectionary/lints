@@ -3,8 +3,7 @@
 ---
 sheets:
   - /org/eolang/lints/metas/incorrect-version.xsl
-asserts:
-  - /defects[count(defect[@severity='warning'])=0]
+defects: 0
 input: |
   +version 1.0-SNAPSHOT
 

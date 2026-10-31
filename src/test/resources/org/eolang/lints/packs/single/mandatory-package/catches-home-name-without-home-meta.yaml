@@ -3,7 +3,7 @@
 ---
 sheets:
   - /org/eolang/lints/metas/mandatory-package.xsl
-asserts:
-  - /defects[count(defect[@severity='warning'])=1]
+defects:
+  - severity: warning
 input: |
   [] > win32

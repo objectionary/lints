@@ -3,8 +3,7 @@
 ---
 sheets:
   - /org/eolang/lints/misc/sparse-decoration.xsl
-asserts:
-  - /defects[count(defect[@severity='warning'])=0]
+defects: 0
 input: |
   [x] > a
     [] > @

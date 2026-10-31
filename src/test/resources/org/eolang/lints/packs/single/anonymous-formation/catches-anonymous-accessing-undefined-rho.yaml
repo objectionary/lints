@@ -3,9 +3,9 @@
 ---
 sheets:
   - /org/eolang/lints/names/anonymous-formation.xsl
-asserts:
-  - /defects[count(defect[@severity='warning'])=1]
-  - /defects/defect[@line='7']
+defects:
+  - severity: warning
+    line: 7
 input: |
   [] > foo
     boom > @

@@ -3,11 +3,13 @@
 ---
 sheets:
   - /org/eolang/lints/critical/unknown-rt.xsl
-asserts:
-  - /defects[count(defect[@severity='critical'])=3]
-  - /defects/defect[@line='1']
-  - /defects/defect[@line='2']
-  - /defects/defect[@line='3']
+defects:
+  - severity: critical
+    line: 1
+  - severity: critical
+    line: 2
+  - severity: critical
+    line: 3
 input: |
   +rt test test
   +rt привет, как дела?

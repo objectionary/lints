@@ -3,9 +3,9 @@
 ---
 sheets:
   - /org/eolang/lints/atoms/rt-without-atoms.xsl
-asserts:
-  - /defects[count(defect[@severity='error'])=1]
-  - /defects/defect[@line='4']
+defects:
+  - severity: error
+    line: 4
 input: |
   +architect yegor256@gmail.com
   +home https://github.com/objectionary/eo

@@ -3,9 +3,9 @@
 ---
 sheets:
   - /org/eolang/lints/errors/many-void-attributes.xsl
-asserts:
-  - /defects[count(defect[@severity='warning'])=1]
-  - /defects/defect[@line='1']
+defects:
+  - severity: warning
+    line: 1
 input: |
   [a b c d e f] > with-many
     something > @

@@ -1,0 +1,10 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+lint: incorrect-unlint
+defects: 2
+input: |
+  +unlint foo
+  +unlint bar
+
+  [] > foo

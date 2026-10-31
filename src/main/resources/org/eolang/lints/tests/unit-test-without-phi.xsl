@@ -27,7 +27,7 @@
             <xsl:text>warning</xsl:text>
           </xsl:attribute>
           <xsl:text>The unit test doesn't have "@" attribute: </xsl:text>
-          <xsl:value-of select="eo:escape(substring(@name, 2))"/>
+          <xsl:value-of select="eo:escape(eo:test-title(@name))"/>
         </xsl:element>
       </xsl:for-each>
     </defects>

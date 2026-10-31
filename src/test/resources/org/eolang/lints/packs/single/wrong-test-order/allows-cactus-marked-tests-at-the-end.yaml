@@ -1,0 +1,13 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/tests/wrong-test-order.xsl
+defects: 0
+input: |
+  [] > foo
+    [] > bar
+
+    [] +> runs-program
+
+    [] -> cannot-run-program

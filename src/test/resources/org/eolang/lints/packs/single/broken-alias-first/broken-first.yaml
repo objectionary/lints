@@ -3,8 +3,41 @@
 ---
 sheets:
   - /org/eolang/lints/aliases/broken-alias-first.xsl
-asserts:
-  - /defects[count(defect[@severity='error'])=17]
+defects:
+  - severity: error
+    line: 1
+  - severity: error
+    line: 2
+  - severity: error
+    line: 3
+  - severity: error
+    line: 4
+  - severity: error
+    line: 5
+  - severity: error
+    line: 6
+  - severity: error
+    line: 7
+  - severity: error
+    line: 8
+  - severity: error
+    line: 9
+  - severity: error
+    line: 10
+  - severity: error
+    line: 11
+  - severity: error
+    line: 12
+  - severity: error
+    line: 13
+  - severity: error
+    line: 14
+  - severity: error
+    line: 15
+  - severity: error
+    line: 16
+  - severity: error
+    line: 17
 input: |
   +alias FirstLetter Capital.Letters.Prohibited.Here
   +alias the! symbol.is.not.allowed

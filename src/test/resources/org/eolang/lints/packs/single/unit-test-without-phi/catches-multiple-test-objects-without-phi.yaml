@@ -3,10 +3,11 @@
 ---
 sheets:
   - /org/eolang/lints/tests/unit-test-without-phi.xsl
-asserts:
-  - /defects[count(defect[@severity='warning'])=2]
-  - /defects/defect[@line='3']
-  - /defects/defect[@line='6']
+defects:
+  - severity: warning
+    line: 3
+  - severity: warning
+    line: 6
 input: |
   [] > foo
 

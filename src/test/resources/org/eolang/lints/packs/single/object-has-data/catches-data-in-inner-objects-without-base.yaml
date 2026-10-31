@@ -3,8 +3,9 @@
 ---
 sheets:
   - /org/eolang/lints/critical/object-has-data.xsl
-asserts:
-  - /defects[count(defect[@severity='critical'])=1]
+defects:
+  - severity: critical
+xml-reason: "data with wrong/missing @base is unreachable via valid EO parse"
 document: |
   <object author="tests">
     <o name="foo">

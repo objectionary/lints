@@ -3,12 +3,15 @@
 ---
 sheets:
   - /org/eolang/lints/critical/self-referencing.xsl
-asserts:
-  - /defects[count(defect[@severity='error'])=4]
-  - /defects/defect[@line='2']
-  - /defects/defect[@line='3']
-  - /defects/defect[@line='4']
-  - /defects/defect[@line='5']
+defects:
+  - severity: error
+    line: 2
+  - severity: error
+    line: 3
+  - severity: error
+    line: 4
+  - severity: error
+    line: 5
 input: |
   [] > first
     a > a

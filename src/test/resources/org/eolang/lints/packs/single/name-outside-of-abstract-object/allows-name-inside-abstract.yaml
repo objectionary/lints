@@ -3,8 +3,8 @@
 ---
 sheets:
   - /org/eolang/lints/critical/name-outside-of-abstract-object.xsl
-asserts:
-  - /defects[count(defect[@severity='critical'])=0]
+defects: 0
+xml-reason: "not yet converted to an EO input test"
 document: |
   <object author="tests">
     <o>

@@ -3,8 +3,11 @@
 ---
 sheets:
   - /org/eolang/lints/metas/incorrect-package.xsl
-asserts:
-  - /defects[count(defect[@severity='warning'])=2]
+defects:
+  - severity: warning
+    line: 1
+  - severity: warning
+    line: 2
 input: |
   +package test.
   +package привет, как дела?

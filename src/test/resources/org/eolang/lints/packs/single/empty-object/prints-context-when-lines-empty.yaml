@@ -5,6 +5,7 @@ sheets:
   - /org/eolang/lints/errors/empty-object.xsl
 asserts:
   - /defects[count(defect[@context and @severity='warning'])=1]
+xml-reason: "an <o> with no @line at all is unreachable via valid EO parse"
 document: |
   <object author="tests">
     <o/>

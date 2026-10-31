@@ -3,11 +3,14 @@
 ---
 sheets:
   - /org/eolang/lints/critical/formation-with-as-attributes.xsl
-asserts:
-  - /defects[count(defect[@severity='critical'])=3]
-  - /defects/defect[@line='2']
-  - /defects/defect[@line='3']
-  - /defects/defect[@line='4']
+defects:
+  - severity: critical
+    line: 2
+  - severity: critical
+    line: 3
+  - severity: critical
+    line: 4
+xml-reason: "@as only appears on vapplication args, which need @base"
 document: |
   <object author="tests">
     <o name='foo' line='1'>

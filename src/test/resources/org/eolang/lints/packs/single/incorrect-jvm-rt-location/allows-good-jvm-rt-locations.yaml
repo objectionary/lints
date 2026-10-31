@@ -3,8 +3,7 @@
 ---
 sheets:
   - /org/eolang/lints/metas/incorrect-jvm-rt-location.xsl
-asserts:
-  - /defects[count(defect[@severity='warning'])=0]
+defects: 0
 input: |
   +rt jvm org.eolang:eo-runtime:0.0.0
   +rt jvm foo:bar:0.0.1

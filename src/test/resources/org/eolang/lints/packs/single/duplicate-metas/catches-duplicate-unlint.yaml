@@ -3,9 +3,9 @@
 ---
 sheets:
   - /org/eolang/lints/metas/duplicate-metas.xsl
-asserts:
-  - /defects[count(defect[@severity='warning'])=1]
-  - /defects/defect[@line='2']
+defects:
+  - severity: warning
+    line: 2
 input: |
   +unlint foo
   +unlint foo

@@ -3,12 +3,15 @@
 ---
 sheets:
   - /org/eolang/lints/metas/incorrect-node-rt-location.xsl
-asserts:
-  - /defects[count(defect[@severity='warning'])=4]
-  - /defects/defect[@line='1']
-  - /defects/defect[@line='2']
-  - /defects/defect[@line='3']
-  - /defects/defect[@line='4']
+defects:
+  - severity: warning
+    line: 1
+  - severity: warning
+    line: 2
+  - severity: warning
+    line: 3
+  - severity: warning
+    line: 4
 input: |
   +rt node foo
   +rt node bar-test:test:1.2.3

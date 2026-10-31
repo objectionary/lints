@@ -3,8 +3,9 @@
 ---
 sheets:
   - /org/eolang/lints/lines/meta-line-out-of-listing.xsl
-asserts:
-  - /defects[count(defect[@severity='error'])=1]
+defects:
+  - severity: error
+xml-reason: "meta @line always <= listing length; unreachable via parse"
 document: |
   <object author="tests">
     <listing>first line

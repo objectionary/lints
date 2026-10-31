@@ -3,22 +3,29 @@
 ---
 sheets:
   - /org/eolang/lints/metas/incorrect-version.xsl
-asserts:
-  - /defects[count(defect[@severity='warning'])=11]
-  - /defects/defect[@line='1']
-  - /defects/defect[@line='2']
-  - /defects/defect[@line='3']
-  - /defects/defect[@line='4']
-  - /defects/defect[@line='5']
-  - /defects/defect[@line='6']
-  - /defects/defect[@line='7']
-  - /defects/defect[@line='8']
-  - /defects/defect[@line='9']
-  - /defects/defect[@line='10']
-  - /defects/defect[@line='11']
+defects:
+  - severity: warning
+    line: 1
+  - severity: warning
+    line: 2
+  - severity: warning
+    line: 3
+  - severity: warning
+    line: 4
+  - severity: warning
+    line: 5
+  - severity: warning
+    line: 6
+  - severity: warning
+    line: 7
+  - severity: warning
+    line: 8
+  - severity: warning
+    line: 9
+  - severity: warning
+    line: 10
 input: |
   +version alpha
-  +version 1.0.0-alpha.beta
   +version привет, друг!
   +version привет, как дела?
   +version 你好，伙计

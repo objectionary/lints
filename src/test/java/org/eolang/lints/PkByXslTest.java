@@ -20,6 +20,7 @@ import java.util.function.Predicate;
 import org.cactoos.io.InputOf;
 import org.cactoos.io.ResourceOf;
 import org.cactoos.list.ListOf;
+import org.cactoos.text.FormattedText;
 import org.cactoos.text.TextOf;
 import org.cactoos.text.UncheckedText;
 import org.hamcrest.MatcherAssert;
@@ -28,6 +29,7 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Test for {@link PkByXsl}.
+ *
  * @since 0.0.1
  */
 final class PkByXslTest {
@@ -78,14 +80,24 @@ final class PkByXslTest {
     }
 
     @Test
-    void checksAllMotives() throws Exception {
-        for (final Lint lint : new PkByXsl()) {
-            MatcherAssert.assertThat(
-                "Lint's motive is empty, but should not be",
-                lint.motive().isEmpty(),
-                Matchers.equalTo(false)
-            );
-        }
+    void returnsMarkdownContentInsteadOfUrl() throws Exception {
+        final String name = "self-referencing";
+        MatcherAssert.assertThat(
+            "Motive must contain the markdown content, not the classpath URL",
+            new ListOf<>(new PkByXsl()).stream()
+                .filter(l -> name.equals(l.name()))
+                .findFirst()
+                .orElseThrow().motive(),
+            Matchers.equalTo(
+                new TextOf(
+                    new ResourceOf(
+                        new FormattedText(
+                            "org/eolang/motives/critical/%s.md", name
+                        )
+                    )
+                ).asString()
+            )
+        );
     }
 
     @Test
@@ -127,6 +139,7 @@ final class PkByXslTest {
 
     /**
      * Checks that XSL stylesheet ID matches filename.
+     *
      * @since 0.0.1
      */
     private static final class IdChecker implements Predicate<Resource> {

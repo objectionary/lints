@@ -1,6 +1,7 @@
 # Incorrect `+version`
 
-The value of the special `+version` meta must follow the [SemVer] format.
+The value of the special `+version` meta must follow the [SemVer] format, or
+the [Maven] snapshot convention `X.Y-SNAPSHOT`.
 
 Incorrect:
 
@@ -23,8 +24,10 @@ Correct:
 +version 42.0.555555
 +version 0.0.1-alpha
 +version 0.0.1-beta-1
++version 1.0-SNAPSHOT
 
 [] > foo
 ```
 
 [SemVer]: https://semver.org/
+[Maven]: https://maven.apache.org/

@@ -3,9 +3,9 @@
 ---
 sheets:
   - /org/eolang/lints/metas/prohibited-package.xsl
-asserts:
-  - /defects[count(defect[@severity='warning'])=1]
-  - /defects/defect[@line='1']
+defects:
+  - severity: warning
+    line: 1
 input: |
   +package org.eolang
 

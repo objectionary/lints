@@ -3,8 +3,9 @@
 ---
 sheets:
   - /org/eolang/lints/refs/line-is-absent.xsl
-asserts:
-  - /defects[count(defect[@severity='error'])=1]
+defects:
+  - severity: error
+xml-reason: "parser always emits @line; unreachable via valid parse"
 document: |
   <object author="tests">
     <o line="1">

@@ -3,13 +3,12 @@
 ---
 sheets:
   - /org/eolang/lints/names/invalid-name-notation.xsl
-asserts:
-  - /defects[count(defect[@severity='warning'])=3]
-  - /defects/defect[@line='2']
-  - /defects/defect[@line='3']
-  - /defects/defect[@line='4']
+defects:
+  - severity: warning
+    line: 2
+  - severity: warning
+    line: 3
 input: |
   [] > main
-    x1 > x1
     xApp > xApp
     x_snake > x_snake

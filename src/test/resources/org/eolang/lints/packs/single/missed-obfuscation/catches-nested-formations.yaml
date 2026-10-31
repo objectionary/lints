@@ -3,10 +3,11 @@
 ---
 sheets:
   - /org/eolang/lints/design/missed-obfuscation.xsl
-asserts:
-  - /defects[count(defect[@severity='warning'])=2]
-  - /defects/defect[@line='1']
-  - /defects/defect[@line='3']
+defects:
+  - severity: warning
+    line: 1
+  - severity: warning
+    line: 3
 input: |
   [a] > outer
     foo > @

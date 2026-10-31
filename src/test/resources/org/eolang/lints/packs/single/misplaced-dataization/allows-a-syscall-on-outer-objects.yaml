@@ -1,0 +1,13 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/design/misplaced-dataization.xsl
+defects: 0
+input: |
+  [] > server
+    [^ scope] > accept
+      as-number. > client
+        ^.sys.accept >>!
+          ^.sd
+          ^.sockaddr

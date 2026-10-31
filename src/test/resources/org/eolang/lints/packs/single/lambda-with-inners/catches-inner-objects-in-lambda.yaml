@@ -6,6 +6,7 @@ sheets:
 asserts:
   - /defects[count(defect[@severity='critical'])=1]
   - /defects[count(defect[@context])]
+xml-reason: "not yet converted to an EO input test"
 document: |
   <object author="tests">
     <o name="obj">

@@ -3,8 +3,7 @@
 ---
 sheets:
   - /org/eolang/lints/metas/incorrect-node-rt-location.xsl
-asserts:
-  - /defects[count(defect[@severity='warning'])=0]
+defects: 0
 input: |
   +rt node eo2js-runtime:0.0.0
   +rt node bar-test:1.1.3

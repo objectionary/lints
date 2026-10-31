@@ -3,8 +3,8 @@
 ---
 sheets:
   - /org/eolang/lints/names/phi-is-not-first.xsl
-asserts:
-  - /defects[count(defect[@severity='warning'])=0]
+defects: 0
+xml-reason: "not yet converted to an EO input test"
 document: |
   <object author="tests">
     <o name="f">

@@ -3,8 +3,8 @@
 ---
 sheets:
   - /org/eolang/lints/metas/prohibited-package.xsl
-asserts:
-  - /defects[count(defect[@severity='warning'])=1]
+defects:
+  - severity: warning
 input: |
   +home https://github.com/objectionary/eo
   +package org.eolang

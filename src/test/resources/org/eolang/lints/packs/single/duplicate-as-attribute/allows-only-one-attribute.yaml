@@ -3,11 +3,6 @@
 ---
 sheets:
   - /org/eolang/lints/names/duplicate-as-attribute.xsl
-asserts:
-  - /defects[count(defect[@severity='warning'])=0]
-document: |
-  <object author="tests">
-    <o base="Φ.foo" name="f">
-      <o base="Φ.f1" as="bar"/>
-    </o>
-  </object>
+defects: 0
+input: |
+  foo f1:bar > f
