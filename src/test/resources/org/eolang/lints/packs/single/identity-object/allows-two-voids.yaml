@@ -4,12 +4,6 @@
 sheets:
   - /org/eolang/lints/misc/identity-object.xsl
 defects: 0
-xml-reason: "not yet converted to an EO input test"
-document: |
-  <object author="tests">
-    <o line="1" pos="1" name="two-voids">
-      <o line="1" pos="2" base="∅" name="a"/>
-      <o line="1" pos="3" base="∅" name="b"/>
-      <o line="1" pos="4" base="ξ.a" name="φ"/>
-    </o>
-  </object>
+input: |
+  [a b] > two-voids
+    a > @

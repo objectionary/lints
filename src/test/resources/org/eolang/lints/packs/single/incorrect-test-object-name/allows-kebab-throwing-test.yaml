@@ -5,7 +5,7 @@ sheets:
   - /org/eolang/lints/misc/incorrect-test-object-name.xsl
 defects: 0
 ignore-schema: true
-xml-reason: "not yet converted to an EO input test"
+xml-reason: "pinned eo-parser emits +/-, not p🌵/n🌵 cactus markers"
 document: |
   <object author="tests">
     <o line="2" name="foo" pos="0">

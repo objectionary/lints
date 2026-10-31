@@ -4,16 +4,7 @@
 sheets:
   - /org/eolang/lints/lines/meta-line-out-of-listing.xsl
 defects: 0
-xml-reason: "not yet converted to an EO input test"
-document: |
-  <object author="tests">
-    <listing>first line
-      second line
-      third line</listing>
-    <metas>
-      <meta line="3">
-        <head>hello</head>
-        <tail/>
-      </meta>
-    </metas>
-  </object>
+input: |
+  +alias org.eolang.io.stdout
+
+  [] > foo

@@ -5,7 +5,7 @@ sheets:
   - /org/eolang/lints/refs/line-is-absent.xsl
 defects:
   - severity: error
-xml-reason: "not yet converted to an EO input test"
+xml-reason: "parser always emits @line; unreachable via valid parse"
 document:
   <object author="tests">
     <o line="1">

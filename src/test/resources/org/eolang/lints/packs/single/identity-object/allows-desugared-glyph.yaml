@@ -4,11 +4,6 @@
 sheets:
   - /org/eolang/lints/misc/identity-object.xsl
 defects: 0
-xml-reason: "not yet converted to an EO input test"
-document: |
-  <object author="tests">
-    <o line="3" pos="7" name="i">
-      <o line="3" pos="7" base="∅" name="x"/>
-      <o line="3" pos="7" base="ξ.x" name="φ"/>
-    </o>
-  </object>
+input: |
+  [] > main
+    (list 1 2).each I > @

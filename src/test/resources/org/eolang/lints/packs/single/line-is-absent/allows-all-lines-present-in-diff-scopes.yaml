@@ -4,11 +4,7 @@
 sheets:
   - /org/eolang/lints/refs/line-is-absent.xsl
 defects: 0
-xml-reason: "not yet converted to an EO input test"
-document:
-  <object author="tests">
-    <o line="1">
-      <o line="2"><o name="foo" line="2"/></o>
-      <o line="3"><o name="bar" base="ξ.foo" line="3"/></o>
-    </o>
-  </object>
+input: |
+  [] > app
+    [] > foo
+    foo > bar

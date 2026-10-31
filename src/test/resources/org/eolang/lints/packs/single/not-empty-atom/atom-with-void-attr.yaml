@@ -4,7 +4,7 @@
 sheets:
   - /org/eolang/lints/atoms/not-empty-atom.xsl
 defects: 0
-xml-reason: "not yet converted to an EO input test"
+xml-reason: "λ never carries @base in real parses; only @atom"
 document: |
   <object author="tests">
     <o name="number">

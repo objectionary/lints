@@ -518,9 +518,9 @@
       </build>
     </profile>
     <profile>
-      <id>java-17-plus</id>
+      <id>java-21-plus</id>
       <activation>
-        <jdk>[17,)</jdk>
+        <jdk>[21,)</jdk>
       </activation>
       <build>
         <plugins>

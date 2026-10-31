@@ -4,16 +4,8 @@
 sheets:
   - /org/eolang/lints/critical/named-object-abstract-nested.xsl
 defects: 0
-xml-reason: "not yet converted to an EO input test"
-document: |
-  <object author="tests">
-    <o name="foo">
-      <o base="Φ.x" name="φ">
-        <o base="ξ.a"/>
-      </o>
-      <o base="Φ.y" name="a">
-        <o base="ξ.b"/>
-      </o>
-      <o base="Φ.z" name="b"/>
-    </o>
-  </object>
+input: |
+  [] > foo
+    z > b
+    y b > a
+    x a > @

@@ -5,7 +5,7 @@ sheets:
   - /org/eolang/lints/atoms/not-empty-atom.xsl
 asserts:
   - /defects[count(defect[@context and @severity='error'])=1]
-xml-reason: "not yet converted to an EO input test"
+xml-reason: "atom body rejects non-test attrs at parse time"
 document: |
   <object author="tests">
     <o name="number">

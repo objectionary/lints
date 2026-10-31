@@ -5,12 +5,6 @@ sheets:
   - /org/eolang/lints/names/duplicate-as-attribute.xsl
 defects:
   - severity: warning
-    line: 2
-xml-reason: "not yet converted to an EO input test"
-document: |
-  <object author="tests">
-    <o base="Φ.foo" line="2">
-      <o base="Φ.f1" as="bar"/>
-      <o base="Φ.f2" as="bar"/>
-    </o>
-  </object>
+    line: 1
+input: |
+  foo f1:bar f2:bar > x

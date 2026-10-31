@@ -4,11 +4,5 @@
 sheets:
   - /org/eolang/lints/names/duplicate-as-attribute.xsl
 defects: 0
-xml-reason: "not yet converted to an EO input test"
-document: |
-  <object author="tests">
-    <o base="Φ.t" name="tee">
-      <o base="Φ.f1" as="x"/>
-      <o base="Φ.f2" as="foo"/>
-    </o>
-  </object>
+input: |
+  t f1:x f2:foo > tee

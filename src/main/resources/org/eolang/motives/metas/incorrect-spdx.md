@@ -34,11 +34,11 @@ In [XMIR], `spdx` meta should look like this:
   </meta>
   <meta>
     <head>spdx</head>
-    <tail>SPDX-FileCopyrightText Copyright (c) 2016-2026 Objectionary.com</tail>
-    <part>SPDX-FileCopyrightText</part>
+    <tail>SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com</tail>
+    <part>SPDX-FileCopyrightText:</part>
     <part>Copyright</part>
     <part>(c)</part>
-    <part>2016-2025</part>
+    <part>2016-2026</part>
     <part>Objectionary.com</part>
   </meta>
 </metas>

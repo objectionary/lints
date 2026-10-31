@@ -4,14 +4,6 @@
 sheets:
   - /org/eolang/lints/errors/application-without-as-attributes.xsl
 defects: 0
-xml-reason: "not yet converted to an EO input test"
-document: |
-  <object author="tests">
-    <o name="app">
-      <o base="Φ.start" name="φ" line="2">
-        <o base="Φ.x" name="i" as="α0" line="3">
-          <o base="Φ.nest" as="α1" line="4"/>
-        </o>
-      </o>
-    </o>
-  </object>
+input: |
+  [] > app
+    start (x nest) > @

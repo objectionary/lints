@@ -59,7 +59,7 @@ final class LtTestNotVerbTest {
     @ExtendWith(MayBeSlow.class)
     @Execution(ExecutionMode.CONCURRENT)
     @ParameterizedTest
-    @ValueSource(strings = {"generates-report", "runs", "parses-dom"})
+    @ValueSource(strings = {"generates-report", "runs", "parses-dom", "can-read-bytes"})
     void allowsGoodNames(final String name) throws IOException {
         MatcherAssert.assertThat(
             "Defects are not empty, but they shouldn't be",

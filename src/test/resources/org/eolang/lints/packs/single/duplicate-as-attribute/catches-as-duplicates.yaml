@@ -3,13 +3,8 @@
 ---
 sheets:
   - /org/eolang/lints/names/duplicate-as-attribute.xsl
-asserts:
-  - /defects[count(defect[@context and @severity='warning'])=1]
-xml-reason: "not yet converted to an EO input test"
-document: |
-  <object author="tests">
-    <o base="Φ.t" name="tee">
-      <o base="Φ.f1" as="foo"/>
-      <o base="Φ.f2" as="foo"/>
-    </o>
-  </object>
+defects:
+  - severity: warning
+    line: 1
+input: |
+  t f1:foo f2:foo > tee

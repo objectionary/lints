@@ -7,7 +7,7 @@ sheets:
 asserts:
   - /defects[count(defect[@severity='error'])=1]
   - /defects/defect[not(contains(., 'foo'))]
-xml-reason: "not yet converted to an EO input test"
+xml-reason: "atom body rejects non-test attrs at parse time"
 document: |
   <object author="tests">
     <o line="1" name="number">

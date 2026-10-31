@@ -4,13 +4,6 @@
 sheets:
   - /org/eolang/lints/errors/application-without-as-attributes.xsl
 defects: 0
-xml-reason: "not yet converted to an EO input test"
-document: |
-  <object author="tests">
-    <o base=".bar">
-      <o base="Φ.baz">
-        <o base="Φ.x" as="α0"/>
-      </o>
-      <o base="Φ.y" as="α0"/>
-    </o>
-  </object>
+input: |
+  [] > methods
+    bar.baz x y > @
