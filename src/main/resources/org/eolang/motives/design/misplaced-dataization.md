@@ -41,6 +41,6 @@ runs once per call:
 
 The lint stays silent on an application, such as `^.sys.accept >>!` with
 its arguments, because a syscall must run on every call, and moving it up
-would run it only once. It also stays silent on a global, such as `eol!`,
+would run it once. It also stays silent on a global, such as `eol!`,
 on a top-level formation, whose enclosing object lives in another file,
 and inside a test.

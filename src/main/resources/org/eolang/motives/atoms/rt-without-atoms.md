@@ -1,6 +1,6 @@
 # `+rt` without atoms
 
-The special `+rt` meta must be used only with atoms.
+The special `+rt` meta must be used with atoms, not with anything else.
 
 Incorrect:
 
@@ -16,5 +16,5 @@ Correct:
 +rt node eo2js-runtime:0.0.0
 
 [attr] > foo
-  [] > test ?
+  [] > test /Q.boolean
 ```

@@ -23,6 +23,7 @@ Also, it's possible to have sparse decoration in tests:
 
 ```eo
 # This is my unit test.
+
 [] > runs-analysis
   assert > @
     foo.eq 42
