@@ -10,12 +10,17 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.cactoos.iterable.Sticky;
 import org.cactoos.iterable.Synced;
+import org.cactoos.set.SetOf;
 
 /**
  * A single source XMIR to analyze.
+ *
  * @see <a href="https://news.eolang.org/2022-11-25-xmir-guide.html">XMIR</a>
  * @since 0.1.0
  */
@@ -42,6 +47,7 @@ public final class Source {
 
     /**
      * Ctor.
+     *
      * @param file The absolute path of the XMIR file
      * @throws FileNotFoundException If file isn't found
      */
@@ -51,6 +57,7 @@ public final class Source {
 
     /**
      * Ctor.
+     *
      * @param xml The XMIR
      */
     public Source(final XML xml) {
@@ -73,29 +80,47 @@ public final class Source {
 
     /**
      * Source with disabled lints.
+     *
      * @param names Lint names
      * @return Program analysis without specific name
      */
     public Source without(final String... names) {
+        final Collection<String> known = new SetOf<>(new MonoLintNames());
+        final List<String> unknown = Arrays.stream(names)
+            .filter(name -> !known.contains(name))
+            .collect(Collectors.toList());
+        if (!unknown.isEmpty()) {
+            throw new IllegalArgumentException(
+                String.format(
+                    "Lints %s cannot be disabled, since there are no lints with such names",
+                    unknown
+                )
+            );
+        }
         return new org.eolang.lints.Source(this.xmir, new MonoWithout(names));
     }
 
     /**
      * Apply all available fixes to the XMIR, returning the corrected document.
-     * Lints without a fix return the XMIR unchanged.
+     * A lint's fix is applied only when the lint reports at least one defect
+     * on the current document, so clean XMIR stays untouched.
+     *
      * @return Fixed XMIR
      * @throws IOException If a fix fails to apply
      */
     public XML fix() throws IOException {
         XML result = this.xmir;
         for (final Lint lint : this.lints) {
-            result = lint.fix().apply(result);
+            if (!lint.defects(result).isEmpty()) {
+                result = lint.fix().apply(result);
+            }
         }
         return result;
     }
 
     /**
      * Find defects possible defects in the XMIR file.
+     *
      * @return All defects found
      * @see <a href="https://news.eolang.org/2022-11-25-xmir-guide.html">XMIR guide</a>
      * @see <a href="https://www.eolang.org/XMIR.html">XMIR specification</a>

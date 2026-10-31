@@ -5,13 +5,11 @@ sheets:
   - /org/eolang/lints/misc/wrong-sprintf-arguments.xsl
 defects:
   - severity: warning
-    line: 6
+    line: 5
 input: |
   [] > app
     io.stdout > @
-      txt.sprintf
-        "Hello, %s! Your account is %d."
+      "Hello, %s! Your account is %d.".printf
         * name acc
-      txt.sprintf
-        "Hello, %s! Your account is %f."
+      "Hello, %s! Your account is %f.".printf
         * f

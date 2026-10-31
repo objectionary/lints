@@ -8,6 +8,7 @@
   <xsl:import href="/org/eolang/funcs/lineno.xsl"/>
   <xsl:import href="/org/eolang/funcs/escape.xsl"/>
   <xsl:import href="/org/eolang/funcs/defect-context.xsl"/>
+  <xsl:import href="/org/eolang/funcs/test-name.xsl"/>
   <xsl:output encoding="UTF-8" method="xml"/>
   <!--
   Is the object in a tail position of the expression rooted at $root? It is
@@ -42,15 +43,43 @@
     </xsl:choose>
   </xsl:function>
   <!--
-  @todo #1321:60min Name the shapes this lint still misses.
-  The compiler also leaves the recursion alone when the self-call is
-  spelled "Phi.name" instead of "^.name", when the formation is reached
-  other than by a plain application, as a decoratee or as the receiver of
-  a dispatch, when an attribute holding a self-call is read from outside
-  the formation, as in "range", and when two formations call each other.
-  Each of those is syntactic, so each can be found here and reported with
-  a reason of its own, the way the four below are.
+  One shape the compiler also leaves unoptimized is not named below:
+  mutual recursion, where formation A calls formation B and B calls A
+  back, possibly through a longer chain of formations. That is not
+  decidable from a single formation's own subtree the way the others
+  are; it needs a call graph over the whole document, which is a
+  different kind of lint from this one.
   -->
+  <!--
+  TRUE when the @base is a self-call of the object with the given name, in
+  any of the three forms the parser emits: the plain name resolves to
+  "Phi.<name>", the "^" form to "xi.rho.<name>", and the "$" form to
+  "xi.<name>". A dispatch on the self-call is also a self-call.
+  -->
+  <xsl:function name="eo:is-self-call" as="xs:boolean">
+    <xsl:param name="base" as="xs:string"/>
+    <xsl:param name="name" as="xs:string"/>
+    <xsl:sequence select="$base = concat('Φ.', $name) or starts-with($base, concat('Φ.', $name, '.')) or $base = concat('ξ.ρ.', $name) or starts-with($base, concat('ξ.ρ.', $name, '.')) or $base = concat('ξ.', $name) or starts-with($base, concat('ξ.', $name, '.'))"/>
+  </xsl:function>
+  <!--
+  TRUE when the @base is a dispatch on a self-call, i.e. the self-call is
+  the receiver and a method is dispatched on it.
+  -->
+  <xsl:function name="eo:is-self-dispatch" as="xs:boolean">
+    <xsl:param name="base" as="xs:string"/>
+    <xsl:param name="name" as="xs:string"/>
+    <xsl:sequence select="starts-with($base, concat('Φ.', $name, '.')) or starts-with($base, concat('ξ.ρ.', $name, '.')) or starts-with($base, concat('ξ.', $name, '.'))"/>
+  </xsl:function>
+  <!--
+  TRUE when the @base is a self-call in a tail position: the plain call of
+  the object, with no method dispatched on it. A dispatch on the self-call
+  is never a tail call, because the receiver is evaluated, not the call.
+  -->
+  <xsl:function name="eo:is-self-tail" as="xs:boolean">
+    <xsl:param name="base" as="xs:string"/>
+    <xsl:param name="name" as="xs:string"/>
+    <xsl:sequence select="$base = concat('Φ.', $name) or $base = concat('ξ.ρ.', $name) or $base = concat('ξ.', $name)"/>
+  </xsl:function>
   <!--
   A nested formation that calls itself has its recursion turned into a Java
   loop, one copy of the object per step instead of one Java stack block, but
@@ -60,11 +89,12 @@
   -->
   <xsl:template match="/">
     <defects>
-      <xsl:for-each select="//o[eo:abstract(.) and @name and parent::o and o[@name='φ']]">
-        <xsl:variable name="self" select="concat('ξ.ρ.', @name)"/>
+      <xsl:for-each select="//o[eo:abstract(.) and @name and not(contains(@name, '🌵')) and o[@name='φ']]">
+        <xsl:variable name="name" select="string(@name)"/>
         <xsl:variable name="root" select="o[@name='φ']"/>
-        <xsl:variable name="calls" select=".//o[@base = $self or starts-with(@base, concat($self, '.'))]"/>
-        <xsl:variable name="loops" select="($root | $root//o)[@base = $self and eo:tail(., $root)]"/>
+        <xsl:variable name="calls" select=".//o[eo:is-self-call(string(@base), $name) and not(ancestor::o[eo:test-name(@name)]) and ancestor::o[eo:abstract(.)][1] is current()]"/>
+        <xsl:variable name="loops" select="($root | $root//o)[eo:is-self-tail(string(@base), $name) and eo:tail(., $root)]"/>
+        <xsl:variable name="elsewhere" select="$calls except ($root/descendant-or-self::o)"/>
         <xsl:if test="exists($calls) and empty($loops)">
           <defect>
             <xsl:variable name="line" select="eo:lineno($calls[1]/@line)"/>
@@ -88,8 +118,11 @@
               <xsl:when test=".//o[contains(@base, 'φ')]">
                 <xsl:text>its body reads its own φ</xsl:text>
               </xsl:when>
-              <xsl:when test="$calls[starts-with(@base, concat($self, '.'))]">
+              <xsl:when test="$calls[eo:is-self-dispatch(string(@base), $name)]">
                 <xsl:text>the self-call is the receiver of a dispatch</xsl:text>
+              </xsl:when>
+              <xsl:when test="exists($elsewhere)">
+                <xsl:text>the self-call is kept in an attribute other than φ</xsl:text>
               </xsl:when>
               <xsl:otherwise>
                 <xsl:text>no self-call sits in a tail position</xsl:text>

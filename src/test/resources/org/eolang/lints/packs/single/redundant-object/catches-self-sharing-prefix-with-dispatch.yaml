@@ -1,0 +1,15 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/misc/redundant-object.xsl
+defects:
+  - severity: warning
+    line: 6
+input: |
+  [bts] > bytes-as-input
+    [size] > read
+      ((input-block ^.bts --).read size).selfish > @
+      [data buffer] > input-block
+        buffer > @
+        $ > self

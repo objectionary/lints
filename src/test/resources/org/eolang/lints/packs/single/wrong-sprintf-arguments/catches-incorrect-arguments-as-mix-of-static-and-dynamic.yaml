@@ -7,18 +7,16 @@ sheets:
 asserts:
   - /defects[count(defect[@severity='warning'])=1]
   - /defects/defect[@line='6']
-  - /defects/defect[1][normalize-space()='According to the formatting template of the "Φ.txt.sprintf" object, a tuple of 1 element(s) is expected as the second argument of it, while a tuple of 2 element(s) is provided']
+  - /defects/defect[1][normalize-space()='According to the formatting template of the ".printf" object, a tuple of 1 element(s) is expected as its argument, while a tuple of 2 element(s) is provided']
 input: |
   [fmt args kid] > log
     seq > @
       *
         stdout
           magenta
-            txt.sprintf
-              "\033[90m%s\033[0m\n"
+            "\033[90m%s\033[0m\n".printf
               *
-                txt.sprintf
-                  fmt
+                fmt.printf
                   * args
                 1
         kid

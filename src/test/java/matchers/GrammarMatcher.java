@@ -22,6 +22,7 @@ import org.languagetool.rules.spelling.SpellingCheckRule;
 /**
  * Hamcrest matcher for a single piece of text, to make sure it's
  * grammatically valid.
+ *
  * @since 0.0.34
  */
 public final class GrammarMatcher extends BaseMatcher<String> {
@@ -51,7 +52,10 @@ public final class GrammarMatcher extends BaseMatcher<String> {
         for (final Rule rule : tool.getAllActiveRules()) {
             if (rule instanceof SpellingCheckRule) {
                 ((SpellingCheckRule) rule).addIgnoreTokens(
-                    Arrays.asList("decoratee", "eolang", "spdx", "SPDX-compliant")
+                    Arrays.asList(
+                        "dataization", "decoratee", "eolang", "spdx", "SPDX-compliant",
+                        "Unlinting", "cyclomatic"
+                    )
                 );
             }
         }
@@ -90,7 +94,7 @@ public final class GrammarMatcher extends BaseMatcher<String> {
 
     private static AnnotatedText annotated(final String text) {
         final AnnotatedTextBuilder builder = new AnnotatedTextBuilder();
-        final Pattern pattern = Pattern.compile("\"([^\"]+)\"");
+        final Pattern pattern = Pattern.compile("\"([^\"]*)\"");
         final Matcher matcher = pattern.matcher(text);
         int last = 0;
         while (matcher.find()) {

@@ -1,0 +1,18 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/design/misplaced-dataization.xsl
+asserts:
+  - /defects[count(defect[@context and @line='0'])=1]
+xml-reason: "parser always emits @line; unreachable via valid parse"
+document: |
+  <object author="tests">
+    <o name="box">
+      <o name="step">
+        <o base="Φ.dataized" name="φ">
+          <o as="α0" base="ξ.ρ.size"/>
+        </o>
+      </o>
+    </o>
+  </object>

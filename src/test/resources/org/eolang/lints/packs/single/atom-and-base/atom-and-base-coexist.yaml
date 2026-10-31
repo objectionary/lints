@@ -5,6 +5,7 @@ sheets:
   - /org/eolang/lints/atoms/atom-and-base.xsl
 asserts:
   - /defects[count(defect[@context and @severity='critical'])=1]
+xml-reason: "not yet converted to an EO input test"
 document: |
   <object author="tests">
     <o name="obj" base="Φ.foo">

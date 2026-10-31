@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Tests for {@link Defect}.
+ *
  * @since 0.0.12
  */
 final class DefectTest {
@@ -25,6 +26,15 @@ final class DefectTest {
                 "Something went wrong with an architect"
             ).version(),
             Matchers.equalTo("1.2.3")
+        );
+    }
+
+    @Test
+    void returnsEmptyVersionWhenAttributeIsAbsent() {
+        MatcherAssert.assertThat(
+            "Version must not throw when the manifest attribute is absent",
+            Defect.Default.versionOf("No-Such-Manifest-Attribute"),
+            Matchers.equalTo("")
         );
     }
 

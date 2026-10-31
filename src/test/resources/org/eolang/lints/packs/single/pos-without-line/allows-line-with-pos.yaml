@@ -4,7 +4,5 @@
 sheets:
   - /org/eolang/lints/critical/pos-without-line.xsl
 defects: 0
-document: |
-  <object author="tests">
-    <o line="123" pos="3" name="foo"/>
-  </object>
+input: |
+  [] > foo

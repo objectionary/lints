@@ -13,16 +13,18 @@
   <xsl:template match="/">
     <defects>
       <xsl:if test="count(//o[eo:test-name(@name)]) = 0 and not(/object/o/@base)">
-        <xsl:element name="defect">
-          <xsl:attribute name="line">
-            <xsl:value-of select="0"/>
-          </xsl:attribute>
-          <xsl:attribute name="severity">
-            <xsl:text>warning</xsl:text>
-          </xsl:attribute>
-          <xsl:text>Tests not found for </xsl:text>
-          <xsl:value-of select="eo:escape(/object/o/@name)"/>
-        </xsl:element>
+        <xsl:for-each select="/object/o">
+          <xsl:element name="defect">
+            <xsl:attribute name="line">
+              <xsl:value-of select="0"/>
+            </xsl:attribute>
+            <xsl:attribute name="severity">
+              <xsl:text>warning</xsl:text>
+            </xsl:attribute>
+            <xsl:text>Tests not found for </xsl:text>
+            <xsl:value-of select="eo:escape(@name)"/>
+          </xsl:element>
+        </xsl:for-each>
       </xsl:if>
     </defects>
   </xsl:template>

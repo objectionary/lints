@@ -14,6 +14,7 @@ import org.eolang.xax.Xtory;
 
 /**
  * A story with a short defect-count assertion.
+ *
  * @since 1.0
  */
 public final class XtDefects implements Xtory {
@@ -25,6 +26,7 @@ public final class XtDefects implements Xtory {
 
     /**
      * New story.
+     *
      * @param story Original story
      */
     public XtDefects(final Xtory story) {
@@ -85,9 +87,29 @@ public final class XtDefects implements Xtory {
         if (line != null) {
             predicates.add(String.format("@line='%s'", line));
         }
+        final Object rule = entry.get("rule");
+        if (rule != null) {
+            predicates.add(String.format("@rule='%s'", rule));
+        }
+        final Object text = entry.get("text");
+        if (text != null) {
+            predicates.add(
+                String.format("contains(.,%s)", XtDefects.quoted(String.valueOf(text)))
+            );
+        }
         return String.format(
             "/defects/defect[%s]",
             String.join(" and ", predicates)
         );
+    }
+
+    private static String quoted(final String value) {
+        final String result;
+        if (value.contains("\"")) {
+            result = String.format("'%s'", value);
+        } else {
+            result = String.format("\"%s\"", value);
+        }
+        return result;
     }
 }

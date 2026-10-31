@@ -17,6 +17,7 @@ import org.eolang.parser.EoSyntax;
 
 /**
  * Parsed EO program from a classpath resource, with bounded in-memory caching.
+ *
  * @since 0.2.0
  */
 public final class EoProgram {
@@ -40,6 +41,7 @@ public final class EoProgram {
 
     /**
      * Constructor.
+     *
      * @param res Classpath resource path to the EO source file
      */
     public EoProgram(final String res) {
@@ -48,6 +50,7 @@ public final class EoProgram {
 
     /**
      * Constructor.
+     *
      * @param nme Cache key and log label for this program
      * @param input EO source input
      */
@@ -58,6 +61,7 @@ public final class EoProgram {
 
     /**
      * Parse the EO resource into XMIR, using the cache when available.
+     *
      * @return Parsed XMIR document
      */
     public XML parse() {

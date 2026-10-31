@@ -1,0 +1,14 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/tests/unit-test-missing.xsl
+defects: 0
+ignore-schema: true
+xml-reason: "not yet converted to an EO input test"
+document: |
+  <object author="tests">
+    <o line="1" name="foo">
+      <o line="2" name="p🌵prints-hello-world"/>
+    </o>
+  </object>

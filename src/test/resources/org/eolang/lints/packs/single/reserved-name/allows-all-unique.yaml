@@ -1,0 +1,9 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+lint: reserved-name
+params: {}
+asserts:
+  - /defects[count(defect)=0]
+input: |
+  [] > qux

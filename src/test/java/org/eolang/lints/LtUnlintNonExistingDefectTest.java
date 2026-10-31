@@ -5,6 +5,7 @@
 package org.eolang.lints;
 
 import com.jcabi.xml.XML;
+import com.jcabi.xml.XMLDocument;
 import fixtures.EoProgram;
 import java.io.IOException;
 import java.util.Collection;
@@ -16,187 +17,17 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Tests for {@link LtUnlintNonExistingDefect}.
+ *
  * @since 0.0.40
  */
 final class LtUnlintNonExistingDefectTest {
-
-    @Test
-    void reportsDefects() throws IOException {
-        MatcherAssert.assertThat(
-            "Defects are empty, but they should not",
-            new LtUnlintNonExistingDefect(
-                new ListOf<>(new LtAsciiOnly()),
-                new ListOf<>()
-            ).defects(
-                new EoProgram("org/eolang/lints/unlint-ascii-only-no-defect.eo").parse()
-            ),
-            Matchers.hasSize(Matchers.greaterThan(0))
-        );
-    }
-
-    @Test
-    void reportsDefectsForEachUnlintWithDifferentLines() throws IOException {
-        MatcherAssert.assertThat(
-            "Defects should be reported for each line with unlint, but it's not",
-            new LtUnlintNonExistingDefect(
-                new ListOf<>(new LtAsciiOnly()),
-                new ListOf<>()
-            ).defects(
-                new EoProgram("org/eolang/lints/unlint-ascii-only-duplicate.eo").parse()
-            ).stream()
-                .map(Defect::line)
-                .collect(Collectors.toList()),
-            Matchers.equalTo(
-                new ListOf<>(3, 4)
-            )
-        );
-    }
-
-    @Test
-    void allowsUnlintingOfExistingDefects() throws IOException {
-        MatcherAssert.assertThat(
-            "Defects are not empty, but they should",
-            new LtUnlintNonExistingDefect(
-                new ListOf<>(new LtAsciiOnly()),
-                new ListOf<>()
-            ).defects(
-                new EoProgram("org/eolang/lints/unlint-ascii-only-chinese.eo").parse()
-            ),
-            Matchers.emptyIterable()
-        );
-    }
-
-    @Test
-    void allowsNoUnlints() throws IOException {
-        MatcherAssert.assertThat(
-            "Defects are not empty, but they should",
-            new LtUnlintNonExistingDefect(
-                new ListOf<>(new LtAsciiOnly()),
-                new ListOf<>()
-            ).defects(
-                new EoProgram("org/eolang/lints/non-ascii-bar.eo").parse()
-            ),
-            Matchers.emptyIterable()
-        );
-    }
-
-    @Test
-    void allowsExistingUnlintWithLineNumber() throws IOException {
-        MatcherAssert.assertThat(
-            "An existing defect should be able to be unlinted with line number",
-            new LtUnlintNonExistingDefect(
-                new ListOf<>(new LtAsciiOnly()),
-                new ListOf<>()
-            ).defects(
-                new EoProgram("org/eolang/lints/unlint-ascii-only-line.eo").parse()
-            ),
-            Matchers.emptyIterable()
-        );
-    }
-
-    @Test
-    void catchesNonExistingUnlintWithLineNumber() throws IOException {
-        MatcherAssert.assertThat(
-            "Non existing unlint with line number should be reported",
-            new LtUnlintNonExistingDefect(
-                new ListOf<>(new LtAsciiOnly()),
-                new ListOf<>()
-            ).defects(
-                new EoProgram(
-                    "org/eolang/lints/unlint-ascii-only-wrong-line.eo"
-                ).parse()
-            ),
-            Matchers.hasSize(Matchers.greaterThan(0))
-        );
-    }
-
-    @Test
-    void catchesUnlintWithNonNumericLine() throws IOException {
-        MatcherAssert.assertThat(
-            "Non-numeric unlint line should be reported without an exception",
-            new LtUnlintNonExistingDefect(
-                new ListOf<>(new LtAsciiOnly()),
-                new ListOf<>()
-            ).defects(
-                new EoProgram(
-                    "org/eolang/lints/unlint-ascii-only-non-numeric.eo"
-                ).parse()
-            ),
-            Matchers.iterableWithSize(1)
-        );
-    }
-
-    @Test
-    void allowsUnlintForDefectsInTheLineRange() throws IOException {
-        MatcherAssert.assertThat(
-            "Defects are not empty, but they should",
-            new LtUnlintNonExistingDefect(
-                new ListOf<>(new LtByXsl("aliases/alias-too-long")),
-                new ListOf<>()
-            ).defects(
-                new EoProgram(
-                    "org/eolang/lints/unlint-alias-too-long-range.eo"
-                ).parse()
-            ),
-            Matchers.emptyIterable()
-        );
-    }
-
-    @Test
-    void catchesUnlintWithOutOfRangeLines() throws IOException {
-        MatcherAssert.assertThat(
-            "Defects are empty, but they should not",
-            new LtUnlintNonExistingDefect(
-                new ListOf<>(new LtAsciiOnly()),
-                new ListOf<>()
-            ).defects(
-                new EoProgram(
-                    "org/eolang/lints/unlint-ascii-only-out-range.eo"
-                ).parse()
-            ),
-            Matchers.iterableWithSize(1)
-        );
-    }
-
-    @Test
-    void catchesUnlintWithRangeForAbsentLint() throws IOException {
-        MatcherAssert.assertThat(
-            "Non-existing unlint with range should be reported, not crash with NPE",
-            new LtUnlintNonExistingDefect(
-                new ListOf<>(new LtAsciiOnly()),
-                new ListOf<>()
-            ).defects(
-                new EoProgram(
-                    "org/eolang/lints/unlint-ascii-only-absent.eo"
-                ).parse()
-            ),
-            Matchers.iterableWithSize(1)
-        );
-    }
-
-    @Test
-    void catchesUnlintWithApostrophe() throws IOException {
-        MatcherAssert.assertThat(
-            "An unlint with an apostrophe should be reported, not crash",
-            new LtUnlintNonExistingDefect(
-                new ListOf<>(new LtAsciiOnly()),
-                new ListOf<>()
-            ).defects(
-                new EoProgram(
-                    "org/eolang/lints/unlint-ascii-only-apostrophe.eo"
-                ).parse()
-            ),
-            Matchers.iterableWithSize(1)
-        );
-    }
 
     @Test
     void doesNotRunLintsWithoutUnlints() throws IOException {
         MatcherAssert.assertThat(
             "Lints should not be executed when there are no +unlint metas",
             new LtUnlintNonExistingDefect(
-                new ListOf<>(new LtUnlintNonExistingDefectTest.Boom()),
-                new ListOf<>()
+                new ListOf<>(new LtUnlintNonExistingDefectTest.Boom())
             ).defects(
                 new EoProgram("org/eolang/lints/non-ascii-bar.eo").parse()
             ),
@@ -212,8 +43,7 @@ final class LtUnlintNonExistingDefectTest {
                 new ListOf<>(
                     new LtAsciiOnly(),
                     new LtUnlintNonExistingDefectTest.Boom()
-                ),
-                new ListOf<>()
+                )
             ).defects(
                 new EoProgram("org/eolang/lints/unlint-ascii-only-no-defect.eo").parse()
             ),
@@ -221,8 +51,46 @@ final class LtUnlintNonExistingDefectTest {
         );
     }
 
+    @Test
+    void quotesUnlintValuesContainingBothQuoteCharacters() throws IOException {
+        MatcherAssert.assertThat(
+            "A malformed suppression should produce a defect instead of breaking XPath",
+            new LtUnlintNonExistingDefect(new ListOf<>()).defects(
+                LtUnlintNonExistingDefectTest.unlint(
+                    "missing\"and'bad", "<meta line='1'>"
+                )
+            ),
+            Matchers.hasSize(1)
+        );
+    }
+
+    @Test
+    void reportsMissingDefectWhenUnlintMetaHasNoLine() throws IOException {
+        MatcherAssert.assertThat(
+            "A suppression without a line should still report its missing defect",
+            new LtUnlintNonExistingDefect(new ListOf<>()).defects(
+                LtUnlintNonExistingDefectTest.unlint("ascii-only:999", "<meta>")
+            ).stream().map(Defect::line).collect(Collectors.toList()),
+            Matchers.contains(0)
+        );
+    }
+
+    private static XMLDocument unlint(final String tail, final String meta) {
+        return new XMLDocument(
+            String.join(
+                "",
+                "<object><metas>",
+                meta,
+                "<head>unlint</head><tail>",
+                tail,
+                "</tail></meta></metas></object>"
+            )
+        );
+    }
+
     /**
      * Fake lint that explodes when invoked.
+     *
      * @since 0.0.40
      */
     private static final class Boom implements Lint {

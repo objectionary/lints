@@ -57,6 +57,45 @@ Whole-program analysis (running lints across a set of XMIR files
 instead of one at a time) lives in a separate package,
 [`org.eolang:wpa`](https://github.com/objectionary/wpa).
 
+## Running Locally on a `.eo` File
+
+There is no standalone CLI in this repository, but you can lint
+a single `.eo` file with a few lines of Java. Besides `lints`,
+add [`eo-parser`](https://github.com/objectionary/eo), which turns
+EO source into [XMIR]:
+
+```xml
+<dependency>
+  <groupId>org.eolang</groupId>
+  <artifactId>eo-parser</artifactId>
+  <!-- keep this in sync with "home.version" in this project's pom.xml -->
+  <version>0.63.0</version>
+</dependency>
+```
+
+```java
+import com.jcabi.xml.XML;
+import java.nio.file.Paths;
+import org.cactoos.io.InputOf;
+import org.eolang.lints.Source;
+import org.eolang.parser.EoSyntax;
+
+final class RunLints {
+    public static void main(final String... args) throws Exception {
+        final XML xmir = new EoSyntax(
+            new InputOf(Paths.get("my-program.eo"))
+        ).parsed();
+        new Source(xmir).defects().forEach(System.out::println);
+    }
+}
+```
+
+Each printed defect includes the source line, e.g.
+`[mandatory-spdx/S WARNING]:1 The +spdx meta is mandatory, but is absent`.
+Print `xmir` itself to inspect the parsed object tree, the `<errors>`
+parser diagnostics, and the original `<listing>`, which helps when a
+lint isn't behaving as expected.
+
 ## Design of This Library
 
 The library is designed as a set of lints, each of which
@@ -146,7 +185,7 @@ You will need [Maven 3.3+](https://maven.apache.org) and Java 11+ installed.
 Also, if you have [xcop](https://github.com/yegor256/xcop) installed, make sure
 it is version `0.8.0`+.
 If you want the code to be checked using
-[error-prone](https://errorprone.info/), use Java 17+
+[error-prone](https://errorprone.info/), use Java 21+
 If you want to check [markdown files](src/main/resources/org/eolang/motives)
 using [vale](https://vale.sh/docs/install),
 just install it and make sure it's in your `PATH`

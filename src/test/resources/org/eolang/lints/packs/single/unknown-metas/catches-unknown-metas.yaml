@@ -16,6 +16,7 @@ input: |
   +bad
   +package test
   +alias foo
+  +also foo
   +version 0.0.0
   +architect yegor256@gmail.com
   +rt node

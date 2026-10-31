@@ -1,0 +1,14 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+lint: ascii-only
+defects: 1
+input: |
+  # 致性是关键
+
+  +spdx SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+  +spdx SPDX-License-Identifier: MIT
+  +unlint ascii-only:10-55
+
+  [] > main
+    [] > run

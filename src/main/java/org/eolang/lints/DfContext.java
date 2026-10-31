@@ -6,6 +6,7 @@ package org.eolang.lints;
 
 /**
  * Defect with context.
+ *
  * @since 0.0.40
  */
 final class DfContext implements Defect {
@@ -22,6 +23,7 @@ final class DfContext implements Defect {
 
     /**
      * Ctor.
+     *
      * @param orgn Origin defect
      * @param context Context
      */
@@ -57,11 +59,15 @@ final class DfContext implements Defect {
 
     @Override
     public String context() {
-        return this.ctxt.replace("&lt;", "<")
+        return this.ctxt.replace("&amp;", "&")
+            .replace("&lt;", "<")
             .replace("&gt;", ">")
             .replace("&#34;", "\"")
-            .replace("&#xA;", System.lineSeparator())
-            .replace("&amp;", "&");
+            .replace("&quot;", "\"")
+            .replace("&#39;", "'")
+            .replace("&apos;", "'")
+            .replace("&#10;", String.valueOf('\n'))
+            .replace("&#xA;", String.valueOf('\n'));
     }
 
     @Override

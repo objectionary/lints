@@ -4,7 +4,5 @@
 sheets:
   - /org/eolang/lints/critical/void-attributes-not-higher-than-other.xsl
 defects: 0
-document: |
-  <object author="tests">
-    <o name="foo"/>
-  </object>
+input: |
+  [] > foo

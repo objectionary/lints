@@ -1,0 +1,15 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/metas/unsorted-metas.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=1]
+  - /defects/defect[contains(text(), 'home')]
+input: |
+  +architect yegor256@gmail.com
+  +version 0.0.0
+  +home https://github.com/objectionary/eo
+
+  [] > foo
+    42 > @

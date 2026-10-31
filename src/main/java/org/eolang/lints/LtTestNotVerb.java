@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
  * This lint uses <a href="https://opennlp.apache.org/">OpenNLP models</a>
  * with POS tagging capabilities in order to determine the part of speech and
  * tense for test object name.
+ *
  * @since 0.0.22
  */
 final class LtTestNotVerb implements Lint {
@@ -26,6 +27,7 @@ final class LtTestNotVerb implements Lint {
 
     /**
      * Ctor.
+     *
      * @throws IOException If fails
      */
     LtTestNotVerb() throws IOException {
@@ -34,6 +36,7 @@ final class LtTestNotVerb implements Lint {
 
     /**
      * Ctor.
+     *
      * @param vocab Vocabulary to use for name checks
      */
     LtTestNotVerb(final Vocabulary vocab) {
@@ -48,7 +51,7 @@ final class LtTestNotVerb implements Lint {
     @Override
     public Collection<Defect> defects(final XML xmir) throws IOException {
         return new Xnav(xmir.inner())
-            .path("/object//o[@name and starts-with(@name, '+')]")
+            .path(MarkedName.positives())
             .filter(object -> !this.isVerb(object))
             .map(LtTestNotVerb::verbDefect)
             .collect(Collectors.toList());
@@ -65,9 +68,7 @@ final class LtTestNotVerb implements Lint {
     }
 
     private boolean isVerb(final Xnav object) {
-        return this.vocabulary.isVerb(
-            object.attribute("name").text().get().replace("+", "")
-        );
+        return this.vocabulary.isVerb(LtTestNotVerb.title(object));
     }
 
     private static Defect verbDefect(final Xnav object) {
@@ -77,8 +78,12 @@ final class LtTestNotVerb implements Lint {
             new LineOf(object).value(),
             String.format(
                 "Test object name: \"%s\" doesn't start with verb in singular form",
-                object.attribute("name").text().get().replace("+", "")
+                LtTestNotVerb.title(object)
             )
         );
+    }
+
+    private static String title(final Xnav object) {
+        return new MarkedName(object.attribute("name").text().get()).title();
     }
 }

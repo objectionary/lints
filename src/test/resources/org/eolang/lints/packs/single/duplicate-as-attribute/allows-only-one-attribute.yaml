@@ -4,9 +4,5 @@
 sheets:
   - /org/eolang/lints/names/duplicate-as-attribute.xsl
 defects: 0
-document: |
-  <object author="tests">
-    <o base="Φ.foo" name="f">
-      <o base="Φ.f1" as="bar"/>
-    </o>
-  </object>
+input: |
+  foo f1:bar > f

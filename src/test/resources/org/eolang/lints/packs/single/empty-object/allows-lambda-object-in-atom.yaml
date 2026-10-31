@@ -4,9 +4,5 @@
 sheets:
   - /org/eolang/lints/errors/empty-object.xsl
 defects: 0
-document: |
-  <object author="tests">
-    <o name="φ">
-      <o name="λ"/>
-    </o>
-  </object>
+input: |
+  [] > foo /int

@@ -61,6 +61,7 @@ import org.objectweb.asm.Opcodes;
 
 /**
  * Test for {@link Source}.
+ *
  * @since 0.0.1
  */
 @ExtendWith(MktmpResolver.class)
@@ -173,6 +174,19 @@ final class SourceTest {
     }
 
     @Test
+    void doesNotApplyFixWithoutDefects() throws IOException {
+        final XML before = new XMLDocument("<object><o name='x'/></object>");
+        MatcherAssert.assertThat(
+            "fix() must not apply a lint's fix when the lint reports no defects",
+            new Source(
+                before,
+                new ListOf<>(new SourceTest.DestructiveLint())
+            ).fix().toString(),
+            Matchers.equalTo(before.toString())
+        );
+    }
+
+    @Test
     void createsSourceWithoutOneLint() {
         MatcherAssert.assertThat(
             "Defects for disabled lint are not empty, but should be",
@@ -189,7 +203,6 @@ final class SourceTest {
     void createsSourceWithoutMultipleLints() {
         final Collection<String> disabled = List.of(
             "ascii-only",
-            "object-does-not-match-filename",
             "comment-not-capitalized",
             "empty-object",
             "mandatory-home",
@@ -249,6 +262,32 @@ final class SourceTest {
         );
     }
 
+    @Test
+    void rejectsLintThatDoesNotExist() {
+        final long seed = System.nanoTime();
+        final String name = Long.toString(seed, 32).chars().map(c -> c + 0x0400).collect(
+            StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append
+        ).toString();
+        Assertions.assertThrows(
+            IllegalArgumentException.class,
+            () -> new Source(new XMLDocument("<object/>")).without(name),
+            String.format("Unknown lint name \"%s\" from seed %d is not rejected", name, seed)
+        );
+    }
+
+    @Test
+    void rejectsLintsWhenOneOfThemDoesNotExist() {
+        final long seed = System.nanoTime();
+        final String name = String.format(
+            "unit-test-missing%s", "s".repeat((int) (seed % 64L) + 1)
+        );
+        Assertions.assertThrows(
+            IllegalArgumentException.class,
+            () -> new Source(new XMLDocument("<object/>")).without("ascii-only", name, ""),
+            String.format("Misspelled lint name \"%s\" from seed %d is not rejected", name, seed)
+        );
+    }
+
     @ParameterizedTest
     @ValueSource(
         strings = {"mandatory-home", "mandatory-home:0"}
@@ -287,7 +326,7 @@ final class SourceTest {
                         Matchers.allOf(
                             Matchers.containsString("unlint-non-existing-defect"),
                             Matchers.containsString(
-                                String.format("Unlinting rule '%s' doesn't make sense,", lid)
+                                String.format("Unlinting rule \"%s\" doesn't make sense,", lid)
                             ),
                             Matchers.containsString("since there are no defects with it")
                         )
@@ -404,6 +443,7 @@ final class SourceTest {
 
     /**
      * Benchmarked source.
+     *
      * @since 0.0.29
      */
     private static final class BcSource {
@@ -448,6 +488,7 @@ final class SourceTest {
 
         /**
          * Ctor.
+         *
          * @param source XMIR source to lint
          * @param size Source size
          */
@@ -462,6 +503,7 @@ final class SourceTest {
 
         /**
          * Ctor.
+         *
          * @param source XMIR source file to lint
          * @param lnts Lints to apply
          * @param tmngs Timings
@@ -478,6 +520,7 @@ final class SourceTest {
 
         /**
          * Defects.
+         *
          * @return Defects
          */
         Collection<Defect> defects() {
@@ -493,6 +536,7 @@ final class SourceTest {
 
     /**
      * Wrapper for timed lint execution.
+     *
      * @since 0.0.45
      */
     private static final class TimedLint implements Lint {
@@ -514,6 +558,7 @@ final class SourceTest {
 
         /**
          * Ctor.
+         *
          * @param lnt Lint
          * @param tmngs Timings
          * @param mrkr Marker
@@ -557,6 +602,7 @@ final class SourceTest {
      * Here, we count executable lines from Java bytecode class. However, if compiler
      * decides to skip them, we will get 0 here. Thus, all classes must be compiled with
      * lines.
+     *
      * @since 0.0.45
      */
     private static final class LineCountVisitor extends ClassVisitor {
@@ -591,10 +637,39 @@ final class SourceTest {
 
         /**
          * Total found.
+         *
          * @return Lines count
          */
         int total() {
             return this.count;
+        }
+    }
+
+    /**
+     * A lint that reports no defects but mutates the XMIR when its fix is applied.
+     *
+     * @since 0.1.0
+     */
+    private static final class DestructiveLint implements Lint {
+
+        @Override
+        public String name() {
+            return "destructive";
+        }
+
+        @Override
+        public Collection<Defect> defects(final XML entity) {
+            return new ListOf<>();
+        }
+
+        @Override
+        public String motive() {
+            return "Motive";
+        }
+
+        @Override
+        public Fix fix() {
+            return entity -> new XMLDocument("<object><o name='mutated'/></object>");
         }
     }
 }

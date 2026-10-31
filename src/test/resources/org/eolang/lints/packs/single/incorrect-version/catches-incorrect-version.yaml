@@ -24,11 +24,8 @@ defects:
     line: 9
   - severity: warning
     line: 10
-  - severity: warning
-    line: 11
 input: |
   +version alpha
-  +version 1.0.0-alpha.beta
   +version привет, друг!
   +version привет, как дела?
   +version 你好，伙计

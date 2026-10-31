@@ -6,6 +6,7 @@ sheets:
 defects:
   - severity: error
     line: 1
+xml-reason: "atom body rejects non-test attrs at parse time"
 document: |
   <object author="tests">
     <o line="1" name="number">
