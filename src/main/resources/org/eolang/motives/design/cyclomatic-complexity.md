@@ -17,6 +17,7 @@ Incorrect:
 
 ```eo
 # Foo.
+
 [x] > foo
   x.eq 1 > c1
   x.eq 2 > c2

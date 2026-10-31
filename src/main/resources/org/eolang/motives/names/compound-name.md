@@ -8,6 +8,7 @@ Incorrect:
 
 ```eo
 # CSV.
+
 [csv-file-name] > csv-object
   parse > read-records
     read csv-file-name
@@ -17,6 +18,7 @@ Correct:
 
 ```eo
 # CSV.
+
 [file] > csv-object
   parse > records
     read file

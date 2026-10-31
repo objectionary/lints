@@ -3,13 +3,11 @@
 In [XMIR], named objects cannot be nested more than one level deep inside an
 abstract object.
 
-Incorrect:
+This shape can't be written directly in EO text. An indented named
+child of an application is hoisted up to the enclosing formation by
+the parser, so it's shown as XMIR instead:
 
-```eo
-[] > foo
-  xyz
-    num > abc
-```
+Incorrect:
 
 ```xml
 <o base="x" name="φ">

@@ -7,17 +7,19 @@ Incorrect:
 
 ```eo
 # Foo.
+
 [] > foo
   52 > spb
-  spb.plus 2
+  spb.plus 2 > @
 ```
 
 Correct:
 
 ```eo
 # Foo.
+
 [] > foo
-  52.plus 2
+  52.plus 2 > @
 ```
 
 An object referenced only once is *not* redundant when that single reference
@@ -28,6 +30,7 @@ of the recursion its own copy of the subgraph, so the lint skips such objects:
 
 ```eo
 # Series.
+
 [point] > series
   point.times point > squared
   poly 30 > @
@@ -35,7 +38,7 @@ of the recursion its own copy of the subgraph, so the lint skips such objects:
     if. > @
       n.eq 0
       0
-      squared.plus (poly (n.minus 1))
+      ^.squared.plus (^.poly (n.minus 1))
 ```
 
 A `$`-alias is also *not* redundant when its only reference reaches it from
@@ -45,8 +48,9 @@ reference would change what it points to:
 
 ```eo
 # Jeff.
+
 [] > jeff
   $ > self
   [] > say-hello
-    stdout self > @
+    stdout ^.self > @
 ```

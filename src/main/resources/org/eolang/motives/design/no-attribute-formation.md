@@ -7,6 +7,7 @@ Incorrect:
 
 ```eo
 # Foo.
+
 [] > foo
   52 > spb
 ```
@@ -15,6 +16,7 @@ Correct:
 
 ```eo
 # Foo.
+
 [x] > foo
   x > sbp
 ```
@@ -24,8 +26,8 @@ is a formation as well:
 
 ```eo
 # Foo.
+
 [x] > foo
-  # Bar has access to `x`.
   [] > bar
 ```
 

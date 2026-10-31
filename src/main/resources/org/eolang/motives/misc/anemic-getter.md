@@ -9,6 +9,7 @@ Incorrect:
 
 ```eo
 # Book.
+
 [title] > book
   title > t
 ```
@@ -20,6 +21,7 @@ Correct:
 
 ```eo
 # Book.
+
 [title] > book
 ```
 
@@ -28,6 +30,7 @@ sibling attribute, not only void ones:
 
 ```eo
 # Foo.
+
 [] > foo
   42 > x
   x > y
@@ -40,6 +43,7 @@ renaming them is just as redundant:
 
 ```eo
 # Foo.
+
 [] > foo
   ^ > f
   $ > s
@@ -54,6 +58,7 @@ rename, and we leave it alone:
 
 ```eo
 # Foo.
+
 [] > foo
   ^.bar > f
 ```
