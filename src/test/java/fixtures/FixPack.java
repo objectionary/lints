@@ -86,6 +86,7 @@ public final class FixPack {
         );
     }
 
+    @SuppressWarnings("unchecked")
     private Fix fix() {
         return new FxByXsl((List<String>) this.pack.get("sheets"));
     }

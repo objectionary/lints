@@ -6,6 +6,7 @@ sheets:
 defects:
   - severity: error
     line: 2
+xml-reason: "not yet converted to an EO input test"
 document: |
   <object author="tests">
     <metas>

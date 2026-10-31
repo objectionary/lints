@@ -518,9 +518,9 @@
       </build>
     </profile>
     <profile>
-      <id>java-17-plus</id>
+      <id>java-21-plus</id>
       <activation>
-        <jdk>[17,)</jdk>
+        <jdk>[21,)</jdk>
       </activation>
       <build>
         <plugins>
@@ -845,7 +845,8 @@
               <goal>wget</goal>
             </goals>
             <configuration>
-              <url>https://opennlp.sourceforge.net/models-1.5/en-pos-perceptron.bin</url>
+              <url>https://sourceforge.net/projects/opennlp/files/models-1.5/en-pos-perceptron.bin/download</url>
+              <sha256>0b49b7d9bdb9f888aed85e9f41fbcfd6cab607805ba9cd2370e1e5af4e540db8</sha256>
               <outputFileName>en-pos-perceptron.bin</outputFileName>
               <outputDirectory>${project.build.directory}/classes</outputDirectory>
               <readTimeOut>60000</readTimeOut>

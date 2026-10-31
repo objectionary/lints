@@ -7,6 +7,7 @@ defects:
   - severity: warning
     line: 0
 ignore-schema: true
+xml-reason: "a malformed @line value is unreachable via valid EO parse"
 document: |
   <object author="tests">
     <o line="60.50.301"/>

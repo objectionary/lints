@@ -1,7 +1,7 @@
 # Broad scope
 
-A private attribute should be declared as close as possible to its only
-usage. If a private attribute is used only inside a single nested object,
+A private attribute should be declared as close as possible to its one
+usage. If a private attribute is used inside a single nested object alone,
 declaring it on the level of the parent object makes its scope unnecessarily
 broad.
 
@@ -14,7 +14,7 @@ Incorrect:
     a.plus 1 > c
 ```
 
-Here, the scope of `a` is too broad: it is used only inside `b`. It should be
+Here, the scope of `a` is too broad: `a` gets used inside `b` alone. It should be
 moved closer, into `b`:
 
 ```eo

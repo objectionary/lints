@@ -9,25 +9,28 @@ Incorrect:
 
 ```eo
 # Book.
+
 [title] > book
   title > t
 ```
 
-Here, `t` is a getter that only gives access to `title`. It adds nothing and
+Here, `t` is a getter that gives access to `title` and nothing else. It adds nothing and
 just introduces a second name for the same object.
 
 Correct:
 
 ```eo
 # Book.
+
 [title] > book
 ```
 
-Simply use `title` directly wherever `t` was needed. The same applies to any
-sibling attribute, not only void ones:
+Use `title` directly wherever `t` was needed. The same applies to any
+sibling attribute, void or not:
 
 ```eo
 # Foo.
+
 [] > foo
   42 > x
   x > y
@@ -40,6 +43,7 @@ renaming them is just as redundant:
 
 ```eo
 # Foo.
+
 [] > foo
   ^ > f
   $ > s
@@ -54,6 +58,7 @@ rename, and we leave it alone:
 
 ```eo
 # Foo.
+
 [] > foo
   ^.bar > f
 ```

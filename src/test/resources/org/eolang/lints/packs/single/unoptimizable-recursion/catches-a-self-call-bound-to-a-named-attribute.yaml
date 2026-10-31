@@ -6,7 +6,7 @@ sheets:
   - /org/eolang/lints/design/unoptimizable-recursion.xsl
 asserts:
   - /defects[count(defect[@severity='warning'])=1]
-  - /defects/defect[1][normalize-space()='The recursion in "range" cannot be turned into a loop, the self-call is bound to the attribute "next", read from outside the formation instead of returned']
+  - /defects/defect[1][normalize-space()='The recursion in "range" cannot be turned into a loop, the self-call is kept in an attribute other than φ']
 input: |
   [] > app
     [n] > range

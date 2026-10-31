@@ -91,9 +91,25 @@ public final class XtDefects implements Xtory {
         if (rule != null) {
             predicates.add(String.format("@rule='%s'", rule));
         }
+        final Object text = entry.get("text");
+        if (text != null) {
+            predicates.add(
+                String.format("contains(.,%s)", XtDefects.quoted(String.valueOf(text)))
+            );
+        }
         return String.format(
             "/defects/defect[%s]",
             String.join(" and ", predicates)
         );
+    }
+
+    private static String quoted(final String value) {
+        final String result;
+        if (value.contains("\"")) {
+            result = String.format("'%s'", value);
+        } else {
+            result = String.format("\"%s\"", value);
+        }
+        return result;
     }
 }

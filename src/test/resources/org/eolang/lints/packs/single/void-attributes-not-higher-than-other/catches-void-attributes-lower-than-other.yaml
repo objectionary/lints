@@ -6,6 +6,7 @@ sheets:
 defects:
   - severity: critical
     line: 1
+xml-reason: "non-void before void is a parse error (R-3.4.9)"
 document: |
   <object author="tests">
     <o name="foo">

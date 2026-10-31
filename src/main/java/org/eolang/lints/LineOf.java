@@ -34,7 +34,8 @@ final class LineOf {
     }
 
     /**
-     * Line number, or {@code 0} when the attribute is missing or not an integer.
+     * Line number, or {@code 0} when the attribute is missing, not an integer,
+     * or too large to fit into a Java {@code int}.
      *
      * @return Line number
      */
@@ -42,8 +43,18 @@ final class LineOf {
         final String line = this.element.attribute("line").text().orElse("0");
         final int result;
         if (line.matches("\\d+")) {
-            result = Integer.parseInt(line);
+            result = LineOf.parsed(line);
         } else {
+            result = 0;
+        }
+        return result;
+    }
+
+    private static int parsed(final String line) {
+        int result;
+        try {
+            result = Integer.parseInt(line);
+        } catch (final NumberFormatException ex) {
             result = 0;
         }
         return result;

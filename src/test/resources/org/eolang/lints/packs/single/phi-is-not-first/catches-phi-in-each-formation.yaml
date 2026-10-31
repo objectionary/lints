@@ -8,6 +8,7 @@ defects:
     line: 4
   - severity: warning
     line: 8
+xml-reason: "not yet converted to an EO input test"
 document: |
   <object author="tests">
     <o>

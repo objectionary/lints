@@ -2,11 +2,9 @@
 # SPDX-License-Identifier: MIT
 ---
 sheets:
-  - /org/eolang/lints/design/unoptimizable-recursion.xsl
+  - /org/eolang/lints/design/misplaced-dataization.xsl
 defects: 0
 input: |
-  [] > calc
-    seq > @
-      *
-        1
-        calc (n.minus 1)
+  [] > counter
+    [^ n] > bump
+      ^.n.plus 1 > next!

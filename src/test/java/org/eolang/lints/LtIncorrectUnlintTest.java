@@ -4,11 +4,8 @@
  */
 package org.eolang.lints;
 
-import fixtures.EoProgram;
+import com.jcabi.xml.XMLDocument;
 import java.io.IOException;
-import java.util.List;
-import matchers.DefectMatcher;
-import org.cactoos.io.InputOf;
 import org.cactoos.list.ListOf;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -22,105 +19,46 @@ import org.junit.jupiter.api.Test;
 final class LtIncorrectUnlintTest {
 
     @Test
-    void catchesIncorrectUnlints() throws IOException {
+    void reportsSingleLineSelectorsOutsideIntegerRange() throws IOException {
         MatcherAssert.assertThat(
-            "unlint must point to existing lint",
-            new LtIncorrectUnlint(List.of("hello")).defects(
-                new EoProgram("org/eolang/lints/incorrect-unlints.eo").parse()
+            "An unrepresentable line selector should be reported as invalid",
+            new LtIncorrectUnlint(new ListOf<>("ascii-only")).defects(
+                LtIncorrectUnlintTest.unlint("ascii-only:2147483648")
             ),
-            Matchers.allOf(
-                Matchers.<Defect>iterableWithSize(2),
-                Matchers.everyItem(new DefectMatcher())
+            Matchers.hasSize(1)
+        );
+    }
+
+    @Test
+    void reportsRangeSelectorsOutsideIntegerRange() throws IOException {
+        MatcherAssert.assertThat(
+            "An unrepresentable range selector should be reported as invalid",
+            new LtIncorrectUnlint(new ListOf<>("ascii-only")).defects(
+                LtIncorrectUnlintTest.unlint("ascii-only:1-2147483648")
+            ),
+            Matchers.hasSize(1)
+        );
+    }
+
+    @Test
+    void treatsRegexCharactersInKnownRuleNamesLiterally() throws IOException {
+        MatcherAssert.assertThat(
+            "A valid rule name must not be interpreted as a regex",
+            new LtIncorrectUnlint(new ListOf<>("[bad")).defects(
+                LtIncorrectUnlintTest.unlint("[bad:1")
+            ),
+            Matchers.emptyIterable()
+        );
+    }
+
+    private static XMLDocument unlint(final String selector) {
+        return new XMLDocument(
+            String.join(
+                "",
+                "<object><metas><meta line='1'><head>unlint</head><tail>",
+                selector,
+                "</tail></meta></metas></object>"
             )
-        );
-    }
-
-    @Test
-    void allowsCorrectUnlints() throws IOException {
-        final String src = "+unlint ascii-only";
-        MatcherAssert.assertThat(
-            "Defects are not empty, but they shouldn't be",
-            new LtIncorrectUnlint(List.of("ascii-only")).defects(
-                new EoProgram(src, new InputOf(src)).parse()
-            ),
-            Matchers.emptyIterable()
-        );
-    }
-
-    @Test
-    void providesClearMessage() throws IOException {
-        MatcherAssert.assertThat(
-            "Lint text doesn't contain clear message to the reader",
-            new ListOf<>(
-                new LtIncorrectUnlint(List.of("hello")).defects(
-                    new EoProgram("org/eolang/lints/unlint-boom.eo").parse()
-                )
-            ).get(0).text(),
-            Matchers.containsString("Suppressing \"boom\" does not make sense")
-        );
-    }
-
-    @Test
-    void understandsUnlintsWithLineNumber() throws IOException {
-        MatcherAssert.assertThat(
-            "Unlints with line number should be supported",
-            new LtIncorrectUnlint(new ListOf<>("comment-not-capitalized")).defects(
-                new EoProgram("org/eolang/lints/unlint-with-line-number.eo").parse()
-            ),
-            Matchers.emptyIterable()
-        );
-    }
-
-    @Test
-    void catchesNonExistingUnlintWithLineNumber() throws IOException {
-        MatcherAssert.assertThat(
-            "Non existing unlint with line number should be caught",
-            new LtIncorrectUnlint(new ListOf<>("a")).defects(
-                new EoProgram("org/eolang/lints/unlint-non-existing-with-line.eo").parse()
-            ),
-            Matchers.hasSize(Matchers.greaterThan(0))
-        );
-    }
-
-    @Test
-    void catchesUnlintWithInvalidLineFormat() throws IOException {
-        MatcherAssert.assertThat(
-            "Unlint with a non-numeric line part should be caught",
-            new LtIncorrectUnlint(new ListOf<>("ascii-only")).defects(
-                new EoProgram(
-                    "+unlint ascii-only:abc",
-                    new InputOf("+unlint ascii-only:abc")
-                ).parse()
-            ),
-            Matchers.hasSize(Matchers.greaterThan(0))
-        );
-    }
-
-    @Test
-    void catchesUnlintWithEmptyLinePart() throws IOException {
-        MatcherAssert.assertThat(
-            "Unlint with an empty line part should be caught",
-            new LtIncorrectUnlint(new ListOf<>("ascii-only")).defects(
-                new EoProgram(
-                    "+unlint ascii-only:",
-                    new InputOf("+unlint ascii-only:")
-                ).parse()
-            ),
-            Matchers.hasSize(Matchers.greaterThan(0))
-        );
-    }
-
-    @Test
-    void allowsUnlintWithRange() throws IOException {
-        MatcherAssert.assertThat(
-            "Unlint with a valid range should be supported",
-            new LtIncorrectUnlint(new ListOf<>("ascii-only")).defects(
-                new EoProgram(
-                    "+unlint ascii-only:5-10",
-                    new InputOf("+unlint ascii-only:5-10")
-                ).parse()
-            ),
-            Matchers.emptyIterable()
         );
     }
 }

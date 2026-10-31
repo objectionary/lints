@@ -15,7 +15,7 @@
         <xsl:variable name="parent" select="parent::o"/>
         <xsl:variable name="refs" select="key('referenced-by-name', @name)"/>
         <xsl:variable name="containers" select="$refs/ancestor::o[parent::o[generate-id() = generate-id($parent)]][1]"/>
-        <xsl:if test="count($refs) &gt; 0 and count($containers) = count($refs) and count(distinct-values($containers/generate-id())) = 1 and not(exists($containers[generate-id() = generate-id(current())]))">
+        <xsl:if test="count($refs) &gt; 0 and (every $ref in $refs satisfies exists($ref/ancestor::o[parent::o[generate-id() = generate-id($parent)]][1])) and count(distinct-values($containers/generate-id())) = 1 and not(exists($containers[generate-id() = generate-id(current())]))">
           <xsl:element name="defect">
             <xsl:variable name="line" select="eo:lineno(@line)"/>
             <xsl:attribute name="line">

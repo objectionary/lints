@@ -82,4 +82,48 @@ final class DfContextTest {
             )
         );
     }
+
+    @Test
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
+    void delegatesEveryOtherMethodToOrigin() {
+        final Defect origin = new Defect.Default(
+            "some-rule", Severity.WARNING, 42, "some text"
+        );
+        final DfContext defect = new DfContext(origin, "");
+        MatcherAssert.assertThat(
+            "rule() must be delegated to the origin defect",
+            defect.rule(),
+            Matchers.equalTo(origin.rule())
+        );
+        MatcherAssert.assertThat(
+            "severity() must be delegated to the origin defect",
+            defect.severity(),
+            Matchers.equalTo(origin.severity())
+        );
+        MatcherAssert.assertThat(
+            "line() must be delegated to the origin defect",
+            defect.line(),
+            Matchers.equalTo(origin.line())
+        );
+        MatcherAssert.assertThat(
+            "text() must be delegated to the origin defect",
+            defect.text(),
+            Matchers.equalTo(origin.text())
+        );
+        MatcherAssert.assertThat(
+            "version() must be delegated to the origin defect",
+            defect.version(),
+            Matchers.equalTo(origin.version())
+        );
+        MatcherAssert.assertThat(
+            "experimental() must be delegated to the origin defect",
+            defect.experimental(),
+            Matchers.equalTo(origin.experimental())
+        );
+        MatcherAssert.assertThat(
+            "toString() must be delegated to the origin defect",
+            defect.toString(),
+            Matchers.equalTo(origin.toString())
+        );
+    }
 }

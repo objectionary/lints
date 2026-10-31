@@ -6,6 +6,7 @@ sheets:
 asserts:
   - /defects[count(defect[@context and @severity='error'])=1]
   - /defects/defect[contains(@context, '<head>version</head>')]
+xml-reason: "not yet converted to an EO input test"
 document: |
   <object author="tests">
     <metas>

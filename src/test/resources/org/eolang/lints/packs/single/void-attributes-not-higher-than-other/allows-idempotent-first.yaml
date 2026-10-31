@@ -4,6 +4,7 @@
 sheets:
   - /org/eolang/lints/critical/void-attributes-not-higher-than-other.xsl
 defects: 0
+xml-reason: "ξ/xi🌵 is synthesized post-parse, not by valid EO source"
 document: |
   <object author="tests">
     <o name="foo">

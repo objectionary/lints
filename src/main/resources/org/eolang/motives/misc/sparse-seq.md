@@ -6,8 +6,9 @@ Incorrect:
 
 ```eo
 # App.
+
 [] > app
-  QQ.seq > @
+  seq > @
     *
       true
 ```
@@ -16,8 +17,9 @@ Correct:
 
 ```eo
 # App.
+
 [] > app
-  QQ.seq > @
+  seq > @
     *
       42
       true

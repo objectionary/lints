@@ -1,0 +1,9 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+lint: incorrect-unlint
+defects: 0
+input: |
+  +unlint ascii-only
+
+  [] > foo

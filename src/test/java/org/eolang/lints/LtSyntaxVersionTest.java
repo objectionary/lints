@@ -4,106 +4,123 @@
  */
 package org.eolang.lints;
 
-import com.github.lombrozo.xnav.Xnav;
+import com.jcabi.xml.XML;
 import fixtures.EoProgram;
 import java.io.IOException;
-import matchers.DefectMatcher;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import org.cactoos.io.InputOf;
+import org.cactoos.list.ListOf;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.hamcrest.core.IsEqual;
 import org.junit.jupiter.api.Test;
 
 /**
- * Test for {@link LtSyntaxVersion}.
+ * Tests for {@link LtSyntaxVersion}.
  *
- * @since 0.2.11
+ * @since 0.0.59
  */
 final class LtSyntaxVersionTest {
 
     @Test
-    void allowsSyntaxVersionOlderThanParser() throws IOException {
-        final String src = LtSyntaxVersionTest.program("+syntax 0.0.1");
+    void catchesSyntaxNewerThanParser() throws IOException {
         MatcherAssert.assertThat(
-            "declaring an old +syntax version must not cause defects",
-            new LtSyntaxVersion().defects(new EoProgram(src, new InputOf(src)).parse()),
-            Matchers.emptyIterable()
+            "A +syntax newer than the parser must be reported as an error",
+            new ListOf<>(
+                new LtSyntaxVersion().defects(
+                    LtSyntaxVersionTest.program("+syntax 999.0.0")
+                )
+            ),
+            Matchers.hasSize(1)
         );
     }
 
     @Test
-    void allowsSyntaxVersionEqualToParser() throws IOException {
-        final String src = LtSyntaxVersionTest.program(
-            String.format("+syntax %s", LtSyntaxVersionTest.actualVersion())
-        );
-        MatcherAssert.assertThat(
-            "declaring the exact parser version must not cause defects",
-            new LtSyntaxVersion().defects(new EoProgram(src, new InputOf(src)).parse()),
-            Matchers.emptyIterable()
-        );
-    }
-
-    @Test
-    void catchesSyntaxVersionNewerThanParser() throws IOException {
-        final String src = LtSyntaxVersionTest.program("+syntax 999.0.0");
-        MatcherAssert.assertThat(
-            "declaring a +syntax version newer than the parser must be caught",
-            new LtSyntaxVersion().defects(new EoProgram(src, new InputOf(src)).parse()),
-            Matchers.allOf(
-                Matchers.<Defect>iterableWithSize(1),
-                Matchers.<Defect>everyItem(new DefectMatcher())
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
+    void reportsCorrectRuleAndSeverity() throws IOException {
+        final Defect defect = new ListOf<>(
+            new LtSyntaxVersion().defects(
+                LtSyntaxVersionTest.program("+syntax 999.0.0")
             )
-        );
-    }
-
-    @Test
-    void complainsAsError() throws IOException {
-        final String src = LtSyntaxVersionTest.program("+syntax 999.0.0");
+        ).get(0);
         MatcherAssert.assertThat(
-            "the lint should complain as error, since the code may rely on unknown syntax",
-            new LtSyntaxVersion().defects(new EoProgram(src, new InputOf(src)).parse())
-                .iterator().next().severity(),
+            "The defect must be reported under the syntax-version rule as an error",
+            defect.rule(),
+            Matchers.equalTo("syntax-version")
+        );
+        MatcherAssert.assertThat(
+            "A too-new required syntax must be an error, not a warning",
+            defect.severity(),
             Matchers.equalTo(Severity.ERROR)
         );
+        MatcherAssert.assertThat(
+            "The message must mention the declared version",
+            defect.text(),
+            Matchers.containsString("999.0.0")
+        );
     }
 
     @Test
-    void ignoresMalformedSyntaxValue() throws IOException {
-        final String src = LtSyntaxVersionTest.program("+syntax abracadabra");
+    void allowsSyntaxOlderThanParser() throws IOException {
         MatcherAssert.assertThat(
-            "a malformed +syntax value must not crash the lint, nor be flagged",
-            new LtSyntaxVersion().defects(new EoProgram(src, new InputOf(src)).parse()),
+            "A +syntax older than the parser must not be reported",
+            new LtSyntaxVersion().defects(
+                LtSyntaxVersionTest.program("+syntax 0.0.1")
+            ),
             Matchers.emptyIterable()
         );
     }
 
     @Test
     void ignoresProgramsWithoutSyntaxMeta() throws IOException {
-        final String src = LtSyntaxVersionTest.program("+home https://example.com");
         MatcherAssert.assertThat(
-            "programs without a +syntax meta must not be affected",
-            new LtSyntaxVersion().defects(new EoProgram(src, new InputOf(src)).parse()),
+            "A program with no +syntax meta must not be reported",
+            new LtSyntaxVersion().defects(
+                LtSyntaxVersionTest.program()
+            ),
             Matchers.emptyIterable()
         );
     }
 
     @Test
-    void explainsMotive() throws IOException {
+    void ignoresMalformedSyntaxValue() throws IOException {
         MatcherAssert.assertThat(
-            "the motive doesn't mention the +syntax meta",
-            new LtSyntaxVersion().motive().contains("+syntax"),
-            new IsEqual<>(true)
+            "A non-SemVer +syntax value must be silently ignored",
+            new LtSyntaxVersion().defects(
+                LtSyntaxVersionTest.program("+syntax abracadabra")
+            ),
+            Matchers.emptyIterable()
         );
     }
 
-    private static String actualVersion() {
-        final String src = LtSyntaxVersionTest.program("+home https://example.com");
-        return new Xnav(new EoProgram(src, new InputOf(src)).parse().inner())
-            .path("/object").findFirst().get()
-            .attribute("version").text().get();
+    @Test
+    void ignoresOverflowingSyntaxValue() throws IOException {
+        MatcherAssert.assertThat(
+            "An overflowing numeric +syntax value must be ignored, not crash the lint",
+            new LtSyntaxVersion().defects(
+                LtSyntaxVersionTest.program("+syntax 999999999999999999999999.2.3")
+            ),
+            Matchers.emptyIterable()
+        );
     }
 
-    private static String program(final String meta) {
-        return String.join(System.lineSeparator(), meta, "", "[] > foo", "");
+    @Test
+    void hasExpectedName() {
+        MatcherAssert.assertThat(
+            "The rule name must be syntax-version",
+            new LtSyntaxVersion().name(),
+            Matchers.equalTo("syntax-version")
+        );
+    }
+
+    private static XML program(final String... metas) {
+        final List<String> src = new ArrayList<>(3);
+        src.addAll(Arrays.asList(metas));
+        src.add("");
+        src.add("# Foo.");
+        src.add("[] > foo");
+        final String txt = String.join(String.valueOf('\n'), src);
+        return new EoProgram(txt, new InputOf(txt)).parse();
     }
 }

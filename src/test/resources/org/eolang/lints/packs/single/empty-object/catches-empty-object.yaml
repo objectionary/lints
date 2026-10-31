@@ -5,8 +5,8 @@ sheets:
   - /org/eolang/lints/errors/empty-object.xsl
 defects:
   - severity: warning
-    line: 555
-document: |
-  <object author="tests">
-    <o line="555"/>
-  </object>
+    line: 3
+input: |
+  [] > main
+    * > @
+      []
