@@ -1,0 +1,11 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/design/broad-scope.xsl
+defects: 0
+input: |
+  [x] > foo
+    x.plus 1 >> a
+    stdout > @
+      a.times 2
