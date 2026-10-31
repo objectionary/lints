@@ -1,0 +1,14 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/names/unsorted-named-attributes.xsl
+defects:
+  - severity: warning
+    line: 4
+input: |
+  [x] > app
+    [y] > z
+      y.plus ^.x > @
+    [y] > a
+      y.plus ^.x > @

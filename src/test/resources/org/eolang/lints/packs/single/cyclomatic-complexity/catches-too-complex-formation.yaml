@@ -1,0 +1,56 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+# yamllint disable rule:line-length
+sheets:
+  - /org/eolang/lints/design/cyclomatic-complexity.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=1]
+  - /defects/defect[1][normalize-space()='The object "foo" has a cyclomatic complexity of 12, while the maximum is 10']
+input: |
+  [x] > foo
+    0 > @
+    if. > a1
+      x
+      1
+      2
+    if. > a2
+      x
+      1
+      2
+    if. > a3
+      x
+      1
+      2
+    if. > a4
+      x
+      1
+      2
+    if. > a5
+      x
+      1
+      2
+    if. > a6
+      x
+      1
+      2
+    if. > a7
+      x
+      1
+      2
+    if. > a8
+      x
+      1
+      2
+    if. > a9
+      x
+      1
+      2
+    if. > a10
+      x
+      1
+      2
+    if. > a11
+      x
+      1
+      2

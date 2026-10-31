@@ -10,7 +10,7 @@
   <xsl:output encoding="UTF-8" method="xml"/>
   <xsl:template match="/">
     <defects>
-      <xsl:apply-templates select="//o[@base='∅' and preceding-sibling::o[@base != '∅' and not(@base='ξ' and @name='xi🌵')]]" mode="low-void"/>
+      <xsl:apply-templates select="//o[@base='∅' and preceding-sibling::o[not(@base = '∅') and not(@base='ξ' and @name='xi🌵')]]" mode="low-void"/>
     </defects>
   </xsl:template>
   <xsl:template match="o" mode="low-void">

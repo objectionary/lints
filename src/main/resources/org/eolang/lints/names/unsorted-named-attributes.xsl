@@ -12,8 +12,8 @@
   <xsl:output encoding="UTF-8" method="xml"/>
   <xsl:template match="/">
     <defects>
-      <xsl:for-each select="//o[eo:abstract(.) and @name]/o[@name and @base != '∅' and not(eo:special(@name)) and not(eo:test-name(@name))]">
-        <xsl:variable name="previous" select="(preceding-sibling::o[@name and @base != '∅' and not(eo:special(@name)) and not(eo:test-name(@name))])[last()]"/>
+      <xsl:for-each select="//o[eo:abstract(.) and @name]/o[@name and not(@base = '∅') and not(eo:special(@name)) and not(eo:test-name(@name))]">
+        <xsl:variable name="previous" select="(preceding-sibling::o[@name and not(@base = '∅') and not(eo:special(@name)) and not(eo:test-name(@name))])[last()]"/>
         <xsl:if test="$previous and @name &lt; $previous/@name">
           <defect>
             <xsl:variable name="line" select="eo:lineno(@line)"/>
