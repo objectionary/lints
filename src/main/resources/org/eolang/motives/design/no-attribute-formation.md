@@ -1,7 +1,7 @@
 # No attribute formation
 
 Formations without void attributes are not recommended. Such formations
-are similar to [Utility classes] in Java.
+resemble [Utility classes] in Java.
 
 Incorrect:
 
@@ -19,7 +19,7 @@ Correct:
   x > sbp
 ```
 
-An "attribute-free" formation is also correct, but only if its parent
+An "attribute-free" formation is also correct, provided its parent
 is a formation as well:
 
 ```eo

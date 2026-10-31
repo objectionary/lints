@@ -1,6 +1,6 @@
 # Redundant object
 
-If a named object is used only once, it is considered "redundant" and should be
+If a named object gets used a single time, it counts as "redundant" and should be
 inlined.
 
 Incorrect:
@@ -20,9 +20,9 @@ Correct:
   52.plus 2
 ```
 
-An object referenced only once is *not* redundant when that single reference
+An object referenced a single time is *not* redundant when that lone reference
 sits inside a recursive formation. Syntactically the name is mentioned once, but
-at runtime the recursion evaluates it many times, and the named attribute lets
+at runtime each step of the recursion evaluates it anew, and the named attribute lets
 all those evaluations share a single node. Inlining it would give every level
 of the recursion its own copy of the subgraph, so the lint skips such objects:
 
@@ -38,7 +38,7 @@ of the recursion its own copy of the subgraph, so the lint skips such objects:
       squared.plus (poly (n.minus 1))
 ```
 
-A `$`-alias is also *not* redundant when its only reference reaches it from
+A `$`-alias is also *not* redundant when its single reference reaches it from
 inside a nested formation. There, `$` refers to the nested formation itself,
 not to the object where the alias was declared. Inlining the alias into that
 reference would change what it points to:

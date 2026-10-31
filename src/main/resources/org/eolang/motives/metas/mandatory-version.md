@@ -1,6 +1,6 @@
 # Mandatory `+version` Meta
 
-The program must have exactly one `+version` special meta.
+The program must have a single `+version` special meta.
 
 Incorrect:
 

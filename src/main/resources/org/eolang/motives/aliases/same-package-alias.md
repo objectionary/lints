@@ -3,7 +3,7 @@
 An `+alias` meta that points to an object in the same package as the
 current file's `+package` meta is redundant. The compiler resolves a
 bare reference to an object of the same package on its own, so such
-an alias only adds noise.
+an alias adds nothing but noise.
 
 Incorrect:
 

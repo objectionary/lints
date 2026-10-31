@@ -1,4 +1,4 @@
-# `QQ.txt.sprintf` With Constant String Arguments Only
+# `QQ.txt.sprintf` With All-Constant String Arguments
 
 Using `QQ.txt.sprintf` makes no sense when the format template and all
 the arguments filling its placeholders are constant strings. The result

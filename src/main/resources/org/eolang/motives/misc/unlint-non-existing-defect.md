@@ -1,6 +1,6 @@
 # `+unlint` of non-existing defect
 
-The special `+unlint` meta should be used only to suppress existing defects.
+The special `+unlint` meta should be used to suppress existing defects alone.
 
 Incorrect (since there are no duplicate metas):
 
