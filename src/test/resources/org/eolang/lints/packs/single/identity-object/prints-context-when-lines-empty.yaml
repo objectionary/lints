@@ -5,7 +5,7 @@ sheets:
   - /org/eolang/lints/misc/identity-object.xsl
 asserts:
   - /defects[count(defect[@context and @severity='warning'])=1]
-xml-reason: "not yet converted to an EO input test"
+xml-reason: "an <o> with no @line at all is unreachable via valid EO parse"
 document: |
   <object author="tests">
     <o name="pass">

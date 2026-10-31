@@ -7,7 +7,7 @@ defects:
   - severity: warning
     line: 2
 ignore-schema: true
-xml-reason: "not yet converted to an EO input test"
+xml-reason: "vars-float-up always sorts tests after other attrs"
 document: |
   <object author="tests">
     <o line="1" name="x">

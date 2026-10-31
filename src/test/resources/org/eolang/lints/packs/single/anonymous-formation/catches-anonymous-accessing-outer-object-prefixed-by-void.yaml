@@ -1,0 +1,15 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+# yamllint disable rule:line-length
+sheets:
+  - /org/eolang/lints/names/anonymous-formation.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=1]
+  - /defects/defect[@line='4']
+  - /defects/defect[1][normalize-space()='It is not recommended to have anonymous formation accessing undefined object "x-other" inside the formation']
+input: |
+  [x-other] > app
+    use > @
+      [x]
+        ^.x-other > @

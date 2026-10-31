@@ -6,11 +6,6 @@ sheets:
 asserts:
   - /defects[count(defect[@severity='warning' and @experimental])=1]
   - /defects/defect[contains(text(), '"pass"')]
-xml-reason: "not yet converted to an EO input test"
-document: |
-  <object author="tests">
-    <o line="1" pos="1" name="pass">
-      <o line="1" pos="2" base="∅" name="value"/>
-      <o line="1" pos="3" base="ξ.value" name="φ"/>
-    </o>
-  </object>
+input: |
+  [value] > pass
+    value > @

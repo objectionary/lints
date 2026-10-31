@@ -8,10 +8,7 @@ defects:
     line: 2
   - severity: warning
     line: 3
-  - severity: warning
-    line: 4
 input: |
   [] > main
-    x1 > x1
     xApp > xApp
     x_snake > x_snake

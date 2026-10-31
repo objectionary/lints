@@ -4,16 +4,9 @@
 sheets:
   - /org/eolang/lints/tests/wrong-test-order.xsl
 defects: 0
-ignore-schema: true
-xml-reason: "not yet converted to an EO input test"
-document: |
-  <object author="tests">
-    <o line="2" name="foo" pos="0">
-      <o line="4" name="+checks-something" pos="2">
-        <o base="Q.number" line="5" name="φ" pos="4"/>
-      </o>
-      <o line="6" name="-throws-on-empty" pos="2">
-        <o base="Q.number" line="7" name="φ" pos="4"/>
-      </o>
-    </o>
-  </object>
+input: |
+  [] > foo
+
+    1 ++> checks-something
+
+    1 --> throws-on-empty

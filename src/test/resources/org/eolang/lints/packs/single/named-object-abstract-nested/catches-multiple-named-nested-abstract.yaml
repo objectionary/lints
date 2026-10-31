@@ -8,7 +8,7 @@ defects:
     line: 2
   - severity: critical
     line: 3
-xml-reason: "not yet converted to an EO input test"
+xml-reason: "vars-float-up relocates named nested objects to top"
 document: |
   <object author="tests">
     <o base="Φ.x" name="φ" line="1">

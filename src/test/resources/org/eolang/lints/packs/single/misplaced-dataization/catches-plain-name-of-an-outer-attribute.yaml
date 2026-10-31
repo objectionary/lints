@@ -1,0 +1,13 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+# yamllint disable rule:line-length
+sheets:
+  - /org/eolang/lints/design/misplaced-dataization.xsl
+asserts:
+  - /defects[count(defect)=1]/defect[@line='4' and normalize-space()='The dataization in "rolled" reads only objects outside of it and runs again in every copy, move it up into "digest"']
+input: |
+  [^] > digest
+    ^.as-bytes >> raw!
+    [^ acc index] >> rolled
+      index.eq raw.size! > @

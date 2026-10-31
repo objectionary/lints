@@ -5,7 +5,7 @@ sheets:
   - /org/eolang/lints/critical/formation-with-as-attributes.xsl
 defects:
   - severity: critical
-xml-reason: "not yet converted to an EO input test"
+xml-reason: "@as only appears on vapplication args, which need @base"
 document: |
   <object author="tests">
     <o name='a'>

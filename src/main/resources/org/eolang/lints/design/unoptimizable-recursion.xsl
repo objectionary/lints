@@ -43,18 +43,12 @@
     </xsl:choose>
   </xsl:function>
   <!--
-  @todo #1321:60min Name the remaining shapes this lint still misses.
-  The compiler also leaves the recursion alone when a self-call sits
-  inside the arguments of another self-call, when the φ of the formation
-  binds an intermediate value with a name of its own (the compiler
-  requires every step of φ to be nameless but for a nested formation),
-  when the formation is reached other than by a plain application, as a
-  decoratee or as the receiver of a dispatch from outside it, when an
-  attribute holding a self-call is read from outside the formation, as in
-  "range", and when two formations call each other. Each of those is
-  syntactic, so each can be found here and reported with a reason of its
-  own, the way the ones below are. See "recursion-to-cps.xsl" in
-  eo-maven-plugin for the exact list the compiler skips.
+  One shape the compiler also leaves unoptimized is not named below:
+  mutual recursion, where formation A calls formation B and B calls A
+  back, possibly through a longer chain of formations. That is not
+  decidable from a single formation's own subtree the way the others
+  are; it needs a call graph over the whole document, which is a
+  different kind of lint from this one.
   -->
   <!--
   TRUE when the @base is a self-call of the object with the given name, in
@@ -114,9 +108,10 @@
       <xsl:for-each select="//o[eo:abstract(.) and @name and not(contains(@name, '🌵')) and o[@name='φ']]">
         <xsl:variable name="name" select="string(@name)"/>
         <xsl:variable name="root" select="o[@name='φ']"/>
-        <xsl:variable name="calls" select=".//o[eo:is-self-call(string(@base), $name) and not(ancestor::o[eo:test-name(@name)])]"/>
+        <xsl:variable name="calls" select=".//o[eo:is-self-call(string(@base), $name) and not(ancestor::o[eo:test-name(@name)]) and ancestor::o[eo:abstract(.)][1] is current()]"/>
         <xsl:variable name="loops" select="($root | $root//o)[eo:is-self-tail(string(@base), $name) and eo:tail(., $root)]"/>
         <xsl:variable name="direct" select="($root | $root//o)[eo:is-self-direct(string(@base), $name) and eo:tail(., $root)]"/>
+        <xsl:variable name="elsewhere" select="$calls except ($root/descendant-or-self::o)"/>
         <xsl:if test="exists($calls) and empty($loops)">
           <defect>
             <xsl:variable name="line" select="eo:lineno($calls[1]/@line)"/>
@@ -145,6 +140,9 @@
               </xsl:when>
               <xsl:when test="exists($direct)">
                 <xsl:text>the self-call names the formation directly instead of through its receiver</xsl:text>
+              </xsl:when>
+              <xsl:when test="exists($elsewhere)">
+                <xsl:text>the self-call is kept in an attribute other than φ</xsl:text>
               </xsl:when>
               <xsl:otherwise>
                 <xsl:text>no self-call sits in a tail position</xsl:text>

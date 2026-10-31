@@ -11,6 +11,9 @@ name: zizmor
     branches:
       - master
 permissions: {}
+concurrency:
+  group: zizmor-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   zizmor:
     timeout-minutes: 15

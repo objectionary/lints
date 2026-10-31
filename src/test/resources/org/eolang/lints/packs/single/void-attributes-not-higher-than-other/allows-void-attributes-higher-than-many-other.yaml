@@ -4,15 +4,9 @@
 sheets:
   - /org/eolang/lints/critical/void-attributes-not-higher-than-other.xsl
 defects: 0
-xml-reason: "not yet converted to an EO input test"
-document: |
-  <object author="tests">
-    <o name="foo">
-      <o line="1" base="∅" name="x"/>
-      <o line="2" base="∅" name="y"/>
-      <o line="3" base="Φ.foo" name="z"/>
-      <o line="4" base="Φ.foo" name="t"/>
-      <o line="5" base="Φ.d" name="a"/>
-      <o line="6" base="Φ.x" name="b"/>
-    </o>
-  </object>
+input: |
+  [x y] > foo
+    1 > z
+    2 > t
+    3 > a
+    4 > b

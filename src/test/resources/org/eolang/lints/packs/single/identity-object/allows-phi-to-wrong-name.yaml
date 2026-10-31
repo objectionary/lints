@@ -4,7 +4,7 @@
 sheets:
   - /org/eolang/lints/misc/identity-object.xsl
 defects: 0
-xml-reason: "not yet converted to an EO input test"
+xml-reason: "ξ.y with only void x needs undeclared y; unreachable via parse"
 document: |
   <object author="tests">
     <o line="1" pos="1" name="wrong-ref">

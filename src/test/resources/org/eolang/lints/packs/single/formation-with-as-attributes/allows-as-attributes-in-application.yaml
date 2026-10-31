@@ -4,10 +4,7 @@
 sheets:
   - /org/eolang/lints/critical/formation-with-as-attributes.xsl
 defects: 0
-xml-reason: "not yet converted to an EO input test"
-document: |
-  <object author="tests">
-    <o name='happl' base='Φ.f' line='1'>
-      <o as='boom' line='2'/>
-    </o>
-  </object>
+input: |
+  [] > main
+    f > y
+      42 > @

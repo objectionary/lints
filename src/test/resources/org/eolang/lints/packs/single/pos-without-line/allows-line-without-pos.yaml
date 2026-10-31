@@ -4,7 +4,7 @@
 sheets:
   - /org/eolang/lints/critical/pos-without-line.xsl
 defects: 0
-xml-reason: "not yet converted to an EO input test"
+xml-reason: "@pos is always emitted alongside @line by the parser"
 document: |
   <object author="tests">
     <o line="123" name="foo"/>

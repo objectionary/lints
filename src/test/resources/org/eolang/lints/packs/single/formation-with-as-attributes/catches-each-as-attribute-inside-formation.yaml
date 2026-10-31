@@ -10,7 +10,7 @@ defects:
     line: 3
   - severity: critical
     line: 4
-xml-reason: "not yet converted to an EO input test"
+xml-reason: "@as only appears on vapplication args, which need @base"
 document: |
   <object author="tests">
     <o name='foo' line='1'>

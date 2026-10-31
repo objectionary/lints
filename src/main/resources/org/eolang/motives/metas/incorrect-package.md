@@ -3,16 +3,17 @@
 The special meta `+package` must follow this regular expression:
 
 ```regexp
-^[a-z][a-z0-9_]*(\.[a-z0-9_]+)+[0-9a-z_]$
+^[a-zA-Z0-9_]+(\.[a-zA-Z0-9_]+|\$[a-zA-Z0-9_]*)*$
 ```
+
+Segments written in any alphabet are also accepted, with digits, `_`, `@` and
+dashes (a dash can't start a segment), as long as a single dot separates them.
 
 Incorrect:
 
 ```eo
-+package foo
-+package foo.x
++package test.
 +package привет, как дела?
-+package привет.как
 
 [] > foo
 ```
@@ -23,6 +24,9 @@ Correct:
 +package foo.bar
 +package my.awesome.package
 +package test.xy
++package foo
++package Hello.WorLd
++package привет.как
 
 [] > foo
 ```

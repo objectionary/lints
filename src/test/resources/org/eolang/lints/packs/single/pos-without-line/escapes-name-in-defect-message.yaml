@@ -7,7 +7,7 @@ sheets:
 asserts:
   - /defects[count(defect[@severity='critical'])=1]
   - /defects/defect[normalize-space()='Object "foo\x22bar" have the "@pos" attribute, but the "@line" attribute is absent']
-xml-reason: "not yet converted to an EO input test"
+xml-reason: "@pos without @line is unreachable via valid parse"
 document: |
   <object author="tests">
     <o pos="3" name='foo&quot;bar'/>

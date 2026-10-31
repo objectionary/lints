@@ -7,7 +7,7 @@ asserts:
   - /defects[count(defect[@severity='error'])=1]
   - /defects/defect[@line='2']
   - /defects/defect[contains(normalize-space(), 'Φ.f')]
-xml-reason: "not yet converted to an EO input test"
+xml-reason: "wrap-applications always adds @as to app args; unreachable"
 document: |
   <object author="tests">
     <o name="app">
