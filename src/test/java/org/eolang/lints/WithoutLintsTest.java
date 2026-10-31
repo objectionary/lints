@@ -33,15 +33,46 @@ final class WithoutLintsTest {
     )
     void excludesLints(final String lid) {
         MatcherAssert.assertThat(
-            String.format(
-                "Lint with name '%s' was not excluded, but it should",
-                lid
-            ),
+            String.format("Lint '%s' is not excluded from the remaining lints", lid),
+            new ListOf<>(
+                new WithoutLints(
+                    new ListOf<>(
+                        new WithoutLintsTest.LtFake(lid),
+                        new WithoutLintsTest.LtFake("ascii-only")
+                    ),
+                    lid
+                )
+            ).stream().map(Lint::name).collect(Collectors.toList()),
+            Matchers.not(Matchers.hasItem(lid))
+        );
+    }
+
+    @Test
+    void excludesEveryLintSharingTheName() {
+        MatcherAssert.assertThat(
+            "Duplicates of the excluded lint 'двойник' are not all excluded",
             new WithoutLints(
-                new ListOf<>(new WithoutLintsTest.LtFake("ascii-only")),
-                lid
-            ).iterator().next().name(),
-            Matchers.not(Matchers.equalTo(lid))
+                new ListOf<>(
+                    new WithoutLintsTest.LtFake("двойник"),
+                    new WithoutLintsTest.LtFake("двойник")
+                ),
+                "двойник"
+            ),
+            Matchers.emptyIterable()
+        );
+    }
+
+    @Test
+    void keepsLintWhoseNameOnlyStartsWithExcludedOne() {
+        MatcherAssert.assertThat(
+            "Lint 'unit-test-missing' is excluded by its prefix 'unit-test'",
+            new ListOf<>(
+                new WithoutLints(
+                    new ListOf<>(new WithoutLintsTest.LtFake("unit-test-missing")),
+                    "unit-test"
+                )
+            ).stream().map(Lint::name).collect(Collectors.toList()),
+            Matchers.hasItem("unit-test-missing")
         );
     }
 

@@ -12,7 +12,7 @@
   <xsl:output encoding="UTF-8" method="xml"/>
   <xsl:template match="/">
     <defects>
-      <xsl:for-each select="//o[@name and not(eo:special(@name)) and not(eo:test-name(@name)) and not(matches(@name, '^[a-z]+(-[a-z]+)*$'))]">
+      <xsl:for-each select="//o[@name and not(eo:special(@name)) and not(eo:test-name(@name)) and not(matches(@name, '^[a-z][a-z0-9]*(-[a-z0-9]+)*$'))]">
         <defect>
           <xsl:variable name="line" select="eo:lineno(@line)"/>
           <xsl:attribute name="line">
@@ -26,7 +26,7 @@
           <xsl:attribute name="severity">warning</xsl:attribute>
           <xsl:text>Object name </xsl:text>
           <xsl:value-of select="eo:escape(@name)"/>
-          <xsl:text> must match the regular expression [a-z]+(-[a-z]+)*</xsl:text>
+          <xsl:text> must match the regular expression [a-z][a-z0-9]*(-[a-z0-9]+)*</xsl:text>
         </defect>
       </xsl:for-each>
     </defects>

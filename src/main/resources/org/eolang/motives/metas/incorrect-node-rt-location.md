@@ -21,7 +21,7 @@ Correct:
 
 ```eo
 +rt node eo2js-runtime:0.0.0
-+rt node bar-test:1.1
++rt node bar-test:1.1.3
 +rt node foo:1.2.3
 
 # No comments.

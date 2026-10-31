@@ -3,7 +3,7 @@
 Test object names must follow this regular expression:
 
 ```regexp
-^[a-z][a-z]+(-[a-z][a-z]+)*$
+^[a-z][a-z0-9]*(-[a-z0-9]+)*$
 ```
 
 Incorrect:
@@ -16,19 +16,11 @@ Incorrect:
     42 > foo
 
   # Test.
-  [] +> test123
-    42 > fooB
-
-  # Test.
   [] +> test--
     42 > foo
 
   # Test.
   [] +> test--test
-    42 > foo
-
-  # Test.
-  [] +> t
     42 > foo
 
   # Test.
@@ -63,5 +55,13 @@ Correct:
 
   # Test.
   [] +> ok
+    42 > foo
+
+  # Test.
+  [] +> t
+    42 > foo
+
+  # Test.
+  [] +> runs-i32
     42 > foo
 ```

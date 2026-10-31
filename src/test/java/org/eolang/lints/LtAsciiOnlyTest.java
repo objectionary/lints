@@ -116,8 +116,6 @@ final class LtAsciiOnlyTest {
         final List<String> src = new ArrayList<>(6);
         src.addAll(Arrays.asList(comment));
         src.add("");
-        src.add("+spdx SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com");
-        src.add("+spdx SPDX-License-Identifier: MIT");
         src.add("");
         src.add("[] > foo");
         final String txt = String.join(String.valueOf('\n'), src);

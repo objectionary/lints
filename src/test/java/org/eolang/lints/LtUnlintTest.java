@@ -5,6 +5,7 @@
 package org.eolang.lints;
 
 import com.jcabi.xml.XML;
+import com.jcabi.xml.XMLDocument;
 import fixtures.EoProgram;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.cactoos.io.InputOf;
+import org.cactoos.list.ListOf;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
@@ -123,6 +125,17 @@ final class LtUnlintTest {
     }
 
     @Test
+    void keepsFindingsWhenSelectorDoesNotFitAnInteger() throws IOException {
+        MatcherAssert.assertThat(
+            "An invalid selector must not suppress findings or crash the lint",
+            new LtUnlint(new LtUnlintTest.FakeLint()).defects(
+                LtUnlintTest.unlint("fake:2147483648")
+            ),
+            Matchers.hasSize(1)
+        );
+    }
+
+    @Test
     void delegatesNameToOrigin() {
         MatcherAssert.assertThat(
             "Name must be delegated to the wrapped lint",
@@ -151,14 +164,23 @@ final class LtUnlintTest {
 
     private static XML program(final String... unlints) {
         final List<String> src = new ArrayList<>(6);
-        src.add("+spdx SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com");
-        src.add("+spdx SPDX-License-Identifier: MIT");
         src.addAll(Arrays.asList(unlints));
         src.add("");
         src.add("# Foo.");
         src.add("[] > foo");
         final String txt = String.join(String.valueOf('\n'), src);
         return new EoProgram(txt, new InputOf(txt)).parse();
+    }
+
+    private static XMLDocument unlint(final String selector) {
+        return new XMLDocument(
+            String.join(
+                "",
+                "<object><metas><meta line='1'><head>unlint</head><tail>",
+                selector,
+                "</tail></meta></metas></object>"
+            )
+        );
     }
 
     private static List<Integer> lines(final Collection<Defect> defects) {
@@ -242,6 +264,36 @@ final class LtUnlintTest {
         @Override
         public String motive() {
             return "fake motive";
+        }
+
+        @Override
+        public Fix fix() {
+            return new FxEmpty();
+        }
+    }
+
+    /**
+     * Lint that always reports a fixed finding.
+     *
+     * @since 0.0.1
+     */
+    private static final class FakeLint implements Lint {
+
+        @Override
+        public String name() {
+            return "fake";
+        }
+
+        @Override
+        public Collection<Defect> defects(final XML xmir) {
+            return new ListOf<>(
+                new Defect.Default("fake", Severity.WARNING, 1, "fake finding")
+            );
+        }
+
+        @Override
+        public String motive() {
+            return "";
         }
 
         @Override
