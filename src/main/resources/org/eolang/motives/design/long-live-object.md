@@ -9,6 +9,7 @@ Incorrect:
 
 ```eo
 # Foo.
+
 [] > app
   foo 42 > f
   1 > a
@@ -28,6 +29,7 @@ Correct:
 
 ```eo
 # Foo.
+
 [] > app
   1 > a
   2 > b
