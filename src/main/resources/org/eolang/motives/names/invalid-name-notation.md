@@ -1,7 +1,7 @@
 # Invalid name notation
 
 The name of any object must match the regular expression `[a-z][a-z0-9]*(-[a-z0-9]+)*`.
-Basically, it must follow kebab-case notation, using only Latin letters and digits.
+Basically, it must follow kebab-case notation and use Latin letters and digits alone.
 It must start with a letter, no underscores, no uppercase characters.
 
 Incorrect:

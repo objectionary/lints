@@ -1,10 +1,10 @@
 # Cyclomatic complexity
 
-EO has no loops or `goto`. The only decision points a formation can have
-are a standalone `while` and an `if`, `and`, or `or` dispatched on
+EO has no loops or `goto`. The decision points a formation can have
+are limited to a standalone `while` and an `if`, `and`, or `or` dispatched on
 something. Whether the receiver of such a dispatch is a boolean, as
 opposed to some other object with a method of the same name, cannot be
-decided without type inference. So this lint counts any dispatch named
+decided without type inference. Thus, this lint counts any dispatch named
 `if`, `and`, or `or`, together with a standalone `while`, as a decision
 point. This is a heuristic, and the defect is marked `experimental`.
 

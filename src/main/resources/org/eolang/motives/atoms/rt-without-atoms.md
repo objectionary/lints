@@ -1,6 +1,6 @@
 # `+rt` without atoms
 
-The special `+rt` meta must be used only with atoms.
+The special `+rt` meta must be used with atoms, not with anything else.
 
 Incorrect:
 

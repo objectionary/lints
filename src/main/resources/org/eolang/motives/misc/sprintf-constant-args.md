@@ -1,4 +1,4 @@
-# `.printf` With Constant String Arguments Only
+# `.printf` With All-Constant String Arguments
 
 Using `.printf` makes no sense when the format template and all
 the arguments filling its placeholders are constant strings. The result
