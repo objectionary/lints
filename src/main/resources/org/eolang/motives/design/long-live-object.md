@@ -3,7 +3,9 @@
 An object located too far from where it's used is hard to keep in mind
 while reading the code between. If more than five lines separate an
 attribute's declaration from the last line, in the same formation, that
-uses it, a warning is raised.
+uses it, a warning is raised. A formation whose attributes already stand
+in alphabetical order, the way `eo-printer` lays them out, is not
+checked, since there the order is not the author's choice.
 
 Incorrect:
 
