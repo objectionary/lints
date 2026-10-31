@@ -1,0 +1,14 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+# Root object 'caught' with trailing slash home URL
+# and +package org.eolang is allowed (#1539).
+---
+sheets:
+  - /org/eolang/lints/metas/prohibited-package.xsl
+defects: 0
+input: |
+  +home https://github.com/objectionary/eo/
+  +package org.eolang
+
+  # Root runtime caught object
+  [] > caught
