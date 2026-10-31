@@ -5,18 +5,20 @@ The value of the special meta `+spdx` must be [SPDX]-compliant headers.
 Incorrect:
 
 ```eo
+# Foo.
+
 +spdx foo bar
 
-# Foo.
 [] > foo
 ```
 
 Correct:
 
 ```eo
+# Foo.
+
 +spdx SPDX-License-Identifier: MIT
 
-# Foo.
 [] > foo
 ```
 

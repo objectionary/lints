@@ -1,7 +1,7 @@
 # Redundant attachment
 
 The `>>` suffix gives an anonymous formation a name generated for it, so
-that it can be referenced from elsewhere: by itself recursively (via `%`),
+that it can be referenced from elsewhere: by itself recursively (via `$`),
 or by another object. If nothing ever refers to that generated
 name, the `>>` is redundant and should be removed.
 
@@ -33,7 +33,7 @@ either by a recursive self-reference:
       if. > @
         n.eq 0
         0
-        % (n.minus 1)
+        $ (n.minus 1)
 ```
 
 or by being called from another part of the same object:
@@ -54,7 +54,7 @@ reaching outside itself. Here `func` comes from `mapped`, not from
 ```eo
 [sequence func] > mapped
   sequence.mapped > @
-    func item > [item idx] >>
+    ^.func item > [item idx] >>
 ```
 
 A generated name that the parser invents on its own, rather than for a `>>`

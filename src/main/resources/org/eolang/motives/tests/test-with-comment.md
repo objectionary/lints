@@ -17,8 +17,10 @@ Incorrect:
 Correct:
 
 ```eo
-[] +> checks-the-app
-  42 > @
+[] > foo
+
+  [] +> checks-the-app
+    42 > @
 ```
 
-The name says it all; the comment is redundant.
+The name says it all. The comment is redundant.
