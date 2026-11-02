@@ -8,9 +8,13 @@ Incorrect:
 
 ```eo
 # CsvObject.
-[] > csvObject
 
+[] > csvObject
+```
+
+```eo
 # Csv object.
+
 [] > csv_object
 ```
 
@@ -18,5 +22,6 @@ Correct:
 
 ```eo
 # Csv object.
+
 [] > csv-object
 ```

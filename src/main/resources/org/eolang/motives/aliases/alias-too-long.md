@@ -5,19 +5,21 @@ Object aliases must have **at most 2 parts**.
 Incorrect:
 
 ```eo
+# Foo.
+
 +alias a b c
 
-# Foo.
 [] > foo
 ```
 
 Correct:
 
 ```eo
-+alias a
-+alias a b
-+alias a b.c.d.e
-
 # Foo.
+
++alias a
++alias b c
++alias d e.f.g.h
+
 [] > foo
 ```
