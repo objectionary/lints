@@ -7,6 +7,8 @@ Incorrect:
 
 ```eo
 +unlint abracadabra
+
+[] > foo
 ```
 
 Because a lint named "abracadabra" doesn't exist (perhaps at some
@@ -16,6 +18,8 @@ Correct:
 
 ```eo
 +unlint ascii-only
+
+[] > foo
 ```
 
 Because a lint named `ascii-only` exists.
