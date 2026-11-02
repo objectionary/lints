@@ -8,6 +8,7 @@ Incorrect:
 
 ```eo
 # The object that calculates the sum.
+
 [] > foo
   42 > @
 ```
@@ -16,6 +17,7 @@ Correct:
 
 ```eo
 # Object that calculates the sum.
+
 [] > foo
   42 > @
 ```

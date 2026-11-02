@@ -8,7 +8,8 @@ Incorrect:
 ```xml
 <object>
   <o line="1" name="number">
-    <o base="f" name="λ"/>
+    <o base="∅" name="λ"/>
+    <o base="f" name="x"/>
   </o>
 </object>
 ```
