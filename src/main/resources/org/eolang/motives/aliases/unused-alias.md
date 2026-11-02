@@ -5,11 +5,12 @@ All defined object aliases must be used.
 Incorrect:
 
 ```eo
+# Foo.
+
 +alias err org.eolang.io.stderr
 +alias in org.eolang.io.stdin
 +alias org.eolang.io.stdout
 
-# Foo.
 [x] > foo
   x.div in.nextInt > @
 ```
@@ -17,9 +18,10 @@ Incorrect:
 Correct:
 
 ```eo
+# Foo.
+
 +alias in org.eolang.io.stdin
 
-# Foo.
 [x] > foo
   x.div in.nextInt > @
 ```
