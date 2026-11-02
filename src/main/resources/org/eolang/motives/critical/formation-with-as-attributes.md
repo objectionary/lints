@@ -1,7 +1,7 @@
 # Formation with `@as` attributes
 
 In [XMIR], `@as` attributes are prohibited inside formations. They are
-only valid in object applications.
+valid in object applications alone.
 
 Incorrect:
 
