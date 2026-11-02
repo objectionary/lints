@@ -8,7 +8,7 @@ name: labeler
 permissions:
   contents: read
 concurrency:
-  group: labeler-${{ github.ref }}
+  group: labeler-${{ github.event.pull_request.number }}
   cancel-in-progress: true
 jobs:
   labeler:
