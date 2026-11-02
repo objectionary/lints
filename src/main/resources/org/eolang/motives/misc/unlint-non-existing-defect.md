@@ -1,8 +1,8 @@
 # `+unlint` of non-existing defect
 
-The special `+unlint` meta should be used only to suppress existing defects.
+The special `+unlint` meta should be used to suppress existing defects alone.
 
-Incorrect (since there are no duplicate metas):
+Incorrect, since there are no duplicate metas here:
 
 ```eo
 +unlint duplicate-metas
@@ -16,7 +16,7 @@ Correct:
 ```eo
 +unlint duplicate-metas
 +architect jeff
-+architect foo
++architect jeff
 
 [] > foo
   42 > @
