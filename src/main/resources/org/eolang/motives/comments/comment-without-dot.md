@@ -6,6 +6,7 @@ Incorrect:
 
 ```eo
 # This comment doesn't end with a period
+
 [] > foo
   42 > @
 ```
@@ -14,6 +15,7 @@ Correct:
 
 ```eo
 # This does end with a period.
+
 [] > foo
   42 > @
 ```

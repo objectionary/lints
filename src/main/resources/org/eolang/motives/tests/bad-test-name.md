@@ -14,6 +14,7 @@ Incorrect:
 
 ```eo
 [] > foo
+
   [] +> it-works
     42 > @
 
@@ -28,6 +29,7 @@ Correct:
 
 ```eo
 [] > foo
+
   [] +> can-add-two-numbers
     42 > @
 
