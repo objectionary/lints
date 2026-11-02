@@ -1,6 +1,6 @@
 # Mandatory `+architect` Meta
 
-The program must have exactly one `+architect` special meta.
+The program must have a single `+architect` special meta.
 
 Incorrect:
 
