@@ -48,6 +48,7 @@ final class LtUnlintNonExistingDefect implements Lint {
             .collect(Collectors.toList());
         final List<String> unlints = metas.stream()
             .map(LtUnlintNonExistingDefect::tail)
+            .filter(tail -> !tail.isEmpty())
             .distinct()
             .collect(Collectors.toList());
         final Collection<Defect> messages;
@@ -87,7 +88,7 @@ final class LtUnlintNonExistingDefect implements Lint {
     }
 
     private static String tail(final Xnav meta) {
-        return meta.element("tail").text().get();
+        return meta.element("tail").text().orElse("");
     }
 
     private Map<String, List<Integer>> existing(final List<String> unlints, final XML xmir) {
