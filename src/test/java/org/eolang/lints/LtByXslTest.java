@@ -89,6 +89,17 @@ final class LtByXslTest {
         );
     }
 
+    @Test
+    void reportsZeroLineWhenLineDoesNotFitIntoInt() {
+        MatcherAssert.assertThat(
+            "a @line that does not fit into int must be reported as line 0",
+            new LtByXsl("errors/empty-object").defects(
+                new XMLDocument("<object><o line='2147483648'/></object>")
+            ).iterator().next().line(),
+            Matchers.equalTo(0)
+        );
+    }
+
     @Tag("deep")
     @RepeatedTest(5)
     void lintsInMultipleThreads() {
