@@ -8,7 +8,7 @@
   <xsl:import href="/org/eolang/funcs/escape.xsl"/>
   <xsl:import href="/org/eolang/funcs/defect-context.xsl"/>
   <xsl:output encoding="UTF-8" method="xml"/>
-  <xsl:key name="alias-base-prefix" match="o[@base]" use="for $length in 1 to count(tokenize(@base, '\.')) return string-join(subsequence(tokenize(@base, '\.'), 1, $length), '.')"/>
+  <xsl:key name="alias-base-prefix" match="o/@base | o/@atom | o/@type" use="for $length in 1 to count(tokenize(., '\.')) return string-join(subsequence(tokenize(., '\.'), 1, $length), '.')"/>
   <xsl:template match="/">
     <defects>
       <xsl:for-each select="/object/metas/meta[head='alias' and count(part)=2]">

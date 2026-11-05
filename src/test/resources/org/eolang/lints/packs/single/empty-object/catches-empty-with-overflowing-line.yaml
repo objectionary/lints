@@ -1,0 +1,14 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/errors/empty-object.xsl
+defects:
+  - severity: warning
+    line: 0
+ignore-schema: true
+xml-reason: "a @line that does not fit into int is unreachable via EO parse"
+document: |
+  <object author="tests">
+    <o line="2147483648"/>
+  </object>

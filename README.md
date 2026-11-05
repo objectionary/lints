@@ -90,8 +90,9 @@ final class RunLints {
 }
 ```
 
-Each printed defect includes the source line, e.g.
-`[mandatory-spdx/S WARNING]:1 The +spdx meta is mandatory, but is absent`.
+Printed defects include a source line when one is available.
+Defects about missing metas have no source line, e.g.
+`[mandatory-spdx/S WARNING] The +spdx meta is mandatory, but is absent`.
 Print `xmir` itself to inspect the parsed object tree, the `<errors>`
 parser diagnostics, and the original `<listing>`, which helps when a
 lint isn't behaving as expected.
