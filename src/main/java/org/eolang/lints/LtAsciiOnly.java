@@ -33,7 +33,11 @@ final class LtAsciiOnly implements Lint {
         final List<Xnav> comments = xml.path("/object/comments/comment")
             .collect(Collectors.toList());
         for (final Xnav comment : comments) {
-            final OptionalInt abusive = comment.text().get().codePoints()
+            final String text = comment.text().orElse("");
+            if (text.isEmpty()) {
+                continue;
+            }
+            final OptionalInt abusive = text.codePoints()
                 .filter(chr -> (chr < 32 && chr != '\n') || chr > 127)
                 .findFirst();
             if (!abusive.isPresent()) {
@@ -50,7 +54,7 @@ final class LtAsciiOnly implements Lint {
                         "Only ASCII characters are allowed in comments, while \"%s\" is used at the line no.%s at the position no.%s",
                         chr,
                         line,
-                        comment.text().get().indexOf(chr) + 1
+                        text.indexOf(chr) + 1
                     )
                 )
             );
