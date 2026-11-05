@@ -51,6 +51,50 @@ final class LtIncorrectUnlintTest {
         );
     }
 
+    @Test
+    void reportsInvertedRangeSelectors() throws IOException {
+        MatcherAssert.assertThat(
+            "An inverted range selector should be reported as invalid",
+            new LtIncorrectUnlint(new ListOf<>("ascii-only")).defects(
+                LtIncorrectUnlintTest.unlint("ascii-only:20-10")
+            ),
+            Matchers.hasSize(1)
+        );
+    }
+
+    @Test
+    void reportsInvertedRangeWithLargeNumbers() throws IOException {
+        MatcherAssert.assertThat(
+            "A large inverted range selector should be reported as invalid",
+            new LtIncorrectUnlint(new ListOf<>("ascii-only")).defects(
+                LtIncorrectUnlintTest.unlint("ascii-only:500-100")
+            ),
+            Matchers.hasSize(1)
+        );
+    }
+
+    @Test
+    void acceptsEqualStartAndFinishInRanges() throws IOException {
+        MatcherAssert.assertThat(
+            "A range where start equals finish should be accepted",
+            new LtIncorrectUnlint(new ListOf<>("ascii-only")).defects(
+                LtIncorrectUnlintTest.unlint("ascii-only:10-10")
+            ),
+            Matchers.emptyIterable()
+        );
+    }
+
+    @Test
+    void acceptsValidAscendingRanges() throws IOException {
+        MatcherAssert.assertThat(
+            "An ascending range should be accepted",
+            new LtIncorrectUnlint(new ListOf<>("ascii-only")).defects(
+                LtIncorrectUnlintTest.unlint("ascii-only:10-20")
+            ),
+            Matchers.emptyIterable()
+        );
+    }
+
     private static XMLDocument unlint(final String selector) {
         return new XMLDocument(
             String.join(

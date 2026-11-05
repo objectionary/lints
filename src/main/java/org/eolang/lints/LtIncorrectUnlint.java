@@ -100,13 +100,25 @@ final class LtIncorrectUnlint implements Lint {
                 invalid = !LtIncorrectUnlint.fitsInt(tail.substring(name.length() + 1));
             } else if (tail.matches(String.format("%s:\\d+-\\d+", quoted))) {
                 final String[] bounds = tail.substring(name.length() + 1).split("-", -1);
-                invalid = !LtIncorrectUnlint.fitsInt(bounds[0])
-                    || !LtIncorrectUnlint.fitsInt(bounds[1]);
+                invalid = LtIncorrectUnlint.invalidRange(
+                    bounds[0], bounds[1]
+                );
             } else {
                 invalid = true;
             }
         }
         return invalid;
+    }
+
+    private static boolean invalidRange(final String from, final String finish) {
+        final boolean result;
+        if (LtIncorrectUnlint.fitsInt(from)
+            && LtIncorrectUnlint.fitsInt(finish)) {
+            result = Integer.parseInt(from) > Integer.parseInt(finish);
+        } else {
+            result = true;
+        }
+        return result;
     }
 
     private static boolean fitsInt(final String value) {
