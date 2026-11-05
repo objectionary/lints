@@ -12,8 +12,8 @@
   <xsl:template match="/">
     <defects>
       <xsl:variable name="top" select="/object/o[1]"/>
-      <xsl:for-each select="//o[@name and not(@name='φ') and matches(@name, '(^|-)test[a-z]*(-|$)', 'i') and not(generate-id() = generate-id($top))]">
-        <xsl:if test="eo:test-name(@name) or ancestor::o[eo:test-name(@name)] or matches($top/@name, '-tests$')">
+      <xsl:for-each select="//o[(@local, @name)[1][not(.='φ') and matches(., '(^|-)test[a-z]*(-|$)', 'i')] and not(generate-id() = generate-id($top))]">
+        <xsl:if test="eo:test-name((@local, @name)[1]) or ancestor::o[eo:test-name((@local, @name)[1])] or matches($top/@name, '-tests$')">
           <xsl:element name="defect">
             <xsl:variable name="line" select="eo:lineno(@line)"/>
             <xsl:attribute name="line">
@@ -28,7 +28,7 @@
               <xsl:text>warning</xsl:text>
             </xsl:attribute>
             <xsl:text>The name of the object </xsl:text>
-            <xsl:value-of select="eo:escape(@name)"/>
+            <xsl:value-of select="eo:escape((@local, @name)[1])"/>
             <xsl:text> must not contain the word 'test'</xsl:text>
           </xsl:element>
         </xsl:if>
