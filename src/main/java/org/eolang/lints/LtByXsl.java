@@ -149,7 +149,7 @@ final class LtByXsl implements Lint {
                         this.rule.value(),
                         Severity.parsed(sever.get()),
                         this.lineno(xml),
-                        xml.text().get(),
+                        xml.text().orElse(""),
                         LtByXsl.experimental(xml)
                     ),
                     xml.attribute("context").text().orElse("")

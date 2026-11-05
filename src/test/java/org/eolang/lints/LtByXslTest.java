@@ -60,6 +60,7 @@ import org.yaml.snakeyaml.Yaml;
  * @since 0.0.1
  * @checkstyle ClassFanOutComplexityCheck (500 lines)
  */
+@SuppressWarnings("PMD.GodClass")
 final class LtByXslTest {
 
     @Test
@@ -139,6 +140,60 @@ final class LtByXslTest {
             "The motive was not found or empty",
             new LtByXsl("comments/comment-too-short").motive().isEmpty(),
             Matchers.equalTo(false)
+        );
+    }
+
+    @Test
+    void handlesDefectWithEmptyText() {
+        MatcherAssert.assertThat(
+            "Expected defect text to be empty string",
+            new LtByXsl(
+                new InputOf(
+                    String.join(
+                        System.lineSeparator(),
+                        "<xsl:stylesheet id='empty-text-defect'",
+                        "  version='2.0'",
+                        "  xmlns:xsl='http://www.w3.org/1999/XSL/Transform'>",
+                        "  <xsl:output method='xml'/>",
+                        "  <xsl:template match='/'>",
+                        "    <defects>",
+                        "      <defect line='1' severity='warning'/>",
+                        "    </defects>",
+                        "  </xsl:template>",
+                        "</xsl:stylesheet>"
+                    )
+                ),
+                new InputOf(""),
+                new FxEmpty()
+            ).defects(new XMLDocument("<object/>")).iterator().next().text(),
+            Matchers.equalTo("")
+        );
+    }
+
+    @Test
+    void handlesDefectWithEmptyTags() {
+        MatcherAssert.assertThat(
+            "Expected defect text to be empty string for empty tag",
+            new LtByXsl(
+                new InputOf(
+                    String.join(
+                        System.lineSeparator(),
+                        "<xsl:stylesheet id='empty-tag-defect'",
+                        "  version='2.0'",
+                        "  xmlns:xsl='http://www.w3.org/1999/XSL/Transform'>",
+                        "  <xsl:output method='xml'/>",
+                        "  <xsl:template match='/'>",
+                        "    <defects>",
+                        "      <defect line='1' severity='warning'></defect>",
+                        "    </defects>",
+                        "  </xsl:template>",
+                        "</xsl:stylesheet>"
+                    )
+                ),
+                new InputOf(""),
+                new FxEmpty()
+            ).defects(new XMLDocument("<object/>")).iterator().next().text(),
+            Matchers.equalTo("")
         );
     }
 
