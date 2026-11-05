@@ -1,0 +1,12 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/misc/wrong-sprintf-arguments.xsl
+defects:
+  - severity: warning
+    line: 2
+input: |
+  [] > app
+    "%%%s".printf > @
+      *

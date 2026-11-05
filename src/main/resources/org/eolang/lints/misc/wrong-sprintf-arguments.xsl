@@ -8,11 +8,11 @@
   <xsl:import href="/org/eolang/funcs/defect-context.xsl"/>
   <xsl:output encoding="UTF-8" method="xml"/>
   <!--
-  One format specifier, matched over the hex bytes of the template:
+  One format specifier, matched at a byte boundary in the hex template:
   a percent, an optional N$ position, the "-" and "0" flags, a width,
   an optional .precision, and one of the five conversion letters
   -->
-  <xsl:variable name="eo:specifier" select="'25((3[0-9])+24)?(2D|30)*(3[0-9])*(2E(3[0-9])+)?(73|64|66|78|62)'"/>
+  <xsl:variable name="eo:specifier" select="'(^|-)25-((3[0-9]-)+24-)?((2D|30)-)*(3[0-9]-)*(2E-(3[0-9]-)+)?(73|64|66|78|62)'"/>
   <!-- Find arguments in tuple -->
   <xsl:template match="o" mode="arguments" as="xs:integer">
     <xsl:choose>
@@ -66,7 +66,7 @@
             The bytes of the template, with a doubled percent taken out,
             since it stands for a literal one and starts no specifier
             -->
-            <xsl:variable name="escaped" select="replace(translate($text, '-', ''), '2525', '')"/>
+            <xsl:variable name="escaped" select="replace($text, '(^|-)25-25', '$1')"/>
             <!-- A specifier is %[N$][flags][width][.precision]conversion, in bytes -->
             <xsl:variable name="declared" select="count(tokenize($escaped, $eo:specifier)) - 1"/>
             <xsl:variable name="used">
@@ -91,7 +91,7 @@
                 </defect>
               </xsl:when>
               <xsl:otherwise>
-                <xsl:if test="$declared!=$used and o[not(@as)][1]/@base = 'Φ.string' and not(matches($escaped, '25(3[0-9])+24'))">
+                <xsl:if test="$declared!=$used and o[not(@as)][1]/@base = 'Φ.string' and not(matches($escaped, '(^|-)25-(3[0-9]-)+24'))">
                   <defect>
                     <xsl:variable name="line" select="eo:lineno(@line)"/>
                     <xsl:attribute name="line">
