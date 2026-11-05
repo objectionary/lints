@@ -27,7 +27,7 @@
   </xsl:function>
   <xsl:template match="/">
     <defects>
-      <xsl:for-each select="//o[@base and @name and not(eo:special(@name)) and eo:compound(@name) and not(eo:idiomatic(@name))]">
+      <xsl:for-each select="//o[@base and (@local, @name)[1][not(eo:special(.)) and eo:compound(.) and not(eo:idiomatic(.))]]">
         <defect>
           <xsl:variable name="line" select="eo:lineno(@line)"/>
           <xsl:attribute name="line">
@@ -40,7 +40,7 @@
           </xsl:if>
           <xsl:attribute name="severity">warning</xsl:attribute>
           <xsl:text>Object name </xsl:text>
-          <xsl:value-of select="eo:escape(@name)"/>
+          <xsl:value-of select="eo:escape((@local, @name)[1])"/>
           <xsl:text> should not be compound unless it's formation</xsl:text>
         </defect>
       </xsl:for-each>
