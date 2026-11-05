@@ -1,0 +1,13 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/comments/comment-not-capitalized.xsl
+defects: 0
+input: |
+  # First comment.
+  #
+  # Second comment.
+
+  [] > bar
+    42 > @
