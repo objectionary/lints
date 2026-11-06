@@ -1,0 +1,10 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/names/compound-name.xsl
+defects: 0
+input: |
+  [x] > app
+    x.plus 1 > @
+    x.times 2 >> is-valid
