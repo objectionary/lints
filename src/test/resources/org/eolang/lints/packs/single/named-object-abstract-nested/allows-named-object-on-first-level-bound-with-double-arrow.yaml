@@ -1,0 +1,13 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/critical/named-object-abstract-nested.xsl
+defects: 0
+xml-reason: "vars-float-up relocates named nested objects to top"
+document: |
+  <object author="tests">
+    <o name="foo" line="1">
+      <o base="Φ.xyz" name="a🌵2-2" local="first" line="2"/>
+    </o>
+  </object>
