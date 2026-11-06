@@ -1,0 +1,15 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/names/unsorted-named-attributes.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=1]
+  - /defects/defect[@line='3']
+  - >-
+    /defects/defect[normalize-space()='Named attribute "a" is out of order
+    inside formation "app"']
+input: |
+  [x] > app
+    x.plus 1 >> b
+    x.mul 2 > a

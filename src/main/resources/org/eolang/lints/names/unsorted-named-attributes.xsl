@@ -12,9 +12,11 @@
   <xsl:output encoding="UTF-8" method="xml"/>
   <xsl:template match="/">
     <defects>
-      <xsl:for-each select="//o[eo:abstract(.) and @name]/o[@name and not(@base = '∅') and not(eo:special(@name)) and not(eo:test-name(@name))]">
-        <xsl:variable name="previous" select="(preceding-sibling::o[@name and not(@base = '∅') and not(eo:special(@name)) and not(eo:test-name(@name))])[last()]"/>
-        <xsl:if test="$previous and @name &lt; $previous/@name">
+      <xsl:for-each select="//o[eo:abstract(.) and (@local, @name)[1]]/o[(@local, @name)[1] and not(@base = '∅') and not(eo:special((@local, @name)[1])) and not(eo:test-name((@local, @name)[1]))]">
+        <xsl:variable name="name" select="(@local, @name)[1]"/>
+        <xsl:variable name="previous" select="(preceding-sibling::o[(@local, @name)[1] and not(@base = '∅') and not(eo:special((@local, @name)[1])) and not(eo:test-name((@local, @name)[1]))])[last()]"/>
+        <xsl:variable name="prev-name" select="($previous/@local, $previous/@name)[1]"/>
+        <xsl:if test="$previous and $name &lt; $prev-name">
           <defect>
             <xsl:variable name="line" select="eo:lineno(@line)"/>
             <xsl:attribute name="line">
@@ -27,9 +29,9 @@
             </xsl:if>
             <xsl:attribute name="severity">warning</xsl:attribute>
             <xsl:text>Named attribute </xsl:text>
-            <xsl:value-of select="eo:escape(@name)"/>
+            <xsl:value-of select="eo:escape($name)"/>
             <xsl:text> is out of order inside formation </xsl:text>
-            <xsl:value-of select="eo:escape(../@name)"/>
+            <xsl:value-of select="eo:escape((../@local, ../@name)[1])"/>
           </defect>
         </xsl:if>
       </xsl:for-each>
