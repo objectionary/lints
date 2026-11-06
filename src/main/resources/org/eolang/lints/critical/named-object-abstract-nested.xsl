@@ -24,7 +24,7 @@
           </xsl:if>
           <xsl:attribute name="severity">critical</xsl:attribute>
           <xsl:text>The </xsl:text>
-          <xsl:value-of select="eo:escape(@name)"/>
+          <xsl:value-of select="eo:escape((@local, @name)[1])"/>
           <xsl:text> object is deeply nested in the abstract object, while named objects are allowed only on the first level of depth in abstract objects</xsl:text>
         </defect>
       </xsl:for-each>
