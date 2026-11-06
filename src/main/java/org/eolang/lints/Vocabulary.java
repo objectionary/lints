@@ -41,6 +41,13 @@ final class Vocabulary {
     private static final Collection<String> MODALS = Collections.singletonList("can");
 
     /**
+     * Tags a word right after a modal may carry to be taken as a verb,
+     * since the model often tags a bare infinitive such as "print" or
+     * "floor" as a noun, while nothing but a verb may follow a modal.
+     */
+    private static final Collection<String> INFINITIVES = Arrays.asList("VB", "NN", "NNS");
+
+    /**
      * Part-Of-Speech tagger.
      */
     private final POSTaggerME tagger;
@@ -84,10 +91,11 @@ final class Vocabulary {
      *
      * <p>The check uses the "It [verb]s" rule: "It generates-report" -> the
      * first word must be tagged {@code VBZ} (verb, 3rd-person singular present).
-     * When the first word is the modal "can", the "It can [verb]" rule applies
-     * instead: "It can add-report" -> the second word must be tagged
-     * {@code VB} (verb, base form), since a modal is never itself conjugated
-     * in the third person.</p>
+     * When the first word is the modal "can", the "You can [verb]" rule applies
+     * instead: "You can add-report" -> the second word must be tagged
+     * {@code VB} (verb, base form), {@code NN} or {@code NNS}, since a modal
+     * is never itself conjugated in the third person, and the model tags
+     * verbs like "format" or "round" right only after "You can".</p>
      *
      * @param name Kebab-case name without any leading {@code +} sigil
      * @return True if the name starts with a verb, plain or after a modal
@@ -98,19 +106,22 @@ final class Vocabulary {
             final String[] words = Arrays.stream(Vocabulary.KEBAB.split(name))
                 .map(s -> s.toLowerCase(Locale.ROOT))
                 .toArray(String[]::new);
-            final String[] tags = this.tagger.tag(
-                Stream.concat(Stream.of("It"), Arrays.stream(words)).toArray(String[]::new)
-            );
             final boolean verb;
             if (words.length > 1 && Vocabulary.MODALS.contains(words[0])) {
-                verb = "VB".equals(tags[2]);
+                verb = Vocabulary.INFINITIVES.contains(this.tags("You", words)[2]);
             } else {
-                verb = "VBZ".equals(tags[1]);
+                verb = "VBZ".equals(this.tags("It", words)[1]);
             }
             return verb;
         } finally {
             this.lock.unlock();
         }
+    }
+
+    private String[] tags(final String subject, final String... words) {
+        return this.tagger.tag(
+            Stream.concat(Stream.of(subject), Arrays.stream(words)).toArray(String[]::new)
+        );
     }
 
     private static POSModel model() throws IOException {
