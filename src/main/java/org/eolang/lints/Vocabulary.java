@@ -14,6 +14,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 import opennlp.tools.postag.POSModel;
+import opennlp.tools.postag.POSTagFormat;
 import opennlp.tools.postag.POSTaggerME;
 import org.cactoos.io.InputStreamOf;
 import org.cactoos.io.ResourceOf;
@@ -65,7 +66,7 @@ final class Vocabulary {
      * @param mdl Part-Of-Speech model
      */
     Vocabulary(final POSModel mdl) {
-        this(new POSTaggerME(mdl));
+        this(new POSTaggerME(mdl, POSTagFormat.PENN));
     }
 
     /**
