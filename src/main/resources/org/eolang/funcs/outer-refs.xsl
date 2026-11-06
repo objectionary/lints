@@ -13,6 +13,15 @@
     <xsl:value-of select="replace($base, '^ξ(\.ρ)+\.', '')"/>
   </xsl:function>
   <!--
+  The number of "ρ" hops in a "ξ.ρ."-based reference. A reference with
+  fewer hops than the formations between it and the checked formation
+  points at one of those inner formations, so it never leaves the checked one.
+  -->
+  <xsl:function name="eo:hops" as="xs:integer">
+    <xsl:param name="base" as="xs:string"/>
+    <xsl:sequence select="count(tokenize(replace($base, '^(ξ(\.ρ)+)\..*$', '$1'), '\.')) - 1"/>
+  </xsl:function>
+  <!--
   The objects a formation reads from the scope that encloses it: every
   "ξ.ρ."-based reference in its body that neither its own voids nor its own
   bound attributes cover. When this is empty, the formation stands on its
@@ -27,7 +36,7 @@
         <xsl:sequence select="concat(@name, '.')"/>
       </xsl:for-each>
     </xsl:variable>
-    <xsl:for-each select="$formation//o[starts-with(@base, 'ξ.ρ.') and not(some $prefix in $allowed satisfies starts-with(eo:base-to-name(@base), $prefix))]">
+    <xsl:for-each select="$formation//o[starts-with(@base, 'ξ.ρ.') and eo:hops(@base) ge count(ancestor::o[not(@base) and exists(. intersect $formation/descendant-or-self::o)]) - 1 and not(some $prefix in $allowed satisfies starts-with(eo:base-to-name(@base), $prefix))]">
       <xsl:variable name="name" select="eo:base-to-name(@base)"/>
       <xsl:if test="not($formation/o[@name = $name])">
         <xsl:sequence select="."/>
