@@ -1,0 +1,11 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/tests/test-word.xsl
+defects: 0
+input: |
+  [] > regular-app
+    [x] > compute
+      x.plus 1 > @
+      x.times 2 >> test-val
