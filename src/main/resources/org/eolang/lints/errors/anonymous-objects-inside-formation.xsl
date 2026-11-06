@@ -25,9 +25,16 @@
           <xsl:attribute name="severity">
             <xsl:text>error</xsl:text>
           </xsl:attribute>
-          <xsl:text>It is prohibited to have formations like </xsl:text>
-          <xsl:value-of select="eo:escape(@name)"/>
-          <xsl:text> that contain anonymous objects inside</xsl:text>
+          <xsl:choose>
+            <xsl:when test="@name">
+              <xsl:text>It is prohibited to have formations like </xsl:text>
+              <xsl:value-of select="eo:escape(@name)"/>
+              <xsl:text> that contain anonymous objects inside</xsl:text>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:text>It is prohibited to have anonymous formations that contain anonymous objects inside</xsl:text>
+            </xsl:otherwise>
+          </xsl:choose>
         </xsl:element>
       </xsl:for-each>
     </defects>
