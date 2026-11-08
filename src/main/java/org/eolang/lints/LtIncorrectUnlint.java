@@ -63,7 +63,13 @@ final class LtIncorrectUnlint implements Lint {
         final String tail = LtIncorrectUnlint.tail(meta);
         final String name = LtIncorrectUnlint.nameOf(tail);
         final String msg;
-        if (this.names.contains(name)) {
+        if (tail.isEmpty()) {
+            msg = String.join(
+                " ",
+                "The \"+unlint\" meta is empty, which is prohibited;",
+                "specify a lint name to suppress"
+            );
+        } else if (this.names.contains(name)) {
             msg = String.format(
                 "Suppressing \"%s\" has an invalid format, use \"%s\", \"%s:N\" or \"%s:N-M\"",
                 tail, name, name, name
@@ -83,7 +89,7 @@ final class LtIncorrectUnlint implements Lint {
     }
 
     private static String tail(final Xnav meta) {
-        return meta.element("tail").text().orElse("unknown");
+        return meta.element("tail").text().orElse("");
     }
 
     private static String nameOf(final String tail) {
