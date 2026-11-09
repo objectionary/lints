@@ -95,6 +95,52 @@ final class LtIncorrectUnlintTest {
         );
     }
 
+    @Test
+    void reportsEmptyUnlintTail() throws IOException {
+        MatcherAssert.assertThat(
+            "An empty unlint tail should be reported as invalid",
+            new LtIncorrectUnlint(new ListOf<>("ascii-only")).defects(
+                LtIncorrectUnlintTest.unlint("")
+            ),
+            Matchers.hasSize(1)
+        );
+    }
+
+    @Test
+    void reportsMissingUnlintTail() throws IOException {
+        MatcherAssert.assertThat(
+            "A missing unlint tail should be reported as invalid",
+            new LtIncorrectUnlint(new ListOf<>("ascii-only")).defects(
+                new XMLDocument(
+                    String.join(
+                        "",
+                        "<object><metas><meta line='1'>",
+                        "<head>unlint</head>",
+                        "</meta></metas></object>"
+                    )
+                )
+            ),
+            Matchers.hasSize(1)
+        );
+    }
+
+    @Test
+    void providesClearMessageForEmptyUnlint() throws IOException {
+        MatcherAssert.assertThat(
+            "The error message must not refer to fake lint name unknown",
+            new LtIncorrectUnlint(new ListOf<>("ascii-only")).defects(
+                LtIncorrectUnlintTest.unlint("")
+            ).iterator().next().text(),
+            Matchers.equalTo(
+                String.join(
+                    " ",
+                    "The \"+unlint\" meta is empty, which is prohibited;",
+                    "specify a lint name to suppress"
+                )
+            )
+        );
+    }
+
     private static XMLDocument unlint(final String selector) {
         return new XMLDocument(
             String.join(

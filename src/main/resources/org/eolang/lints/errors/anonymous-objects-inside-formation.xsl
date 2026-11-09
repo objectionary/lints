@@ -25,10 +25,11 @@
           <xsl:attribute name="severity">
             <xsl:text>error</xsl:text>
           </xsl:attribute>
+          <xsl:variable name="name" select="(@local, @name)[1]"/>
           <xsl:choose>
-            <xsl:when test="@name">
+            <xsl:when test="$name">
               <xsl:text>It is prohibited to have formations like </xsl:text>
-              <xsl:value-of select="eo:escape(@name)"/>
+              <xsl:value-of select="eo:escape($name)"/>
               <xsl:text> that contain anonymous objects inside</xsl:text>
             </xsl:when>
             <xsl:otherwise>

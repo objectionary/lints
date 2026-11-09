@@ -10,7 +10,7 @@
   <xsl:output encoding="UTF-8" method="xml"/>
   <xsl:template match="/">
     <defects>
-      <xsl:for-each select="//o[@name and (@base = concat('ξ.', @name) or starts-with(@base, concat('ξ.', @name, '.')))]">
+      <xsl:for-each select="//o[(@name and (@base = concat('ξ.', @name) or starts-with(@base, concat('ξ.', @name, '.')))) or (@local and (@base = concat('ξ.', @local) or starts-with(@base, concat('ξ.', @local, '.'))))]">
         <xsl:element name="defect">
           <xsl:variable name="line" select="eo:lineno(@line)"/>
           <xsl:attribute name="line">

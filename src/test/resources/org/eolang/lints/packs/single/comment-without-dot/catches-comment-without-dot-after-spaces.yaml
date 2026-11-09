@@ -1,0 +1,13 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/comments/comment-without-dot.xsl
+defects:
+  - severity: warning
+    line: 1
+input: |
+  #   Indented comment without dot
+
+  [] > foo
+    42 > @

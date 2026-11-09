@@ -1,0 +1,20 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/critical/named-object-abstract-nested.xsl
+asserts:
+  - /defects[count(defect[@severity='critical'])=2]
+  - /defects/defect[@line='3' and contains(text(), '"first"')]
+  - /defects/defect[@line='4' and contains(text(), '"second"')]
+  - /defects/defect[not(contains(text(), '🌵'))]
+xml-reason: "vars-float-up relocates named nested objects to top"
+document: |
+  <object author="tests">
+    <o name="foo" line="1">
+      <o base="Φ.xyz" line="2">
+        <o base="Φ.num" name="a🌵2-2" local="first" line="3"/>
+        <o base="Φ.num" name="a🌵2-3" local="second" line="4"/>
+      </o>
+    </o>
+  </object>
