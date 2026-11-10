@@ -1,0 +1,17 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/atoms/not-empty-atom.xsl
+asserts:
+  - /defects[count(defect[@severity='error'])=1]
+  - /defects/defect[contains(., 'baz') and not(contains(., 'can-work'))]
+xml-reason: "atom body rejects non-test attrs at parse time"
+document: |
+  <object author="tests">
+    <o line="1" name="number">
+      <o base="∅" name="λ"/>
+      <o base="Φ.bar" name="baz"/>
+      <o base="Φ.number.eq" name="+can-work"/>
+    </o>
+  </object>
