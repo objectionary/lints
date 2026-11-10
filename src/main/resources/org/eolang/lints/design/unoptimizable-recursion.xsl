@@ -51,15 +51,30 @@
   different kind of lint from this one.
   -->
   <!--
+  The package of the program, from its "+package" meta, or an empty string
+  when it has none.
+  -->
+  <xsl:variable name="package" select="string((/object/metas/meta[head='package']/part[1])[1])" as="xs:string"/>
+  <!--
+  The spellings the parser gives to the plain name of an object: "Phi.<name>"
+  in a program without a package, and "Phi.<package>.<name>" in a program
+  with one, where the parser puts its top-level object into the package.
+  -->
+  <xsl:function name="eo:plain" as="xs:string+">
+    <xsl:param name="name" as="xs:string"/>
+    <xsl:sequence select="concat('Φ.', $name), if ($package = '') then () else concat('Φ.', $package, '.', $name)"/>
+  </xsl:function>
+  <!--
   TRUE when the @base is a self-call of the object with the given name, in
   any of the three forms the parser emits: the plain name resolves to
-  "Phi.<name>", the "^" form to "xi.rho.<name>", and the "$" form to
-  "xi.<name>". A dispatch on the self-call is also a self-call.
+  "Phi.<name>" or "Phi.<package>.<name>", the "^" form to "xi.rho.<name>",
+  and the "$" form to "xi.<name>". A dispatch on the self-call is also a
+  self-call.
   -->
   <xsl:function name="eo:is-self-call" as="xs:boolean">
     <xsl:param name="base" as="xs:string"/>
     <xsl:param name="name" as="xs:string"/>
-    <xsl:sequence select="$base = concat('Φ.', $name) or starts-with($base, concat('Φ.', $name, '.')) or $base = concat('ξ.ρ.', $name) or starts-with($base, concat('ξ.ρ.', $name, '.')) or $base = concat('ξ.', $name) or starts-with($base, concat('ξ.', $name, '.'))"/>
+    <xsl:sequence select="$base = eo:plain($name) or (some $plain in eo:plain($name) satisfies starts-with($base, concat($plain, '.'))) or $base = concat('ξ.ρ.', $name) or starts-with($base, concat('ξ.ρ.', $name, '.')) or $base = concat('ξ.', $name) or starts-with($base, concat('ξ.', $name, '.'))"/>
   </xsl:function>
   <!--
   TRUE when the @base is a dispatch on a self-call, i.e. the self-call is
@@ -68,7 +83,7 @@
   <xsl:function name="eo:is-self-dispatch" as="xs:boolean">
     <xsl:param name="base" as="xs:string"/>
     <xsl:param name="name" as="xs:string"/>
-    <xsl:sequence select="starts-with($base, concat('Φ.', $name, '.')) or starts-with($base, concat('ξ.ρ.', $name, '.')) or starts-with($base, concat('ξ.', $name, '.'))"/>
+    <xsl:sequence select="(some $plain in eo:plain($name) satisfies starts-with($base, concat($plain, '.'))) or starts-with($base, concat('ξ.ρ.', $name, '.')) or starts-with($base, concat('ξ.', $name, '.'))"/>
   </xsl:function>
   <!--
   TRUE when the @base is a self-call in a tail position through the
@@ -85,16 +100,17 @@
   </xsl:function>
   <!--
   TRUE when the @base is a self-call spelled without the receiver: the
-  bare name, which the parser resolves to "Phi.<name>" for a top-level
-  formation or to a same-named attribute reachable from a nested one, or
-  the "$" form, "xi.<name>". "recursion-to-loop.xsl" only ever marks
-  "xi.rho.<name>" with "@loop", so neither spelling is turned into a
-  loop, in a tail position or not.
+  bare name, which the parser resolves to "Phi.<name>" or, in a program
+  with a package, to "Phi.<package>.<name>" for a top-level formation, or
+  to a same-named attribute reachable from a nested one, or the "$" form,
+  "xi.<name>". "recursion-to-loop.xsl" only ever marks "xi.rho.<name>"
+  with "@loop", so neither spelling is turned into a loop, in a tail
+  position or not.
   -->
   <xsl:function name="eo:is-self-direct" as="xs:boolean">
     <xsl:param name="base" as="xs:string"/>
     <xsl:param name="name" as="xs:string"/>
-    <xsl:sequence select="$base = concat('Φ.', $name) or $base = concat('ξ.', $name)"/>
+    <xsl:sequence select="$base = eo:plain($name) or $base = concat('ξ.', $name)"/>
   </xsl:function>
   <!--
   A nested formation that calls itself has its recursion turned into a Java
