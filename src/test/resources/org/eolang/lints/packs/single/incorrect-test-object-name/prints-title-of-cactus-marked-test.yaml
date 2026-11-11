@@ -5,8 +5,8 @@ sheets:
   - /org/eolang/lints/misc/incorrect-test-object-name.xsl
 asserts:
   - /defects[count(defect[@severity='warning'])=2]
-  - /defects/defect[@line='2' and contains(text(), 'object "test_abc" doesn')]
-  - /defects/defect[@line='3' and contains(text(), 'object "throws_when_empty" doesn')]
+  - /defects/defect[@line='2' and contains(., 'object "test_abc" doesn')]
+  - /defects/defect[@line='3' and contains(., 'object "throws_when_empty"')]
 ignore-schema: true
 xml-reason: "pinned eo-parser emits +/-, not p🌵/n🌵 cactus markers"
 document: |
