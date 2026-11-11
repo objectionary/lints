@@ -1,0 +1,18 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/misc/incorrect-test-object-name.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=2]
+  - /defects/defect[@line='2' and contains(text(), 'object "test_abc" doesn')]
+  - /defects/defect[@line='3' and contains(text(), 'object "throws_when_empty" doesn')]
+ignore-schema: true
+xml-reason: "pinned eo-parser emits +/-, not p🌵/n🌵 cactus markers"
+document: |
+  <object author="tests">
+    <o line="1" name="foo">
+      <o line="2" name="p🌵test_abc"/>
+      <o line="3" name="n🌵throws_when_empty"/>
+    </o>
+  </object>

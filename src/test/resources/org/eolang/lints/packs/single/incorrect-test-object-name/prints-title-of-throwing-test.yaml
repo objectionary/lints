@@ -1,0 +1,13 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/misc/incorrect-test-object-name.xsl
+asserts:
+  - /defects[count(defect[@severity='warning' and @line='3'])=1]
+  - /defects/defect[contains(text(), 'object "throws_when_empty" doesn')]
+input: |
+  [] > foo
+
+    [] -> throws_when_empty
+      42 > @
