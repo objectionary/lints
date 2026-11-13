@@ -12,7 +12,11 @@
   <xsl:template match="/">
     <defects>
       <xsl:variable name="top" select="/object/o[1]"/>
-      <xsl:for-each select="//o[(@local, @name)[1][not(.='φ') and matches(., '(^|-)test[a-z]*(-|$)', 'i')] and not(generate-id() = generate-id($top))]">
+      <!--
+      A unit test is named with its marker in front, as in "+test-it" or
+      "p🌵test-it", so the word is looked for in its title instead.
+      -->
+      <xsl:for-each select="//o[(@local, @name)[1][not(.='φ') and matches(eo:test-title(.), '(^|-)test[a-z]*(-|$)', 'i')] and not(generate-id() = generate-id($top))]">
         <xsl:if test="eo:test-name((@local, @name)[1]) or ancestor::o[eo:test-name((@local, @name)[1])] or matches($top/@name, '-tests$')">
           <xsl:element name="defect">
             <xsl:variable name="line" select="eo:lineno(@line)"/>
