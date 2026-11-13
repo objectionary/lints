@@ -7,6 +7,7 @@ package fixtures;
 import com.jcabi.xml.XML;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import org.cactoos.io.InputOf;
 import org.eolang.lints.Fix;
 import org.eolang.lints.FxByXsl;
@@ -62,11 +63,12 @@ public final class FixPack {
      * @throws Exception If parsing or fix application fails
      */
     public String fixed(final Fix fix) throws Exception {
+        final Object input = Objects.requireNonNull(this.pack.get("input"));
         return FixPack.normalize(
             fix.apply(
                 new EoProgram(
-                    String.valueOf(this.pack.get("input").hashCode()),
-                    new InputOf(this.pack.get("input").toString())
+                    String.valueOf(input.hashCode()),
+                    new InputOf(input.toString())
                 ).parse()
             )
         );
@@ -78,17 +80,18 @@ public final class FixPack {
      * @return Normalized XMIR string
      */
     public String expected() {
+        final Object output = Objects.requireNonNull(this.pack.get("output"));
         return FixPack.normalize(
             new EoProgram(
-                String.valueOf(this.pack.get("output").hashCode()),
-                new InputOf(this.pack.get("output").toString())
+                String.valueOf(output.hashCode()),
+                new InputOf(output.toString())
             ).parse()
         );
     }
 
     @SuppressWarnings("unchecked")
     private Fix fix() {
-        return new FxByXsl((List<String>) this.pack.get("sheets"));
+        return new FxByXsl((List<String>) Objects.requireNonNull(this.pack.get("sheets")));
     }
 
     private static String normalize(final XML xmir) {
