@@ -1,0 +1,21 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/design/long-live-object.xsl
+defects:
+  - severity: warning
+    line: 2
+input: |
+  [x] > app
+    if. > sign
+      x.gt 0
+      1
+      -1
+    1 > a
+    2 > b
+    3 > c
+    4 > d
+    5 > e
+    6 > g
+    sign.times x > @
