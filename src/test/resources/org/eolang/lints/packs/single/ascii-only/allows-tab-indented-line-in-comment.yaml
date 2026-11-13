@@ -1,0 +1,7 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+# yamllint disable rule:line-length
+lint: ascii-only
+defects: 0
+input: "# Returns the argument it was given, so that this object:\n#\tfoo 42\n# is the number 42 itself.\n\n[x] > foo\n  x > @\n"
