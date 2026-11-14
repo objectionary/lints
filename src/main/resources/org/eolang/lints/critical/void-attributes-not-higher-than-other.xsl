@@ -26,7 +26,7 @@
       </xsl:if>
       <xsl:attribute name="severity">critical</xsl:attribute>
       <xsl:text>Void attribute </xsl:text>
-      <xsl:value-of select="eo:escape(@name)"/>
+      <xsl:value-of select="eo:escape((@local, @name)[1])"/>
       <xsl:text> must be higher than any other non-void attribute</xsl:text>
     </defect>
   </xsl:template>
