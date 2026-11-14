@@ -13,6 +13,7 @@
   <xsl:template match="/">
     <defects>
       <xsl:for-each select="//o[eo:abstract(.) and @name]">
+        <xsl:variable name="object" select="."/>
         <xsl:variable name="tests" select="o[eo:test-name(@name)]"/>
         <xsl:if test="exists($tests)">
           <!--
@@ -30,9 +31,13 @@
             itself, which the parser resolves into a "ξ.ρ."-prefixed chain
             of self-references, or by chaining a dotted call onto some
             other expression, e.g. "(phrase "x").multi-words", which the
-            parser resolves into a "."-prefixed postfix base.
+            parser resolves into a "."-prefixed postfix base. A test
+            written as an application, e.g. "pos.eq 6 +> can-find-space",
+            is bound in the object itself, so the parser resolves the
+            sibling into a "ξ."-prefixed base without any "ρ", which may
+            even be the base of the test itself.
             -->
-            <xsl:variable name="used" select="$tests//o[@base and matches(@base, '^(ξ(\.ρ)+\.|\.)') and (replace(@base, '^(ξ(\.ρ)+\.|\.)', '') = $attr or starts-with(replace(@base, '^(ξ(\.ρ)+\.|\.)', ''), concat($attr, '.')))]"/>
+            <xsl:variable name="used" select="$tests/descendant-or-self::o[@base and (matches(@base, '^(ξ(\.ρ)+\.|\.)') or (starts-with(@base, 'ξ.') and ancestor::o[eo:abstract(.)][1] is $object)) and (replace(@base, '^(ξ(\.ρ)*\.|\.)', '') = $attr or starts-with(replace(@base, '^(ξ(\.ρ)*\.|\.)', ''), concat($attr, '.')))]"/>
             <xsl:if test="empty($used)">
               <xsl:element name="defect">
                 <xsl:variable name="line" select="eo:lineno(@line)"/>
