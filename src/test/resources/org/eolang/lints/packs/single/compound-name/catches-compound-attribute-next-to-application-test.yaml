@@ -1,0 +1,16 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/names/compound-name.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=1]
+  - /defects/defect[@line='3']
+  - /defects/defect[contains(., 'space-pos')]
+  - /defects[not(defect[contains(., 'can-find-space')])]
+input: |
+  [] > phrase
+    "Object Thinking" > text
+    text.index-of " " > space-pos
+
+    space-pos.eq 6 +> can-find-space
