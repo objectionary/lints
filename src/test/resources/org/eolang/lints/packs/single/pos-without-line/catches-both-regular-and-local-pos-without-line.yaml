@@ -1,0 +1,19 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+# yamllint disable rule:line-length
+sheets:
+  - /org/eolang/lints/critical/pos-without-line.xsl
+asserts:
+  - /defects[count(defect[@severity='critical'])=2]
+  - /defects/defect[1][normalize-space()='Object "first" have the "@pos" attribute, but the "@line" attribute is absent']
+  - /defects/defect[2][normalize-space()='Object "second" have the "@pos" attribute, but the "@line" attribute is absent']
+  - /defects[count(defect[contains(text(), '🌵')])=0]
+xml-reason: "@pos without @line is unreachable via valid parse"
+document: |
+  <object author="tests">
+    <o line="1" name="app">
+      <o pos="1" name="first"/>
+      <o pos="4" local="second" name="a🌵2-4"/>
+    </o>
+  </object>
