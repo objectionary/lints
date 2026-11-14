@@ -1,0 +1,54 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/design/too-deep-object.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=4]
+  - /defects/defect[@line='35' and contains(text(), '"number" is nested')]
+  - /defects/defect[@line='38' and contains(text(), '"number" is nested')]
+  - /defects/defect[@line='39' and contains(text(), '"string" is nested')]
+  - /defects/defect[@line='40' and contains(text(), '"string" is nested')]
+  - /defects/defect[@line='38' and contains(text(), '14 levels')]
+  - /defects[not(defect[contains(text(), '""')])]
+input: |
+  # Returns the English name of the month by its number.
+
+  [n] > month-name
+    if. > @
+      n.eq 1
+      "January"
+      if.
+        n.eq 2
+        "February"
+        if.
+          n.eq 3
+          "March"
+          if.
+            n.eq 4
+            "April"
+            if.
+              n.eq 5
+              "May"
+              if.
+                n.eq 6
+                "June"
+                if.
+                  n.eq 7
+                  "July"
+                  if.
+                    n.eq 8
+                    "August"
+                    if.
+                      n.eq 9
+                      "September"
+                      if.
+                        n.eq 10
+                        "October"
+                        if.
+                          n.eq 11
+                          "November"
+                          if.
+                            n.eq 12
+                            "December"
+                            "Unknown"
