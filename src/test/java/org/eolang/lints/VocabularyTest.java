@@ -67,7 +67,14 @@ final class VocabularyTest {
             "please-reboot",
             "hope-it-works",
             "can",
-            "can-42-things"
+            "can-42-things",
+            "can-and-two-negatives",
+            "can-upper-case-text",
+            "can-the-thing",
+            "can-in-place",
+            "can-very-fast",
+            "can-to-do",
+            "can-it-work"
         }
     )
     void detectsNonVerbName(final String name) throws IOException {
@@ -106,7 +113,13 @@ final class VocabularyTest {
             "is-totally-broken",
             "is-almost-correct",
             "can-add-report",
-            "can-read-bytes"
+            "can-read-bytes",
+            "can-format-the-error-message-of-negative-places",
+            "can-print-a-single-character",
+            "can-scan-a-complex-integer",
+            "can-floor-a-negative-fraction",
+            "can-round-to-the-last-place",
+            "can-map-values"
         }
     )
     void recognizesVerbName(final String name) throws IOException {
