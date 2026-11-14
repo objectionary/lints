@@ -28,7 +28,7 @@
       </xsl:if>
       <xsl:attribute name="severity">critical</xsl:attribute>
       <xsl:text>Objects with parent @base equal to "Φ.bytes" must contain data, while </xsl:text>
-      <xsl:value-of select="eo:escape($parent/@name)"/>
+      <xsl:value-of select="eo:escape(($parent/@local, $parent/@name)[1])"/>
       <xsl:text> object does not</xsl:text>
     </defect>
   </xsl:template>
