@@ -1,0 +1,10 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/misc/roll-bases.xsl
+defects: 0
+document: |
+  <object author="tests">
+    <o base="Φ.x.foo"/>
+  </object>
