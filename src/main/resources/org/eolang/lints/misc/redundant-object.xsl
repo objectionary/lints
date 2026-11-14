@@ -32,7 +32,7 @@
               <xsl:text>warning</xsl:text>
             </xsl:attribute>
             <xsl:text>The object </xsl:text>
-            <xsl:value-of select="eo:escape(@name)"/>
+            <xsl:value-of select="eo:escape((@local, @name)[1])"/>
             <xsl:text> is redundant and may be inlined</xsl:text>
           </xsl:element>
         </xsl:if>
