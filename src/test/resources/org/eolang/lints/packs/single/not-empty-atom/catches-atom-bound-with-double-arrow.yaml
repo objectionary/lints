@@ -1,0 +1,18 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+# yamllint disable rule:line-length
+sheets:
+  - /org/eolang/lints/atoms/not-empty-atom.xsl
+asserts:
+  - /defects[count(defect[@severity='error'])=1]
+  - "/defects/defect[1][normalize-space()='The atom \"number\" may not have any attributes, which however exist: \"baz\"']"
+  - /defects/defect[not(contains(text(), '🌵'))]
+xml-reason: "atom body rejects non-test attrs at parse time"
+document: |
+  <object author="tests">
+    <o line="1" local="number" name="a🌵1-0">
+      <o base="∅" name="λ"/>
+      <o base="Φ.bar" local="baz" name="a🌵2-2"/>
+    </o>
+  </object>
