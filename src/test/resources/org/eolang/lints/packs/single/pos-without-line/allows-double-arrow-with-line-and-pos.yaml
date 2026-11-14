@@ -1,0 +1,10 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/critical/pos-without-line.xsl
+asserts:
+  - /defects[count(defect)=0]
+input: |
+  [] > foo
+    1 >> bar
