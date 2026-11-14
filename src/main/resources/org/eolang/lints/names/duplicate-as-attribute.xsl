@@ -17,7 +17,7 @@
       -->
       <xsl:for-each select="//o[o[@as][2]]">
         <xsl:variable name="parent" select="."/>
-        <xsl:variable name="oname" select="@name"/>
+        <xsl:variable name="oname" select="(@local, @name)[1]"/>
         <xsl:variable name="line" select="eo:lineno(@line)"/>
         <xsl:for-each-group select="o[@as]" group-by="string(@as)">
           <xsl:if test="count(current-group()) &gt; 1">
