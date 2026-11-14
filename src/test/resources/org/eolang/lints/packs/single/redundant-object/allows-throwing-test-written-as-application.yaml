@@ -1,0 +1,13 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/misc/redundant-object.xsl
+defects: 0
+input: |
+  [] > phrase
+    "Object Thinking" > text
+
+    text.length.eq 15 +> can-count-letters
+
+    text.slice 20 1 -> fails-on-slice-past-end
