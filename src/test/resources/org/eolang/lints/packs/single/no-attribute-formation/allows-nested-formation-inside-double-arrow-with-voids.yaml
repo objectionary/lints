@@ -1,0 +1,11 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/design/no-attribute-formation.xsl
+asserts:
+  - /defects[count(defect)=0]
+input: |
+  [x] >> outer
+    [] >> inner
+      ^.x > @
