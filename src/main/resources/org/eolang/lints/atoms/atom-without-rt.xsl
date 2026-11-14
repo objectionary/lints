@@ -27,7 +27,7 @@
               <xsl:text>error</xsl:text>
             </xsl:attribute>
             <xsl:text>The </xsl:text>
-            <xsl:value-of select="eo:escape(@name)"/>
+            <xsl:value-of select="eo:escape((@local, @name)[1])"/>
             <xsl:text> atom is defined without the +rt meta, which doesn't make any sense</xsl:text>
           </xsl:element>
         </xsl:for-each>
