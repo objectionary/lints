@@ -28,7 +28,7 @@
                 <xsl:text>warning</xsl:text>
               </xsl:attribute>
               <xsl:text>The object </xsl:text>
-              <xsl:value-of select="eo:escape(@name)"/>
+              <xsl:value-of select="eo:escape((@local, @name)[1])"/>
               <xsl:text> has more than </xsl:text>
               <xsl:value-of select="$max"/>
               <xsl:text> void attributes, it's too many</xsl:text>
