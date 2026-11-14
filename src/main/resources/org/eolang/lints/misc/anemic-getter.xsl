@@ -35,7 +35,7 @@
             </xsl:when>
             <!-- a sibling attribute of the same formation -->
             <xsl:when test="matches(@base, '^ξ\.[^.]+$') and ../o[@name=$ref]">
-              <xsl:value-of select="$ref"/>
+              <xsl:value-of select="(../o[@name=$ref]/@local, $ref)[1]"/>
             </xsl:when>
           </xsl:choose>
         </xsl:variable>
@@ -52,7 +52,7 @@
             </xsl:if>
             <xsl:attribute name="severity">warning</xsl:attribute>
             <xsl:text>The object </xsl:text>
-            <xsl:value-of select="eo:escape(@name)"/>
+            <xsl:value-of select="eo:escape((@local, @name)[1])"/>
             <xsl:text> is a redundant getter, it just renames </xsl:text>
             <xsl:value-of select="eo:escape(string($target))"/>
             <xsl:text> without adding anything, use </xsl:text>
