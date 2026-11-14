@@ -26,13 +26,13 @@
             <xsl:text>error</xsl:text>
           </xsl:attribute>
           <xsl:text>Atom </xsl:text>
-          <xsl:value-of select="eo:escape(@name)"/>
+          <xsl:value-of select="eo:escape((@local, @name)[1])"/>
           <xsl:text> may not have any attributes, even if they are atoms, which however exist: </xsl:text>
           <xsl:for-each select="o[eo:atom(.)]">
             <xsl:if test="position() &gt; 1">
               <xsl:text>, </xsl:text>
             </xsl:if>
-            <xsl:value-of select="eo:escape(@name)"/>
+            <xsl:value-of select="eo:escape((@local, @name)[1])"/>
           </xsl:for-each>
         </xsl:element>
       </xsl:for-each>
