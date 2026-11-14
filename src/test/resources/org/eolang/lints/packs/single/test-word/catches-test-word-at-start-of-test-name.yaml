@@ -1,0 +1,14 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/tests/test-word.xsl
+defects:
+  - severity: warning
+    line: 4
+input: |
+  [] > sum
+    42 > @
+
+    [] +> test-adds-two-numbers
+      true > @
