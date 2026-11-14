@@ -1,0 +1,19 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+# yamllint disable rule:line-length
+sheets:
+  - /org/eolang/lints/atoms/not-empty-atom.xsl
+asserts:
+  - /defects[count(defect)=0]
+xml-reason: "the parser forbids auto-named atoms with >>, so @local on an atom with an application test can only reach the linter via transformed or hand-written XMIR"
+document: |
+  <object author="tests">
+    <o line="1" local="foo" name="a🌵1-0">
+      <o base="∅" name="λ"/>
+      <o base="Φ.foo.eq" line="3" local="p🌵can-read-fox" name="a🌵3-2">
+        <o base="Φ.foo" line="4"/>
+        <o base="Φ.string" line="5"/>
+      </o>
+    </o>
+  </object>
