@@ -1,0 +1,15 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/design/long-live-object.xsl
+defects: 0
+input: |
+  [] > app
+    foo 42 > cross
+    1 > crown
+    2 > deep
+    3 > edge
+    4 > fork
+    5 > gate
+    cross.plus crown > @
