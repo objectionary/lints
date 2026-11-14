@@ -31,7 +31,7 @@
               </xsl:attribute>
               <xsl:attribute name="severity">warning</xsl:attribute>
               <xsl:text>The object </xsl:text>
-              <xsl:value-of select="eo:escape($name)"/>
+              <xsl:value-of select="eo:escape((@local, $name)[1])"/>
               <xsl:text> is declared here, but is not used until line </xsl:text>
               <xsl:value-of select="$last"/>
               <xsl:text>, </xsl:text>
