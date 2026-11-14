@@ -4,8 +4,12 @@
  */
 package org.eolang.lints;
 
+import com.jcabi.xml.XMLDocument;
 import fixtures.EoProgram;
+import org.cactoos.io.InputOf;
 import org.cactoos.list.ListOf;
+import org.cactoos.map.MapEntry;
+import org.cactoos.map.MapOf;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Tag;
@@ -50,6 +54,45 @@ final class LtReservedNameTest {
             Matchers.equalTo(
                 "Object name \"stdout\" is already reserved by object in the \"stdout.eo\""
             )
+        );
+    }
+
+    @Test
+    void catchesReservedLocalNameBoundWithDoubleArrow() throws Exception {
+        MatcherAssert.assertThat(
+            "Local name bound with >> must be checked against reserved names",
+            new ListOf<>(
+                new LtReservedName(
+                    new MapOf<>(new MapEntry<>("true", "true.eo"))
+                ).defects(
+                    new EoProgram(
+                        "reserved-double-arrow",
+                        new InputOf(
+                            String.join(
+                                System.lineSeparator(),
+                                "[] > qqq",
+                                "  42 >> true"
+                            )
+                        )
+                    ).parse()
+                )
+            ).get(0).text(),
+            Matchers.equalTo(
+                "Object name \"true\" is already reserved by object in the \"true.eo\""
+            )
+        );
+    }
+
+    @Test
+    void ignoresEmptyNameAttribute() throws Exception {
+        MatcherAssert.assertThat(
+            "Empty @name attribute must not fail with NoSuchElementException",
+            new LtReservedName(
+                new MapOf<>(new MapEntry<>("true", "true.eo"))
+            ).defects(
+                new XMLDocument("<object><o line=\"1\" name=\"\"/></object>")
+            ),
+            Matchers.empty()
         );
     }
 }
