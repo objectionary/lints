@@ -8,6 +8,7 @@
   <xsl:import href="/org/eolang/funcs/lineno.xsl"/>
   <xsl:import href="/org/eolang/funcs/escape.xsl"/>
   <xsl:import href="/org/eolang/funcs/defect-context.xsl"/>
+  <xsl:import href="/org/eolang/funcs/test-name.xsl"/>
   <xsl:output encoding="UTF-8" method="xml"/>
   <!--
   EO has no loops or "goto", so the only decision points a formation can
@@ -34,9 +35,16 @@
     <xsl:sequence select="$o/ancestor::o[eo:abstract(.)][1]"/>
   </xsl:function>
   <xsl:variable name="eo:max" as="xs:integer" select="10"/>
+  <!--
+  A cactus in a name marks one the parser made up, such as the name of an
+  object bound with ">>", so such formations are skipped. The parser puts
+  a cactus into the marker of a unit test too, as in "p🌵can-do-it", but a
+  test is a formation the programmer wrote and named, so it is measured
+  like any other and reported by its title.
+  -->
   <xsl:template match="/">
     <defects>
-      <xsl:for-each select="//o[eo:abstract(.) and @name and not(contains(@name, '🌵')) and o[@name='φ']]">
+      <xsl:for-each select="//o[eo:abstract(.) and @name and (eo:test-name(@name) or not(contains(@name, '🌵'))) and o[@name='φ']]">
         <xsl:variable name="this" select="."/>
         <xsl:variable name="decisions" select=".//o[@base and eo:decision(string(@base)) and generate-id(eo:owner(.)) = generate-id($this)]"/>
         <xsl:variable name="complexity" select="count($decisions) + 1"/>
@@ -58,7 +66,7 @@
               <xsl:text>true</xsl:text>
             </xsl:attribute>
             <xsl:text>The object </xsl:text>
-            <xsl:value-of select="eo:escape(@name)"/>
+            <xsl:value-of select="eo:escape(eo:test-title(@name))"/>
             <xsl:text> has a cyclomatic complexity of </xsl:text>
             <xsl:value-of select="$complexity"/>
             <xsl:text>, while the maximum is </xsl:text>
