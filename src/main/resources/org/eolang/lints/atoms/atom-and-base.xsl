@@ -26,7 +26,7 @@
             <xsl:text>critical</xsl:text>
           </xsl:attribute>
           <xsl:text>The atom </xsl:text>
-          <xsl:value-of select="eo:escape(@name)"/>
+          <xsl:value-of select="eo:escape((@local, @name)[1])"/>
           <xsl:text> may not have the "@base" attribute, which however exists with </xsl:text>
           <xsl:value-of select="eo:escape(@base)"/>
         </xsl:element>
