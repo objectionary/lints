@@ -12,7 +12,7 @@
   <xsl:output encoding="UTF-8" method="xml"/>
   <xsl:template match="/">
     <defects>
-      <xsl:for-each select="//o[eo:abstract(.) and @name and not(ancestor::o[eo:abstract(.) and @name and o[@base='∅']]) and not(@name = 'λ' and parent::o[eo:atom(.)]) and not(parent::o[@base='Φ.bytes']) and not(o[@base='∅']) and not(ancestor-or-self::o[eo:test-name(@name)])]">
+      <xsl:for-each select="//o[eo:abstract(.) and @name and not(ancestor::o[eo:abstract(.) and (@local, @name)[1] and o[@base='∅']]) and not(@name = 'λ' and parent::o[eo:atom(.)]) and not(parent::o[@base='Φ.bytes']) and not(o[@base='∅']) and not(ancestor-or-self::o[eo:test-name((@local, @name)[1])])]">
         <defect>
           <xsl:variable name="line" select="eo:lineno(@line)"/>
           <xsl:attribute name="line">
@@ -26,7 +26,7 @@
           <xsl:attribute name="severity">warning</xsl:attribute>
           <xsl:attribute name="experimental">true</xsl:attribute>
           <xsl:text>The formation </xsl:text>
-          <xsl:value-of select="eo:escape(@name)"/>
+          <xsl:value-of select="eo:escape((@local, @name)[1])"/>
           <xsl:text> does not have any void attributes</xsl:text>
         </defect>
       </xsl:for-each>
