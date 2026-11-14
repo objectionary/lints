@@ -1,0 +1,15 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+# yamllint disable rule:line-length
+sheets:
+  - /org/eolang/lints/errors/direct-phi.xsl
+asserts:
+  - /defects[count(defect[@severity='error' and @experimental='true'])=2]
+  - /defects/defect[1][normalize-space()='The object "regular" uses "@" attribute directly, while it is prohibited']
+  - /defects/defect[2][normalize-space()='The object "arrow" uses "@" attribute directly, while it is prohibited']
+  - /defects[count(defect[contains(text(), '🌵')])=0]
+input: |
+  [] > foo
+    x.@ > regular
+    y.@ >> arrow
