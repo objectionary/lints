@@ -1,0 +1,36 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/design/cyclomatic-complexity.xsl
+asserts:
+  - /defects[count(defect[@severity='warning' and @line='4'])=1]
+  - /defects/defect[contains(., 'object "can-tell-negative-numbers" has')]
+input: |
+  [x] > neg
+    x.lt 0 > @
+
+    [] +> can-tell-negative-numbers
+      first.and again > @
+      and. > first
+        and.
+          and.
+            and.
+              and.
+                neg -1
+                neg -2
+              neg -3
+            neg -4
+          neg -5
+        neg -6
+      and. > again
+        and.
+          and.
+            and.
+              and.
+                neg -7
+                neg -8
+              neg -9
+            neg -10
+          neg -11
+        neg -12
