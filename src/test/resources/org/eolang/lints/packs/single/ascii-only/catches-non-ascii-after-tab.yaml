@@ -1,0 +1,8 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+lint: ascii-only
+asserts:
+  - /defects[count(defect[@severity='warning'])=1]
+  - /defects/defect[contains(., 'while "П" is used')]
+input: "#\tПривет.\n\n[x] > foo\n  x > @\n"

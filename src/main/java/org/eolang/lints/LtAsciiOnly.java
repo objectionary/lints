@@ -38,7 +38,7 @@ final class LtAsciiOnly implements Lint {
                 continue;
             }
             final OptionalInt abusive = text.codePoints()
-                .filter(chr -> (chr < 32 && chr != '\n') || chr > 127)
+                .filter(chr -> (chr < 32 && chr != '\n' && chr != '\t') || chr > 127)
                 .findFirst();
             if (!abusive.isPresent()) {
                 continue;

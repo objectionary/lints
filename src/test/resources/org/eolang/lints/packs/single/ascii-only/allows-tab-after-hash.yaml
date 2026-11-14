@@ -1,0 +1,6 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+lint: ascii-only
+defects: 0
+input: "#\tReturns the argument it was given.\n\n[x] > foo\n  x > @\n"
