@@ -14,7 +14,8 @@
       <xsl:variable name="top" select="/object/o[1]"/>
       <!--
       A unit test is named with its marker in front, as in "+test-it" or
-      "p🌵test-it", so the word is looked for in its title instead.
+      "p🌵test-it", so the word is looked for in its title instead, and
+      the defect names the test by that title too.
       -->
       <xsl:for-each select="//o[(@local, @name)[1][not(.='φ') and matches(eo:test-title(.), '(^|-)test[a-z]*(-|$)', 'i')] and not(generate-id() = generate-id($top))]">
         <xsl:if test="eo:test-name((@local, @name)[1]) or ancestor::o[eo:test-name((@local, @name)[1])] or matches($top/@name, '-tests$')">
@@ -32,7 +33,7 @@
               <xsl:text>warning</xsl:text>
             </xsl:attribute>
             <xsl:text>The name of the object </xsl:text>
-            <xsl:value-of select="eo:escape((@local, @name)[1])"/>
+            <xsl:value-of select="eo:escape(eo:test-title((@local, @name)[1]))"/>
             <xsl:text> must not contain the word 'test'</xsl:text>
           </xsl:element>
         </xsl:if>
