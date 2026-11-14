@@ -1,0 +1,21 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+# yamllint disable rule:line-length
+sheets:
+  - /org/eolang/lints/atoms/atom-without-rt.xsl
+asserts:
+  - /defects[count(defect)=0]
+xml-reason: "the parser forbids auto-named atoms with >>, so @local on an atom can only reach the linter via transformed or hand-written XMIR"
+document: |
+  <object author="tests">
+    <metas>
+      <meta line="1">
+        <head>rt</head>
+        <tail>jvm org.eolang:eo-runtime:0.0.0</tail>
+      </meta>
+    </metas>
+    <o line="3" local="eq" name="a🌵3-0">
+      <o name="λ"/>
+    </o>
+  </object>

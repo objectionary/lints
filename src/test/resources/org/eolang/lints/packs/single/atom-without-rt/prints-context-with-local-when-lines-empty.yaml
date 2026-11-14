@@ -1,0 +1,17 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+# yamllint disable rule:line-length
+sheets:
+  - /org/eolang/lints/atoms/atom-without-rt.xsl
+asserts:
+  - /defects[count(defect[@context and @severity='error'])=1]
+  - /defects/defect[1][normalize-space()='The "eq" atom is defined without the +rt meta, which doesn''t make any sense']
+  - /defects[not(defect[contains(text(), '🌵')])]
+xml-reason: "the parser forbids auto-named atoms with >>, so @local on an atom without +rt can only reach the linter via transformed or hand-written XMIR"
+document: |
+  <object author="tests">
+    <o local="eq" name="a🌵1-0">
+      <o name="λ"/>
+    </o>
+  </object>
