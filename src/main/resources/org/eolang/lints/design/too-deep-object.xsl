@@ -33,7 +33,8 @@
           </xsl:if>
           <xsl:attribute name="severity">warning</xsl:attribute>
           <xsl:text>The object </xsl:text>
-          <xsl:value-of select="eo:escape(if (string(@name) != '') then @name else tokenize(@base, '\.')[last()])"/>
+          <xsl:variable name="tail" select="tokenize(@base, '\.')[last()]"/>
+          <xsl:value-of select="eo:escape((@local, @name, ancestor::o/o[@name=$tail]/@local, $tail)[string(.) != ''][1])"/>
           <xsl:text> is nested too deep: </xsl:text>
           <xsl:value-of select="eo:depth(.)"/>
           <xsl:text> levels of nesting, while the maximum is 12</xsl:text>
