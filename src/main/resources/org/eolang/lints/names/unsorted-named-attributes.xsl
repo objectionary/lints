@@ -31,9 +31,14 @@
   </xsl:function>
   <xsl:template match="/">
     <defects>
-      <xsl:for-each select="//o[eo:abstract(.) and (@local, @name)[1]]/o[(@local, @name)[1] and not(@base = '∅') and not(eo:special((@local, @name)[1])) and not(eo:test-name((@local, @name)[1])) and not(eo:lifted(.))]">
+      <!--
+      A pipe application, such as "| x > name", carries an empty "@pipe" and
+      applies the attribute written right above it, so it can never move
+      away from there and takes no part in the order of the attributes.
+      -->
+      <xsl:for-each select="//o[eo:abstract(.) and (@local, @name)[1]]/o[(@local, @name)[1] and not(@base = '∅') and not(@pipe) and not(eo:special((@local, @name)[1])) and not(eo:test-name((@local, @name)[1])) and not(eo:lifted(.))]">
         <xsl:variable name="name" select="(@local, @name)[1]"/>
-        <xsl:variable name="previous" select="(preceding-sibling::o[(@local, @name)[1] and not(@base = '∅') and not(eo:special((@local, @name)[1])) and not(eo:test-name((@local, @name)[1])) and not(eo:lifted(.))])[last()]"/>
+        <xsl:variable name="previous" select="(preceding-sibling::o[(@local, @name)[1] and not(@base = '∅') and not(@pipe) and not(eo:special((@local, @name)[1])) and not(eo:test-name((@local, @name)[1])) and not(eo:lifted(.))])[last()]"/>
         <xsl:variable name="prev-name" select="($previous/@local, $previous/@name)[1]"/>
         <xsl:if test="$previous and $name &lt; $prev-name">
           <defect>

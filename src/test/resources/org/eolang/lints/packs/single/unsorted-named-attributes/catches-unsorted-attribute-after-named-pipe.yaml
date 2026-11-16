@@ -1,0 +1,18 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/names/unsorted-named-attributes.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=1]
+  - /defects/defect[@line='6']
+  - >-
+    /defects/defect[normalize-space()='Named attribute "fee" is out of order
+    inside formation "checkout"']
+input: |
+  [price] > checkout
+    gross.plus fee > @
+    [amount] > taxed
+      amount.times 1.2 > @
+    | price > gross
+    5 > fee
