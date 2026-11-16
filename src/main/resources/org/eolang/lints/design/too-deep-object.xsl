@@ -18,9 +18,19 @@
     <xsl:param name="o" as="element()"/>
     <xsl:sequence select="count($o/ancestor::o[not(@base='Φ.tuple') and not(@base='Φ.bytes') and not(@base='Φ.number') and not(@base='Φ.string')])"/>
   </xsl:function>
+  <!--
+  TRUE when the node is a part of a literal rather than an object of the
+  source: the data inside a "Φ.bytes", or the "Φ.bytes" that holds the data
+  of a "Φ.number" or a "Φ.string". Since the wrappers do not count, such a
+  node is as deep as its literal, so the literal is reported instead of it.
+  -->
+  <xsl:function name="eo:literal-part" as="xs:boolean">
+    <xsl:param name="o" as="element()"/>
+    <xsl:sequence select="(empty($o/@base) and $o/parent::o/@base = 'Φ.bytes') or ($o/@base = 'Φ.bytes' and $o/parent::o/@base = ('Φ.number', 'Φ.string'))"/>
+  </xsl:function>
   <xsl:template match="/">
     <defects>
-      <xsl:for-each select="//o[eo:depth(.) &gt; 12 and not(.//o[eo:depth(.) &gt; 12])]">
+      <xsl:for-each select="//o[not(eo:literal-part(.)) and eo:depth(.) &gt; 12 and not(.//o[not(eo:literal-part(.)) and eo:depth(.) &gt; 12])]">
         <defect>
           <xsl:variable name="line" select="eo:lineno(@line)"/>
           <xsl:attribute name="line">

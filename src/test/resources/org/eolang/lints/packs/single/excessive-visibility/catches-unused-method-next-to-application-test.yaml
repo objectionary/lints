@@ -1,0 +1,16 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/design/excessive-visibility.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=1]
+  - /defects/defect[@line='4']
+  - /defects/defect[contains(text(), 'size')]
+input: |
+  [] > phrase
+    "Object Thinking" > text
+    text.index-of " " > pos
+    text.length > size
+
+    pos.eq 6 +> can-find-space

@@ -26,7 +26,7 @@
             </xsl:if>
             <xsl:attribute name="severity">warning</xsl:attribute>
             <xsl:text>The name of the object </xsl:text>
-            <xsl:value-of select="eo:escape(@name)"/>
+            <xsl:value-of select="eo:escape(eo:test-title(@name))"/>
             <xsl:text> doesn't match </xsl:text>
             <xsl:value-of select="eo:escape($regexp)"/>
           </defect>
