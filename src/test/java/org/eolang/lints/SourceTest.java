@@ -366,7 +366,7 @@ final class SourceTest {
         MatcherAssert.assertThat(
             "All benchmark sources must produce at least one defect",
             result.keySet().stream().allMatch(
-                defects -> !defects.get(defects.keySet().iterator().next()).isEmpty()
+                defects -> !defects.values().iterator().next().isEmpty()
             ),
             Matchers.equalTo(true)
         );
