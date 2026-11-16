@@ -9,7 +9,14 @@
   <xsl:import href="/org/eolang/funcs/defect-context.xsl"/>
   <xsl:import href="/org/eolang/funcs/test-name.xsl"/>
   <xsl:output encoding="UTF-8" method="xml"/>
-  <xsl:key name="referenced-by-name" match="o[@base]" use="if (matches(@base, '^ξ(?:\.ρ)*\.')) then tokenize(replace(@base, '^ξ(?:\.ρ)*\.', ''), '\.')[1] else if (matches(@base, '^Φ\.[^.]+\.')) then tokenize(@base, '\.')[3] else ''"/>
+  <!--
+  A reference through the name of the object, e.g. "os.is-linux", is
+  resolved by the parser into the absolute name of the object, the one it
+  keeps in "@loc", followed by the attribute: "Φ.os.is-linux", or
+  "Φ.com.example.os.is-linux" in a program with a package.
+  -->
+  <xsl:variable name="loc" select="/object/o[1]/@loc"/>
+  <xsl:key name="referenced-by-name" match="o[@base]" use="if (matches(@base, '^ξ(?:\.ρ)*\.')) then tokenize(replace(@base, '^ξ(?:\.ρ)*\.', ''), '\.')[1] else if (exists($loc) and starts-with(@base, concat($loc, '.'))) then tokenize(substring-after(@base, concat($loc, '.')), '\.')[1] else if (matches(@base, '^Φ\.[^.]+\.')) then tokenize(@base, '\.')[3] else ''"/>
   <xsl:template match="/">
     <defects>
       <xsl:variable name="top" select="/object/o/generate-id()"/>
