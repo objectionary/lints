@@ -1,0 +1,21 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/names/unsorted-named-attributes.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=1]
+  - /defects/defect[@line='9']
+  - >-
+    /defects/defect[normalize-space()='Named attribute "limit" is out of order
+    inside formation "scaled"']
+input: |
+  [x] > scaled
+    ratio.times > @
+      if. > [n] >> capped
+        n.gt ^.limit
+        ^.limit
+        n
+      | x
+    0.5 > ratio
+    100 > limit
