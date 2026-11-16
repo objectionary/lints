@@ -7,12 +7,18 @@
   <xsl:import href="/org/eolang/funcs/lineno.xsl"/>
   <xsl:import href="/org/eolang/funcs/escape.xsl"/>
   <xsl:import href="/org/eolang/funcs/defect-context.xsl"/>
+  <xsl:import href="/org/eolang/funcs/test-name.xsl"/>
   <xsl:output encoding="UTF-8" method="xml"/>
   <xsl:key name="referenced-by-name" match="o[@base]" use="if (matches(@base, '^ξ(?:\.ρ)*\.')) then tokenize(replace(@base, '^ξ(?:\.ρ)*\.', ''), '\.')[1] else if (matches(@base, '^Φ\.[^.]+\.')) then tokenize(@base, '\.')[3] else ''"/>
   <xsl:template match="/">
     <defects>
       <xsl:variable name="top" select="/object/o/generate-id()"/>
-      <xsl:for-each select="//o[generate-id() != $top and @name and @name != 'φ' and @base and @base != '∅' and not(@base='ξ' and @name='xi🌵')]">
+      <!--
+      A unit test written as an application, such as "pos.eq 6 +> works",
+      carries a base just like an ordinary named application, but nothing
+      ever refers to a test by its name, so it may not be inlined anywhere.
+      -->
+      <xsl:for-each select="//o[generate-id() != $top and @name and @name != 'φ' and @base and @base != '∅' and not(@base='ξ' and @name='xi🌵') and not(eo:test-name(@name))]">
         <xsl:variable name="in-recursive" select="some $r in key('referenced-by-name', @name), $f in $r/ancestor::o[@name and not(@base)] satisfies exists(key('referenced-by-name', $f/@name) intersect $f/descendant::o)"/>
         <xsl:variable name="self-alias-crosses-formation" select="@base = 'ξ' and (some $r in key('referenced-by-name', @name) satisfies matches($r/@base, '^ξ\.ρ\.'))"/>
         <xsl:variable name="candidate-name" select="@name"/>

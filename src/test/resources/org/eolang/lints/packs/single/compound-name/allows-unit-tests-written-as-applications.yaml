@@ -1,0 +1,21 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/names/compound-name.xsl
+defects: 0
+input: |
+  [] > phrase
+    "Object Thinking" > text
+    text.index-of " " > pos
+
+    pos.eq 6 +> can-find-space
+
+    eq. +> can-find-space-again
+      pos
+      6
+
+    text.slice 20 1 -> cannot-slice-past-end
+
+    [] +> can-find-space-in-formation
+      ^.pos.eq 6 > @

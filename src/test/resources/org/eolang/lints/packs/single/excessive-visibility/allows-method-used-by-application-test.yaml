@@ -1,0 +1,12 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/design/excessive-visibility.xsl
+defects: 0
+input: |
+  [] > phrase
+    "Object Thinking" > text
+    text.index-of " " > pos
+
+    pos.eq 6 +> can-find-space
