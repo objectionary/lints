@@ -9,7 +9,7 @@ defects:
   - severity: warning
     line: 2
 input: |
-  +package test.
-  +package привет, как дела?
+  +package foo!
+  +package привет,
 
   [] > foo

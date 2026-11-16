@@ -10,6 +10,6 @@ defects:
     line: 2
 input: |
   +package -bad
-  +package org..example
+  +package org.-example
 
   [] > foo

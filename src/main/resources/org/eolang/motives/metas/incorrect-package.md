@@ -12,8 +12,13 @@ dashes (a dash can't start a segment), as long as a single dot separates them.
 Incorrect:
 
 ```eo
-+package test.
-+package привет, как дела?
++package foo!
+
+[] > foo
+```
+
+```eo
++package привет,
 
 [] > foo
 ```
@@ -21,11 +26,18 @@ Incorrect:
 Correct:
 
 ```eo
-+package foo.bar
 +package my.awesome.package
-+package test.xy
-+package foo
+
+[] > foo
+```
+
+```eo
 +package Hello.WorLd
+
+[] > foo
+```
+
+```eo
 +package привет.как
 
 [] > foo
