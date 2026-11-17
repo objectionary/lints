@@ -1,0 +1,17 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+# yamllint disable rule:line-length
+sheets:
+  - /org/eolang/lints/atoms/atom-and-base.xsl
+asserts:
+  - /defects[count(defect[@severity='critical'])=1]
+  - /defects/defect[1][normalize-space()='The atom "obj" may not have the "@base" attribute, which however exists with "Φ.foo"']
+  - /defects/defect[not(contains(text(), '🌵'))]
+xml-reason: "the parser forbids auto-named atoms with >> and atoms with @base, so this shape can only reach the linter via transformed or hand-written XMIR"
+document: |
+  <object author="tests">
+    <o line="1" local="obj" name="a🌵1-0" base="Φ.foo">
+      <o name="λ"/>
+    </o>
+  </object>
