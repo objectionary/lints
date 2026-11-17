@@ -19,7 +19,7 @@ jobs:
       contains(fromJSON('["OWNER", "MEMBER", "COLLABORATOR"]'), github.event.comment.author_association)
     permissions:
       issues: write
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - name: Acknowledge benchmark request
         env:
@@ -69,7 +69,7 @@ jobs:
     permissions:
       issues: write
       pull-requests: write
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - name: Download comparison report
         if: needs.pr-benchmark.result == 'success'
