@@ -1,0 +1,59 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/design/cyclomatic-complexity.xsl
+asserts:
+  - /defects[count(defect[@severity='warning' and @line='4'])=1]
+  - /defects/defect[contains(., 'object "can-tell-negative-numbers" has')]
+xml-reason: "pinned eo-parser emits +/-, not p🌵/n🌵 cactus markers"
+document: |
+  <object author="tests">
+    <o line="1" name="neg">
+      <o base="∅" line="1" name="x"/>
+      <o base="ξ.x.lt" line="2" name="φ">
+        <o as="α0" base="Φ.number" line="2">
+          <o as="α0" base="Φ.bytes" line="2">
+            <o as="α0" line="2">00-00-00-00-00-00-00-00</o>
+          </o>
+        </o>
+      </o>
+      <o line="4" name="p🌵can-tell-negative-numbers">
+        <o base="ξ.first.and" line="5" name="φ">
+          <o as="α0" base="ξ.again" line="5"/>
+        </o>
+        <o base=".and" line="6" name="first">
+          <o base=".and" line="7">
+            <o base=".and" line="8">
+              <o base=".and" line="9">
+                <o base=".and" line="10">
+                  <o base="Φ.true" line="11"/>
+                  <o as="α0" base="Φ.true" line="12"/>
+                </o>
+                <o as="α0" base="Φ.true" line="13"/>
+              </o>
+              <o as="α0" base="Φ.true" line="14"/>
+            </o>
+            <o as="α0" base="Φ.true" line="15"/>
+          </o>
+          <o as="α0" base="Φ.true" line="16"/>
+        </o>
+        <o base=".and" line="17" name="again">
+          <o base=".and" line="18">
+            <o base=".and" line="19">
+              <o base=".and" line="20">
+                <o base=".and" line="21">
+                  <o base="Φ.true" line="22"/>
+                  <o as="α0" base="Φ.true" line="23"/>
+                </o>
+                <o as="α0" base="Φ.true" line="24"/>
+              </o>
+              <o as="α0" base="Φ.true" line="25"/>
+            </o>
+            <o as="α0" base="Φ.true" line="26"/>
+          </o>
+          <o as="α0" base="Φ.true" line="27"/>
+        </o>
+      </o>
+    </o>
+  </object>
