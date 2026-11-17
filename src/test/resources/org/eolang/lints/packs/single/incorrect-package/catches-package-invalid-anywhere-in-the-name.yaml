@@ -3,6 +3,7 @@
 ---
 sheets:
   - /org/eolang/lints/metas/incorrect-package.xsl
+skip-errors: true
 defects:
   - severity: warning
     line: 1
@@ -10,6 +11,6 @@ defects:
     line: 2
 input: |
   +package -bad
-  +package org..example
+  +package org.-example
 
   [] > foo

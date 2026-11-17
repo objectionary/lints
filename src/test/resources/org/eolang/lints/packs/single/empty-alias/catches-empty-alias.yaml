@@ -5,7 +5,15 @@ sheets:
   - /org/eolang/lints/aliases/empty-alias.xsl
 defects:
   - severity: error
-input: |
-  +alias
-
-  [] > foo
+    line: 1
+xml-reason: "the parser rejects a bare +alias at parse time"
+document: |
+  <object author="tests">
+    <metas>
+      <meta line="1">
+        <head>alias</head>
+        <tail/>
+      </meta>
+    </metas>
+    <o line="3" name="foo"/>
+  </object>

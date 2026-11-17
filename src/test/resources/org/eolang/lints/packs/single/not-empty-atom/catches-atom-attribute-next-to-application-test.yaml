@@ -12,6 +12,6 @@ document: |
     <o line="1" name="number">
       <o base="∅" name="λ"/>
       <o base="Φ.bar" name="baz"/>
-      <o base="Φ.number.eq" name="+can-work"/>
+      <o base="Φ.number.eq" name="p🌵can-work"/>
     </o>
   </object>

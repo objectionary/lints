@@ -5,18 +5,31 @@ sheets:
   - /org/eolang/lints/metas/package-contains-multiple-parts.xsl
 defects:
   - severity: critical
-    line: 8
+    line: 2
   - severity: critical
-    line: 9
-input: |
-  +package test
-  +package test.
-  +package test.x
-  +package привет.foo
-  +package org.eolang
-  +package my.awesome.package
-  +package test.xy
-  +package hello world
-  +package привет, как дела?
-
-  [] > foo
+    line: 3
+xml-reason: "the parser rejects a +package with many arguments at parse time"
+document: |
+  <object author="tests">
+    <metas>
+      <meta line="1">
+        <head>package</head>
+        <tail>my.awesome.package</tail>
+        <part>my.awesome.package</part>
+      </meta>
+      <meta line="2">
+        <head>package</head>
+        <tail>hello world</tail>
+        <part>hello</part>
+        <part>world</part>
+      </meta>
+      <meta line="3">
+        <head>package</head>
+        <tail>привет, как дела?</tail>
+        <part>привет,</part>
+        <part>как</part>
+        <part>дела?</part>
+      </meta>
+    </metas>
+    <o line="5" name="foo"/>
+  </object>

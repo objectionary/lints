@@ -24,7 +24,7 @@
                     <xsl:value-of select="$line"/>
                   </xsl:when>
                   <xsl:otherwise>
-                    <xsl:value-of select="format-number(number($line) + $offset, '0')"/>
+                    <xsl:value-of select="format-number(number($line) - count($lines) + 1 + $offset, '0')"/>
                   </xsl:otherwise>
                 </xsl:choose>
               </xsl:attribute>

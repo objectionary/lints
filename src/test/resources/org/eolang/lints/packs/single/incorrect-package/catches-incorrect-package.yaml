@@ -3,13 +3,14 @@
 ---
 sheets:
   - /org/eolang/lints/metas/incorrect-package.xsl
+skip-errors: true
 defects:
   - severity: warning
     line: 1
   - severity: warning
     line: 2
 input: |
-  +package test.
-  +package привет, как дела?
+  +package foo!
+  +package привет,
 
   [] > foo

@@ -7,7 +7,6 @@ defects: 0
 input: |
   # Foo.
 
-  +alias
   +alias a1
   +alias a2 b
   +alias a3 b.c.d.e

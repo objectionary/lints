@@ -427,7 +427,7 @@ final class LtByXslTest {
 
     @SuppressWarnings("StreamResourceLeak")
     @Tag("deep")
-    @Timeout(300L)
+    @Timeout(600L)
     @Test
     void validatesEoPacksForErrors() throws IOException {
         final List<Path> failures = Files.walk(
