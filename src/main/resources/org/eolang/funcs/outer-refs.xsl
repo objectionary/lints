@@ -31,8 +31,13 @@
   -->
   <xsl:function name="eo:outer-refs" as="element()*">
     <xsl:param name="formation" as="element()"/>
+    <!--
+    Every attribute of the formation, a void or a bound one, also covers
+    a dispatch on it, such as "^.base.plus x" in a nested formation, which
+    the parser keeps as the single reference "ξ.ρ.base.plus".
+    -->
     <xsl:variable name="allowed" as="xs:string*">
-      <xsl:for-each select="$formation/o[@base='∅']">
+      <xsl:for-each select="$formation/o[@name]">
         <xsl:sequence select="concat(@name, '.')"/>
       </xsl:for-each>
     </xsl:variable>

@@ -1,0 +1,21 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/names/anonymous-formation.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=1]
+  - /defects/defect[@line='10']
+  - /defects/defect[contains(., '"base-step.plus"')]
+input: |
+  # App.
+
+  [] > app
+    7 > base-step
+    malloc.of > @
+      64
+      [m]
+        42 > base
+        [x] > shifted
+          ^.^.base-step.plus x > @
+        m.put (shifted 1) > @

@@ -1,0 +1,17 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/misc/redundant-attachment.xsl
+defects:
+  - severity: warning
+    line: 4
+input: |
+  [] > app
+    malloc.of > @
+      64
+      [m] >>
+        42 > base
+        [x] > shifted
+          ^.base.plus x > @
+        m.put (shifted 1) > @
