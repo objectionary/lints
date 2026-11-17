@@ -1,0 +1,20 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+# yamllint disable rule:line-length
+sheets:
+  - /org/eolang/lints/atoms/atom-in-atom.xsl
+asserts:
+  - /defects[count(defect[@context and @severity='error'])=1]
+  - "/defects/defect[1][normalize-space()='Atom \"outer\" may not have any attributes, even if they are atoms, which however exist: \"inner\"']"
+  - /defects[count(defect[contains(text(), '🌵')])=0]
+xml-reason: "the parser rejects an atom that contains an atom and auto-named atoms with >>, so this shape can only reach the linter via transformed or hand-written XMIR"
+document: |
+  <object author="tests">
+    <o local="outer" name="a🌵1-0">
+      <o name="λ" atom="Φ.bytes"/>
+      <o local="inner" name="a🌵2-2">
+        <o name="λ" atom="Φ.bytes"/>
+      </o>
+    </o>
+  </object>
