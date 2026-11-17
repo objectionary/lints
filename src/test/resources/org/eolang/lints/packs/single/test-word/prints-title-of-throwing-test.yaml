@@ -1,0 +1,14 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/tests/test-word.xsl
+asserts:
+  - /defects[count(defect[@severity='warning' and @line='4'])=1]
+  - /defects/defect[contains(., 'object "test-fails-on-text" must')]
+input: |
+  [x] > sum
+    x.plus 2 > @
+
+    [] -> test-fails-on-text
+      (sum "a").eq 4 > @
