@@ -38,7 +38,16 @@
             even be the base of the test itself.
             -->
             <xsl:variable name="used" select="$tests/descendant-or-self::o[@base and (matches(@base, '^(ξ(\.ρ)+\.|\.)') or (starts-with(@base, 'ξ.') and ancestor::o[eo:abstract(.)][1] is $object)) and (replace(@base, '^(ξ(\.ρ)*\.|\.)', '') = $attr or starts-with(replace(@base, '^(ξ(\.ρ)*\.|\.)', ''), concat($attr, '.')))]"/>
-            <xsl:if test="empty($used)">
+            <!--
+            A test may also reach the method through the name of the
+            object, e.g. "os.is-linux", which the parser resolves into the
+            absolute name of the object, the one it keeps in "@loc",
+            followed by the method: "Φ.os.is-linux", or
+            "Φ.com.example.os.is-linux" in a program with a package.
+            -->
+            <xsl:variable name="loc" select="../@loc"/>
+            <xsl:variable name="named" select="$tests//o[exists($loc) and (@base = concat($loc, '.', $attr) or starts-with(@base, concat($loc, '.', $attr, '.')))]"/>
+            <xsl:if test="empty($used) and empty($named)">
               <xsl:element name="defect">
                 <xsl:variable name="line" select="eo:lineno(@line)"/>
                 <xsl:attribute name="line">
