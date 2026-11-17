@@ -121,12 +121,13 @@
   -->
   <xsl:template match="/">
     <defects>
-      <xsl:for-each select="//o[eo:abstract(.) and @name and not(contains(@name, '🌵')) and o[@name='φ']]">
+      <xsl:for-each select="//o[eo:abstract(.) and (@local or (@name and not(contains(@name, '🌵')))) and o[@name='φ']]">
         <xsl:variable name="name" select="string(@name)"/>
+        <xsl:variable name="names" select="(@name, @local)/string()" as="xs:string+"/>
         <xsl:variable name="root" select="o[@name='φ']"/>
-        <xsl:variable name="calls" select=".//o[eo:is-self-call(string(@base), $name) and not(ancestor::o[eo:test-name(@name)]) and ancestor::o[eo:abstract(.)][1] is current()]"/>
+        <xsl:variable name="calls" select=".//o[(some $n in $names satisfies eo:is-self-call(string(@base), $n)) and not(ancestor::o[eo:test-name(@name)]) and ancestor::o[eo:abstract(.)][1] is current()]"/>
         <xsl:variable name="loops" select="($root | $root//o)[eo:is-self-tail(string(@base), $name) and eo:tail(., $root)]"/>
-        <xsl:variable name="direct" select="($root | $root//o)[eo:is-self-direct(string(@base), $name) and eo:tail(., $root)]"/>
+        <xsl:variable name="direct" select="($root | $root//o)[(some $n in $names satisfies eo:is-self-direct(string(@base), $n)) and eo:tail(., $root)]"/>
         <xsl:variable name="elsewhere" select="$calls except ($root/descendant-or-self::o)"/>
         <xsl:if test="exists($calls) and empty($loops)">
           <defect>
@@ -142,7 +143,7 @@
             <xsl:attribute name="severity">warning</xsl:attribute>
             <xsl:attribute name="experimental">true</xsl:attribute>
             <xsl:text>The recursion in </xsl:text>
-            <xsl:value-of select="eo:escape(@name)"/>
+            <xsl:value-of select="eo:escape((@local, @name)[1])"/>
             <xsl:text> cannot be turned into a loop, </xsl:text>
             <xsl:choose>
               <xsl:when test="o[@name='λ']">
@@ -151,7 +152,7 @@
               <xsl:when test=".//o[contains(@base, 'φ')]">
                 <xsl:text>its body reads its own φ</xsl:text>
               </xsl:when>
-              <xsl:when test="$calls[eo:is-self-dispatch(string(@base), $name)]">
+              <xsl:when test="$calls[some $n in $names satisfies eo:is-self-dispatch(string(@base), $n)]">
                 <xsl:text>the self-call is the receiver of a dispatch</xsl:text>
               </xsl:when>
               <xsl:when test="exists($direct)">
