@@ -27,7 +27,7 @@
               <xsl:text>critical</xsl:text>
             </xsl:attribute>
             <xsl:text>The </xsl:text>
-            <xsl:value-of select="eo:escape(@name)"/>
+            <xsl:value-of select="eo:escape((@local, @name)[1])"/>
             <xsl:text> atom has inner objects inside lambda ('λ'), which is prohibited</xsl:text>
           </xsl:element>
         </xsl:if>
