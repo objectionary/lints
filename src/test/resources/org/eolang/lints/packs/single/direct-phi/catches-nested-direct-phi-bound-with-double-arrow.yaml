@@ -1,0 +1,14 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+# yamllint disable rule:line-length
+sheets:
+  - /org/eolang/lints/errors/direct-phi.xsl
+asserts:
+  - /defects[count(defect[@severity='error' and @experimental='true'])=1]
+  - /defects/defect[1][normalize-space()='The object "leaf" uses "@" attribute directly, while it is prohibited']
+  - /defects/defect[not(contains(text(), '🌵'))]
+input: |
+  [] > outer
+    [] >> inner
+      x.@ >> leaf
