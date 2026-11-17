@@ -1,0 +1,18 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+# yamllint disable rule:line-length
+sheets:
+  - /org/eolang/lints/critical/bytes-without-data.xsl
+asserts:
+  - /defects[count(defect[@severity='critical'])=1]
+  - /defects/defect[@line='1']
+  - /defects/defect[1][normalize-space()='Objects with parent @base equal to "Φ.bytes" must contain data, while "bar" object does not']
+  - /defects[not(defect[contains(text(), '🌵')])]
+xml-reason: "the parser always emits data inside Φ.bytes, so an empty Φ.bytes formation can only reach the linter via transformed or hand-written XMIR"
+document: |
+  <object author="tests">
+    <o local="bar" name="a🌵1-0" base="Φ.bytes" line="1">
+      <o/>
+    </o>
+  </object>
