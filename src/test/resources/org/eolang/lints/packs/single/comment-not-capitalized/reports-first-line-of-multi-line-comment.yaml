@@ -1,0 +1,15 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/comments/comment-not-capitalized.xsl
+defects:
+  - severity: warning
+    line: 1
+input: |
+  # sum of two numbers: it adds the
+  # second one to the first one and
+  # returns the result as a number.
+
+  [a b] > sum
+    a.plus b > @

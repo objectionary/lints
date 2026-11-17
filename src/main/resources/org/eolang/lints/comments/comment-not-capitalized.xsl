@@ -14,7 +14,14 @@
         <xsl:element name="defect">
           <xsl:variable name="line" select="eo:lineno(@line)"/>
           <xsl:attribute name="line">
-            <xsl:value-of select="$line"/>
+            <xsl:choose>
+              <xsl:when test="$line = '0'">
+                <xsl:value-of select="$line"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="format-number(number($line) - count(tokenize(., '&#10;')) + 1, '0')"/>
+              </xsl:otherwise>
+            </xsl:choose>
           </xsl:attribute>
           <xsl:if test="$line = '0'">
             <xsl:attribute name="context">

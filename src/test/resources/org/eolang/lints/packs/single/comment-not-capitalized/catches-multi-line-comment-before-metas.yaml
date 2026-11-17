@@ -1,0 +1,21 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/comments/comment-not-capitalized.xsl
+defects:
+  - severity: warning
+    line: 1
+input: |
+  # absolute value of a number, which
+  # is the number itself when it is not
+  # negative and its negation otherwise.
+
+  +package com.example
+  +version 0.0.0
+
+  [n] > abs
+    if. > @
+      n.lt 0
+      n.neg
+      n
