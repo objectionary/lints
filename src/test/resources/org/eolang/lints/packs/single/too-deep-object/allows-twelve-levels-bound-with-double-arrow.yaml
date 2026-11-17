@@ -1,0 +1,21 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/design/too-deep-object.xsl
+asserts:
+  - /defects[count(defect)=0]
+input: |
+  [] > foo
+    a >> x
+      b
+        c
+          d
+            e
+              f
+                g
+                  h
+                    i
+                      j
+                        k
+                          l >> ok
