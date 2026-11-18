@@ -20,7 +20,7 @@
       <xsl:for-each select="//o[eo:abstract(.)]">
         <xsl:variable name="formation" select="."/>
         <xsl:variable name="attributes" select="o[@name and @base and @base != '∅' and @name != 'φ' and not(eo:test-name(@name))]"/>
-        <xsl:variable name="sorted" select="every $i in 2 to count($attributes) satisfies string($attributes[$i - 1]/@name) le string($attributes[$i]/@name)"/>
+        <xsl:variable name="sorted" select="every $i in 2 to count($attributes) satisfies string(($attributes[$i - 1]/@local, $attributes[$i - 1]/@name)[1]) le string(($attributes[$i]/@local, $attributes[$i]/@name)[1])"/>
         <xsl:for-each select="$attributes[not($sorted)]">
           <xsl:variable name="name" select="@name"/>
           <xsl:variable name="declared" select="number(eo:lineno(@line))"/>
