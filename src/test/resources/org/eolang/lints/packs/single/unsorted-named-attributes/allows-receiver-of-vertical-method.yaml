@@ -1,0 +1,24 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/names/unsorted-named-attributes.xsl
+defects: 0
+input: |
+  # Splits an address into a host and a port.
+
+  [text] > address
+    text > @
+    if. > host
+      not. >> has-port
+        eq.
+          text.index-of ":" >> colon
+          -1
+      text.slice 0 colon
+      text
+    has-port.if > port
+      text.slice
+        colon.plus 1
+        text.length.minus
+          number (colon.plus 1)
+      ""

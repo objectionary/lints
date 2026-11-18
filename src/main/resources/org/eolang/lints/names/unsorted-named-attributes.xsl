@@ -20,14 +20,27 @@
   -->
   <xsl:key name="left-in-place" match="o[@base and ../@base]" use="for $f in generate-id(ancestor::o[eo:abstract(.)][1]) return (concat($f, ' ', @base, ' ', @line), if (@pipe) then concat($f, ' ', @base, ' |') else ())"/>
   <!--
+  When such an object is the receiver of a vertical method, as in
+  "not. >> has-port" right below "if.", no reference is left on its line:
+  the parser folds it into the base of the method, "ξ.a🌵6-4.if", on the
+  line of the method, right above the object. This key finds those bases
+  by the formation they belong to, the object they dispatch on and the
+  line right below them.
+  -->
+  <xsl:key name="received" match="o[matches(@base, '^ξ\.[^.]+\.[^.]+$')]" use="concat(generate-id(ancestor::o[eo:abstract(.)][1]), ' ', replace(@base, '\.[^.]+$', ''), ' ', number(@line) + 1)"/>
+  <!--
   TRUE when the parser moved the object up from inside an argument: it is
   not one of the attributes listed in the formation, so it takes no part
-  in their order.
+  in their order. The other arguments of a method that receives it, if
+  any, start below its last line, while those of a method that merely
+  uses an attribute declared on the next line start on the line of the
+  method.
   -->
   <xsl:function name="eo:lifted" as="xs:boolean">
     <xsl:param name="o" as="element()"/>
     <xsl:variable name="ref" select="concat(generate-id($o/..), ' ξ.', $o/@name)"/>
-    <xsl:sequence select="exists(key('left-in-place', (concat($ref, ' ', $o/@line), concat($ref, ' |')), root($o)))"/>
+    <xsl:variable name="last" select="max($o/descendant-or-self::o/number(@line))"/>
+    <xsl:sequence select="exists(key('left-in-place', (concat($ref, ' ', $o/@line), concat($ref, ' |')), root($o))) or exists(key('received', concat($ref, ' ', $o/@line), root($o))[every $a in o satisfies number($a/@line) gt $last])"/>
   </xsl:function>
   <xsl:template match="/">
     <defects>
