@@ -29,6 +29,26 @@
     <xsl:variable name="ref" select="concat(generate-id($o/..), ' ξ.', $o/@name)"/>
     <xsl:sequence select="exists(key('left-in-place', (concat($ref, ' ', $o/@line), concat($ref, ' |')), root($o)))"/>
   </xsl:function>
+  <!--
+  When the next line continues an attribute with a method, as in
+  "foo > app" followed by ".bar > baz", the parser reads ".bar" as a
+  method of "app": it moves "app" after the attributes of the formation and
+  leaves the reference to it in the base of "baz", "ξ.app.bar", which stays
+  in the place of the chain. This key finds such bases by the formation
+  and the object they dispatch on.
+  -->
+  <xsl:key name="continuing" match="o[matches(@base, '^ξ\.[^.]+\.') and not(../@base)]" use="concat(generate-id(..), ' ', replace(@base, '^ξ\.([^.]+)\..*$', '$1'))"/>
+  <!--
+  TRUE when the next line continues the attribute with a method, and the
+  parser moved it after the attribute that line names: that one stands for
+  the chain in the order, so this one takes no part in it. An attribute
+  that merely uses this one elsewhere either stays after it in the XMIR or
+  does not start on the line right below it.
+  -->
+  <xsl:function name="eo:continued" as="xs:boolean">
+    <xsl:param name="o" as="element()"/>
+    <xsl:sequence select="exists(key('continuing', concat(generate-id($o/..), ' ', $o/@name), root($o))[. &lt;&lt; $o and number(@line) = max($o/descendant-or-self::o/number(@line)) + 1])"/>
+  </xsl:function>
   <xsl:template match="/">
     <defects>
       <!--
@@ -36,9 +56,9 @@
       applies the attribute written right above it, so it can never move
       away from there and takes no part in the order of the attributes.
       -->
-      <xsl:for-each select="//o[eo:abstract(.) and (@local, @name)[1]]/o[(@local, @name)[1] and not(@base = '∅') and not(@pipe) and not(eo:special((@local, @name)[1])) and not(eo:test-name((@local, @name)[1])) and not(eo:lifted(.))]">
+      <xsl:for-each select="//o[eo:abstract(.) and (@local, @name)[1]]/o[(@local, @name)[1] and not(@base = '∅') and not(@pipe) and not(eo:special((@local, @name)[1])) and not(eo:test-name((@local, @name)[1])) and not(eo:lifted(.)) and not(eo:continued(.))]">
         <xsl:variable name="name" select="(@local, @name)[1]"/>
-        <xsl:variable name="previous" select="(preceding-sibling::o[(@local, @name)[1] and not(@base = '∅') and not(@pipe) and not(eo:special((@local, @name)[1])) and not(eo:test-name((@local, @name)[1])) and not(eo:lifted(.))])[last()]"/>
+        <xsl:variable name="previous" select="(preceding-sibling::o[(@local, @name)[1] and not(@base = '∅') and not(@pipe) and not(eo:special((@local, @name)[1])) and not(eo:test-name((@local, @name)[1])) and not(eo:lifted(.)) and not(eo:continued(.))])[last()]"/>
         <xsl:variable name="prev-name" select="($previous/@local, $previous/@name)[1]"/>
         <xsl:if test="$previous and $name &lt; $prev-name">
           <defect>
