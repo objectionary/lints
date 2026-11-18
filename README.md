@@ -125,42 +125,42 @@ Here is the result of linting XMIRs:
 <!-- benchmark_begin -->
 ```text
 Input: com/sun/jna/PointerType.class (S source)
-Lint time: 12s (11580 ms)
+Lint time: 10s (10318 ms)
 
 Input: com/sun/jna/Memory.class (M source)
-Lint time: 8s (8355 ms)
+Lint time: 6s (5852 ms)
 
 Input: com/sun/jna/Pointer.class (L source)
-Lint time: 11s (11062 ms)
+Lint time: 8s (8246 ms)
 
 Input: com/sun/jna/Structure.class (XL source)
-Lint time: 14s (14121 ms)
+Lint time: 13s (12618 ms)
 
 Input: org/apache/hadoop/hdfs/server/namenode/FSNamesystem.class (XXL source)
-Lint time: 51s (51138 ms)
+Lint time: 48s (47562 ms)
 
 
 
-application-without-as-attributes (XXL) (2317 ms)
-too-deep-object (XXL) (1394 ms)
-duplicate-as-attribute (XXL) (1316 ms)
-object-has-data (XXL) (1062 ms)
-redundant-object (XXL) (989 ms)
-unit-test-is-not-verb (XXL) (932 ms)
-reserved-name (XXL) (923 ms)
-empty-object (XXL) (855 ms)
-line-is-absent (XXL) (801 ms)
-compound-name (XXL) (783 ms)
-incorrect-bytes-format (XXL) (684 ms)
-invalid-name-notation (XXL) (683 ms)
-wrong-test-order (XXL) (599 ms)
-formation-with-as-attributes (XXL) (596 ms)
-not-empty-atom (XXL) (526 ms)
-application-without-as-attributes (XL) (513 ms)
+application-without-as-attributes (XXL) (2294 ms)
+too-deep-object (XXL) (1462 ms)
+duplicate-as-attribute (XXL) (1168 ms)
+object-has-data (XXL) (1056 ms)
+redundant-object (XXL) (911 ms)
+incorrect-bytes-format (XXL) (855 ms)
+empty-object (XXL) (835 ms)
+unit-test-is-not-verb (XXL) (770 ms)
+reserved-name (XXL) (749 ms)
+compound-name (XXL) (729 ms)
+line-is-absent (XXL) (727 ms)
+invalid-name-notation (XXL) (616 ms)
+anonymous-formation (XXL) (493 ms)
+atom-without-rt (XXL) (487 ms)
+unit-test-missing (XXL) (457 ms)
+bad-test-name (XXL) (447 ms)
 ```
 
 The results were calculated in [this GHA job][benchmark-gha]
-on 2026-11-18 at 12:31,
+on 2026-11-18 at 12:47,
 on Linux with 4 CPUs.
 <!-- benchmark_end -->
 
@@ -193,4 +193,4 @@ just install it and make sure it's in your `PATH`
 
 [XMIR]: https://news.eolang.org/2022-11-25-xmir-guide.html
 [EO]: https://www.eolang.org
-[benchmark-gha]: https://github.com/objectionary/lints/actions/runs/44304305008
+[benchmark-gha]: https://github.com/objectionary/lints/actions/runs/44304975345
