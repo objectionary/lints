@@ -68,7 +68,7 @@
             -->
             <xsl:variable name="escaped" select="replace($text, '(^|-)25-25', '$1')"/>
             <!-- A specifier is %[N$][flags][width][.precision]conversion, in bytes -->
-            <xsl:variable name="declared" select="count(tokenize($escaped, $eo:specifier)) - 1"/>
+            <xsl:variable name="declared" select="if (empty($text) or string-length($text) = 0) then 0 else count(tokenize($escaped, $eo:specifier)) - 1"/>
             <xsl:variable name="used">
               <xsl:choose>
                 <xsl:when test="o[@as]">
