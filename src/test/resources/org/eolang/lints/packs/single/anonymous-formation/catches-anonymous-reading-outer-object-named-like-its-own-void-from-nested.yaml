@@ -1,0 +1,22 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/names/anonymous-formation.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=1]
+  - /defects/defect[@line='12']
+  - /defects/defect[contains(., 'undefined object "x" inside')]
+input: |
+  # Counts the items equal to the given one.
+
+  [items x] > occurrences
+    items.reduced > @
+      0
+      [acc x]
+        if. > @
+          same
+          acc.plus 1
+          acc
+        [] > same
+          ^.x.eq ^.^.x > @

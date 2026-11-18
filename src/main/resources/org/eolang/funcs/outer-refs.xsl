@@ -41,9 +41,17 @@
         <xsl:sequence select="concat(@name, '.')"/>
       </xsl:for-each>
     </xsl:variable>
-    <xsl:for-each select="$formation//o[starts-with(@base, 'ξ.ρ.') and eo:hops(@base) ge count(ancestor::o[not(@base) and exists(. intersect $formation/descendant-or-self::o)]) - 1 and not(some $prefix in $allowed satisfies starts-with(eo:base-to-name(@base), $prefix))]">
+    <!--
+    Only a reference whose hops end right at the formation can be covered by
+    its attributes. One with more hops goes past the formation, so it reads
+    the enclosing scope even when the formation has an attribute of the same
+    name, such as "^.x" written right in the body of "[acc x]".
+    -->
+    <xsl:for-each select="$formation//o[starts-with(@base, 'ξ.ρ.')]">
+      <xsl:variable name="inner" select="count(ancestor::o[not(@base) and exists(. intersect $formation/descendant-or-self::o)]) - 1"/>
+      <xsl:variable name="hops" select="eo:hops(@base)"/>
       <xsl:variable name="name" select="eo:base-to-name(@base)"/>
-      <xsl:if test="not($formation/o[@name = $name])">
+      <xsl:if test="$hops gt $inner or ($hops eq $inner and not(some $prefix in $allowed satisfies starts-with($name, $prefix)) and not($formation/o[@name = $name]))">
         <xsl:sequence select="."/>
       </xsl:if>
     </xsl:for-each>
