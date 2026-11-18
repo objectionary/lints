@@ -1,0 +1,21 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/comments/comment-starts-with-article.xsl
+defects:
+  - severity: warning
+    line: 1
+input: |
+  # A maximum of two numbers, which
+  # is the first one when it is not
+  # less than the second one.
+
+  +package com.example
+  +version 0.0.0
+
+  [a b] > max
+    if. > @
+      a.lt b
+      b
+      a

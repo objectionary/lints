@@ -1,0 +1,13 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/comments/comment-starts-with-article.xsl
+defects: 0
+input: |
+  # Sum of two numbers: it adds
+  # the second one to the first one
+  # and returns the result.
+
+  [a b] > sum
+    a.plus b > @
