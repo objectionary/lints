@@ -20,7 +20,13 @@
       <xsl:for-each select="//o[eo:abstract(.)]">
         <xsl:variable name="formation" select="."/>
         <xsl:variable name="attributes" select="o[@name and @base and @base != '∅' and @name != 'φ' and not(eo:test-name(@name))]"/>
-        <xsl:variable name="sorted" select="every $i in 2 to count($attributes) satisfies string($attributes[$i - 1]/@name) le string($attributes[$i]/@name)"/>
+        <!--
+        The printer sorts the attributes by the names they are written
+        with, so an object bound with ">>" counts by its "@local" name,
+        not by the synthetic "@name" the parser gives it.
+        -->
+        <xsl:variable name="names" select="for $a in $attributes return string(($a/@local, $a/@name)[1])"/>
+        <xsl:variable name="sorted" select="every $i in 2 to count($names) satisfies $names[$i - 1] le $names[$i]"/>
         <xsl:for-each select="$attributes[not($sorted)]">
           <xsl:variable name="name" select="@name"/>
           <xsl:variable name="declared" select="number(eo:lineno(@line))"/>

@@ -1,0 +1,17 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/design/long-live-object.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=1]
+  - /defects/defect[@line='2' and contains(., 'The object "x" is declared')]
+input: |
+  [] > app
+    foo 42 >> x
+    1 > b
+    2 > c
+    3 > d
+    4 > e
+    5 > g
+    52.plus x > r
