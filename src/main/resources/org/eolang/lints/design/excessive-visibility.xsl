@@ -12,6 +12,13 @@
   <xsl:output encoding="UTF-8" method="xml"/>
   <xsl:template match="/">
     <defects>
+      <!--
+      The absolute names of the formations the atoms of the program declare
+      as their types, e.g. "Φ.posix.dir-return" for "/Q.posix.dir-return":
+      the return type sits on the "λ" of an atom, the type of a void on the
+      void itself, with a trailing "?" when the value may be absent.
+      -->
+      <xsl:variable name="types" select="(//o/@atom, for $t in //o/@type return replace($t, '\?$', ''))"/>
       <xsl:for-each select="//o[eo:abstract(.) and @name]">
         <xsl:variable name="object" select="."/>
         <xsl:variable name="tests" select="o[eo:test-name(@name)]"/>
@@ -24,7 +31,17 @@
           only hide a value other files may legitimately read.
           -->
           <xsl:variable name="literals" select="('Φ.number', 'Φ.string', 'Φ.bytes', 'Φ.true', 'Φ.false', 'Φ.tuple')"/>
-          <xsl:for-each select="o[@name and @base and @base != '∅' and not(@base = $literals) and @name != 'φ' and not(contains(@name, '🌵')) and not(eo:test-name(@name))]">
+          <!--
+          A method written as a formation, e.g. "[x y] > euclid", has no
+          "@base" at all, yet it is as public as one written as an
+          application, so it is checked the same way. An atom is left
+          alone, because its body lives in the runtime, which finds it by
+          its name, and so is a formation that an atom names as its type,
+          since the annotation refers to it by its absolute name, which
+          ">>" would take away. The "λ" that marks an atom is no method
+          either.
+          -->
+          <xsl:for-each select="o[@name and not(@base = '∅') and not(@base = $literals) and not(@name = ('φ', 'λ')) and not(eo:atom(.)) and not(@loc = $types) and not(contains(@name, '🌵')) and not(eo:test-name(@name))]">
             <xsl:variable name="attr" select="@name"/>
             <!--
             A test refers to a sibling method either by calling it on

@@ -1,0 +1,15 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/design/excessive-visibility.xsl
+defects: 0
+input: |
+  # The bytes of an object, taken once.
+
+  [] > dataized /Q.bytes
+    ? > target
+
+    eq. +> can-take-the-bytes-of-a-number
+      dataized 42
+      42.as-bytes

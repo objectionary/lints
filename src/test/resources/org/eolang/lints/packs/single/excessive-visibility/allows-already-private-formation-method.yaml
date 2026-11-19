@@ -1,0 +1,20 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/design/excessive-visibility.xsl
+defects: 0
+input: |
+  # The greatest common divisor of two numbers.
+
+  [a b] > gcd
+    euclid a b > @
+    [x y] >> euclid
+      if. > @
+        y.eq 0
+        x
+        ^.euclid y (x.mod y)
+
+    eq. +> finds-the-greatest-common-divisor
+      gcd 12 18
+      6
