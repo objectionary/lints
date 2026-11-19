@@ -125,42 +125,42 @@ Here is the result of linting XMIRs:
 <!-- benchmark_begin -->
 ```text
 Input: com/sun/jna/PointerType.class (S source)
-Lint time: 10s (10318 ms)
+Lint time: 12s (11933 ms)
 
 Input: com/sun/jna/Memory.class (M source)
-Lint time: 6s (5852 ms)
+Lint time: 7s (6926 ms)
 
 Input: com/sun/jna/Pointer.class (L source)
-Lint time: 8s (8246 ms)
+Lint time: 10s (10285 ms)
 
 Input: com/sun/jna/Structure.class (XL source)
-Lint time: 13s (12618 ms)
+Lint time: 17s (16627 ms)
 
 Input: org/apache/hadoop/hdfs/server/namenode/FSNamesystem.class (XXL source)
-Lint time: 48s (47562 ms)
+Lint time: 1min (61967 ms)
 
 
 
-application-without-as-attributes (XXL) (2294 ms)
-too-deep-object (XXL) (1462 ms)
-duplicate-as-attribute (XXL) (1168 ms)
-object-has-data (XXL) (1056 ms)
-redundant-object (XXL) (911 ms)
-incorrect-bytes-format (XXL) (855 ms)
-empty-object (XXL) (835 ms)
-unit-test-is-not-verb (XXL) (770 ms)
-reserved-name (XXL) (749 ms)
-compound-name (XXL) (729 ms)
-line-is-absent (XXL) (727 ms)
-invalid-name-notation (XXL) (616 ms)
-anonymous-formation (XXL) (493 ms)
-atom-without-rt (XXL) (487 ms)
-unit-test-missing (XXL) (457 ms)
-bad-test-name (XXL) (447 ms)
+application-without-as-attributes (XXL) (2909 ms)
+too-deep-object (XXL) (1767 ms)
+duplicate-as-attribute (XXL) (1646 ms)
+object-has-data (XXL) (1320 ms)
+reserved-name (XXL) (1152 ms)
+redundant-object (XXL) (1140 ms)
+unit-test-is-not-verb (XXL) (1139 ms)
+empty-object (XXL) (1134 ms)
+compound-name (XXL) (1032 ms)
+line-is-absent (XXL) (977 ms)
+incorrect-bytes-format (XXL) (850 ms)
+invalid-name-notation (XXL) (811 ms)
+non-kebab-name (XXL) (699 ms)
+wrong-test-order (XXL) (644 ms)
+anonymous-formation (XXL) (621 ms)
+unit-test-missing (XXL) (586 ms)
 ```
 
 The results were calculated in [this GHA job][benchmark-gha]
-on 2026-11-18 at 12:47,
+on 2026-11-19 at 18:59,
 on Linux with 4 CPUs.
 <!-- benchmark_end -->
 
@@ -193,4 +193,4 @@ just install it and make sure it's in your `PATH`
 
 [XMIR]: https://news.eolang.org/2022-11-25-xmir-guide.html
 [EO]: https://www.eolang.org
-[benchmark-gha]: https://github.com/objectionary/lints/actions/runs/44304975345
+[benchmark-gha]: https://github.com/objectionary/lints/actions/runs/44591154707
