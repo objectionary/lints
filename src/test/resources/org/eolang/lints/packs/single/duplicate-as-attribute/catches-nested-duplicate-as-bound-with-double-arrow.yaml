@@ -1,0 +1,13 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+# yamllint disable rule:line-length
+sheets:
+  - /org/eolang/lints/names/duplicate-as-attribute.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=1]
+  - /defects/defect[1][normalize-space()='The object "inner" has duplicated @as attribute "k"']
+  - /defects/defect[not(contains(text(), '🌵'))]
+input: |
+  [] > outer
+    t f1:k f2:k >> inner

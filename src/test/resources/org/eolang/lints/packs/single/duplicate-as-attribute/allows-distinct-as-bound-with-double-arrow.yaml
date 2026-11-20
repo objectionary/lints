@@ -1,0 +1,9 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/names/duplicate-as-attribute.xsl
+asserts:
+  - /defects[count(defect)=0]
+input: |
+  t f1:x f2:y >> tee

@@ -1,0 +1,15 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+# yamllint disable rule:line-length
+sheets:
+  - /org/eolang/lints/names/duplicate-as-attribute.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=2]
+  - /defects/defect[1][normalize-space()='The object "regular" has duplicated @as attribute "a"']
+  - /defects/defect[2][normalize-space()='The object "arrow" has duplicated @as attribute "b"']
+  - /defects[count(defect[contains(text(), '🌵')])=0]
+input: |
+  [] > app
+    t f1:a f2:a > regular
+    t f1:b f2:b >> arrow
