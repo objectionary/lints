@@ -27,25 +27,46 @@
     <xsl:sequence select="concat(generate-id($owner), ' ', $name)"/>
   </xsl:function>
   <!--
-  The attribute a reference reaches. "ξ.total" reaches the "total" of the
+  The attributes a chain of names reaches from the formation "owner": the
+  first name is an attribute of "owner", and when that attribute is a
+  formation, the next name is an attribute of that formation, and so on.
+  So "size.width" reaches both the "size" of "owner" and the "width" of
+  the formation "size".
+  -->
+  <xsl:function name="eo:chain" as="xs:string*">
+    <xsl:param name="owner" as="element()?"/>
+    <xsl:param name="names" as="xs:string*"/>
+    <xsl:if test="exists($names)">
+      <xsl:sequence select="eo:attribute($owner, $names[1])"/>
+      <xsl:if test="exists($names[2])">
+        <xsl:variable name="inner" select="$owner/o[@name = $names[1] and not(@base)][1]"/>
+        <xsl:if test="exists($inner)">
+          <xsl:sequence select="eo:chain($inner, subsequence($names, 2))"/>
+        </xsl:if>
+      </xsl:if>
+    </xsl:if>
+  </xsl:function>
+  <!--
+  The attributes a reference reaches. "ξ.total" reaches the "total" of the
   formation the reference sits in, and every "ρ" hop moves one formation
   up, so "ξ.ρ.total" reaches the "total" of the formation around it.
   A reference through the name of the object reaches an attribute of the
-  top object.
+  top object. A reference that goes on through a formation by its name,
+  e.g. "ξ.size.width", reaches the attribute of that formation as well.
   -->
-  <xsl:function name="eo:reached" as="xs:string">
+  <xsl:function name="eo:reached" as="xs:string*">
     <xsl:param name="ref" as="element()"/>
     <xsl:variable name="base" select="string($ref/@base)"/>
     <xsl:choose>
       <xsl:when test="matches($base, '^ξ(?:\.ρ)*\.')">
         <xsl:variable name="hops" select="count(tokenize(replace($base, '^(ξ(?:\.ρ)*)\..*$', '$1'), '\.')) - 1"/>
-        <xsl:sequence select="eo:attribute($ref/ancestor::o[not(@base)][$hops + 1], tokenize(replace($base, '^ξ(?:\.ρ)*\.', ''), '\.')[1])"/>
+        <xsl:sequence select="eo:chain($ref/ancestor::o[not(@base)][$hops + 1], tokenize(replace($base, '^ξ(?:\.ρ)*\.', ''), '\.'))"/>
       </xsl:when>
       <xsl:when test="exists($loc) and starts-with($base, concat($loc, '.'))">
-        <xsl:sequence select="eo:attribute($root, tokenize(substring-after($base, concat($loc, '.')), '\.')[1])"/>
+        <xsl:sequence select="eo:chain($root, tokenize(substring-after($base, concat($loc, '.')), '\.'))"/>
       </xsl:when>
       <xsl:when test="matches($base, '^Φ\.[^.]+\.')">
-        <xsl:sequence select="eo:attribute($root, tokenize($base, '\.')[3])"/>
+        <xsl:sequence select="eo:chain($root, subsequence(tokenize($base, '\.'), 3))"/>
       </xsl:when>
       <xsl:otherwise>
         <xsl:sequence select="''"/>
