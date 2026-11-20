@@ -47,7 +47,15 @@
             -->
             <xsl:variable name="loc" select="../@loc"/>
             <xsl:variable name="named" select="$tests//o[exists($loc) and (@base = concat($loc, '.', $attr) or starts-with(@base, concat($loc, '.', $attr, '.')))]"/>
-            <xsl:if test="empty($used) and empty($named)">
+            <!--
+            A test may also bind the object to a name of its own, e.g.
+            "counter 5 > c", and call the method on that name, "c.next".
+            The parser resolves such a call into a reference to the
+            attribute of the test, "ξ.c.next", and gives that attribute
+            the absolute name of the object as its base.
+            -->
+            <xsl:variable name="bound" select="$tests/descendant-or-self::o[exists($loc) and matches(@base, '^ξ\.[^.]+\.') and (some $local in tokenize(@base, '\.')[2] satisfies (exists(ancestor::o[eo:abstract(.)][1]/o[@name = $local and @base = $loc]) and (substring-after(@base, concat('ξ.', $local, '.')) = $attr or starts-with(substring-after(@base, concat('ξ.', $local, '.')), concat($attr, '.')))))]"/>
+            <xsl:if test="empty($used) and empty($named) and empty($bound)">
               <xsl:element name="defect">
                 <xsl:variable name="line" select="eo:lineno(@line)"/>
                 <xsl:attribute name="line">

@@ -1,0 +1,19 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/design/excessive-visibility.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=1]
+  - /defects/defect[@line='5']
+  - /defects/defect[contains(text(), 'previous')]
+input: |
+  # A counter that steps from a given value.
+
+  [start] > counter
+    start.plus 1 > next
+    start.minus 1 > previous
+
+    ++> can-move-to-the-next-value
+      c.next.eq 6 > @
+      counter 5 > c

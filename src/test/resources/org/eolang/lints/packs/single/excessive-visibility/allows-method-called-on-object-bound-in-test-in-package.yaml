@@ -1,0 +1,17 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/design/excessive-visibility.xsl
+defects: 0
+input: |
+  # A counter that steps from a given value.
+
+  +package com.example
+
+  [start] > counter
+    start.plus 1 > next
+
+    ++> can-move-to-the-next-value
+      c.next.eq 6 > @
+      counter 5 > c
