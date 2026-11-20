@@ -27,10 +27,11 @@
           </xsl:attribute>
           <xsl:attribute name="experimental">true</xsl:attribute>
           <xsl:text>The </xsl:text>
+          <xsl:variable name="name" select="(@local, @name)[1]"/>
           <xsl:choose>
-            <xsl:when test="@name">
+            <xsl:when test="$name">
               <xsl:text>formation </xsl:text>
-              <xsl:value-of select="eo:escape(@name)"/>
+              <xsl:value-of select="eo:escape($name)"/>
             </xsl:when>
             <xsl:otherwise>
               <xsl:text>anonymous formation</xsl:text>
