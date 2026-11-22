@@ -1,0 +1,18 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/misc/redundant-object.xsl
+defects: 0
+input: |
+  # A number that never goes over a limit.
+
+  [n] > clamped
+    [] > limits
+      100 > max
+    [x] > clamp
+      if. > @
+        x.gt ^.limits.max
+        ^.limits.max
+        x
+    clamp n > @
