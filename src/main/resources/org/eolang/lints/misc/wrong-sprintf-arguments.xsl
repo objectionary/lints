@@ -112,7 +112,7 @@
                 </defect>
               </xsl:when>
               <xsl:otherwise>
-                <xsl:if test="o[not(@as)][1]/@base = 'Φ.string' and (if (exists($positions)) then $required &gt; $used else $required != $used)">
+                <xsl:if test="o[not(@as)][1]/@base = 'Φ.string' and (0 = $positions or (if (exists($positions)) then $required &gt; $used else $required != $used))">
                   <defect>
                     <xsl:variable name="line" select="eo:lineno(@line)"/>
                     <xsl:attribute name="line">
@@ -126,14 +126,21 @@
                     <xsl:attribute name="severity">
                       <xsl:text>warning</xsl:text>
                     </xsl:attribute>
-                    <xsl:text>According to the formatting template of the ".printf" object, a tuple of </xsl:text>
-                    <xsl:if test="exists($positions)">
-                      <xsl:text>at least </xsl:text>
-                    </xsl:if>
-                    <xsl:value-of select="$required"/>
-                    <xsl:text> element(s) is expected as its argument, while a tuple of </xsl:text>
-                    <xsl:value-of select="$used"/>
-                    <xsl:text> element(s) is provided</xsl:text>
+                    <xsl:choose>
+                      <xsl:when test="0 = $positions">
+                        <xsl:text>The positional argument index in the ".printf" template must be 1 or greater</xsl:text>
+                      </xsl:when>
+                      <xsl:otherwise>
+                        <xsl:text>According to the formatting template of the ".printf" object, a tuple of </xsl:text>
+                        <xsl:if test="exists($positions)">
+                          <xsl:text>at least </xsl:text>
+                        </xsl:if>
+                        <xsl:value-of select="$required"/>
+                        <xsl:text> element(s) is expected as its argument, while a tuple of </xsl:text>
+                        <xsl:value-of select="$used"/>
+                        <xsl:text> element(s) is provided</xsl:text>
+                      </xsl:otherwise>
+                    </xsl:choose>
                   </defect>
                 </xsl:if>
               </xsl:otherwise>
