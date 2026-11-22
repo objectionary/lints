@@ -69,6 +69,20 @@
             <xsl:variable name="escaped" select="replace($text, '(^|-)25-25', '$1')"/>
             <!-- A specifier is %[N$][flags][width][.precision]conversion, in bytes -->
             <xsl:variable name="declared" select="if (empty($text) or string-length($text) = 0) then 0 else count(tokenize($escaped, $eo:specifier)) - 1"/>
+            <xsl:variable name="positions" as="xs:integer*">
+              <xsl:analyze-string select="$escaped" regex="{$eo:specifier}">
+                <xsl:matching-substring>
+                  <xsl:if test="regex-group(2) != ''">
+                    <xsl:sequence select="xs:integer(replace(substring-before(regex-group(2), '24-'), '3([0-9])-', '$1'))"/>
+                  </xsl:if>
+                </xsl:matching-substring>
+              </xsl:analyze-string>
+            </xsl:variable>
+            <!--
+            Positional specifiers can reuse arguments and do not advance
+            the sequential index.
+            -->
+            <xsl:variable name="required" select="max(($positions, $declared - count($positions)))"/>
             <xsl:variable name="used">
               <xsl:choose>
                 <xsl:when test="o[@as]">
@@ -98,7 +112,7 @@
                 </defect>
               </xsl:when>
               <xsl:otherwise>
-                <xsl:if test="$declared!=$used and o[not(@as)][1]/@base = 'Φ.string' and not(matches($escaped, '(^|-)25-(3[0-9]-)+24'))">
+                <xsl:if test="o[not(@as)][1]/@base = 'Φ.string' and (if (exists($positions)) then $required &gt; $used else $required != $used)">
                   <defect>
                     <xsl:variable name="line" select="eo:lineno(@line)"/>
                     <xsl:attribute name="line">
@@ -113,7 +127,10 @@
                       <xsl:text>warning</xsl:text>
                     </xsl:attribute>
                     <xsl:text>According to the formatting template of the ".printf" object, a tuple of </xsl:text>
-                    <xsl:value-of select="$declared"/>
+                    <xsl:if test="exists($positions)">
+                      <xsl:text>at least </xsl:text>
+                    </xsl:if>
+                    <xsl:value-of select="$required"/>
                     <xsl:text> element(s) is expected as its argument, while a tuple of </xsl:text>
                     <xsl:value-of select="$used"/>
                     <xsl:text> element(s) is provided</xsl:text>
