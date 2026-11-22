@@ -125,9 +125,11 @@
         <xsl:variable name="name" select="string(@name)"/>
         <xsl:variable name="names" select="(@name, @local)/string()" as="xs:string+"/>
         <xsl:variable name="root" select="o[@name='φ']"/>
-        <xsl:variable name="calls" select=".//o[(some $n in $names satisfies eo:is-self-call(string(@base), $n)) and not(ancestor::o[eo:test-name(@name)]) and ancestor::o[eo:abstract(.)][1] is current()]"/>
+        <!-- A bare name can resolve to an attribute of the current formation. -->
+        <xsl:variable name="shadowed" select="o[@name = $names]/@name"/>
+        <xsl:variable name="calls" select=".//o[(some $n in $names satisfies eo:is-self-call(string(@base), $n)) and not(starts-with(@base, 'ξ.') and tokenize(@base, '\.')[2] = $shadowed) and not(ancestor::o[eo:test-name(@name)]) and ancestor::o[eo:abstract(.)][1] is current()]"/>
         <xsl:variable name="loops" select="($root | $root//o)[eo:is-self-tail(string(@base), $name) and eo:tail(., $root)]"/>
-        <xsl:variable name="direct" select="($root | $root//o)[(some $n in $names satisfies eo:is-self-direct(string(@base), $n)) and eo:tail(., $root)]"/>
+        <xsl:variable name="direct" select="$calls[(some $n in $names satisfies eo:is-self-direct(string(@base), $n)) and eo:tail(., $root)]"/>
         <xsl:variable name="elsewhere" select="$calls except ($root/descendant-or-self::o)"/>
         <xsl:if test="exists($calls) and empty($loops)">
           <defect>
