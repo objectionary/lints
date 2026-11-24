@@ -44,7 +44,7 @@
   -->
   <xsl:template match="/">
     <defects>
-      <xsl:for-each select="//o[eo:abstract(.) and @name and (eo:test-name(@name) or not(contains(@name, '🌵'))) and o[@name='φ']]">
+      <xsl:for-each select="//o[eo:abstract(.) and (@local or (@name and (eo:test-name(@name) or not(contains(@name, '🌵'))))) and o[@name='φ']]">
         <xsl:variable name="this" select="."/>
         <xsl:variable name="decisions" select=".//o[@base and eo:decision(string(@base)) and generate-id(eo:owner(.)) = generate-id($this)]"/>
         <xsl:variable name="complexity" select="count($decisions) + 1"/>
@@ -66,7 +66,7 @@
               <xsl:text>true</xsl:text>
             </xsl:attribute>
             <xsl:text>The object </xsl:text>
-            <xsl:value-of select="eo:escape(eo:test-title(@name))"/>
+            <xsl:value-of select="eo:escape(eo:test-title((@local, @name)[1]))"/>
             <xsl:text> has a cyclomatic complexity of </xsl:text>
             <xsl:value-of select="$complexity"/>
             <xsl:text>, while the maximum is </xsl:text>

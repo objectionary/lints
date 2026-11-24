@@ -1,0 +1,59 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+# yamllint disable rule:line-length
+sheets:
+  - /org/eolang/lints/design/cyclomatic-complexity.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=1]
+  - /defects/defect[1][@line='2' and normalize-space()='The object "inner" has a cyclomatic complexity of 12, while the maximum is 10']
+  - /defects/defect[not(contains(text(), '🌵'))]
+input: |
+  [x] > outer
+    [y] >> inner
+      0 > @
+      if. > a1
+        y
+        1
+        2
+      if. > a2
+        y
+        1
+        2
+      if. > a3
+        y
+        1
+        2
+      if. > a4
+        y
+        1
+        2
+      if. > a5
+        y
+        1
+        2
+      if. > a6
+        y
+        1
+        2
+      if. > a7
+        y
+        1
+        2
+      if. > a8
+        y
+        1
+        2
+      if. > a9
+        y
+        1
+        2
+      if. > a10
+        y
+        1
+        2
+      if. > a11
+        y
+        1
+        2
+    inner x > @
