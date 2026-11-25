@@ -1,0 +1,24 @@
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>lints</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="shortcut icon" href="https://www.yegor256.com/images/books/elegant-objects/cactus.png"/><link href="https://cdn.jsdelivr.net/npm/tacit-css@1.9.7/dist/tacit-css.min.css" rel="stylesheet" integrity="sha384-D/LLHCkqHnoJ7y04sSEBX95s7wMjBn45wtHneRfp03QBgt6+a6Pz2eLUC4N1CAI0" crossorigin="anonymous"/>
+</head>
+<body><section><article>
+<h1 id="wrong-.printf-arguments">Wrong <code>.printf</code>
+Arguments</h1>
+<p>The <code>.printf</code> object must have matching placeholder
+variables and passed arguments.</p>
+<p>Incorrect:</p>
+<pre class="eo"><code>[name] &gt; app
+  io.stdout &gt; @
+    &quot;Hello, %s! Your account is %d.&quot;.printf
+      * name</code></pre>
+<p>Correct:</p>
+<pre class="eo"><code>[name acc] &gt; app
+  io.stdout &gt; @
+    &quot;Hello, %s! Your account is %d.&quot;.printf
+      * name acc</code></pre>
+<p>Published on Wed Nov 25 05:19:45 UTC 2026.</p>
+</article></section></body></html>

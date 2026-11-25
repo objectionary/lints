@@ -1,0 +1,26 @@
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>lints</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="shortcut icon" href="https://www.yegor256.com/images/books/elegant-objects/cactus.png"/><link href="https://cdn.jsdelivr.net/npm/tacit-css@1.9.7/dist/tacit-css.min.css" rel="stylesheet" integrity="sha384-D/LLHCkqHnoJ7y04sSEBX95s7wMjBn45wtHneRfp03QBgt6+a6Pz2eLUC4N1CAI0" crossorigin="anonymous"/>
+</head>
+<body><section><article>
+<h1 id="unit-test-without-phi">Unit test without phi</h1>
+<p>Unit tests must have a <code>@</code> attribute.</p>
+<p>Incorrect:</p>
+<pre class="eo"><code># Foo.
+
+[] &gt; foo
+
+  [] +&gt; works-dummy
+    true &gt; i</code></pre>
+<p>Correct:</p>
+<pre class="eo"><code># Foo.
+
+[] &gt; foo
+
+  [] +&gt; works-dummy
+    true &gt; @</code></pre>
+<p>Published on Wed Nov 25 05:19:50 UTC 2026.</p>
+</article></section></body></html>

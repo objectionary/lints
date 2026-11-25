@@ -1,0 +1,26 @@
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>lints</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="shortcut icon" href="https://www.yegor256.com/images/books/elegant-objects/cactus.png"/><link href="https://cdn.jsdelivr.net/npm/tacit-css@1.9.7/dist/tacit-css.min.css" rel="stylesheet" integrity="sha384-D/LLHCkqHnoJ7y04sSEBX95s7wMjBn45wtHneRfp03QBgt6+a6Pz2eLUC4N1CAI0" crossorigin="anonymous"/>
+</head>
+<body><section><article>
+<h1 id="alias-too-long">Alias too long</h1>
+<p>Object aliases must have <strong>at most 2 parts</strong>.</p>
+<p>Incorrect:</p>
+<pre class="eo"><code># Foo.
+
++alias a b c
+
+[] &gt; foo</code></pre>
+<p>Correct:</p>
+<pre class="eo"><code># Foo.
+
++alias a
++alias b c
++alias d e.f.g.h
+
+[] &gt; foo</code></pre>
+<p>Published on Wed Nov 25 05:19:23 UTC 2026.</p>
+</article></section></body></html>
