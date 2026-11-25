@@ -7,6 +7,7 @@
   <xsl:import href="/org/eolang/funcs/lineno.xsl"/>
   <xsl:import href="/org/eolang/funcs/defect-context.xsl"/>
   <xsl:import href="/org/eolang/funcs/special-name.xsl"/>
+  <xsl:import href="/org/eolang/funcs/void-name.xsl"/>
   <xsl:import href="/org/eolang/funcs/test-name.xsl"/>
   <xsl:import href="/org/eolang/funcs/escape.xsl"/>
   <xsl:output encoding="UTF-8" method="xml"/>
@@ -35,7 +36,7 @@
       must start with a prefix such as "can-" (see "bad-test-name"), so it is
       always compound.
       -->
-      <xsl:for-each select="//o[@base and not(eo:test-name(@name)) and (@local, @name)[1][not(eo:special(.)) and eo:compound(.) and not(eo:idiomatic(.))]]">
+      <xsl:for-each select="//o[@base and not(eo:test-name(@name)) and (for $n in (@local, @name)[1] return eo:void-title($n))[not(eo:special(.)) and eo:compound(.) and not(eo:idiomatic(.))]]">
         <defect>
           <xsl:variable name="line" select="eo:lineno(@line)"/>
           <xsl:attribute name="line">
@@ -48,7 +49,7 @@
           </xsl:if>
           <xsl:attribute name="severity">warning</xsl:attribute>
           <xsl:text>Object name </xsl:text>
-          <xsl:value-of select="eo:escape((@local, @name)[1])"/>
+          <xsl:value-of select="eo:escape(eo:void-title((@local, @name)[1]))"/>
           <xsl:text> should not be compound unless it's formation</xsl:text>
         </defect>
       </xsl:for-each>

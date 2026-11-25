@@ -6,6 +6,7 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:eo="https://www.eolang.org" id="anemic-getter" version="2.0">
   <xsl:import href="/org/eolang/funcs/lineno.xsl"/>
   <xsl:import href="/org/eolang/funcs/escape.xsl"/>
+  <xsl:import href="/org/eolang/funcs/void-name.xsl"/>
   <xsl:import href="/org/eolang/funcs/defect-context.xsl"/>
   <xsl:output encoding="UTF-8" method="xml"/>
   <!--
@@ -35,7 +36,7 @@
             </xsl:when>
             <!-- a sibling attribute of the same formation -->
             <xsl:when test="matches(@base, '^ξ\.[^.]+$') and ../o[@name=$ref]">
-              <xsl:value-of select="(../o[@name=$ref]/@local, $ref)[1]"/>
+              <xsl:value-of select="eo:void-title((../o[@name=$ref]/@local, $ref)[1])"/>
             </xsl:when>
           </xsl:choose>
         </xsl:variable>

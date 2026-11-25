@@ -4,8 +4,12 @@
 sheets:
   - /org/eolang/lints/misc/redundant-attachment.xsl
 defects: 0
-input: |
-  [] > choice
-    ? >> left
-    ? >> right
-    left > @
+xml-reason: "0.63.3 rejects '? >> name', auto-named voids come only from XMIR"
+document: |
+  <object author="tests">
+    <o line="1" name="choice">
+      <o base="&#x2205;" line="2" local="left" name="a&#x1F335;2-2"/>
+      <o base="&#x2205;" line="3" local="right" name="a&#x1F335;3-2"/>
+      <o base="&#x3BE;.a&#x1F335;2-2" line="4" name="&#x3C6;"/>
+    </o>
+  </object>

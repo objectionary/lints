@@ -12,10 +12,34 @@ defects:
     line: 3
   - severity: error
     line: 4
-input: |
-  +alias good1 Capital.Letters.Prohibited.Here
-  +alias good2 Should.Be.Small
-  +alias good3 0.1.2
-  +alias good4 theS.IS.2
-
-  [] > foo
+xml-reason: "0.63.3 rejects bad +alias targets and drops the meta"
+document: |
+  <object author="tests">
+    <metas>
+      <meta line="1">
+        <head>alias</head>
+        <tail>good1 &#x3A6;.Capital.Letters.Prohibited.Here</tail>
+        <part>good1</part>
+        <part>&#x3A6;.Capital.Letters.Prohibited.Here</part>
+      </meta>
+      <meta line="2">
+        <head>alias</head>
+        <tail>good2 &#x3A6;.Should.Be.Small</tail>
+        <part>good2</part>
+        <part>&#x3A6;.Should.Be.Small</part>
+      </meta>
+      <meta line="3">
+        <head>alias</head>
+        <tail>good3 &#x3A6;.0.1.2</tail>
+        <part>good3</part>
+        <part>&#x3A6;.0.1.2</part>
+      </meta>
+      <meta line="4">
+        <head>alias</head>
+        <tail>good4 &#x3A6;.theS.IS.2</tail>
+        <part>good4</part>
+        <part>&#x3A6;.theS.IS.2</part>
+      </meta>
+    </metas>
+    <o line="6" name="foo"/>
+  </object>

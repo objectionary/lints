@@ -3,10 +3,18 @@
 ---
 sheets:
   - /org/eolang/lints/names/duplicate-as-attribute.xsl
-skip-errors: true
 asserts:
   - /defects[count(defect[@severity='warning'])=2]
   - /defects/defect[contains(text(), '"foo"')]
   - /defects/defect[contains(text(), '"bar"')]
-input: |
-  t f1:foo f2:bar f3:foo f4:bar f5:foo > tee
+xml-reason: "0.63.3 rejects duplicate argument bindings at parse time"
+document: |
+  <object author="tests">
+    <o base="&#x3A6;.t" line="1" name="tee">
+      <o as="v&#x1F335;foo" base="&#x3A6;.f1" line="1"/>
+      <o as="v&#x1F335;bar" base="&#x3A6;.f2" line="1"/>
+      <o as="v&#x1F335;foo" base="&#x3A6;.f3" line="1"/>
+      <o as="v&#x1F335;bar" base="&#x3A6;.f4" line="1"/>
+      <o as="v&#x1F335;foo" base="&#x3A6;.f5" line="1"/>
+    </o>
+  </object>

@@ -8,6 +8,7 @@
   <xsl:import href="/org/eolang/funcs/lineno.xsl"/>
   <xsl:import href="/org/eolang/funcs/defect-context.xsl"/>
   <xsl:import href="/org/eolang/funcs/escape.xsl"/>
+  <xsl:import href="/org/eolang/funcs/void-name.xsl"/>
   <xsl:import href="/org/eolang/funcs/outer-refs.xsl"/>
   <xsl:output encoding="UTF-8" method="xml"/>
   <xsl:template match="/">
@@ -28,7 +29,7 @@
               <xsl:text>warning</xsl:text>
             </xsl:attribute>
             <xsl:text>It is not recommended to have anonymous formation accessing undefined object </xsl:text>
-            <xsl:value-of select="eo:escape(eo:base-to-name(@base))"/>
+            <xsl:value-of select="eo:escape(eo:void-title(eo:base-to-name(@base)))"/>
             <xsl:text> inside the formation</xsl:text>
           </defect>
         </xsl:for-each>
