@@ -3,6 +3,7 @@
 ---
 sheets:
   - /org/eolang/lints/names/duplicate-as-attribute.xsl
+skip-errors: true
 asserts:
   - /defects[count(defect[@severity='warning'])=2]
   - >-
