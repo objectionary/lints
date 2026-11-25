@@ -49,6 +49,7 @@ import org.junit.jupiter.api.condition.OS;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.xembly.Directives;
 import org.xembly.ImpossibleModificationException;
 import org.xembly.Xembler;
@@ -60,7 +61,6 @@ import org.yaml.snakeyaml.Yaml;
  * @since 0.0.1
  * @checkstyle ClassFanOutComplexityCheck (500 lines)
  */
-@SuppressWarnings("PMD.GodClass")
 final class LtByXslTest {
 
     @Test
@@ -143,8 +143,14 @@ final class LtByXslTest {
         );
     }
 
-    @Test
-    void handlesDefectWithEmptyText() {
+    @ParameterizedTest
+    @ValueSource(
+        strings = {
+            "<defect line='1' severity='warning'/>",
+            "<defect line='1' severity='warning'></defect>"
+        }
+    )
+    void handlesDefectWithEmptyText(final String tag) {
         MatcherAssert.assertThat(
             "Expected defect text to be empty string",
             new LtByXsl(
@@ -156,36 +162,7 @@ final class LtByXslTest {
                         "  xmlns:xsl='http://www.w3.org/1999/XSL/Transform'>",
                         "  <xsl:output method='xml'/>",
                         "  <xsl:template match='/'>",
-                        "    <defects>",
-                        "      <defect line='1' severity='warning'/>",
-                        "    </defects>",
-                        "  </xsl:template>",
-                        "</xsl:stylesheet>"
-                    )
-                ),
-                new InputOf(""),
-                new FxEmpty()
-            ).defects(new XMLDocument("<object/>")).iterator().next().text(),
-            Matchers.equalTo("")
-        );
-    }
-
-    @Test
-    void handlesDefectWithEmptyTags() {
-        MatcherAssert.assertThat(
-            "Expected defect text to be empty string for empty tag",
-            new LtByXsl(
-                new InputOf(
-                    String.join(
-                        System.lineSeparator(),
-                        "<xsl:stylesheet id='empty-tag-defect'",
-                        "  version='2.0'",
-                        "  xmlns:xsl='http://www.w3.org/1999/XSL/Transform'>",
-                        "  <xsl:output method='xml'/>",
-                        "  <xsl:template match='/'>",
-                        "    <defects>",
-                        "      <defect line='1' severity='warning'></defect>",
-                        "    </defects>",
+                        String.format("    <defects>%s</defects>", tag),
                         "  </xsl:template>",
                         "</xsl:stylesheet>"
                     )
@@ -212,13 +189,14 @@ final class LtByXslTest {
     @Test
     @SuppressWarnings("StreamResourceLeak")
     void catchesLostXsls() throws IOException {
+        final Path single = Paths.get("src/test/resources/org/eolang/lints/packs/single");
         MatcherAssert.assertThat(
             "Every XSL lint must have a directory of YAML packs named after it",
             Files.walk(Paths.get("src/main/resources/org/eolang/lints"))
                 .filter(Files::isRegularFile)
                 .filter(path -> path.toString().endsWith(".xsl"))
                 .map(path -> path.getFileName().toString().replaceAll("\\.xsl$", ""))
-                .filter(lint -> !LtByXslTest.hasPacks(lint))
+                .filter(lint -> !Files.isDirectory(single.resolve(lint)))
                 .collect(Collectors.toList()),
             Matchers.empty()
         );
@@ -565,12 +543,6 @@ final class LtByXslTest {
     @SuppressWarnings("UnnecessaryLambda")
     private static Predicate<Path> yamls() {
         return path -> path.toString().endsWith(".yaml");
-    }
-
-    private static boolean hasPacks(final String lint) {
-        return Files.isDirectory(
-            Paths.get("src/test/resources/org/eolang/lints/packs/single").resolve(lint)
-        );
     }
 
     @SuppressWarnings("StreamResourceLeak")
