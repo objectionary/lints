@@ -1,0 +1,12 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/misc/redundant-object.xsl
+defects: 0
+input: |
+  # Flags of the open system call.
+  [] > flags
+    1 > wronly
+    8 > append
+    (wronly.plus append).eq 9 ++> combines-flags

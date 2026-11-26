@@ -9,8 +9,9 @@ Incorrect:
 # Foo.
 
 [] > foo
-  52 > spb
-  spb.plus 2 > @
+  [] > bar
+    52 > spb
+    spb.plus 2 > @
 ```
 
 Correct:
@@ -19,7 +20,8 @@ Correct:
 # Foo.
 
 [] > foo
-  52.plus 2 > @
+  [] > bar
+    52.plus 2 > @
 ```
 
 An object referenced a single time is *not* redundant when that lone reference
@@ -65,4 +67,18 @@ interface of its formation, read by other programs, which the lint can't see:
 [] > point
   3 > x
   4 > y
+```
+
+An attribute of the top object is *not* reported either, even if its own
+file reads it a single time, often in its own test. Such an attribute is
+a part of the public interface of the object, and other programs may read it.
+Only an attribute bound with `>>` is private and may be inlined:
+
+```eo
+# Flags of the open system call.
+
+[] > flags
+  1 > wronly
+  8 > append
+  (wronly.plus append).eq 9 ++> combines-flags
 ```

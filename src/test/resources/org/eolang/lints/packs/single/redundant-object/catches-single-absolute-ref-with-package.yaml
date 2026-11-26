@@ -5,7 +5,7 @@ sheets:
   - /org/eolang/lints/misc/redundant-object.xsl
 defects:
   - severity: warning
-    line: 7
+    line: 8
 input: |
   # Represents the current operating system.
 
@@ -13,8 +13,9 @@ input: |
 
   [] > os
     name > @
-    name.contains "Linux" > is-linux
+    [] > family
+      ^.name.contains "Linux" > is-linux
     [] > name /Q.string
       ? > ^
 
-    os.is-linux ++> can-check-the-os-family
+    os.family.is-linux ++> can-check-the-os-family

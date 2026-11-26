@@ -5,9 +5,10 @@ sheets:
   - /org/eolang/lints/misc/redundant-object.xsl
 defects:
   - severity: warning
-    line: 2
+    line: 3
 input: |
-  [] > foo
-    52 > spb
-    [] > tx
-      ^.spb.plus 2 > @
+  [] > app
+    [] > foo
+      52 > spb
+      [] > tx
+        ^.spb.plus 2 > @

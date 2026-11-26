@@ -5,13 +5,14 @@ sheets:
   - /org/eolang/lints/misc/redundant-object.xsl
 asserts:
   - /defects[count(defect[@severity='warning'])=1]
-  - /defects/defect[@line='2']
+  - /defects/defect[@line='3']
   - /defects/defect[1][contains(., '"text" is redundant')]
 input: |
-  [] > phrase
-    "Object Thinking" > text
-    text.index-of " " > pos
+  [] > app
+    [] > phrase
+      "Object Thinking" > text
+      text.index-of " " > pos
 
-    pos.eq 6 +> can-find-space
+      pos.eq 6 +> can-find-space
 
-    pos.gt 0 +> can-find-anything
+      pos.gt 0 +> can-find-anything
