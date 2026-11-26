@@ -1,0 +1,21 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/misc/redundant-object.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=1]
+  - /defects/defect[@line='5' and contains(., '"empty"')]
+input: |
+  # A cell that knows whether it holds zero.
+
+  [] > app
+    [x] > cell
+      x.eq 0 >> empty
+      empty.if > @
+        "zero"
+        "other"
+    cell 0 > c
+    c.empty.if > @
+      c
+      "?"
