@@ -119,7 +119,24 @@ final class VocabularyTest {
             "can-scan-a-complex-integer",
             "can-floor-a-negative-fraction",
             "can-round-to-the-last-place",
-            "can-map-values"
+            "can-map-values",
+            "can-align-bytes-to-the-left",
+            "can-clamp-a-negative-index-to-the-front-without-duplicating",
+            "can-concat-two-empty-bytes",
+            "can-delete-an-already-absent-directory",
+            "can-equal-float-zero-to-integer-zero",
+            "can-filter-by-index",
+            "can-format-ordered-numbered-substitutions",
+            "can-iterate-over-a-list",
+            "can-lower-case-text",
+            "can-lower-case-dotted-and-dotless-i",
+            "can-multiply-by-zero",
+            "can-negate-a-negative",
+            "can-print-a-very-long-string",
+            "can-recurse-without-arguments",
+            "can-retry-tmpfile-creation-after-a-collision",
+            "can-scan-what-printf-wrote",
+            "can-truncate-a-negative-fraction"
         }
     )
     void recognizesVerbName(final String name) throws IOException {
