@@ -42,11 +42,25 @@ final class Vocabulary {
     private static final Collection<String> MODALS = Collections.singletonList("can");
 
     /**
-     * Tags a word right after a modal may carry to be taken as a verb,
-     * since the model often tags a bare infinitive such as "print" or
-     * "floor" as a noun, while nothing but a verb may follow a modal.
+     * Tags a word right after a modal may carry to be taken as a verb.
+     *
+     * <p>Nothing but a base-form verb may follow a modal, yet the model
+     * often tags a bare infinitive such as "print" or "floor" as a noun
+     * ({@code NN}, {@code NNS}) or as a present verb ({@code VBP}), and
+     * tags words missing from its vocabulary, such as "concat" or
+     * "multiply", as a quotation mark ({@code ``}).</p>
      */
-    private static final Collection<String> INFINITIVES = Arrays.asList("VB", "NN", "NNS");
+    private static final Collection<String> INFINITIVES = Arrays.asList(
+        "VB", "VBP", "NN", "NNS", "``"
+    );
+
+    /**
+     * Subjects to put in front of a modal, since the model tags the word
+     * after it differently depending on the subject, e.g. "lower" is a
+     * verb in "It can lower case text", but an adjective in "You can lower
+     * case text", while "equal" is a verb only in "We can equal zero".
+     */
+    private static final Collection<String> SUBJECTS = Arrays.asList("You", "It", "We");
 
     /**
      * Part-Of-Speech tagger.
@@ -94,9 +108,11 @@ final class Vocabulary {
      * first word must be tagged {@code VBZ} (verb, 3rd-person singular present).
      * When the first word is the modal "can", the "You can [verb]" rule applies
      * instead: "You can add-report" -> the second word must be tagged
-     * {@code VB} (verb, base form), {@code NN} or {@code NNS}, since a modal
-     * is never itself conjugated in the third person, and the model tags
-     * verbs like "format" or "round" right only after "You can".</p>
+     * {@code VB} (verb, base form), {@code VBP}, {@code NN}, {@code NNS}
+     * or {@code ``} (a word unknown to the model), since a modal is never
+     * itself conjugated in the third person. The rule is tried with "You",
+     * "It" and "We" as subjects, and holds if any of them satisfies it,
+     * because the model tags the same verb differently after them.</p>
      *
      * @param name Kebab-case name without any leading {@code +} sigil
      * @return True if the name starts with a verb, plain or after a modal
@@ -109,7 +125,9 @@ final class Vocabulary {
                 .toArray(String[]::new);
             final boolean verb;
             if (words.length > 1 && Vocabulary.MODALS.contains(words[0])) {
-                verb = Vocabulary.INFINITIVES.contains(this.tags("You", words)[2]);
+                verb = Vocabulary.SUBJECTS.stream().anyMatch(
+                    subj -> Vocabulary.INFINITIVES.contains(this.tags(subj, words)[2])
+                );
             } else {
                 verb = "VBZ".equals(this.tags("It", words)[1]);
             }
