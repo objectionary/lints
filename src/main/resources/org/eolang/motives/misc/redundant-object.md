@@ -83,3 +83,23 @@ Only an attribute bound with `>>` is private and may be inlined:
 
   (flags.create.plus flags.append).eq 72 ++> combines-flags
 ```
+
+An attribute of a nested formation is *not* reported either, when its name
+is read through an object that is not a formation, such as `c.empty` below.
+The lint can't tell which formation `c` stands for, so it assumes the
+reference may read any attribute named `empty`, unless it is bound with `>>`:
+
+```eo
+# A cell that knows whether it holds zero.
+
+[] > app
+  [x] > cell
+    x.eq 0 > empty
+    empty.if > shown
+      "zero"
+      "other"
+  cell 0 > c
+  c.empty.if > @
+    c.shown
+    "?"
+```

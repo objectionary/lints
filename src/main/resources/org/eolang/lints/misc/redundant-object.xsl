@@ -31,7 +31,10 @@
   first name is an attribute of "owner", and when that attribute is a
   formation, the next name is an attribute of that formation, and so on.
   So "size.width" reaches both the "size" of "owner" and the "width" of
-  the formation "size".
+  the formation "size". When the attribute is not a formation, e.g. an
+  application such as "cell 0 > c", the lint can't tell which formation
+  "c.empty" lands in, so the next name is reached by dispatch: it may
+  read any attribute named "empty", see "eo:dispatched".
   -->
   <xsl:function name="eo:chain" as="xs:string*">
     <xsl:param name="owner" as="element()?"/>
@@ -40,11 +43,27 @@
       <xsl:sequence select="eo:attribute($owner, $names[1])"/>
       <xsl:if test="exists($names[2])">
         <xsl:variable name="inner" select="$owner/o[@name = $names[1] and not(@base)][1]"/>
-        <xsl:if test="exists($inner)">
-          <xsl:sequence select="eo:chain($inner, subsequence($names, 2))"/>
-        </xsl:if>
+        <xsl:choose>
+          <xsl:when test="exists($inner)">
+            <xsl:sequence select="eo:chain($inner, subsequence($names, 2))"/>
+          </xsl:when>
+          <xsl:when test="exists($owner/o[@name = $names[1]])">
+            <xsl:sequence select="eo:dispatched($names[2])"/>
+          </xsl:when>
+        </xsl:choose>
       </xsl:if>
     </xsl:if>
+  </xsl:function>
+  <!--
+  Any attribute named "name", in whatever formation, as a key: a reference
+  that dispatches "name" on an object which is not a formation may land in
+  any of them. Such an attribute may not be inlined, since the reference
+  can't be rewritten to reach the inlined object. Only an attribute bound
+  with "&gt;&gt;" is out of its reach.
+  -->
+  <xsl:function name="eo:dispatched" as="xs:string">
+    <xsl:param name="name" as="xs:string?"/>
+    <xsl:sequence select="concat('. ', $name)"/>
   </xsl:function>
   <!--
   The attributes a reference reaches. "ξ.total" reaches the "total" of the
@@ -93,11 +112,12 @@
       -->
       <xsl:for-each select="//o[generate-id() != $top and not(parent::o[generate-id() = $top] and not(@local)) and @name and @name != 'φ' and @base and @base != '∅' and not(@base='ξ' and @name='xi🌵') and not(eo:test-name(@name))]">
         <xsl:variable name="refs" select="key('references', eo:declared(.))"/>
+        <xsl:variable name="dispatched" select="not(@local) and exists(key('references', eo:dispatched(@name)))"/>
         <xsl:variable name="in-recursive" select="some $r in $refs, $f in $r/ancestor::o[@name and not(@base)] satisfies exists(key('references', eo:declared($f)) intersect $f/descendant::o)"/>
         <xsl:variable name="self-alias-crosses-formation" select="@base = 'ξ' and (some $r in $refs satisfies matches($r/@base, '^ξ\.ρ\.'))"/>
         <xsl:variable name="candidate-name" select="@name"/>
         <xsl:variable name="self-used-via-chained-dot" select="@base = 'ξ' and exists(//o[@base = concat('.', $candidate-name)])"/>
-        <xsl:if test="count($refs)=1 and not(@name and o[1]/@base = 'Φ.dataized') and not($in-recursive) and not($self-alias-crosses-formation) and not($self-used-via-chained-dot)">
+        <xsl:if test="count($refs)=1 and not(@name and o[1]/@base = 'Φ.dataized') and not($in-recursive) and not($self-alias-crosses-formation) and not($self-used-via-chained-dot) and not($dispatched)">
           <xsl:element name="defect">
             <xsl:variable name="line" select="eo:lineno(@line)"/>
             <xsl:attribute name="line">
