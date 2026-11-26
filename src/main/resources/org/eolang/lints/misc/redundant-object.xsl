@@ -86,8 +86,12 @@
       A unit test written as an application, such as "pos.eq 6 +> works",
       carries a base just like an ordinary named application, but nothing
       ever refers to a test by its name, so it may not be inlined anywhere.
+      An attribute of the top object, unless bound with "&gt;&gt;", is a part
+      of its public interface: other programs may read it, which the lint
+      can't see, so it may not be inlined either, even if its own file reads
+      it once.
       -->
-      <xsl:for-each select="//o[generate-id() != $top and @name and @name != 'φ' and @base and @base != '∅' and not(@base='ξ' and @name='xi🌵') and not(eo:test-name(@name))]">
+      <xsl:for-each select="//o[generate-id() != $top and not(parent::o[generate-id() = $top] and not(@local)) and @name and @name != 'φ' and @base and @base != '∅' and not(@base='ξ' and @name='xi🌵') and not(eo:test-name(@name))]">
         <xsl:variable name="refs" select="key('references', eo:declared(.))"/>
         <xsl:variable name="in-recursive" select="some $r in $refs, $f in $r/ancestor::o[@name and not(@base)] satisfies exists(key('references', eo:declared($f)) intersect $f/descendant::o)"/>
         <xsl:variable name="self-alias-crosses-formation" select="@base = 'ξ' and (some $r in $refs satisfies matches($r/@base, '^ξ\.ρ\.'))"/>
