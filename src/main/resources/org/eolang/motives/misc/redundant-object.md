@@ -24,6 +24,12 @@ Correct:
     52.plus 2 > @
 ```
 
+The lint also skips an object declared outside a formation with void
+attributes when its single reference occurs inside that formation. For
+example, a mapper may read a value from its enclosing scope for each item.
+Inlining the value into the mapper would rebuild it for every application.
+A reference within the declaration's own formation does not cross that boundary.
+
 An object referenced a single time is *not* redundant when that lone reference
 sits inside a recursive formation. Syntactically the name is mentioned once, but
 at runtime each step of the recursion evaluates it anew, and the named attribute lets

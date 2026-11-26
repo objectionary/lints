@@ -12,6 +12,6 @@ input: |
   [] > app
     [] > foo
       52 > spb
-      [n] > bar
-        ^.spb.plus n > @
-      bar 2 > @
+      [] > bar
+        ^.spb.plus 2 > @
+      bar > @
