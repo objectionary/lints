@@ -1,6 +1,7 @@
 # Excessive void attributes
 
 Objects must have at most **5** void attributes.
+The receiver `^` is not counted, even when declared explicitly.
 
 Incorrect:
 
@@ -13,5 +14,12 @@ Correct:
 
 ```eo
 [a b c d e] > with-ok
+  something > @
+```
+
+Also correct, since `^` is the receiver, not an argument:
+
+```eo
+[^ a b c d e] > with-receiver
   something > @
 ```
