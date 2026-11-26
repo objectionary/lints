@@ -11,7 +11,7 @@ input: |
   # The area of a rectangle.
 
   [] > app
-    [] > size
+    [] >> size
       3 > width
       4 > height
     size.width.times size.height > @

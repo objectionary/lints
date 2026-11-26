@@ -8,7 +8,7 @@ defects:
     line: 3
 input: |
   [] > app
-    [] > foo
+    [] >> foo
       52 > bar
       x. > @
         bar.plus 2

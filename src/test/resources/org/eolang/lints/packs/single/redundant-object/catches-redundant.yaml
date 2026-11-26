@@ -8,6 +8,6 @@ defects:
     line: 3
 input: |
   [] > foo
-    [] > bar
+    [] >> bar
       52 > spb
       spb.plus 2 > @

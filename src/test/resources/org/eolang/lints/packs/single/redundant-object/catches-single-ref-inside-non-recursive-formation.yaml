@@ -10,7 +10,7 @@ asserts:
   - /defects/defect[1][normalize-space()='The object "spb" is redundant and may be inlined']
 input: |
   [] > app
-    [] > foo
+    [] >> foo
       52 > spb
       [n] > bar
         ^.spb.plus n > @

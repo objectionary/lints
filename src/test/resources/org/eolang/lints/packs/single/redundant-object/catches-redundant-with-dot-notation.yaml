@@ -10,7 +10,7 @@ defects:
     line: 7
 input: |
   [] > app
-    [] > foo
+    [] >> foo
       and. > @
         str.length.eq 12
         py.as-bytes.size.eq 16

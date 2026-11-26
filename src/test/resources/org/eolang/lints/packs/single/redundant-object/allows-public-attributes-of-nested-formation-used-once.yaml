@@ -1,0 +1,13 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/misc/redundant-object.xsl
+defects: 0
+input: |
+  # The C structure of an address.
+
+  [] > net
+    [host] > address
+      00-00-00-00 > padding
+      host.size.plus padding.size > size

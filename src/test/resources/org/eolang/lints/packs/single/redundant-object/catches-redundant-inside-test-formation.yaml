@@ -1,0 +1,17 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/misc/redundant-object.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=1]
+  - /defects/defect[contains(., '"expected"')]
+input: |
+  # The number fifty-two.
+
+  [] > num
+    52 > @
+
+  [] +> equals-to-itself
+    52 > expected
+    num.eq expected > @

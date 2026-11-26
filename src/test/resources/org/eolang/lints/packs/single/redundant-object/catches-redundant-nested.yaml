@@ -10,7 +10,7 @@ asserts:
   - /defects/defect[1][normalize-space()='The object "xo" is redundant and may be inlined']
 input: |
   [] > app
-    [] > foo
+    [] >> foo
       52 > xo
       f > @
         a

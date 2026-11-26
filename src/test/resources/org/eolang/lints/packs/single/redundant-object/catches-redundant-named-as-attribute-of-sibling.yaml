@@ -9,10 +9,10 @@ asserts:
   - /defects/defect[@line='7']
 input: |
   [] > shop
-    [price qty] > line
+    [price qty] >> line
       total.times 1.2 > @
       price.times qty > total
-    [items] > order
+    [items] >> order
       total.times 0.9 > @
       items.reduced > total
         0

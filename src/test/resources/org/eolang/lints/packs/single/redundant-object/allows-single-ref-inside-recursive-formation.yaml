@@ -6,11 +6,12 @@ sheets:
   - /org/eolang/lints/misc/redundant-object.xsl
 defects: 0
 input: |
-  [point] > series
-    point.times point > squared
-    poly 30 > @
-    [n] > poly
-      if. > @
-        n.eq 0
-        0
-        ^.squared.plus (^.poly (n.minus 1))
+  [] > app
+    [point] >> series
+      point.times point > squared
+      poly 30 > @
+      [n] > poly
+        if. > @
+          n.eq 0
+          0
+          ^.squared.plus (^.poly (n.minus 1))

@@ -8,7 +8,7 @@ defects:
     line: 6
 input: |
   [bts] > bytes-as-input
-    [size] > read
+    [size] >> read
       ((input-block ^.bts --).read size).selfish > @
       [data buffer] > input-block
         self > @
