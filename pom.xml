@@ -71,8 +71,10 @@
     <skipITs/>
     <!-- This is the flag that allows to skip all tests -->
     <skipTests/>
-    <!-- Pinned objectionary/home tag; keep in sync with the eo-parser version below -->
-    <home.version>0.63.5</home.version>
+    <!-- Version of eo-parser; Renovate bumps it as soon as a new EO is released -->
+    <eo.version>0.63.5</eo.version>
+    <!-- Pinned objectionary/home tag; it is released after EO, so bump it manually once the tag exists -->
+    <home.version>0.63.4</home.version>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -185,7 +187,7 @@
     <dependency>
       <groupId>org.eolang</groupId>
       <artifactId>eo-parser</artifactId>
-      <version>${home.version}</version>
+      <version>${eo.version}</version>
       <!-- Our XSL sheets import /org/eolang/parser/_funcs.xsl from this JAR, so it is needed at runtime, but no main Java code references it -->
       <scope>runtime</scope>
       <exclusions>
