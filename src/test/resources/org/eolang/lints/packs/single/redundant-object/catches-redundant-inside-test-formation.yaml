@@ -12,6 +12,6 @@ input: |
   [] > num
     52 > @
 
-  [] +> equals-to-itself
-    52 > expected
-    num.eq expected > @
+    [] +> equals-to-itself
+      52 > expected
+      num.eq expected > @
