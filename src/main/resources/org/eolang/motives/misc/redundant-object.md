@@ -78,7 +78,8 @@ Only an attribute bound with `>>` is private and may be inlined:
 # Flags of the open system call.
 
 [] > flags
-  1 > wronly
+  64 > create
   8 > append
-  (wronly.plus append).eq 9 ++> combines-flags
+
+  (flags.create.plus flags.append).eq 72 ++> combines-flags
 ```

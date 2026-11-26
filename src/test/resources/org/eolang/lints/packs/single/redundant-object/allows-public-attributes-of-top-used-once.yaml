@@ -5,8 +5,8 @@ sheets:
   - /org/eolang/lints/misc/redundant-object.xsl
 defects: 0
 input: |
-  # Flags of the open system call.
   [] > flags
-    1 > wronly
+    64 > create
     8 > append
-    (wronly.plus append).eq 9 ++> combines-flags
+
+    (flags.create.plus flags.append).eq 72 ++> combines-flags

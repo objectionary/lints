@@ -8,11 +8,11 @@ asserts:
   - /defects/defect[@line='3']
   - /defects/defect[1][contains(., '"text" is redundant')]
 input: |
-  [] > app
-    [] > phrase
+  [] > phrase
+    [] > pos
       "Object Thinking" > text
-      text.index-of " " > pos
+      text.index-of " " > @
 
-      pos.eq 6 +> can-find-space
+    pos.eq 6 +> can-find-space
 
-      pos.gt 0 +> can-find-anything
+    pos.gt 0 +> can-find-anything
