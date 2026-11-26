@@ -97,6 +97,17 @@
     <xsl:param name="o" as="element()"/>
     <xsl:sequence select="eo:attribute($o/ancestor::o[not(@base)][1], $o/@name)"/>
   </xsl:function>
+  <!--
+  TRUE if the attribute is reachable by name from other programs: neither
+  it nor any formation around it, up to the top object, is bound with
+  "&gt;&gt;", and each of those formations is named and is not a test,
+  as "padding" in "net.address.padding". An anonymous formation gets an
+  automatic name, such as "a🌵5-4", which no other program knows.
+  -->
+  <xsl:function name="eo:public" as="xs:boolean">
+    <xsl:param name="o" as="element()"/>
+    <xsl:sequence select="not($o/@local) and (every $a in $o/ancestor::o except $root/ancestor-or-self::o satisfies (not($a/@base) and $a/@name and not(contains($a/@name, '🌵')) and not($a/@local) and not(eo:test-name($a/@name))))"/>
+  </xsl:function>
   <xsl:key name="references" match="o[@base]" use="eo:reached(.)"/>
   <xsl:template match="/">
     <defects>
@@ -108,9 +119,12 @@
       An attribute of the top object, unless bound with "&gt;&gt;", is a part
       of its public interface: other programs may read it, which the lint
       can't see, so it may not be inlined either, even if its own file reads
-      it once.
+      it once. The same is true for an attribute of a nested formation, when
+      that formation and every formation around it, up to the top object,
+      are named, are not bound with "&gt;&gt;", and are not tests: other
+      programs reach it by name too, e.g. "net.address.padding".
       -->
-      <xsl:for-each select="//o[generate-id() != $top and not(parent::o[generate-id() = $top] and not(@local)) and @name and @name != 'φ' and @base and @base != '∅' and not(@base='ξ' and @name='xi🌵') and not(eo:test-name(@name))]">
+      <xsl:for-each select="//o[generate-id() != $top and not(eo:public(.)) and @name and @name != 'φ' and @base and @base != '∅' and not(@base='ξ' and @name='xi🌵') and not(eo:test-name(@name))]">
         <xsl:variable name="refs" select="key('references', eo:declared(.))"/>
         <xsl:variable name="dispatched" select="not(@local) and exists(key('references', eo:dispatched(@name)))"/>
         <xsl:variable name="in-recursive" select="some $r in $refs, $f in $r/ancestor::o[@name and not(@base)] satisfies exists(key('references', eo:declared($f)) intersect $f/descendant::o)"/>

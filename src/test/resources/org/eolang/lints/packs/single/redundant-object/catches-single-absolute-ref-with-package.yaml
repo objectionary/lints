@@ -13,7 +13,7 @@ input: |
 
   [] > os
     name > @
-    [] > family
+    [] >> family
       ^.name.contains "Linux" > is-linux
     [] > name /Q.string
       ? > ^

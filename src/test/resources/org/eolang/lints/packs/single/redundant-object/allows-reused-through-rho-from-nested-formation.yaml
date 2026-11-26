@@ -6,7 +6,7 @@ sheets:
 defects: 0
 input: |
   [] > shop
-    [price qty] > line
+    [price qty] >> line
       total.times 1.2 > @
       price.times qty > total
       [rate] > taxed

@@ -9,7 +9,7 @@ Incorrect:
 # Foo.
 
 [] > foo
-  [] > bar
+  [] >> bar
     52 > spb
     spb.plus 2 > @
 ```
@@ -20,7 +20,7 @@ Correct:
 # Foo.
 
 [] > foo
-  [] > bar
+  [] >> bar
     52.plus 2 > @
 ```
 
@@ -84,6 +84,23 @@ Only an attribute bound with `>>` is private and may be inlined:
   (flags.create.plus flags.append).eq 72 ++> combines-flags
 ```
 
+The same holds for an attribute of a nested formation, when that formation
+and every formation around it, up to the top object, are named, are not
+bound with `>>`, and are not tests. Other programs read `net.address.padding`
+just as they read `net.address`, so `padding` is *not* reported:
+
+```eo
+# The C structure of an address.
+
+[] > net
+  [host] > address
+    00-00-00-00 > padding
+    host.size.plus padding.size > size
+```
+
+Once any formation on that path is bound with `>>`, or is anonymous,
+its attributes are private again and may be inlined.
+
 An attribute of a nested formation is *not* reported either, when its name
 is read through an object that is not a formation, such as `c.empty` below.
 The lint can't tell which formation `c` stands for, so it assumes the
@@ -93,7 +110,7 @@ reference may read any attribute named `empty`, unless it is bound with `>>`:
 # A cell that knows whether it holds zero.
 
 [] > app
-  [x] > cell
+  [x] >> cell
     x.eq 0 > empty
     empty.if > shown
       "zero"

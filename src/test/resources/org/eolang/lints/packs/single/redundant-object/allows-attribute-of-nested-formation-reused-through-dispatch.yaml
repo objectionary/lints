@@ -8,7 +8,7 @@ input: |
   # A cell that knows whether it holds zero.
 
   [] > app
-    [x] > cell
+    [x] >> cell
       x.eq 0 > empty
       empty.if > shown
         "zero"

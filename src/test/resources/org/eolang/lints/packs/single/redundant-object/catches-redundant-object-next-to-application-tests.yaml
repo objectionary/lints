@@ -9,7 +9,7 @@ asserts:
   - /defects/defect[1][contains(., '"text" is redundant')]
 input: |
   [] > phrase
-    [] > pos
+    [] >> pos
       "Object Thinking" > text
       text.index-of " " > @
 

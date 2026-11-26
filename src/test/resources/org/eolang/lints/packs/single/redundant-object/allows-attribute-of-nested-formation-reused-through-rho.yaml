@@ -8,7 +8,7 @@ input: |
   # A number that never goes over a limit.
 
   [n] > clamped
-    [] > limits
+    [] >> limits
       100 > max
     [x] > clamp
       if. > @

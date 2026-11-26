@@ -8,7 +8,7 @@ input: |
   # The area and the perimeter of a rectangle.
 
   [] > app
-    [] > size
+    [] >> size
       3 > width
       4 > height
     seq * > @
