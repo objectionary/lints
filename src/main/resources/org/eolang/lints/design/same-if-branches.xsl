@@ -7,6 +7,7 @@
   <xsl:import href="/org/eolang/funcs/lineno.xsl"/>
   <xsl:import href="/org/eolang/funcs/escape.xsl"/>
   <xsl:import href="/org/eolang/funcs/defect-context.xsl"/>
+  <xsl:import href="/org/eolang/funcs/void-name.xsl"/>
   <xsl:output encoding="UTF-8" method="xml"/>
   <!--
   TRUE when the two objects have the same structure: the same base, the
@@ -24,28 +25,29 @@
     <xsl:sequence select="((not($a/@base) and not($b/@base)) or string($a/@base) = string($b/@base)) and ((not($a/@name) and not($b/@name)) or string($a/@name) = string($b/@name)) and count($kids-a) = count($kids-b) and (count($kids-a) &gt; 0 or normalize-space($a) = normalize-space($b)) and (every $i in 1 to count($kids-a) satisfies (string($kids-a[$i]/@as) = string($kids-b[$i]/@as) and eo:same($kids-a[$i], $kids-b[$i])))"/>
   </xsl:function>
   <!--
-  An "if" whose two branches, "α0" (taken when the condition is true) and
-  "α1" (taken when it is false), run exactly the same code makes the
-  condition pointless: the result is the same either way. The shared code
-  should be moved above the "if" instead of being duplicated in both
-  branches.
+  The branches of an "if" can be passed positionally ("α0" and "α1") or
+  by name ("left" and "right"). Compare the code after finding both branches.
   -->
   <xsl:template match="/">
     <defects>
-      <xsl:for-each select="//o[ends-with(@base, '.if') and o[@as='α0'] and o[@as='α1'] and eo:same(o[@as='α0'], o[@as='α1'])]">
-        <defect>
-          <xsl:variable name="line" select="eo:lineno(@line)"/>
-          <xsl:attribute name="line">
-            <xsl:value-of select="$line"/>
-          </xsl:attribute>
-          <xsl:if test="$line = '0'">
-            <xsl:attribute name="context">
-              <xsl:value-of select="eo:defect-context(.)"/>
+      <xsl:for-each select="//o[ends-with(@base, '.if')]">
+        <xsl:variable name="left" select="o[eo:void-title(@as) = ('α0', 'left')]"/>
+        <xsl:variable name="right" select="o[eo:void-title(@as) = ('α1', 'right')]"/>
+        <xsl:if test="if (count($left) = 1 and count($right) = 1) then eo:same($left, $right) else false()">
+          <defect>
+            <xsl:variable name="line" select="eo:lineno(@line)"/>
+            <xsl:attribute name="line">
+              <xsl:value-of select="$line"/>
             </xsl:attribute>
-          </xsl:if>
-          <xsl:attribute name="severity">warning</xsl:attribute>
-          <xsl:text>The two branches of this "if" run the same code, move it above the "if" instead</xsl:text>
-        </defect>
+            <xsl:if test="$line = '0'">
+              <xsl:attribute name="context">
+                <xsl:value-of select="eo:defect-context(.)"/>
+              </xsl:attribute>
+            </xsl:if>
+            <xsl:attribute name="severity">warning</xsl:attribute>
+            <xsl:text>The two branches of this "if" run the same code, move it above the "if" instead</xsl:text>
+          </defect>
+        </xsl:if>
       </xsl:for-each>
     </defects>
   </xsl:template>
