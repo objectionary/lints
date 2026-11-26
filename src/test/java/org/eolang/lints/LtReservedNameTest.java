@@ -93,7 +93,7 @@ final class LtReservedNameTest {
             ).defects(
                 new EoProgram(
                     "reserved-void",
-                    new InputOf("[true] > choice\n  true > @\n")
+                    new InputOf(String.format("[true] > choice%n  true > @%n"))
                 ).parse()
             ).stream().map(Defect::text).collect(Collectors.toList()),
             Matchers.contains(
@@ -111,7 +111,7 @@ final class LtReservedNameTest {
             ).defects(
                 new EoProgram(
                     "unreserved-void",
-                    new InputOf("[flag] > choice\n  flag > @\n")
+                    new InputOf(String.format("[flag] > choice%n  flag > @%n"))
                 ).parse()
             ),
             Matchers.empty()
