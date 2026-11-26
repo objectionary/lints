@@ -3,9 +3,9 @@
 ---
 sheets:
   - /org/eolang/lints/misc/redundant-object.xsl
-defects:
-  - severity: warning
-    line: 2
+defects: 0
 input: |
-  [] > foo
-    52 > spb
+  # A point at three and four.
+  [] > point
+    3 > x
+    4 > y

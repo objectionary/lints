@@ -11,5 +11,5 @@ input: |
     [size] > read
       ((input-block ^.bts --).read size).selfish > @
       [data buffer] > input-block
-        buffer > @
+        self > @
         $ > self

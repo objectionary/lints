@@ -54,3 +54,15 @@ reference would change what it points to:
   [] > say-hello
     stdout ^.self > @
 ```
+
+An object that is never referenced in the program is *not* reported either,
+since there is nowhere to inline it. Such an object may be a part of the
+interface of its formation, read by other programs, which the lint can't see:
+
+```eo
+# A point at three and four.
+
+[] > point
+  3 > x
+  4 > y
+```
