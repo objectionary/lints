@@ -1,0 +1,27 @@
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>lints</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="shortcut icon" href="https://www.yegor256.com/images/books/elegant-objects/cactus.png"/><link href="https://cdn.jsdelivr.net/npm/tacit-css@1.9.7/dist/tacit-css.min.css" rel="stylesheet" integrity="sha384-D/LLHCkqHnoJ7y04sSEBX95s7wMjBn45wtHneRfp03QBgt6+a6Pz2eLUC4N1CAI0" crossorigin="anonymous"/>
+</head>
+<body><section><article>
+<h1 id="broken-alias-second-part">Broken alias (second part)</h1>
+<p>The second part of the <code>+alias</code> meta must contain the
+fully qualified name (FQN) of the object. Here is an example in EO:</p>
+<pre class="eo"><code># Basic object.
+
++alias stdout org.eolang.io.stdout
+
+[] &gt; foo
+  stdout &gt; @
+    &quot;Hello, world!\n&quot;</code></pre>
+<p>Here, the <code>org.eolang.io.stdout</code> part of the
+<code>+alias</code> meta is the FQN of the object later in the code
+referred to as <code>stdout</code>.</p>
+<p>The EO parser already rejects a <code>+alias</code> target that is
+not made of object names, so this defect shows up in <a
+href="https://news.eolang.org/2022-11-25-xmir-guide.html">XMIR</a>
+produced by other tools.</p>
+<p>Published on Thu Nov 26 16:49:31 UTC 2026.</p>
+</article></section></body></html>
