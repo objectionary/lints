@@ -127,11 +127,13 @@
       <xsl:for-each select="//o[generate-id() != $top and not(eo:public(.)) and @name and @name != 'φ' and @base and @base != '∅' and not(@base='ξ' and @name='xi🌵') and not(eo:test-name(@name))]">
         <xsl:variable name="refs" select="key('references', eo:declared(.))"/>
         <xsl:variable name="dispatched" select="not(@local) and exists(key('references', eo:dispatched(@name)))"/>
+        <xsl:variable name="outside" select="ancestor::o"/>
+        <xsl:variable name="in-applied-formation" select="some $r in $refs satisfies exists(($r/ancestor::o except $outside)[not(@base) and o[@base='∅']])"/>
         <xsl:variable name="in-recursive" select="some $r in $refs, $f in $r/ancestor::o[@name and not(@base)] satisfies exists(key('references', eo:declared($f)) intersect $f/descendant::o)"/>
         <xsl:variable name="self-alias-crosses-formation" select="@base = 'ξ' and (some $r in $refs satisfies matches($r/@base, '^ξ\.ρ\.'))"/>
         <xsl:variable name="candidate-name" select="@name"/>
         <xsl:variable name="self-used-via-chained-dot" select="@base = 'ξ' and exists(//o[@base = concat('.', $candidate-name)])"/>
-        <xsl:if test="count($refs)=1 and not(@name and o[1]/@base = 'Φ.dataized') and not($in-recursive) and not($self-alias-crosses-formation) and not($self-used-via-chained-dot) and not($dispatched)">
+        <xsl:if test="count($refs)=1 and not(@name and o[1]/@base = 'Φ.dataized') and not($in-recursive) and not($in-applied-formation) and not($self-alias-crosses-formation) and not($self-used-via-chained-dot) and not($dispatched)">
           <xsl:element name="defect">
             <xsl:variable name="line" select="eo:lineno(@line)"/>
             <xsl:attribute name="line">
