@@ -11,7 +11,7 @@
   <xsl:variable name="max" select="5"/>
   <xsl:template match="/">
     <defects>
-      <xsl:for-each-group select="//o[@name and @base='∅' and not(o)]" group-by="generate-id(..)">
+      <xsl:for-each-group select="//o[@name and @name!='ρ' and @base='∅' and not(o)]" group-by="generate-id(..)">
         <xsl:if test="count(current-group()) &gt; $max">
           <xsl:for-each select="current-group()[1]/..">
             <xsl:element name="defect">
