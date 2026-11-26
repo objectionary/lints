@@ -5,7 +5,6 @@ sheets:
   - /org/eolang/lints/misc/redundant-object.xsl
 defects: 0
 input: |
-  # A point at three and four.
   [] > point
     3 > x
     4 > y
