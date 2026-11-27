@@ -153,6 +153,50 @@ final class LtAsciiOnlyTest {
     }
 
     @Test
+    void reportsLineOfAbusiveCharacterInMultilineComment() throws IOException {
+        MatcherAssert.assertThat(
+            "The defect must point to the line of the comment with the abusive character",
+            new ListOf<>(
+                new LtAsciiOnly().defects(
+                    LtAsciiOnlyTest.program("# First line.", "# Second ü.", "# Third line.")
+                )
+            ).get(0).line(),
+            Matchers.equalTo(2)
+        );
+    }
+
+    @Test
+    void reportsPositionInsideLineOfComment() throws IOException {
+        MatcherAssert.assertThat(
+            "The position must be counted from the start of the line of the comment",
+            new ListOf<>(
+                new LtAsciiOnly().defects(
+                    LtAsciiOnlyTest.program("# Hello.", "#", "# Ab ü.")
+                )
+            ).get(0).text(),
+            Matchers.containsString("at the line no.3 at the position no.4")
+        );
+    }
+
+    @Test
+    void fallsBackToLineOfCommentWhenItDoesNotFit() throws IOException {
+        MatcherAssert.assertThat(
+            "When the comment has more lines than its @line allows, @line must be used",
+            new ListOf<>(
+                new LtAsciiOnly().defects(
+                    new XMLDocument(
+                        String.format(
+                            "<object><comments><comment line=\"1\">%s</comment></comments></object>",
+                            String.join(String.valueOf('\n'), "a", "b", "ü")
+                        )
+                    )
+                )
+            ).get(0).line(),
+            Matchers.equalTo(1)
+        );
+    }
+
+    @Test
     void hasExpectedName() {
         MatcherAssert.assertThat(
             "The rule name must be ascii-only",
