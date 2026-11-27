@@ -48,7 +48,14 @@
     name, such as "^.x" written right in the body of "[acc x]".
     -->
     <xsl:for-each select="$formation//o[starts-with(@base, 'ξ.ρ.')]">
-      <xsl:variable name="inner" select="count(ancestor::o[not(@base) and exists(. intersect $formation/descendant-or-self::o)]) - 1"/>
+      <!--
+      The formations between the reference and the checked one are the
+      ancestors of the reference that are not ancestors of the checked
+      formation too. Counting them this way takes the depth of the tree,
+      while intersecting every ancestor with the whole body of the
+      formation took its size, for every reference in it.
+      -->
+      <xsl:variable name="inner" select="count(ancestor::o[not(@base)]) - count($formation/ancestor::o[not(@base)]) - 1"/>
       <xsl:variable name="hops" select="eo:hops(@base)"/>
       <xsl:variable name="name" select="eo:base-to-name(@base)"/>
       <xsl:if test="$hops gt $inner or ($hops eq $inner and not(some $prefix in $allowed satisfies starts-with($name, $prefix)) and not($formation/o[@name = $name]))">
