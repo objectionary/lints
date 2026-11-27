@@ -11,7 +11,7 @@
   <xsl:key name="referenced-by-name" match="o[@base]" use="if (matches(@base, '^ξ(?:\.ρ)*\.')) then tokenize(replace(@base, '^ξ(?:\.ρ)*\.', ''), '\.')[1] else ''"/>
   <xsl:template match="/">
     <defects>
-      <xsl:for-each select="//o[@local and @name and not(@name='φ')]">
+      <xsl:for-each select="//o[@local and @name and not(@name='φ') and not(@base='∅')]">
         <xsl:variable name="parent" select="parent::o"/>
         <xsl:variable name="refs" select="key('referenced-by-name', @name)"/>
         <xsl:variable name="containers" select="$refs/ancestor::o[parent::o[generate-id() = generate-id($parent)]][1]"/>
