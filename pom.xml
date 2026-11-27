@@ -413,7 +413,7 @@
           <plugin>
             <groupId>org.eolang</groupId>
             <artifactId>hone-maven-plugin</artifactId>
-            <version>0.29.4</version>
+            <version>0.32.0</version>
             <executions>
               <execution>
                 <goals>
@@ -428,8 +428,6 @@
                   <skipOnWindows>true</skipOnWindows>
                   <grepIn>(66-69-6C-74-65-72|6D-61-70)</grepIn>
                   <excludes>
-                    <!-- Used as benchmark resource. -->
-                    <exclude>/target/classes/org/apache/hadoop/hdfs/server/namenode/FSNamesystem.class</exclude>
                     <exclude>/target/classes/org/eolang/lints/LtUnlintNonExistingDefect.class</exclude>
                   </excludes>
                 </configuration>
@@ -484,10 +482,6 @@
                     <class>org.eolang.lints.LtByXslTest</class>
                     <class>org.eolang.lints.LtTestNotVerbTest</class>
                   </excludedTestClasses>
-                  <excludedClasses>
-                    <!-- Used as benchmark resource. -->
-                    <class>org.apache.hadoop.hdfs.server.namenode.FSNamesystem</class>
-                  </excludedClasses>
                 </configuration>
               </execution>
             </executions>
@@ -869,7 +863,7 @@
         <executions>
           <execution>
             <id>unpack-hadoop-fsnamesystem</id>
-            <phase>process-classes</phase>
+            <phase>process-test-resources</phase>
             <goals>
               <goal>unpack</goal>
             </goals>
@@ -881,7 +875,7 @@
                   <version>3.5.0</version>
                   <type>jar</type>
                   <includes>org/apache/hadoop/hdfs/server/namenode/FSNamesystem.class</includes>
-                  <outputDirectory>${project.build.directory}/classes</outputDirectory>
+                  <outputDirectory>${project.build.directory}/test-classes</outputDirectory>
                 </artifactItem>
               </artifactItems>
             </configuration>

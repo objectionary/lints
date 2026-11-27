@@ -3,12 +3,17 @@
 ---
 sheets:
   - /org/eolang/lints/names/duplicate-as-attribute.xsl
-skip-errors: true
 asserts:
   - /defects[count(defect[@severity='warning'])=1]
   - >-
     /defects/defect[1][normalize-space()=
     'The object "tee" has duplicated @as attribute "x"']
   - /defects/defect[not(contains(text(), '🌵'))]
-input: |
-  t f1:x f2:x >> tee
+xml-reason: "0.63.5 rejects duplicate argument bindings at parse time"
+document: |
+  <object author="tests">
+    <o base="&#x3A6;.t" line="1" local="tee" name="a🌵1-0">
+      <o as="x" base="&#x3A6;.f1" line="1"/>
+      <o as="x" base="&#x3A6;.f2" line="1"/>
+    </o>
+  </object>
