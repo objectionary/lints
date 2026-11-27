@@ -3,13 +3,19 @@
 ---
 sheets:
   - /org/eolang/lints/names/duplicate-as-attribute.xsl
-skip-errors: true
 asserts:
   - /defects[count(defect[@severity='warning'])=1]
   - >-
     /defects/defect[1][normalize-space()=
     'The object "inner" has duplicated @as attribute "k"']
   - /defects/defect[not(contains(text(), '🌵'))]
-input: |
-  [] > outer
-    t f1:k f2:k >> inner
+xml-reason: "0.63.5 rejects duplicate argument bindings at parse time"
+document: |
+  <object author="tests">
+    <o line="1" name="outer">
+      <o base="&#x3A6;.t" line="2" local="inner" name="a🌵2-2">
+        <o as="k" base="&#x3A6;.f1" line="2"/>
+        <o as="k" base="&#x3A6;.f2" line="2"/>
+      </o>
+    </o>
+  </object>
