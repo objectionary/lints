@@ -1,0 +1,22 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/design/cyclomatic-complexity.xsl
+defects: 0
+input: |
+  [shifted subtrahend lead b1] > foo
+    0 > @
+    or. > carry
+      and.
+        shifted.and 80-00-00-00-00-00-00-00
+        subtrahend.and 80-00-00-00-00-00-00-00
+      and.
+        shifted.or 01-
+        subtrahend.xor 02-
+    lead.and E0- > m1
+    b1.and F0- > m2
+    lead.or 0F- > m3
+    b1.or 3F- > m4
+    lead.and (b1.or 01-) > m5
+    lead.and b1.as-bytes > m6
