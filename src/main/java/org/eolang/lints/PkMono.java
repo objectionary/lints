@@ -45,7 +45,7 @@ final class PkMono extends IterableEnvelope<Lint> {
 
     private static Iterable<Lint> build(final Iterable<Lint> lints) {
         final Iterable<Lint> cached = new Sticky<>(
-            new Mapped<Lint>(LtDfSticky::new, lints)
+            new Mapped<Lint>(lint -> new LtDfSticky(new LtThrottled(lint)), lints)
         );
         return new Joined<Lint>(
             new Mapped<Lint>(LtUnlint::new, cached),
