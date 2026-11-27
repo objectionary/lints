@@ -1,0 +1,14 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/misc/anemic-getter.xsl
+defects: 0
+input: |
+  [^ x] > chunk
+    [] > to-output
+      [] > write
+        ^.^.allocated.size > @
+      write > @
+    ^ > allocated
+    to-output > @
