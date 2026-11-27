@@ -3,9 +3,7 @@
 ---
 sheets:
   - /org/eolang/lints/design/unoptimizable-recursion.xsl
-defects:
-  - severity: warning
-    line: 6
+defects: 0
 input: |
   [] > app
     [n] > countdown

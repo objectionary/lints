@@ -1,0 +1,21 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/design/unoptimizable-recursion.xsl
+defects: 0
+input: |
+  [text] > repeated
+    rec-repeated text 5 > @
+    [text n] >> rec-repeated
+      if. > @
+        0.eq n
+        --
+        if.
+          0.eq
+            n.mod 2
+          twice
+          concat.
+            half.concat >> twice
+              ^.rec-repeated text (n.div 2).floor >> half!
+            text.as-bytes

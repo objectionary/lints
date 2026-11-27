@@ -3,14 +3,13 @@
 ---
 sheets:
   - /org/eolang/lints/design/unoptimizable-recursion.xsl
-defects:
-  - severity: warning
-    line: 7
+defects: 0
 input: |
-  [] > invoice
-    [n] > total
-      n.minus 1 > total
+  [] > app
+    [n] >> rec
+      rec (n.minus 1) > step
       if. > @
         n.lt 1
         0
-        n.plus (^.total total)
+        step
+    rec 5 > @

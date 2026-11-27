@@ -9,17 +9,44 @@
   <xsl:import href="/org/eolang/funcs/escape.xsl"/>
   <xsl:import href="/org/eolang/funcs/defect-context.xsl"/>
   <xsl:import href="/org/eolang/funcs/test-name.xsl"/>
-  <xsl:import href="/org/eolang/funcs/void-name.xsl"/>
   <xsl:output encoding="UTF-8" method="xml"/>
   <!--
+  Here and below up to "eo:cps" the functions repeat, nearly word by word,
+  the ones of "_recursion.xsl" and "recursion-to-cps.xsl" in
+  "eo-maven-plugin" (see objectionary/eo#5783), the two passes of the
+  compiler that turn the recursion of a nested formation into a loop. They
+  must stay in step with them, or this lint reports loops as recursion.
+  -->
+  <!--
+  The place of the object among the arguments of its parent, counted from
+  zero, or -1 when the object is no argument at all: every argument carries
+  an @as, either "α0" or the name of the void it fills, and the receiver
+  of a dispatch carries none.
+  -->
+  <xsl:function name="eo:arg" as="xs:integer">
+    <xsl:param name="o" as="element()"/>
+    <xsl:sequence select="if ($o/@as) then count($o/preceding-sibling::o[@as]) else -1"/>
+  </xsl:function>
+  <!--
+  May the dispatch be the ".if" of a "bool"? Not when its receiver, "ξ.ρ.w"
+  in "ξ.ρ.w.if" or the receiver of ".if", names a formation in this program
+  that declares an "if" of its own, which does not have to return its
+  argument as is.
+  -->
+  <xsl:function name="eo:choice" as="xs:boolean">
+    <xsl:param name="o" as="element()"/>
+    <xsl:variable name="receiver" select="if ($o/@base = '.if') then string($o/o[not(@as)][1]/@base) else replace($o/@base, '\.if$', '')"/>
+    <xsl:variable name="steps" select="tokenize($receiver, '\.')"/>
+    <xsl:sequence select="ends-with($o/@base, '.if') and not(matches($receiver, '^ξ(\.ρ)*\.[^.]+$') and exists($o/ancestor::o[not(@base)][count($steps) - 1]/o[not(@base) and @name = $steps[last()]]/o[@name = 'if']))"/>
+  </xsl:function>
+  <!--
   Is the object in a tail position of the expression rooted at $root? It is
-  when every step from $root down to it is one of two: a branch of an ".if",
-  which is an argument bound as α0/α1 or left/right, or the last element
-  of the tuple a "seq" is applied to, which is the α1 of the "Φ.tuple"
-  standing as the α0 of the "Φ.seq". Both answer exactly that element, so
-  the value of the whole expression is the value of the object whenever the
-  object is forced. The compiler checks these positions in "_recursion.xsl"
-  when deciding what to turn into a loop.
+  when every step from $root down to it is one of two: a branch of an ".if"
+  that may belong to a "bool", its first or second argument, or the last
+  element of the tuple a "seq" is applied to, which is the second argument
+  of the "Φ.tuple" standing as the first argument of the "Φ.seq". Both
+  answer exactly that element, so the value of the whole expression is the
+  value of the object whenever the object is forced.
   -->
   <xsl:function name="eo:tail" as="xs:boolean">
     <xsl:param name="o" as="element()"/>
@@ -32,14 +59,120 @@
       <xsl:when test="empty($parent)">
         <xsl:sequence select="false()"/>
       </xsl:when>
-      <xsl:when test="ends-with($parent/@base, '.if') and eo:void-title($o/@as) = ('α0', 'α1', 'left', 'right')">
+      <xsl:when test="eo:choice($parent) and eo:arg($o) = (0, 1)">
         <xsl:sequence select="eo:tail($parent, $root)"/>
       </xsl:when>
-      <xsl:when test="$parent/@base = 'Φ.tuple' and $parent/@as = 'α0' and $parent/parent::o/@base = 'Φ.seq' and $o/@as = 'α1'">
+      <xsl:when test="$parent/@base = 'Φ.tuple' and eo:arg($parent) = 0 and $parent/parent::o/@base = 'Φ.seq' and eo:arg($o) = 1">
         <xsl:sequence select="eo:tail($parent/parent::o, $root)"/>
       </xsl:when>
       <xsl:otherwise>
         <xsl:sequence select="false()"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:function>
+  <!-- How many "ρ" the reference climbs before it names anything: 2 for "ξ.ρ.ρ.x" -->
+  <xsl:function name="eo:hops" as="xs:integer">
+    <xsl:param name="base" as="xs:string"/>
+    <xsl:sequence select="if (starts-with($base, 'ξ')) then string-length(replace($base, '^ξ((\.ρ)*)(\..*)?$', '$1')) idiv 2 else 0"/>
+  </xsl:function>
+  <!--
+  The formation named at the head of the reference, "F" in "ξ.ρ.ρ.F" or in
+  "ξ.ρ.ρ.F.x": the attribute "F" of the formation as many hops above the
+  formation holding the reference as there are "ρ" in it.
+  -->
+  <xsl:function name="eo:formation" as="element()?">
+    <xsl:param name="ref" as="element()"/>
+    <xsl:variable name="base" select="string($ref/@base)"/>
+    <xsl:variable name="hops" select="eo:hops($base)"/>
+    <xsl:sequence select="if (matches($base, '^ξ(\.ρ)*\.[^.]')) then ($ref/ancestor::o[not(@base)][$hops + 1]/o[not(@base) and @name = tokenize($base, '\.')[$hops + 2]])[1] else ()"/>
+  </xsl:function>
+  <!--
+  The attribute of the formation $f the reference names at its head, "A"
+  in "ξ.A" from the scope of $f or in "ξ.ρ.A" from one formation below it.
+  -->
+  <xsl:function name="eo:attribute" as="element()?">
+    <xsl:param name="ref" as="element()"/>
+    <xsl:param name="f" as="element()"/>
+    <xsl:variable name="base" select="string($ref/@base)"/>
+    <xsl:variable name="hops" select="eo:hops($base)"/>
+    <xsl:sequence select="if (matches($base, '^ξ(\.ρ)*\.[^.]') and $ref/ancestor::o[not(@base)][$hops + 1] is $f) then ($f/o[@name = tokenize($base, '\.')[$hops + 2]])[1] else ()"/>
+  </xsl:function>
+  <!-- Every reference to the formation $f, however it is spelled -->
+  <xsl:function name="eo:refs" as="element()*">
+    <xsl:param name="f" as="element()"/>
+    <xsl:sequence select="$f/parent::o//o[@base][starts-with(@base, 'ξ') and matches(@base, concat('^ξ(\.ρ)*\.', $f/@name, '(\.|$)'))][eo:formation(.) is $f]"/>
+  </xsl:function>
+  <!--
+  The attributes of $f the nodes refer to, directly or through other
+  attributes, with $seen guarding against a cycle of attributes.
+  -->
+  <xsl:function name="eo:used" as="element()*">
+    <xsl:param name="nodes" as="element()*"/>
+    <xsl:param name="f" as="element()"/>
+    <xsl:param name="seen" as="element()*"/>
+    <xsl:variable name="attrs" select="(for $ref in $nodes/descendant-or-self::o[starts-with(@base, 'ξ')] return eo:attribute($ref, $f)) except ($seen, $nodes)"/>
+    <xsl:sequence select="$attrs, if (exists($attrs)) then eo:used($attrs, $f, ($seen, $attrs)) else ()"/>
+  </xsl:function>
+  <!--
+  The self-calls among $calls the nodes lead to: the ones among and below
+  them, and the ones inside the attributes of $f they use.
+  -->
+  <xsl:function name="eo:reach" as="element()*">
+    <xsl:param name="nodes" as="element()*"/>
+    <xsl:param name="f" as="element()"/>
+    <xsl:param name="calls" as="element()*"/>
+    <xsl:sequence select="($nodes, eo:used($nodes, $f, ()))/descendant-or-self::o intersect $calls"/>
+  </xsl:function>
+  <!-- The attributes of $f that lead to a self-call among $calls -->
+  <xsl:function name="eo:tainted" as="element()*">
+    <xsl:param name="f" as="element()"/>
+    <xsl:param name="calls" as="element()*"/>
+    <xsl:sequence select="$f/o[not(@name='φ') and not(@base='∅')][exists(eo:reach(., $f, $calls))]"/>
+  </xsl:function>
+  <!--
+  Why "recursion-to-cps.xsl" leaves the formation $f to recurse as it is,
+  instead of rewriting it into continuation-passing style, where every
+  self-call is a tail call and the recursion runs as a loop; or nothing,
+  when it rewrites it. These are the shapes its header lists as skipped,
+  except for a "λ" and a read of "φ", which the main template tells
+  before it gets here.
+  -->
+  <xsl:function name="eo:cps-obstacle" as="xs:string?">
+    <xsl:param name="f" as="element()"/>
+    <xsl:variable name="phi" select="$f/o[@name='φ' and @base]"/>
+    <xsl:variable name="calls" select="$f//o[@base = concat('ξ.ρ.', $f/@name)]"/>
+    <xsl:variable name="tainted" select="eo:tainted($f, $calls)"/>
+    <xsl:variable name="refs" select="eo:refs($f)"/>
+    <xsl:choose>
+      <xsl:when test="empty($f/parent::o) or empty($phi)">
+        <xsl:sequence select="'no self-call sits in a tail position'"/>
+      </xsl:when>
+      <xsl:when test="empty(eo:reach($phi, $f, $calls)[not(eo:tail(., $phi))]) or (some $a in $tainted satisfies empty($a intersect eo:used($phi, $f, ())))">
+        <xsl:sequence select="'the self-call is kept in an attribute that φ does not lead to'"/>
+      </xsl:when>
+      <xsl:when test="exists($phi/descendant-or-self::o[ends-with(@base, '.if') and not(eo:choice(.))][exists(eo:reach(., $f, $calls))])">
+        <xsl:sequence select="'the self-call sits under a choice by an object that may not be a boolean'"/>
+      </xsl:when>
+      <xsl:when test="exists($phi//o[@name][not(ancestor::o[not(@base)][. &gt;&gt; $phi])])">
+        <xsl:sequence select="'its φ binds a named attribute'"/>
+      </xsl:when>
+      <xsl:when test="some $call in $calls satisfies exists(eo:reach($call/o, $f, $calls))">
+        <xsl:sequence select="'a self-call sits inside the arguments of another self-call'"/>
+      </xsl:when>
+      <xsl:when test="some $call in $calls satisfies not(eo:formation($call) is $f)">
+        <xsl:sequence select="'a self-call sits inside a nested formation'"/>
+      </xsl:when>
+      <xsl:when test="some $ref in $refs satisfies (exists($ref/ancestor::o[. is $f]) and empty($ref intersect $calls))">
+        <xsl:sequence select="'a self-call sits inside a nested formation'"/>
+      </xsl:when>
+      <xsl:when test="some $ref in $refs satisfies not(matches($ref/@base, '^ξ(\.ρ)*\.[^.]+$'))">
+        <xsl:sequence select="'an attribute of the formation is taken without applying it'"/>
+      </xsl:when>
+      <xsl:when test="exists($tainted) and exists($refs[not(@as)]/parent::o[starts-with(@base, '.')])">
+        <xsl:sequence select="'it is the receiver of a dispatch while its self-call is kept in an attribute'"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:sequence select="()"/>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:function>
@@ -148,7 +281,9 @@
   <!--
   A nested formation that calls itself has its recursion turned into a Java
   loop, one copy of the object per step instead of one Java stack block, but
-  only when the compiler recognises the shape. When it does not, the program
+  only when the compiler recognises the shape: either a "^" self-call in a
+  tail position of φ, which "recursion-to-loop.xsl" handles, or a shape that
+  "recursion-to-cps.xsl" rewrites into tail calls first. When it does not, the program
   still runs, only deeper and slower, and nothing says so at the call site.
   We say it here.
   -->
@@ -164,7 +299,14 @@
         <xsl:variable name="loops" select="($root | $root//o)[eo:is-self-tail(string(@base), $name) and eo:tail(., $root)]"/>
         <xsl:variable name="direct" select="$calls[(some $n in $names satisfies eo:is-self-direct(string(@base), $n)) and eo:tail(., $root)]"/>
         <xsl:variable name="elsewhere" select="$calls except ($root/descendant-or-self::o)"/>
-        <xsl:variable name="self" select="exists($calls) and empty($loops)"/>
+        <xsl:variable name="recursive" select="exists($calls) and empty($loops)"/>
+        <!--
+        Only the "^" spelling is rewritten into continuation-passing style,
+        so a formation with a bare or "$" self-call keeps recursing.
+        -->
+        <xsl:variable name="rewritable" select="$recursive and empty(o[@name='λ']) and empty(.//o[contains(@base, 'φ')]) and (every $c in $calls satisfies $c/@base = concat('ξ.ρ.', $name))"/>
+        <xsl:variable name="obstacle" select="if ($rewritable) then eo:cps-obstacle(.) else ()" as="xs:string?"/>
+        <xsl:variable name="self" select="$recursive and not($rewritable and empty($obstacle))"/>
         <xsl:variable name="partner" select="if ($self) then () else eo:mutual(.)"/>
         <xsl:variable name="partners" select="($partner/@name, $partner/@local)/string()"/>
         <xsl:variable name="cross" select=".//o[ancestor::o[eo:abstract(.)][1] is current() and not(ancestor-or-self::o[eo:test-name(@name)]) and (some $n in $partners satisfies (@base = concat('ξ.ρ.', $n) or starts-with(@base, concat('ξ.ρ.', $n, '.'))))]"/>
@@ -201,6 +343,9 @@
               </xsl:when>
               <xsl:when test="exists($direct)">
                 <xsl:text>the self-call names the formation directly instead of through its receiver</xsl:text>
+              </xsl:when>
+              <xsl:when test="exists($obstacle)">
+                <xsl:value-of select="$obstacle"/>
               </xsl:when>
               <xsl:when test="exists($elsewhere)">
                 <xsl:text>the self-call is kept in an attribute other than φ</xsl:text>
