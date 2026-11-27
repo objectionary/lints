@@ -6,14 +6,15 @@ sheets:
   - /org/eolang/lints/misc/redundant-object.xsl
 asserts:
   - /defects[count(defect[@severity='warning'])=1]
-  - /defects/defect[@line='2']
+  - /defects/defect[@line='3']
   - /defects/defect[1][normalize-space()='The object "xo" is redundant and may be inlined']
 input: |
-  [] > foo
-    52 > xo
-    f > @
-      a
-      b
-      c
-        x.io
-          xo
+  [] > app
+    [] >> foo
+      52 > xo
+      f > @
+        a
+        b
+        c
+          x.io
+            xo

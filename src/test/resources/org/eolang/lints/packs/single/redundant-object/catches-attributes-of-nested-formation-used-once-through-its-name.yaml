@@ -1,0 +1,17 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/misc/redundant-object.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=2]
+  - /defects/defect[@line='5' and contains(., '"width"')]
+  - /defects/defect[@line='6' and contains(., '"height"')]
+input: |
+  # The area of a rectangle.
+
+  [] > app
+    [] >> size
+      3 > width
+      4 > height
+    size.width.times size.height > @

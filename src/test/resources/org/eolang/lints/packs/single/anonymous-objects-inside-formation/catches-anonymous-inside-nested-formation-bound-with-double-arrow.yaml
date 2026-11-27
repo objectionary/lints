@@ -1,0 +1,18 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/errors/anonymous-objects-inside-formation.xsl
+asserts:
+  - /defects[count(defect[@severity='error'])=1]
+  - /defects/defect[@line='2' and contains(text(), '"nested"')]
+  - /defects/defect[not(contains(text(), '🌵'))]
+xml-reason: "not yet converted to an EO input test"
+document: |
+  <object author="tests">
+    <o line="1" name="outer">
+      <o line="2" name="a🌵2-2" local="nested">
+        <o line="3"/>
+      </o>
+    </o>
+  </object>

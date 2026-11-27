@@ -63,7 +63,13 @@ final class LtIncorrectUnlint implements Lint {
         final String tail = LtIncorrectUnlint.tail(meta);
         final String name = LtIncorrectUnlint.nameOf(tail);
         final String msg;
-        if (this.names.contains(name)) {
+        if (tail.isEmpty()) {
+            msg = String.join(
+                " ",
+                "The \"+unlint\" meta is empty, which is prohibited;",
+                "specify a lint name to suppress"
+            );
+        } else if (this.names.contains(name)) {
             msg = String.format(
                 "Suppressing \"%s\" has an invalid format, use \"%s\", \"%s:N\" or \"%s:N-M\"",
                 tail, name, name, name
@@ -83,7 +89,7 @@ final class LtIncorrectUnlint implements Lint {
     }
 
     private static String tail(final Xnav meta) {
-        return meta.element("tail").text().orElse("unknown");
+        return meta.element("tail").text().orElse("");
     }
 
     private static String nameOf(final String tail) {
@@ -100,13 +106,25 @@ final class LtIncorrectUnlint implements Lint {
                 invalid = !LtIncorrectUnlint.fitsInt(tail.substring(name.length() + 1));
             } else if (tail.matches(String.format("%s:\\d+-\\d+", quoted))) {
                 final String[] bounds = tail.substring(name.length() + 1).split("-", -1);
-                invalid = !LtIncorrectUnlint.fitsInt(bounds[0])
-                    || !LtIncorrectUnlint.fitsInt(bounds[1]);
+                invalid = LtIncorrectUnlint.invalidRange(
+                    bounds[0], bounds[1]
+                );
             } else {
                 invalid = true;
             }
         }
         return invalid;
+    }
+
+    private static boolean invalidRange(final String from, final String finish) {
+        final boolean result;
+        if (LtIncorrectUnlint.fitsInt(from)
+            && LtIncorrectUnlint.fitsInt(finish)) {
+            result = Integer.parseInt(from) > Integer.parseInt(finish);
+        } else {
+            result = true;
+        }
+        return result;
     }
 
     private static boolean fitsInt(final String value) {

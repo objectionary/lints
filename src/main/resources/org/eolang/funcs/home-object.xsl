@@ -16,7 +16,7 @@
   same repository as the URL without the slash, and an exact match would let
   a slash turn a runtime object into a defect of both lints (#1379).
   -->
-  <xsl:variable name="eo:home-objects" as="xs:string*" select="('bool', 'buffer', 'bytes', 'chunk', 'clock', 'console', 'dataized', 'directory', 'e', 'eol', 'false', 'file', 'getenv', 'i16', 'i32', 'i64', 'i8', 'input', 'malloc', 'map', 'mktemp', 'nan', 'ninf', 'nop', 'number', 'os', 'output', 'path', 'pi', 'pinf', 'posix', 'range', 'recovered', 'seq', 'set', 'socket', 'stderr', 'stdin', 'stdout', 'string', 'switch', 'true', 'tuple', 'u16', 'u32', 'u64', 'u8', 'uri', 'while', 'win32')"/>
+  <xsl:variable name="eo:home-objects" as="xs:string*" select="('bool', 'buffer', 'bytes', 'caught', 'chunk', 'clock', 'console', 'dataized', 'directory', 'e', 'eol', 'false', 'file', 'getenv', 'i16', 'i32', 'i64', 'i8', 'input', 'malloc', 'map', 'mktemp', 'nan', 'ninf', 'nop', 'number', 'os', 'output', 'path', 'pi', 'pinf', 'posix', 'range', 'recovered', 'seq', 'set', 'socket', 'stderr', 'stdin', 'stdout', 'string', 'switch', 'true', 'tuple', 'u16', 'u32', 'u64', 'u8', 'uri', 'while', 'win32')"/>
   <xsl:variable name="eo:home-repo" as="xs:string" select="'https://github.com/objectionary/eo'"/>
   <xsl:function name="eo:home-object" as="xs:boolean">
     <xsl:param name="name" as="xs:string?"/>

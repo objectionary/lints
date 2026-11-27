@@ -1,0 +1,20 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/design/excessive-visibility.xsl
+defects: 0
+input: |
+  +package com.example
+
+  [] > os
+    name > @
+    name.contains "Linux" > is-linux
+    name.contains "Mac" > is-macos
+    name.contains "Windows" > is-windows
+    [] > name /Q.string
+      ? > ^
+
+    or. ++> can-check-the-os-family
+      os.is-windows.or os.is-macos
+      os.is-linux

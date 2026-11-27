@@ -1,0 +1,19 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/misc/redundant-object.xsl
+defects: 0
+input: |
+  # A cell that knows whether it holds zero.
+
+  [] > app
+    [x] >> cell
+      x.eq 0 > empty
+      empty.if > shown
+        "zero"
+        "other"
+    cell 0 > c
+    c.empty.if > @
+      c.shown
+      "?"

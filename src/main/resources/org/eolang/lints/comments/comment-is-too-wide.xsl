@@ -13,7 +13,7 @@
       <xsl:for-each select="/object/comments/comment">
         <xsl:variable name="comment" select="."/>
         <xsl:variable name="line" select="eo:lineno(@line)"/>
-        <xsl:variable name="lines" select="tokenize(replace(., '\\n', '&#10;'), '&#10;')"/>
+        <xsl:variable name="lines" select="tokenize(., '&#10;')"/>
         <xsl:for-each select="$lines">
           <xsl:variable name="offset" select="position() - 1"/>
           <xsl:if test="string-length(.) &gt; $max">
@@ -24,7 +24,7 @@
                     <xsl:value-of select="$line"/>
                   </xsl:when>
                   <xsl:otherwise>
-                    <xsl:value-of select="format-number(number($line) + $offset, '0')"/>
+                    <xsl:value-of select="format-number(number($line) - count($lines) + 1 + $offset, '0')"/>
                   </xsl:otherwise>
                 </xsl:choose>
               </xsl:attribute>

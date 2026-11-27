@@ -1,0 +1,11 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/design/same-if-branches.xsl
+defects: 0
+input: |
+  [paid] > receipt
+    paid.if > @
+      "Payment required":right
+      "Thank you":left

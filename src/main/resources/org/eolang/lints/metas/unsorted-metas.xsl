@@ -7,13 +7,14 @@
   <xsl:import href="/org/eolang/funcs/lineno.xsl"/>
   <xsl:import href="/org/eolang/funcs/escape.xsl"/>
   <xsl:import href="/org/eolang/funcs/defect-context.xsl"/>
+  <xsl:import href="/org/eolang/funcs/written-meta.xsl"/>
   <xsl:output encoding="UTF-8" method="xml"/>
   <xsl:template match="/">
     <defects>
       <xsl:for-each select="/object/metas/meta">
-        <xsl:variable name="meta-text" select="concat(head, ' ', tail)"/>
+        <xsl:variable name="meta-text" select="eo:written-meta(.)"/>
         <xsl:variable name="previous" select="preceding-sibling::meta[1]"/>
-        <xsl:variable name="previous-text" select="concat($previous/head/text(), ' ', $previous/tail/text())"/>
+        <xsl:variable name="previous-text" select="eo:written-meta($previous)"/>
         <xsl:if test="$meta-text &lt; $previous-text">
           <xsl:element name="defect">
             <xsl:variable name="line" select="eo:lineno(@line)"/>

@@ -1,0 +1,17 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/misc/redundant-attachment.xsl
+defects: 0
+input: |
+  # Counts the items equal to the given one.
+
+  [items x] > occurrences
+    items.reduced > @
+      0
+      [acc x] >>
+        if. > @
+          x.eq ^.x
+          acc.plus 1
+          acc

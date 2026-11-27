@@ -7,6 +7,8 @@
   <xsl:import href="/org/eolang/funcs/lineno.xsl"/>
   <xsl:import href="/org/eolang/funcs/defect-context.xsl"/>
   <xsl:import href="/org/eolang/funcs/special-name.xsl"/>
+  <xsl:import href="/org/eolang/funcs/void-name.xsl"/>
+  <xsl:import href="/org/eolang/funcs/test-name.xsl"/>
   <xsl:import href="/org/eolang/funcs/escape.xsl"/>
   <xsl:output encoding="UTF-8" method="xml"/>
   <!-- Since developers might decide not to use kebab-case, it's better to catch all such cases. -->
@@ -27,7 +29,14 @@
   </xsl:function>
   <xsl:template match="/">
     <defects>
-      <xsl:for-each select="//o[@base and @name and not(eo:special(@name)) and eo:compound(@name) and not(eo:idiomatic(@name))]">
+      <!--
+      A unit test is not an attribute, even when it is written as an
+      application, such as "pos.eq 6 +> can-find-space", and therefore
+      carries a "@base", unlike a "[] +> can-find-space" formation. Its name
+      must start with a prefix such as "can-" (see "bad-test-name"), so it is
+      always compound.
+      -->
+      <xsl:for-each select="//o[@base and not(eo:test-name(@name)) and (for $n in (@local, @name)[1] return eo:void-title($n))[not(eo:special(.)) and eo:compound(.) and not(eo:idiomatic(.))]]">
         <defect>
           <xsl:variable name="line" select="eo:lineno(@line)"/>
           <xsl:attribute name="line">
@@ -40,7 +49,7 @@
           </xsl:if>
           <xsl:attribute name="severity">warning</xsl:attribute>
           <xsl:text>Object name </xsl:text>
-          <xsl:value-of select="eo:escape(@name)"/>
+          <xsl:value-of select="eo:escape(eo:void-title((@local, @name)[1]))"/>
           <xsl:text> should not be compound unless it's formation</xsl:text>
         </defect>
       </xsl:for-each>

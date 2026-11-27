@@ -8,6 +8,7 @@
   <xsl:import href="/org/eolang/funcs/lineno.xsl"/>
   <xsl:import href="/org/eolang/funcs/escape.xsl"/>
   <xsl:import href="/org/eolang/funcs/defect-context.xsl"/>
+  <xsl:import href="/org/eolang/funcs/test-name.xsl"/>
   <xsl:output encoding="UTF-8" method="xml"/>
   <!--
   EO has no loops or "goto", so the only decision points a formation can
@@ -15,13 +16,35 @@
   something. Whether that something is really a boolean, as opposed to a
   third-party object that happens to have a method with the same name, is
   not decidable without type inference, so this counts any dispatch whose
-  last "."-separated segment is one of the three names. It is a heuristic,
-  the same way "broad-scope" and "sparse-decoration" are, which is why the
-  defect it produces is marked experimental.
+  last "."-separated segment is one of the three names, except an "and" or
+  an "or" whose receiver is a "Φ.bytes" literal or an "as-bytes" chain,
+  which is a bit mask. It is a heuristic, the same way "broad-scope" and
+  "sparse-decoration" are, which is why the defect it produces is marked
+  experimental.
   -->
   <xsl:function name="eo:decision" as="xs:boolean">
-    <xsl:param name="base" as="xs:string?"/>
-    <xsl:sequence select="exists($base) and ($base = 'Φ.while' or tokenize($base, '\.')[last()] = ('if', 'and', 'or'))"/>
+    <xsl:param name="o" as="element()"/>
+    <xsl:variable name="chain" select="tokenize($o/@base, '\.')"/>
+    <xsl:sequence select="$o/@base = 'Φ.while' or $chain[last()] = 'if' or ($chain[last()] = ('and', 'or') and not(eo:bytes(remove($chain, count($chain)), $o)))"/>
+  </xsl:function>
+  <xsl:function name="eo:bytes" as="xs:boolean">
+    <xsl:param name="chain" as="xs:string*"/>
+    <xsl:param name="o" as="element()"/>
+    <xsl:variable name="rho" select="$o/o[not(@as)][1]"/>
+    <xsl:choose>
+      <xsl:when test="$chain[last()] = 'as-bytes' or string-join($chain, '.') = 'Φ.bytes'">
+        <xsl:sequence select="true()"/>
+      </xsl:when>
+      <xsl:when test="count($chain) = 1 and $chain = '' and exists($rho)">
+        <xsl:sequence select="eo:bytes(tokenize($rho/@base, '\.'), $rho)"/>
+      </xsl:when>
+      <xsl:when test="$chain[last()] = ('and', 'or', 'xor', 'not', 'left', 'right')">
+        <xsl:sequence select="eo:bytes(remove($chain, count($chain)), $o)"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:sequence select="false()"/>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:function>
   <!--
   The formation a decision point counts against: its nearest enclosing
@@ -34,11 +57,18 @@
     <xsl:sequence select="$o/ancestor::o[eo:abstract(.)][1]"/>
   </xsl:function>
   <xsl:variable name="eo:max" as="xs:integer" select="10"/>
+  <!--
+  A cactus in a name marks one the parser made up, such as the name of an
+  object bound with ">>", so such formations are skipped. The parser puts
+  a cactus into the marker of a unit test too, as in "p🌵can-do-it", but a
+  test is a formation the programmer wrote and named, so it is measured
+  like any other and reported by its title.
+  -->
   <xsl:template match="/">
     <defects>
-      <xsl:for-each select="//o[eo:abstract(.) and @name and not(contains(@name, '🌵')) and o[@name='φ']]">
+      <xsl:for-each select="//o[eo:abstract(.) and @name and (eo:test-name(@name) or not(contains(@name, '🌵'))) and o[@name='φ']]">
         <xsl:variable name="this" select="."/>
-        <xsl:variable name="decisions" select=".//o[@base and eo:decision(string(@base)) and generate-id(eo:owner(.)) = generate-id($this)]"/>
+        <xsl:variable name="decisions" select=".//o[@base and eo:decision(.) and generate-id(eo:owner(.)) = generate-id($this)]"/>
         <xsl:variable name="complexity" select="count($decisions) + 1"/>
         <xsl:if test="$complexity &gt; $eo:max">
           <xsl:element name="defect">
@@ -58,7 +88,7 @@
               <xsl:text>true</xsl:text>
             </xsl:attribute>
             <xsl:text>The object </xsl:text>
-            <xsl:value-of select="eo:escape(@name)"/>
+            <xsl:value-of select="eo:escape(eo:test-title(@name))"/>
             <xsl:text> has a cyclomatic complexity of </xsl:text>
             <xsl:value-of select="$complexity"/>
             <xsl:text>, while the maximum is </xsl:text>

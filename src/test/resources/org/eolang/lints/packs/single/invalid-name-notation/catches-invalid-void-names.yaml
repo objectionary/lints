@@ -1,0 +1,12 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/names/invalid-name-notation.xsl
+asserts:
+  - /defects[count(defect[@severity='warning' and @line='1'])=2]
+  - /defects/defect[contains(text(), '"fooBar"')]
+  - /defects/defect[contains(text(), '"f_x"')]
+input: |
+  [fooBar f_x good] > app
+    fooBar.plus f_x > @

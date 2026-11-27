@@ -1,0 +1,22 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/design/excessive-visibility.xsl
+defects: 0
+input: |
+  # Unix calls, one atom per call.
+
+  [] > posix
+    [] > bind /Q.number
+      ? > descriptor /Q.number
+      ? > sockaddr /Q.posix.sockaddr-in
+    [] > getpid /Q.posix.pid-return
+    [code pid] > pid-return
+      posix.pid-return > called
+        code
+        pid
+    [family port] > sockaddr-in
+      family.plus port > size
+
+    posix.getpid.code.eq 0 ++> can-get-the-id-of-the-process

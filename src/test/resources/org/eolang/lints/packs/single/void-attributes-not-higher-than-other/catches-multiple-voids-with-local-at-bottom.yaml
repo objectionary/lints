@@ -1,0 +1,20 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+# yamllint disable rule:line-length
+sheets:
+  - /org/eolang/lints/critical/void-attributes-not-higher-than-other.xsl
+asserts:
+  - /defects[count(defect[@severity='critical'])=2]
+  - /defects/defect[1][normalize-space()='Void attribute "first" must be higher than any other non-void attribute']
+  - /defects/defect[2][normalize-space()='Void attribute "second" must be higher than any other non-void attribute']
+  - /defects[count(defect[contains(text(), '🌵')])=0]
+xml-reason: "non-void before void is a parse error (R-3.4.9) and @local on void attributes only arises in transformed XMIR"
+document: |
+  <object author="tests">
+    <o name="foo">
+      <o line="1" base="Φ.foo" name="z"/>
+      <o line="2" base="∅" local="first" name="a🌵2-2"/>
+      <o line="3" base="∅" local="second" name="a🌵3-2"/>
+    </o>
+  </object>

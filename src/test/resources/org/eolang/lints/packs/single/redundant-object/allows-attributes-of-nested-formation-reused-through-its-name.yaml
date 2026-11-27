@@ -1,0 +1,23 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/misc/redundant-object.xsl
+defects: 0
+input: |
+  # The area and the perimeter of a rectangle.
+
+  [] > app
+    [] >> size
+      3 > width
+      4 > height
+    seq * > @
+      stdout
+        "Area: %d\n".printf
+          * (size.width.times size.height)
+      stdout
+        "Perimeter: %d\n".printf
+          *
+            times.
+              size.width.plus size.height
+              2

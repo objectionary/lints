@@ -1,0 +1,14 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/design/excessive-visibility.xsl
+defects: 0
+input: |
+  # The family of the operating system.
+
+  [] > os
+    name.contains "Linux" > @
+    [] > name /Q.string
+
+    os ++> can-check-the-os-family

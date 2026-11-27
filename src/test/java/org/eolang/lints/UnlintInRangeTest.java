@@ -46,4 +46,49 @@ final class UnlintInRangeTest {
             Matchers.equalTo(false)
         );
     }
+
+    @Test
+    void returnsFalseWhenUnlintHasNoRangeSeparator() {
+        MatcherAssert.assertThat(
+            "A single line selector must not throw index out of bounds",
+            new UnlintInRange("foo:42").test(42),
+            Matchers.equalTo(false)
+        );
+    }
+
+    @Test
+    void returnsFalseWhenUnlintHasSingleNumberOnly() {
+        MatcherAssert.assertThat(
+            "A numeric-only selector must not throw index out of bounds",
+            new UnlintInRange("42").test(42),
+            Matchers.equalTo(false)
+        );
+    }
+
+    @Test
+    void returnsFalseWhenUnlintIsEmpty() {
+        MatcherAssert.assertThat(
+            "An empty unlint selector must return false safely",
+            new UnlintInRange("").test(1),
+            Matchers.equalTo(false)
+        );
+    }
+
+    @Test
+    void returnsFalseWhenUnlintHasTrailingDashOnly() {
+        MatcherAssert.assertThat(
+            "An unlint with missing upper bound must return false safely",
+            new UnlintInRange("foo:10-").test(10),
+            Matchers.equalTo(false)
+        );
+    }
+
+    @Test
+    void returnsFalseWhenUnlintHasLeadingDashOnly() {
+        MatcherAssert.assertThat(
+            "An unlint with missing lower bound must return false safely",
+            new UnlintInRange("foo:-10").test(10),
+            Matchers.equalTo(false)
+        );
+    }
 }

@@ -5,11 +5,12 @@ sheets:
   - /org/eolang/lints/misc/redundant-object.xsl
 defects:
   - severity: warning
-    line: 2
+    line: 3
 input: |
-  [] > foo
-    list > created
-      * 1 2 3
-    contains. > @
-      created
-      52
+  [] > app
+    [] >> foo
+      list > created
+        * 1 2 3
+      contains. > @
+        created
+        52

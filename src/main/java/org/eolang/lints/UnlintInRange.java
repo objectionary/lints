@@ -33,10 +33,17 @@ final class UnlintInRange implements Predicate<Integer> {
     @Override
     public boolean test(final Integer line) {
         final List<String> range = this.range();
-        return UnlintInRange.fitsInt(range.get(0))
-            && UnlintInRange.fitsInt(range.get(1))
-            && line >= Integer.parseInt(range.get(0))
-            && line <= Integer.parseInt(range.get(1));
+        final boolean matches;
+        if (range.size() >= 2
+            && UnlintInRange.fitsInt(range.get(0))
+            && UnlintInRange.fitsInt(range.get(1))) {
+            final int start = Integer.parseInt(range.get(0));
+            final int finish = Integer.parseInt(range.get(1));
+            matches = line >= start && line <= finish;
+        } else {
+            matches = false;
+        }
+        return matches;
     }
 
     private List<String> range() {

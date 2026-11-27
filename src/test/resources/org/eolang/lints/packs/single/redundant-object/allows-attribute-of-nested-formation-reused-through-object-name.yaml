@@ -1,0 +1,18 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/misc/redundant-object.xsl
+defects: 0
+input: |
+  # The doubled width of a rectangle.
+
+  [] > app
+    [] >> size
+      3 > width
+    size.width.times 2 > @
+
+    ++> can-read-the-width
+      eq. > @
+        app.size.width
+        3

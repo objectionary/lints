@@ -6,6 +6,6 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:eo="https://www.eolang.org" xmlns:xs="http://www.w3.org/2001/XMLSchema" id="lineno" version="2.0">
   <xsl:function name="eo:lineno" as="xs:string">
     <xsl:param name="line"/>
-    <xsl:sequence select="if ($line and number($line) = number($line)) then $line else '0'"/>
+    <xsl:sequence select="if ($line castable as xs:int) then string(xs:int($line)) else '0'"/>
   </xsl:function>
 </xsl:stylesheet>

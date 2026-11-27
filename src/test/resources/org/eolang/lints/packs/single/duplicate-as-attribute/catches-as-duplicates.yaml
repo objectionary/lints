@@ -6,5 +6,11 @@ sheets:
 defects:
   - severity: warning
     line: 1
-input: |
-  t f1:foo f2:foo > tee
+xml-reason: "0.63.3 rejects duplicate argument bindings at parse time"
+document: |
+  <object author="tests">
+    <o base="&#x3A6;.t" line="1" name="tee">
+      <o as="foo" base="&#x3A6;.f1" line="1"/>
+      <o as="foo" base="&#x3A6;.f2" line="1"/>
+    </o>
+  </object>

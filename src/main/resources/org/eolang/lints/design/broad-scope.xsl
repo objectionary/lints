@@ -11,11 +11,13 @@
   <xsl:key name="referenced-by-name" match="o[@base]" use="if (matches(@base, '^ξ(?:\.ρ)*\.')) then tokenize(replace(@base, '^ξ(?:\.ρ)*\.', ''), '\.')[1] else ''"/>
   <xsl:template match="/">
     <defects>
-      <xsl:for-each select="//o[@local and @name and not(@name='φ')]">
+      <xsl:for-each select="//o[@local and @name and not(@name='φ') and not(@base='∅')]">
         <xsl:variable name="parent" select="parent::o"/>
         <xsl:variable name="refs" select="key('referenced-by-name', @name)"/>
         <xsl:variable name="containers" select="$refs/ancestor::o[parent::o[generate-id() = generate-id($parent)]][1]"/>
-        <xsl:if test="count($refs) &gt; 0 and (every $ref in $refs satisfies exists($ref/ancestor::o[parent::o[generate-id() = generate-id($parent)]][1])) and count(distinct-values($containers/generate-id())) = 1 and not(exists($containers[generate-id() = generate-id(current())]))">
+        <xsl:variable name="outside" select="$parent/ancestor-or-self::o"/>
+        <xsl:variable name="in-applied-formation" select="@base and (some $r in $refs satisfies exists(($r/ancestor::o except $outside)[not(@base) and o[@base='∅']]))"/>
+        <xsl:if test="not($in-applied-formation) and count($refs) &gt; 0 and (every $ref in $refs satisfies exists($ref/ancestor::o[parent::o[generate-id() = generate-id($parent)]][1])) and count(distinct-values($containers/generate-id())) = 1 and not(exists($containers[generate-id() = generate-id(current())])) and not(exists($containers[@base]))">
           <xsl:element name="defect">
             <xsl:variable name="line" select="eo:lineno(@line)"/>
             <xsl:attribute name="line">

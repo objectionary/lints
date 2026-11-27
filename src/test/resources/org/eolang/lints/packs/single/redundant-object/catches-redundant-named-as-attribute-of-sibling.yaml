@@ -1,0 +1,20 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/misc/redundant-object.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=2]
+  - /defects/defect[@line='4']
+  - /defects/defect[@line='7']
+input: |
+  [] > shop
+    [price qty] >> line
+      total.times 1.2 > @
+      price.times qty > total
+    [items] >> order
+      total.times 0.9 > @
+      items.reduced > total
+        0
+        [acc item] >>
+          acc.plus item > @

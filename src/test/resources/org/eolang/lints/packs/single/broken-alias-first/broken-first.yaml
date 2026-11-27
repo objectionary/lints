@@ -39,7 +39,7 @@ defects:
   - severity: error
     line: 17
 input: |
-  +alias FirstLetter Capital.Letters.Prohibited.Here
+  +alias FirstLetter capital.letters.allowed.there
   +alias the! symbol.is.not.allowed
   +alias the" symbol.is.not.allowed
   +alias the# symbol.is.not.allowed

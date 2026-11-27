@@ -1,0 +1,16 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/names/unsorted-named-attributes.xsl
+defects: 0
+input: |
+  [x] > scaled
+    ratio.times > @
+      if. > [n] >> capped
+        n.gt ^.limit
+        ^.limit
+        n
+      | x
+    100 > limit
+    0.5 > ratio

@@ -1,0 +1,24 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/design/excessive-visibility.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=2]
+  - /defects/defect[@line='5' and contains(., '"divisor"')]
+  - /defects/defect[@line='6' and contains(., '"euclid"')]
+input: |
+  # The greatest common divisor of two numbers.
+
+  [a b] > gcd
+    euclid a divisor > @
+    b.abs > divisor
+    [x y] > euclid
+      if. > @
+        y.eq 0
+        x
+        ^.euclid y (x.mod y)
+
+    eq. +> finds-the-greatest-common-divisor
+      gcd 12 -18
+      6

@@ -8,11 +8,11 @@
   <xsl:import href="/org/eolang/funcs/defect-context.xsl"/>
   <xsl:output encoding="UTF-8" method="xml"/>
   <!--
-  One format specifier, matched over the hex bytes of the template:
+  One format specifier, matched at a byte boundary in the hex template:
   a percent, an optional N$ position, the "-" and "0" flags, a width,
   an optional .precision, and one of the five conversion letters
   -->
-  <xsl:variable name="eo:specifier" select="'25((3[0-9])+24)?(2D|30)*(3[0-9])*(2E(3[0-9])+)?(73|64|66|78|62)'"/>
+  <xsl:variable name="eo:specifier" select="'(^|-)25-((3[0-9]-)+24-)?((2D|30)-)*(3[0-9]-)*(2E-(3[0-9]-)+)?(73|64|66|78|62)'"/>
   <!-- Find arguments in tuple -->
   <xsl:template match="o" mode="arguments" as="xs:integer">
     <xsl:choose>
@@ -66,11 +66,32 @@
             The bytes of the template, with a doubled percent taken out,
             since it stands for a literal one and starts no specifier
             -->
-            <xsl:variable name="escaped" select="replace(translate($text, '-', ''), '2525', '')"/>
+            <xsl:variable name="escaped" select="replace($text, '(^|-)25-25', '$1')"/>
             <!-- A specifier is %[N$][flags][width][.precision]conversion, in bytes -->
-            <xsl:variable name="declared" select="count(tokenize($escaped, $eo:specifier)) - 1"/>
+            <xsl:variable name="declared" select="if (empty($text) or string-length($text) = 0) then 0 else count(tokenize($escaped, $eo:specifier)) - 1"/>
+            <xsl:variable name="positions" as="xs:integer*">
+              <xsl:analyze-string select="$escaped" regex="{$eo:specifier}">
+                <xsl:matching-substring>
+                  <xsl:if test="regex-group(2) != ''">
+                    <xsl:sequence select="xs:integer(replace(substring-before(regex-group(2), '24-'), '3([0-9])-', '$1'))"/>
+                  </xsl:if>
+                </xsl:matching-substring>
+              </xsl:analyze-string>
+            </xsl:variable>
+            <!--
+            Positional specifiers can reuse arguments and do not advance
+            the sequential index.
+            -->
+            <xsl:variable name="required" select="max(($positions, $declared - count($positions)))"/>
             <xsl:variable name="used">
-              <xsl:apply-templates select="o[@as][1]" mode="arguments"/>
+              <xsl:choose>
+                <xsl:when test="o[@as]">
+                  <xsl:apply-templates select="o[@as][1]" mode="arguments"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="0"/>
+                </xsl:otherwise>
+              </xsl:choose>
             </xsl:variable>
             <xsl:choose>
               <xsl:when test="$used=-1">
@@ -91,7 +112,7 @@
                 </defect>
               </xsl:when>
               <xsl:otherwise>
-                <xsl:if test="$declared!=$used and o[not(@as)][1]/@base = 'Φ.string' and not(matches($escaped, '25(3[0-9])+24'))">
+                <xsl:if test="o[not(@as)][1]/@base = 'Φ.string' and (0 = $positions or (if (exists($positions)) then $required &gt; $used else $required != $used))">
                   <defect>
                     <xsl:variable name="line" select="eo:lineno(@line)"/>
                     <xsl:attribute name="line">
@@ -105,11 +126,21 @@
                     <xsl:attribute name="severity">
                       <xsl:text>warning</xsl:text>
                     </xsl:attribute>
-                    <xsl:text>According to the formatting template of the ".printf" object, a tuple of </xsl:text>
-                    <xsl:value-of select="$declared"/>
-                    <xsl:text> element(s) is expected as its argument, while a tuple of </xsl:text>
-                    <xsl:value-of select="$used"/>
-                    <xsl:text> element(s) is provided</xsl:text>
+                    <xsl:choose>
+                      <xsl:when test="0 = $positions">
+                        <xsl:text>The positional argument index in the ".printf" template must be 1 or greater</xsl:text>
+                      </xsl:when>
+                      <xsl:otherwise>
+                        <xsl:text>According to the formatting template of the ".printf" object, a tuple of </xsl:text>
+                        <xsl:if test="exists($positions)">
+                          <xsl:text>at least </xsl:text>
+                        </xsl:if>
+                        <xsl:value-of select="$required"/>
+                        <xsl:text> element(s) is expected as its argument, while a tuple of </xsl:text>
+                        <xsl:value-of select="$used"/>
+                        <xsl:text> element(s) is provided</xsl:text>
+                      </xsl:otherwise>
+                    </xsl:choose>
                   </defect>
                 </xsl:if>
               </xsl:otherwise>

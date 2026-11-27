@@ -1,0 +1,13 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/names/unsorted-named-attributes.xsl
+defects: 0
+input: |
+  [price] > checkout
+    net.plus fee > @
+    [amount] > discounted
+      amount.times 0.9 > @
+    | price > net
+    net.times 0.2 > fee

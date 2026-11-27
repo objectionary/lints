@@ -9,6 +9,7 @@ import com.jcabi.xml.XML;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -47,19 +48,24 @@ final class LtReservedName implements Lint {
 
     @Override
     public Collection<Defect> defects(final XML xmir) throws IOException {
-        return new Xnav(xmir.inner()).path("//o[@name]").filter(
-            object -> this.reserved.containsKey(object.attribute("name").text().get())
+        return new Xnav(xmir.inner()).path("//o[@name or @local]").filter(
+            object -> LtReservedName.objectName(object)
+                .map(this.reserved::containsKey)
+                .orElse(false)
         ).map(
-            object -> new Defect.Default(
-                this.name(),
-                Severity.WARNING,
-                new LineOf(object).value(),
-                String.format(
-                    "Object name \"%s\" is already reserved by object in the \"%s\"",
-                    object.attribute("name").text().get(),
-                    this.reserved.get(object.attribute("name").text().get())
-                )
-            )
+            object -> {
+                final String found = LtReservedName.objectName(object).orElse("");
+                return new Defect.Default(
+                    this.name(),
+                    Severity.WARNING,
+                    new LineOf(object).value(),
+                    String.format(
+                        "Object name \"%s\" is already reserved by object in the \"%s\"",
+                        found,
+                        this.reserved.get(found)
+                    )
+                );
+            }
         ).collect(Collectors.toList());
     }
 
@@ -71,5 +77,16 @@ final class LtReservedName implements Lint {
     @Override
     public Fix fix() {
         return new FxEmpty();
+    }
+
+    private static Optional<String> objectName(final Xnav object) {
+        final Optional<String> local = object.attribute("local").text();
+        final Optional<String> result;
+        if (local.isPresent()) {
+            result = local;
+        } else {
+            result = object.attribute("name").text();
+        }
+        return result;
     }
 }

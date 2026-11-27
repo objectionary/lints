@@ -1,0 +1,13 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/misc/redundant-object.xsl
+defects: 0
+input: |
+  [] > shop
+    [price qty] >> line
+      total.times 1.2 > @
+      price.times qty > total
+      [rate] > taxed
+        ^.total.times rate > @

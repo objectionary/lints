@@ -4,9 +4,16 @@
  */
 package org.eolang.lints;
 
+import com.jcabi.xml.XML;
+import com.jcabi.xml.XMLDocument;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.stream.Collectors;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 /**
  * Tests for {@link DfContext}.
@@ -26,7 +33,13 @@ final class DfContextTest {
                     0,
                     "Boom!"
                 ),
-                "&lt;o base=&#34;man&#34;&gt;&#xA;&lt;o as=&#34;name&#34; base=&#34;string&#34;/&gt;&#xA;&lt;o base=&#34;number&#34;/&gt;&#xA;&lt;/o&gt;"
+                String.join(
+                    String.valueOf('\n'),
+                    "<o base=\"man\">",
+                    "<o as=\"name\" base=\"string\"/>",
+                    "<o base=\"number\"/>",
+                    "</o>"
+                )
             ).context(),
             Matchers.equalTo(
                 String.join(
@@ -41,45 +54,57 @@ final class DfContextTest {
     }
 
     @Test
-    void decodesStandardEntities() {
+    void preservesStandardEntities() {
         MatcherAssert.assertThat(
-            "Standard entities are not decoded",
+            "Standard entities were changed",
             new DfContext(
                 new Defect.Default("foo", Severity.ERROR, 0, "Boom!"),
                 "&quot;x&quot; &#39;y&#39; &apos;z&apos;"
             ).context(),
-            Matchers.equalTo("\"x\" 'y' 'z'")
+            Matchers.equalTo("&quot;x&quot; &#39;y&#39; &apos;z&apos;")
         );
     }
 
     @Test
-    void decodesDoubleEncodedEntities() {
+    void preservesLiteralEntityText() {
         MatcherAssert.assertThat(
-            "Double-encoded entities are not decoded",
+            "Literal entity text was decoded",
             new DfContext(
                 new Defect.Default("foo", Severity.ERROR, 0, "Boom!"),
                 "&amp;lt;o&amp;gt;"
             ).context(),
-            Matchers.equalTo("<o>")
+            Matchers.equalTo("&amp;lt;o&amp;gt;")
         );
     }
 
     @Test
-    void usesLfForLineBreaks() {
+    void preservesLineBreakEntityText() {
         MatcherAssert.assertThat(
-            "Line breaks are not normalized to LF",
+            "Line break entity text was changed",
             new DfContext(
                 new Defect.Default("foo", Severity.ERROR, 0, "Boom!"),
                 "a&#10;b&#xA;c"
             ).context(),
-            Matchers.equalTo(
-                String.join(
-                    String.valueOf('\n'),
-                    "a",
-                    "b",
-                    "c"
-                )
-            )
+            Matchers.equalTo("a&#10;b&#xA;c")
+        );
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"a&amp;b", "a&amp;lt;b", "a&quot;b", "a&#10;b"})
+    void preservesNamesThroughStylesheetAndScoping(final String name) {
+        final XML input = new XMLDocument(
+            String.format("<object><o name=\"%s\"/></object>", name)
+        );
+        final Defect defect = new LtByXsl("names/non-kebab-name")
+            .defects(input).iterator().next();
+        MatcherAssert.assertThat(
+            "Diagnostic contexts changed the name of the original object",
+            Arrays.asList(
+                defect, new ScopedDefects(Collections.singleton(defect), "test").iterator().next()
+            ).stream()
+                .map(item -> new XMLDocument(item.context()).xpath("/o/@name").get(0))
+                .collect(Collectors.toList()),
+            Matchers.everyItem(Matchers.equalTo(input.xpath("/object/o/@name").get(0)))
         );
     }
 

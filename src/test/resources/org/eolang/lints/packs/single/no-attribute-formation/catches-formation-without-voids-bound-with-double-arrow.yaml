@@ -1,0 +1,13 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+# yamllint disable rule:line-length
+sheets:
+  - /org/eolang/lints/design/no-attribute-formation.xsl
+asserts:
+  - /defects[count(defect[@severity='warning' and @experimental='true'])=1]
+  - /defects/defect[1][normalize-space()='The formation "foo" does not have any void attributes']
+  - /defects/defect[not(contains(text(), '🌵'))]
+input: |
+  [] >> foo
+    42 > @

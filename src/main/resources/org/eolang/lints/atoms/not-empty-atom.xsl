@@ -7,11 +7,17 @@
   <xsl:import href="/org/eolang/parser/_funcs.xsl"/>
   <xsl:import href="/org/eolang/funcs/lineno.xsl"/>
   <xsl:import href="/org/eolang/funcs/escape.xsl"/>
+  <xsl:import href="/org/eolang/funcs/test-name.xsl"/>
   <xsl:import href="/org/eolang/funcs/defect-context.xsl"/>
   <xsl:output encoding="UTF-8" method="xml"/>
   <xsl:template match="/">
     <defects>
-      <xsl:for-each select="//o[eo:atom(.) and o[@base and @base!='∅' and not(@name='λ') and not(@base='ξ' and @name='xi🌵')]]">
+      <!--
+      A unit test is not an attribute of the atom, even when it is written
+      as an application, such as "eq. +> can-work", and therefore carries
+      a "@base", unlike a "[] +> can-work" formation.
+      -->
+      <xsl:for-each select="//o[eo:atom(.) and o[@base and @base!='∅' and not(@name='λ') and not(@base='ξ' and @name='xi🌵') and not(eo:test-name((@local, @name)[1]))]]">
         <xsl:element name="defect">
           <xsl:variable name="line" select="eo:lineno(@line)"/>
           <xsl:attribute name="line">
@@ -26,13 +32,13 @@
             <xsl:text>error</xsl:text>
           </xsl:attribute>
           <xsl:text>The atom </xsl:text>
-          <xsl:value-of select="eo:escape(@name)"/>
+          <xsl:value-of select="eo:escape((@local, @name)[1])"/>
           <xsl:text> may not have any attributes, which however exist: </xsl:text>
-          <xsl:for-each select="o[@base and @base!='∅' and not(@name='λ') and not(@base='ξ' and @name='xi🌵')]">
+          <xsl:for-each select="o[@base and @base!='∅' and not(@name='λ') and not(@base='ξ' and @name='xi🌵') and not(eo:test-name((@local, @name)[1]))]">
             <xsl:if test="position() &gt; 1">
               <xsl:text>, </xsl:text>
             </xsl:if>
-            <xsl:value-of select="eo:escape(@name)"/>
+            <xsl:value-of select="eo:escape((@local, @name)[1])"/>
           </xsl:for-each>
         </xsl:element>
       </xsl:for-each>

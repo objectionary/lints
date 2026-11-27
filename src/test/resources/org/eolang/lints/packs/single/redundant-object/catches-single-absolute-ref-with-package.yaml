@@ -1,0 +1,21 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/misc/redundant-object.xsl
+defects:
+  - severity: warning
+    line: 8
+input: |
+  # Represents the current operating system.
+
+  +package com.example
+
+  [] > os
+    name > @
+    [] >> family
+      ^.name.contains "Linux" > is-linux
+    [] > name /Q.string
+      ? > ^
+
+    os.family.is-linux ++> can-check-the-os-family

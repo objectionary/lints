@@ -1,0 +1,14 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/misc/wrong-sprintf-arguments.xsl
+defects:
+  - severity: warning
+    line: 2
+asserts:
+  - /defects/defect[contains(., 'must be 1 or greater')]
+input: |
+  [] > app
+    "First item: %0$s".printf > @
+      * "apples"

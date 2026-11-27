@@ -5,6 +5,7 @@
 package org.eolang.lints;
 
 import com.jcabi.xml.XML;
+import com.jcabi.xml.XMLDocument;
 import fixtures.EoProgram;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -100,6 +101,54 @@ final class LtAsciiOnlyTest {
                 )
             ).get(0).text(),
             Matchers.containsString("😀")
+        );
+    }
+
+    @Test
+    void handlesEmptyCommentWithoutCrashing() throws IOException {
+        MatcherAssert.assertThat(
+            "An empty comment tag without text must not crash the lint",
+            new LtAsciiOnly().defects(
+                new XMLDocument("<object><comments><comment line=\"1\"/></comments></object>")
+            ),
+            Matchers.emptyIterable()
+        );
+    }
+
+    @Test
+    void handlesCommentWithEmptyTextWithoutCrashing() throws IOException {
+        MatcherAssert.assertThat(
+            "A comment with empty text must not produce defects or crash",
+            new LtAsciiOnly().defects(
+                new XMLDocument(
+                    "<object><comments><comment line=\"2\"></comment></comments></object>"
+                )
+            ),
+            Matchers.emptyIterable()
+        );
+    }
+
+    @Test
+    void handlesEmptyCommentsListWithoutCrashing() throws IOException {
+        MatcherAssert.assertThat(
+            "An empty comments list must not produce defects or crash",
+            new LtAsciiOnly().defects(
+                new XMLDocument("<object><comments/></object>")
+            ),
+            Matchers.emptyIterable()
+        );
+    }
+
+    @Test
+    void handlesCommentWithWhitespaceOnlyWithoutCrashing() throws IOException {
+        MatcherAssert.assertThat(
+            "A comment with whitespace only must not produce defects or crash",
+            new LtAsciiOnly().defects(
+                new XMLDocument(
+                    "<object><comments><comment line=\"3\">   </comment></comments></object>"
+                )
+            ),
+            Matchers.emptyIterable()
         );
     }
 

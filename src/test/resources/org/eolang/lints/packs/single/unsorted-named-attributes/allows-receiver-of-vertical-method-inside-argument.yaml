@@ -1,0 +1,19 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/names/unsorted-named-attributes.xsl
+defects: 0
+input: |
+  # Takes the text up to its first slash.
+
+  [text] > location
+    text > @
+    string > path
+      if. >> path-bytes!
+        not. >> has-slash
+          eq.
+            text.index-of "/" >> slash-idx
+            -1
+        text.slice 0 slash-idx
+        text

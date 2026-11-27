@@ -1,0 +1,17 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/names/anonymous-formation.xsl
+defects: 0
+input: |
+  # App.
+
+  [] > app
+    malloc.of > @
+      64
+      [m]
+        42 > base
+        [x] > shifted
+          ^.base.plus x > @
+        m.put (shifted 1) > @

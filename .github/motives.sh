@@ -31,7 +31,7 @@ head() {
   printf '<title>lints</title>\n'
   printf '<meta name="viewport" content="width=device-width, initial-scale=1.0"/>\n'
   printf '<link rel="shortcut icon" href="https://www.yegor256.com/images/books/elegant-objects/cactus.png"/>'
-  printf '<link href="https://cdn.jsdelivr.net/npm/tacit-css@1.8.1/dist/tacit-css.min.css" rel="stylesheet" integrity="sha384-JbsYayq5Otme+gjh/pl7NrA/qMIU0bxbdzKvYqQGHvvag0lHhM62TQnDzz+EyzXj" crossorigin="anonymous"/>\n'
+  printf '<link href="https://cdn.jsdelivr.net/npm/tacit-css@1.9.7/dist/tacit-css.min.css" rel="stylesheet" integrity="sha384-D/LLHCkqHnoJ7y04sSEBX95s7wMjBn45wtHneRfp03QBgt6+a6Pz2eLUC4N1CAI0" crossorigin="anonymous"/>\n'
   printf '</head>\n'
   printf '<body><section><article>\n'
 }

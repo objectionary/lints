@@ -1,0 +1,13 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/comments/comment-not-capitalized.xsl
+defects:
+  - severity: warning
+    line: 1
+input: |
+  #   lowercase comment with leading spaces.
+
+  [] > foo
+    42 > @

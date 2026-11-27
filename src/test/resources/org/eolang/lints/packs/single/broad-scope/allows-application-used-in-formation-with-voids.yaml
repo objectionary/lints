@@ -1,0 +1,11 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/design/broad-scope.xsl
+defects: 0
+input: |
+  [text] > counted
+    [n] > fits
+      n.lt total > @
+    number text.size! >> total

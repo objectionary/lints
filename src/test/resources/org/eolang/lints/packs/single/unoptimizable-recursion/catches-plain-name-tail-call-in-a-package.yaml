@@ -1,0 +1,18 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+# yamllint disable rule:line-length
+sheets:
+  - /org/eolang/lints/design/unoptimizable-recursion.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=1]
+  - /defects/defect[1][@line='7']
+  - /defects/defect[1][normalize-space()='The recursion in "calc" cannot be turned into a loop, the self-call names the formation directly instead of through its receiver']
+input: |
+  +package foo
+
+  [n] > calc
+    if. > @
+      n.eq 0
+      1
+      calc (n.minus 1)

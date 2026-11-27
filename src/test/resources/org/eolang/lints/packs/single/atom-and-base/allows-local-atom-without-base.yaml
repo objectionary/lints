@@ -1,0 +1,15 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+# yamllint disable rule:line-length
+sheets:
+  - /org/eolang/lints/atoms/atom-and-base.xsl
+asserts:
+  - /defects[count(defect)=0]
+xml-reason: "the parser forbids auto-named atoms with >>, so @local on an atom without @base can only reach the linter via transformed or hand-written XMIR"
+document: |
+  <object author="tests">
+    <o line="1" local="clean" name="a🌵1-0">
+      <o name="λ"/>
+    </o>
+  </object>

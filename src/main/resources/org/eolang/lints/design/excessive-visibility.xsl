@@ -12,7 +12,15 @@
   <xsl:output encoding="UTF-8" method="xml"/>
   <xsl:template match="/">
     <defects>
+      <!--
+      The absolute names of the formations the atoms of the program declare
+      as their types, e.g. "Φ.posix.dir-return" for "/Q.posix.dir-return":
+      the return type sits on the "λ" of an atom, the type of a void on the
+      void itself, with a trailing "?" when the value may be absent.
+      -->
+      <xsl:variable name="types" select="(//o/@atom, for $t in //o/@type return replace($t, '\?$', ''))"/>
       <xsl:for-each select="//o[eo:abstract(.) and @name]">
+        <xsl:variable name="object" select="."/>
         <xsl:variable name="tests" select="o[eo:test-name(@name)]"/>
         <xsl:if test="exists($tests)">
           <!--
@@ -23,17 +31,48 @@
           only hide a value other files may legitimately read.
           -->
           <xsl:variable name="literals" select="('Φ.number', 'Φ.string', 'Φ.bytes', 'Φ.true', 'Φ.false', 'Φ.tuple')"/>
-          <xsl:for-each select="o[@name and @base and @base != '∅' and not(@base = $literals) and @name != 'φ' and not(contains(@name, '🌵')) and not(eo:test-name(@name))]">
+          <!--
+          A method written as a formation, e.g. "[x y] > euclid", has no
+          "@base" at all, yet it is as public as one written as an
+          application, so it is checked the same way. An atom is left
+          alone, because its body lives in the runtime, which finds it by
+          its name, and so is a formation that an atom names as its type,
+          since the annotation refers to it by its absolute name, which
+          ">>" would take away. The "λ" that marks an atom is no method
+          either.
+          -->
+          <xsl:for-each select="o[@name and not(@base = '∅') and not(@base = $literals) and not(@name = ('φ', 'λ')) and not(eo:atom(.)) and not(@loc = $types) and not(contains(@name, '🌵')) and not(eo:test-name(@name))]">
             <xsl:variable name="attr" select="@name"/>
             <!--
             A test refers to a sibling method either by calling it on
             itself, which the parser resolves into a "ξ.ρ."-prefixed chain
             of self-references, or by chaining a dotted call onto some
             other expression, e.g. "(phrase "x").multi-words", which the
-            parser resolves into a "."-prefixed postfix base.
+            parser resolves into a "."-prefixed postfix base. A test
+            written as an application, e.g. "pos.eq 6 +> can-find-space",
+            is bound in the object itself, so the parser resolves the
+            sibling into a "ξ."-prefixed base without any "ρ", which may
+            even be the base of the test itself.
             -->
-            <xsl:variable name="used" select="$tests//o[@base and matches(@base, '^(ξ(\.ρ)+\.|\.)') and (replace(@base, '^(ξ(\.ρ)+\.|\.)', '') = $attr or starts-with(replace(@base, '^(ξ(\.ρ)+\.|\.)', ''), concat($attr, '.')))]"/>
-            <xsl:if test="empty($used)">
+            <xsl:variable name="used" select="$tests/descendant-or-self::o[@base and (matches(@base, '^(ξ(\.ρ)+\.|\.)') or (starts-with(@base, 'ξ.') and ancestor::o[eo:abstract(.)][1] is $object)) and (replace(@base, '^(ξ(\.ρ)*\.|\.)', '') = $attr or starts-with(replace(@base, '^(ξ(\.ρ)*\.|\.)', ''), concat($attr, '.')))]"/>
+            <!--
+            A test may also reach the method through the name of the
+            object, e.g. "os.is-linux", which the parser resolves into the
+            absolute name of the object, the one it keeps in "@loc",
+            followed by the method: "Φ.os.is-linux", or
+            "Φ.com.example.os.is-linux" in a program with a package.
+            -->
+            <xsl:variable name="loc" select="../@loc"/>
+            <xsl:variable name="named" select="$tests//o[exists($loc) and (@base = concat($loc, '.', $attr) or starts-with(@base, concat($loc, '.', $attr, '.')))]"/>
+            <!--
+            A test may also bind the object to a name of its own, e.g.
+            "counter 5 > c", and call the method on that name, "c.next".
+            The parser resolves such a call into a reference to the
+            attribute of the test, "ξ.c.next", and gives that attribute
+            the absolute name of the object as its base.
+            -->
+            <xsl:variable name="bound" select="$tests/descendant-or-self::o[exists($loc) and matches(@base, '^ξ\.[^.]+\.') and (some $local in tokenize(@base, '\.')[2] satisfies (exists(ancestor::o[eo:abstract(.)][1]/o[@name = $local and @base = $loc]) and (substring-after(@base, concat('ξ.', $local, '.')) = $attr or starts-with(substring-after(@base, concat('ξ.', $local, '.')), concat($attr, '.')))))]"/>
+            <xsl:if test="empty($used) and empty($named) and empty($bound)">
               <xsl:element name="defect">
                 <xsl:variable name="line" select="eo:lineno(@line)"/>
                 <xsl:attribute name="line">

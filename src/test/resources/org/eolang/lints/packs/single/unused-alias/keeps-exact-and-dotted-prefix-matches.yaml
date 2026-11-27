@@ -1,0 +1,42 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/aliases/unused-alias.xsl
+defects:
+  - severity: error
+    line: 2
+  - severity: error
+    line: 5
+xml-reason: >-
+  Checks dotted alias prefixes independently of parser alias expansion.
+document: |
+  <object author="tests">
+    <metas>
+      <meta line="1">
+        <head>alias</head><tail>first Φ.org.example.used</tail>
+        <part>first</part><part>Φ.org.example.used</part>
+      </meta>
+      <meta line="2">
+        <head>alias</head><tail>second Φ.org.example.use</tail>
+        <part>second</part><part>Φ.org.example.use</part>
+      </meta>
+      <meta line="3">
+        <head>alias</head><tail>third Φ.local</tail>
+        <part>third</part><part>Φ.local</part>
+      </meta>
+      <meta line="4">
+        <head>alias</head><tail>fourth Φ.number</tail>
+        <part>fourth</part><part>Φ.number</part>
+      </meta>
+      <meta line="5">
+        <head>alias</head><tail>fifth absent</tail>
+        <part>fifth</part><part>absent</part>
+      </meta>
+    </metas>
+    <o name="main">
+      <o base="Φ.org.example.used.child"/>
+      <o base="Φ.local"/>
+      <o base="Φ.number.plus"/>
+    </o>
+  </object>

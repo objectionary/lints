@@ -19,19 +19,34 @@
     <defects>
       <xsl:for-each select="//o[eo:abstract(.)]">
         <xsl:variable name="formation" select="."/>
-        <xsl:for-each select="o[@name and @base and @base != '∅' and @name != 'φ' and not(eo:test-name(@name))]">
+        <xsl:variable name="attributes" select="o[@name and @base and @base != '∅' and @name != 'φ' and not(eo:test-name(@name))]"/>
+        <!--
+        The printer sorts the attributes by the names they are written
+        with, so an object bound with ">>" counts by its "@local" name,
+        not by the synthetic "@name" the parser gives it.
+        -->
+        <xsl:variable name="names" select="for $a in $attributes return string(($a/@local, $a/@name)[1])"/>
+        <xsl:variable name="sorted" select="every $i in 2 to count($names) satisfies $names[$i - 1] le $names[$i]"/>
+        <xsl:for-each select="$attributes[not($sorted)]">
           <xsl:variable name="name" select="@name"/>
           <xsl:variable name="declared" select="number(eo:lineno(@line))"/>
+          <!--
+          The arguments of a vertical application sit on the lines below
+          its name, and those lines are the declaration itself, not lines
+          between the declaration and its usages: the distance is counted
+          from the last line the declaration takes.
+          -->
+          <xsl:variable name="ends" select="max(descendant-or-self::o/number(eo:lineno(@line)))"/>
           <xsl:variable name="usages" select="$formation//o[(@base = concat('ξ.', $name) or starts-with(@base, concat('ξ.', $name, '.'))) and not(ancestor::o[. &gt;&gt; $formation and eo:abstract(.)]) and not(ancestor-or-self::o[eo:test-name(@name)])]"/>
           <xsl:variable name="last" select="max($usages/number(eo:lineno(@line)))"/>
-          <xsl:if test="$declared &gt; 0 and exists($usages) and $last - $declared &gt; $max">
+          <xsl:if test="$declared &gt; 0 and exists($usages) and $last - $ends &gt; $max">
             <defect>
               <xsl:attribute name="line">
                 <xsl:value-of select="$declared"/>
               </xsl:attribute>
               <xsl:attribute name="severity">warning</xsl:attribute>
               <xsl:text>The object </xsl:text>
-              <xsl:value-of select="eo:escape($name)"/>
+              <xsl:value-of select="eo:escape((@local, $name)[1])"/>
               <xsl:text> is declared here, but is not used until line </xsl:text>
               <xsl:value-of select="$last"/>
               <xsl:text>, </xsl:text>

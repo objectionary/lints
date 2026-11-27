@@ -75,6 +75,63 @@ final class LtUnlintNonExistingDefectTest {
         );
     }
 
+    @Test
+    void handlesEmptyTailWithoutException() throws IOException {
+        MatcherAssert.assertThat(
+            "An unlint meta with an empty tail should not throw exception",
+            new LtUnlintNonExistingDefect(new ListOf<>()).defects(
+                new XMLDocument(
+                    String.join(
+                        "",
+                        "<object><metas>",
+                        "<meta line='1'><head>unlint</head><tail/>",
+                        "</meta></metas></object>"
+                    )
+                )
+            ),
+            Matchers.emptyIterable()
+        );
+    }
+
+    @Test
+    void handlesMissingTailWithoutException() throws IOException {
+        MatcherAssert.assertThat(
+            "An unlint meta with missing tail should not throw exception",
+            new LtUnlintNonExistingDefect(new ListOf<>()).defects(
+                new XMLDocument(
+                    String.join(
+                        "",
+                        "<object><metas>",
+                        "<meta line='1'><head>unlint</head>",
+                        "</meta></metas></object>"
+                    )
+                )
+            ),
+            Matchers.emptyIterable()
+        );
+    }
+
+    @Test
+    void ignoresEmptyTailWhenOtherUnlintsPresent() throws IOException {
+        MatcherAssert.assertThat(
+            "An empty tail should be ignored and not crash other unlints",
+            new LtUnlintNonExistingDefect(new ListOf<>()).defects(
+                new XMLDocument(
+                    String.join(
+                        "",
+                        "<object><metas>",
+                        "<meta line='1'><head>unlint</head><tail/>",
+                        "</meta>",
+                        "<meta line='2'><head>unlint</head>",
+                        "<tail>ascii-only:999</tail></meta>",
+                        "</metas></object>"
+                    )
+                )
+            ),
+            Matchers.hasSize(1)
+        );
+    }
+
     private static XMLDocument unlint(final String tail, final String meta) {
         return new XMLDocument(
             String.join(

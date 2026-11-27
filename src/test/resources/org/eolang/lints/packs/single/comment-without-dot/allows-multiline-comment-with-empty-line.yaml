@@ -1,0 +1,13 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/comments/comment-without-dot.xsl
+defects: 0
+input: |
+  # First comment line.
+  #
+  # Second comment line.
+
+  [] > foo
+    42 > @

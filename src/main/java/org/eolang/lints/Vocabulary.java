@@ -14,6 +14,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 import opennlp.tools.postag.POSModel;
+import opennlp.tools.postag.POSTagFormat;
 import opennlp.tools.postag.POSTaggerME;
 import org.cactoos.io.InputStreamOf;
 import org.cactoos.io.ResourceOf;
@@ -41,6 +42,27 @@ final class Vocabulary {
     private static final Collection<String> MODALS = Collections.singletonList("can");
 
     /**
+     * Tags a word right after a modal may carry to be taken as a verb.
+     *
+     * <p>Nothing but a base-form verb may follow a modal, yet the model
+     * often tags a bare infinitive such as "print" or "floor" as a noun
+     * ({@code NN}, {@code NNS}) or as a present verb ({@code VBP}), and
+     * tags words missing from its vocabulary, such as "concat" or
+     * "multiply", as a quotation mark ({@code ``}).</p>
+     */
+    private static final Collection<String> INFINITIVES = Arrays.asList(
+        "VB", "VBP", "NN", "NNS", "``"
+    );
+
+    /**
+     * Subjects to put in front of a modal, since the model tags the word
+     * after it differently depending on the subject, e.g. "lower" is a
+     * verb in "It can lower case text", but an adjective in "You can lower
+     * case text", while "equal" is a verb only in "We can equal zero".
+     */
+    private static final Collection<String> SUBJECTS = Arrays.asList("You", "It", "We");
+
+    /**
      * Part-Of-Speech tagger.
      */
     private final POSTaggerME tagger;
@@ -65,7 +87,7 @@ final class Vocabulary {
      * @param mdl Part-Of-Speech model
      */
     Vocabulary(final POSModel mdl) {
-        this(new POSTaggerME(mdl));
+        this(new POSTaggerME(mdl, POSTagFormat.PENN));
     }
 
     /**
@@ -84,10 +106,13 @@ final class Vocabulary {
      *
      * <p>The check uses the "It [verb]s" rule: "It generates-report" -> the
      * first word must be tagged {@code VBZ} (verb, 3rd-person singular present).
-     * When the first word is the modal "can", the "It can [verb]" rule applies
-     * instead: "It can add-report" -> the second word must be tagged
-     * {@code VB} (verb, base form), since a modal is never itself conjugated
-     * in the third person.</p>
+     * When the first word is the modal "can", the "You can [verb]" rule applies
+     * instead: "You can add-report" -> the second word must be tagged
+     * {@code VB} (verb, base form), {@code VBP}, {@code NN}, {@code NNS}
+     * or {@code ``} (a word unknown to the model), since a modal is never
+     * itself conjugated in the third person. The rule is tried with "You",
+     * "It" and "We" as subjects, and holds if any of them satisfies it,
+     * because the model tags the same verb differently after them.</p>
      *
      * @param name Kebab-case name without any leading {@code +} sigil
      * @return True if the name starts with a verb, plain or after a modal
@@ -98,19 +123,24 @@ final class Vocabulary {
             final String[] words = Arrays.stream(Vocabulary.KEBAB.split(name))
                 .map(s -> s.toLowerCase(Locale.ROOT))
                 .toArray(String[]::new);
-            final String[] tags = this.tagger.tag(
-                Stream.concat(Stream.of("It"), Arrays.stream(words)).toArray(String[]::new)
-            );
             final boolean verb;
             if (words.length > 1 && Vocabulary.MODALS.contains(words[0])) {
-                verb = "VB".equals(tags[2]);
+                verb = Vocabulary.SUBJECTS.stream().anyMatch(
+                    subj -> Vocabulary.INFINITIVES.contains(this.tags(subj, words)[2])
+                );
             } else {
-                verb = "VBZ".equals(tags[1]);
+                verb = "VBZ".equals(this.tags("It", words)[1]);
             }
             return verb;
         } finally {
             this.lock.unlock();
         }
+    }
+
+    private String[] tags(final String subject, final String... words) {
+        return this.tagger.tag(
+            Stream.concat(Stream.of(subject), Arrays.stream(words)).toArray(String[]::new)
+        );
     }
 
     private static POSModel model() throws IOException {

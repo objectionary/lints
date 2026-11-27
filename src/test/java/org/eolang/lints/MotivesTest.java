@@ -19,6 +19,7 @@ import org.eolang.parser.EoSyntax;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 
 /**
  * Test for {@link Motives}.
@@ -37,6 +38,7 @@ import org.junit.jupiter.api.Test;
 final class MotivesTest {
 
     @Test
+    @Timeout(180L)
     void motivesDemonstrateWhatTheyClaim() throws IOException {
         // @checkstyle ConditionalRegexpMultilineCheck (1 line)
         final List<String> failures = new ArrayList<>();

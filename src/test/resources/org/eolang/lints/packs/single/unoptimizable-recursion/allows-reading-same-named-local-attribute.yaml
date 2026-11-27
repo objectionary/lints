@@ -1,0 +1,11 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/design/unoptimizable-recursion.xsl
+defects: 0
+input: |
+  [] > invoice
+    [amount tax] > total
+      amount.plus tax > total
+      total.as-decimal > @
