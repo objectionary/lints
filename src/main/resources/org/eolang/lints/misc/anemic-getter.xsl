@@ -4,6 +4,7 @@
 * SPDX-License-Identifier: MIT
 -->
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:eo="https://www.eolang.org" id="anemic-getter" version="2.0">
+  <xsl:import href="/org/eolang/parser/_funcs.xsl"/>
   <xsl:import href="/org/eolang/funcs/lineno.xsl"/>
   <xsl:import href="/org/eolang/funcs/escape.xsl"/>
   <xsl:import href="/org/eolang/funcs/defect-context.xsl"/>
@@ -20,20 +21,27 @@
   filled from outside but never read from there, and a getter like
   "title > t" in a "[title] > book" formation is the only way to expose it. A reference that reaches past the hops for an
   attribute, such as "^.bar", names something other than the hop itself, so it
-  is not a rename and stays out of scope.
+  is not a rename and stays out of scope. Nor is a "^" or "$" chain a
+  rename once a nested formation reads the alias, as in "^.^.b" under
+  "^ > b": dropping the alias would turn every such read into a longer
+  chain of hops, whose length depends on how deep the reader sits and
+  silently changes whenever the nesting does.
   -->
   <xsl:template match="/">
     <defects>
       <xsl:for-each select="//o[@name and @name!='φ' and not(@base='ξ' and @name='xi🌵') and @base and starts-with(@base, 'ξ') and not(o)]">
         <xsl:variable name="ref" select="substring-after(@base, 'ξ.')"/>
+        <xsl:variable name="owner" select=".."/>
+        <xsl:variable name="names" select="(@name, @local)/string()"/>
+        <xsl:variable name="nested" select="exists($owner//o[eo:abstract(.) and not(. is $owner)]//o[starts-with(@base, 'ξ.ρ.') and (tokenize(@base, '\.')[. != 'ρ'])[2] = $names])"/>
         <xsl:variable name="target">
           <xsl:choose>
             <!-- "$", the formation itself -->
-            <xsl:when test="@base='ξ'">
+            <xsl:when test="@base='ξ' and not($nested)">
               <xsl:text>$</xsl:text>
             </xsl:when>
             <!-- "^", "^.^", and so on: one "^" per "ρ" hop -->
-            <xsl:when test="matches(@base, '^ξ(\.ρ)+$')">
+            <xsl:when test="matches(@base, '^ξ(\.ρ)+$') and not($nested)">
               <xsl:value-of select="replace($ref, 'ρ', '^')"/>
             </xsl:when>
             <!-- a non-void sibling attribute of the same formation -->
