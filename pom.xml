@@ -740,7 +740,7 @@
               </execution>
               <execution>
                 <id>groovy-execute</id>
-                <phase>process-test-resources</phase>
+                <phase>process-test-classes</phase>
                 <goals>
                   <goal>execute</goal>
                 </goals>
