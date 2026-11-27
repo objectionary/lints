@@ -85,7 +85,7 @@ final class LtReservedName implements Lint {
         if (local.isPresent()) {
             result = local;
         } else {
-            result = object.attribute("name").text();
+            result = object.attribute("name").text().map(name -> name.replaceFirst("^v🌵", ""));
         }
         return result;
     }

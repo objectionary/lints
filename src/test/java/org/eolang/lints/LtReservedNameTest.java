@@ -6,6 +6,7 @@ package org.eolang.lints;
 
 import com.jcabi.xml.XMLDocument;
 import fixtures.EoProgram;
+import java.util.stream.Collectors;
 import org.cactoos.io.InputOf;
 import org.cactoos.list.ListOf;
 import org.cactoos.map.MapEntry;
@@ -80,6 +81,40 @@ final class LtReservedNameTest {
             Matchers.equalTo(
                 "Object name \"true\" is already reserved by object in the \"true.eo\""
             )
+        );
+    }
+
+    @Test
+    void catchesReservedVoidName() throws Exception {
+        MatcherAssert.assertThat(
+            "Reserved void name must be reported as written",
+            new LtReservedName(
+                new MapOf<>(new MapEntry<>("true", "true.eo"))
+            ).defects(
+                new EoProgram(
+                    "reserved-void",
+                    new InputOf(String.format("[true] > choice%n  true > @%n"))
+                ).parse()
+            ).stream().map(Defect::text).collect(Collectors.toList()),
+            Matchers.contains(
+                "Object name \"true\" is already reserved by object in the \"true.eo\""
+            )
+        );
+    }
+
+    @Test
+    void allowsUnreservedVoidName() throws Exception {
+        MatcherAssert.assertThat(
+            "An unreserved void name must be allowed",
+            new LtReservedName(
+                new MapOf<>(new MapEntry<>("true", "true.eo"))
+            ).defects(
+                new EoProgram(
+                    "unreserved-void",
+                    new InputOf(String.format("[flag] > choice%n  flag > @%n"))
+                ).parse()
+            ),
+            Matchers.empty()
         );
     }
 
