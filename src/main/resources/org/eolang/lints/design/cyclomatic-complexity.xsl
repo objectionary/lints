@@ -17,15 +17,30 @@
   third-party object that happens to have a method with the same name, is
   not decidable without type inference, so this counts any dispatch whose
   last "."-separated segment is one of the three names, except an "and" or
-  an "or" whose receiver is a "Φ.bytes" literal or an "as-bytes" chain,
-  which is a bit mask. It is a heuristic, the same way "broad-scope" and
+  an "or" whose receiver or first argument is a "Φ.bytes" literal, an
+  "as-bytes" chain, or another such bit operation, which is a bit mask:
+  "bool.and" takes a boolean, not bytes. It is a heuristic, the same way "broad-scope" and
   "sparse-decoration" are, which is why the defect it produces is marked
   experimental.
   -->
   <xsl:function name="eo:decision" as="xs:boolean">
     <xsl:param name="o" as="element()"/>
     <xsl:variable name="chain" select="tokenize($o/@base, '\.')"/>
-    <xsl:sequence select="$o/@base = 'Φ.while' or $chain[last()] = 'if' or ($chain[last()] = ('and', 'or') and not(eo:bytes(remove($chain, count($chain)), $o)))"/>
+    <xsl:sequence select="$o/@base = 'Φ.while' or $chain[last()] = 'if' or ($chain[last()] = ('and', 'or') and not(eo:bytes(remove($chain, count($chain)), $o) or eo:bytes-arg($o)))"/>
+  </xsl:function>
+  <!--
+  The object is bytes: either its "@base" says so, or it is an "and",
+  an "or" or a "xor" whose first argument is bytes.
+  -->
+  <xsl:function name="eo:bytes-object" as="xs:boolean">
+    <xsl:param name="o" as="element()"/>
+    <xsl:variable name="chain" select="tokenize($o/@base, '\.')"/>
+    <xsl:sequence select="eo:bytes($chain, $o) or ($chain[last()] = ('and', 'or', 'xor') and eo:bytes-arg($o))"/>
+  </xsl:function>
+  <xsl:function name="eo:bytes-arg" as="xs:boolean">
+    <xsl:param name="o" as="element()"/>
+    <xsl:variable name="arg" select="$o/o[@as][1]"/>
+    <xsl:sequence select="exists($arg) and eo:bytes-object($arg)"/>
   </xsl:function>
   <xsl:function name="eo:bytes" as="xs:boolean">
     <xsl:param name="chain" as="xs:string*"/>
@@ -36,7 +51,7 @@
         <xsl:sequence select="true()"/>
       </xsl:when>
       <xsl:when test="count($chain) = 1 and $chain = '' and exists($rho)">
-        <xsl:sequence select="eo:bytes(tokenize($rho/@base, '\.'), $rho)"/>
+        <xsl:sequence select="eo:bytes-object($rho)"/>
       </xsl:when>
       <xsl:when test="$chain[last()] = ('and', 'or', 'xor', 'not', 'left', 'right')">
         <xsl:sequence select="eo:bytes(remove($chain, count($chain)), $o)"/>
