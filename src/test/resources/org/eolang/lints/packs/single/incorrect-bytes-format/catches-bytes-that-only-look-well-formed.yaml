@@ -1,0 +1,23 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/critical/incorrect-bytes-format.xsl
+asserts:
+  - /defects[count(defect[@severity='critical'])=7]
+  - /defects/defect[@line='1' and contains(., '00-0-00')]
+  - /defects[not(defect[@line='8'])]
+xml-reason: "parser accepts only well-formed hex bytes; unreachable"
+document: |
+  <object author="tests">
+    <o name="app">
+      <o name="a" line="1">00-0-00</o>
+      <o name="b" line="2">000-00</o>
+      <o name="c" line="3">00-000</o>
+      <o name="d" line="4">00--00</o>
+      <o name="e" line="5">ab-cd</o>
+      <o name="f" line="6">1A-2B-3</o>
+      <o name="g" line="7">1A-2B-3C-</o>
+      <o name="h" line="8">1A-2B-3C</o>
+    </o>
+  </object>
