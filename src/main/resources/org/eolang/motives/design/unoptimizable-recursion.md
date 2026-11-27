@@ -20,10 +20,10 @@ last step of a `seq *`:
 
 A self-call outside of a tail position is turned into a loop too, but
 in two steps. First the compiler rewrites the formation into
-continuation-passing style: it gets one more void, the continuation,
-and the work left to do after the call answers moves into it, so every
-self-call becomes a tail call. Then the recursion runs inside `PhLoop`,
-as above. A self-call under an operation, or in an attribute that φ
+continuation-passing style. The formation gets an extra void, the
+continuation, and the work left to do after the call answers moves into
+it, so every self-call becomes a tail call. Then the recursion runs
+inside `PhLoop`, like the one in the previous example. A self-call under an operation, or in an attribute that φ
 leads to, is handled this way:
 
 ```eo
