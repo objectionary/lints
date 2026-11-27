@@ -43,13 +43,45 @@
     </xsl:choose>
   </xsl:function>
   <!--
-  One shape the compiler also leaves unoptimized is not named below:
-  mutual recursion, where formation A calls formation B and B calls A
-  back, possibly through a longer chain of formations. That is not
-  decidable from a single formation's own subtree the way the others
-  are; it needs a call graph over the whole document, which is a
-  different kind of lint from this one.
+  The sibling formations the given formation calls through its receiver,
+  as "^.G", which the parser resolves to "xi.rho.G"; a bare "G" naming a
+  sibling is a parse error, so this is the only spelling. Only calls in
+  the formation's own body count, not those in its nested formations or
+  in its tests, and the formation itself is never its own callee here:
+  a self-call is the business of the main template.
   -->
+  <xsl:function name="eo:callees" as="element()*">
+    <xsl:param name="f" as="element()"/>
+    <xsl:variable name="body" select="$f//o[@base and ancestor::o[eo:abstract(.)][1] is $f and not(ancestor-or-self::o[eo:test-name(@name)])]"/>
+    <xsl:sequence select="$f/../o[eo:abstract(.) and not(. is $f) and not(eo:test-name(@name)) and (some $n in (@name, @local)/string() satisfies $body[@base = concat('ξ.ρ.', $n) or starts-with(@base, concat('ξ.ρ.', $n, '.'))])]"/>
+  </xsl:function>
+  <!--
+  All formations reachable from the given ones through "eo:callees", the
+  given ones included. The $seen set guards against cycles.
+  -->
+  <xsl:function name="eo:reachable" as="element()*">
+    <xsl:param name="todo" as="element()*"/>
+    <xsl:param name="seen" as="element()*"/>
+    <xsl:variable name="next" select="(for $f in $todo return eo:callees($f)) except ($seen | $todo)"/>
+    <xsl:choose>
+      <xsl:when test="empty($next)">
+        <xsl:sequence select="$seen | $todo"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:sequence select="eo:reachable($next, $seen | $todo)"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:function>
+  <!--
+  The first sibling the given formation calls that calls it back, maybe
+  through a longer chain of siblings: mutual recursion. The compiler turns
+  only a formation's call to itself into a loop, so such a cycle always
+  runs as plain recursion, however its calls are placed.
+  -->
+  <xsl:function name="eo:mutual" as="element()?">
+    <xsl:param name="f" as="element()"/>
+    <xsl:sequence select="(eo:callees($f)[some $g in eo:reachable(., ()) satisfies $g is $f])[1]"/>
+  </xsl:function>
   <!--
   The package of the program, from its "+package" meta, or an empty string
   when it has none.
@@ -131,9 +163,13 @@
         <xsl:variable name="loops" select="($root | $root//o)[eo:is-self-tail(string(@base), $name) and eo:tail(., $root)]"/>
         <xsl:variable name="direct" select="$calls[(some $n in $names satisfies eo:is-self-direct(string(@base), $n)) and eo:tail(., $root)]"/>
         <xsl:variable name="elsewhere" select="$calls except ($root/descendant-or-self::o)"/>
-        <xsl:if test="exists($calls) and empty($loops)">
+        <xsl:variable name="self" select="exists($calls) and empty($loops)"/>
+        <xsl:variable name="partner" select="if ($self) then () else eo:mutual(.)"/>
+        <xsl:variable name="partners" select="($partner/@name, $partner/@local)/string()"/>
+        <xsl:variable name="cross" select=".//o[ancestor::o[eo:abstract(.)][1] is current() and not(ancestor-or-self::o[eo:test-name(@name)]) and (some $n in $partners satisfies (@base = concat('ξ.ρ.', $n) or starts-with(@base, concat('ξ.ρ.', $n, '.'))))]"/>
+        <xsl:if test="$self or exists($partner)">
           <defect>
-            <xsl:variable name="line" select="eo:lineno($calls[1]/@line)"/>
+            <xsl:variable name="line" select="eo:lineno(($calls, $cross)[1]/@line)"/>
             <xsl:attribute name="line">
               <xsl:value-of select="$line"/>
             </xsl:attribute>
@@ -148,6 +184,11 @@
             <xsl:value-of select="eo:escape((@local, @name)[1])"/>
             <xsl:text> cannot be turned into a loop, </xsl:text>
             <xsl:choose>
+              <xsl:when test="not($self)">
+                <xsl:text>it calls </xsl:text>
+                <xsl:value-of select="eo:escape(($partner/@local, $partner/@name)[1])"/>
+                <xsl:text>, which calls it back, and only a self-call becomes a loop</xsl:text>
+              </xsl:when>
               <xsl:when test="o[@name='λ']">
                 <xsl:text>the formation is an atom</xsl:text>
               </xsl:when>

@@ -49,3 +49,26 @@ for `xi.rho.<name>` and nothing else:
       1
       calc (n.minus 1)
 ```
+
+Mutual recursion is never turned into a loop either, because the compiler
+handles only a formation calling itself. Here `even` calls `odd` and `odd`
+calls `even` back, so every step takes a Java stack block, and the lint
+warns about both formations:
+
+```eo
+[] > app
+  [n] > even
+    if. > @
+      n.eq 0
+      true
+      ^.odd (n.minus 1)
+  [n] > odd
+    if. > @
+      n.eq 0
+      false
+      ^.even (n.minus 1)
+  even 10 > @
+```
+
+Merge such formations into one that calls itself, and the recursion
+becomes a loop.
