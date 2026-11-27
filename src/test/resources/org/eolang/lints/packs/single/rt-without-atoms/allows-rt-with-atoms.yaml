@@ -1,0 +1,12 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/atoms/rt-without-atoms.xsl
+defects: 0
+input: |
+  +rt jvm org.eolang:eo-runtime:0.0.0
+
+  [] > app
+    [] > foo /number
+    foo > @
