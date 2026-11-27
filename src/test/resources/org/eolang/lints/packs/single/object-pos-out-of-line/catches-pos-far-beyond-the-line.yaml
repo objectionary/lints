@@ -1,0 +1,17 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/lines/object-pos-out-of-line.xsl
+asserts:
+  - /defects[count(defect[@severity='error' and @line='2'])=1]
+  - /defects/defect[contains(., 'position 40') and contains(., ' 8 ')]
+xml-reason: "parser keeps @pos inside the line; unreachable via parse"
+document: |
+  <object author="tests">
+    <listing>[] &gt; foo
+    42 &gt; @</listing>
+    <o line="1" pos="0" name="foo">
+      <o line="2" pos="40" base="Φ.number" name="φ"/>
+    </o>
+  </object>

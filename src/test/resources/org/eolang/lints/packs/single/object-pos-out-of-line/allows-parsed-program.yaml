@@ -1,0 +1,21 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/lines/object-pos-out-of-line.xsl
+defects: 0
+input: |
+  # Foo.
+
+  [] > foo
+    "привет, 🌵" > greeting
+    greeting.length > size
+    if. > @
+      size.gt 0
+      greeting
+      "пусто"
+
+    [] +> checks-size
+      eq. > @
+        foo.size
+        9
