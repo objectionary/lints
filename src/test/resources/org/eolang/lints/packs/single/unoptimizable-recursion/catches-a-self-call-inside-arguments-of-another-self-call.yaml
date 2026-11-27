@@ -6,14 +6,12 @@ sheets:
   - /org/eolang/lints/design/unoptimizable-recursion.xsl
 asserts:
   - /defects[count(defect[@severity='warning'])=1]
-  - /defects/defect[1][@line='3' and normalize-space()='The recursion in "rec" cannot be turned into a loop, the self-call is kept in an attribute other than φ']
-  - /defects/defect[not(contains(text(), '🌵'))]
+  - /defects/defect[1][@line='6' and normalize-space()='The recursion in "rec" cannot be turned into a loop, a self-call sits inside the arguments of another self-call']
 input: |
   [] > app
-    [n] >> rec
-      rec (n.minus 1) > step
+    [n] > rec
       if. > @
         n.lt 1
         0
-        step
+        n.plus (^.rec (^.rec (n.minus 1)))
     rec 5 > @

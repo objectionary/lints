@@ -1,0 +1,18 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+# yamllint disable rule:line-length
+sheets:
+  - /org/eolang/lints/design/unoptimizable-recursion.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=1]
+  - /defects/defect[1][@line='3' and normalize-space()='The recursion in "rec" cannot be turned into a loop, it is the receiver of a dispatch while its self-call is kept in an attribute']
+input: |
+  [] > app
+    [n] > rec
+      ^.rec (n.minus 1) > prev
+      if. > @
+        n.lt 1
+        0
+        n.plus prev
+    (rec 5).plus 1 > @

@@ -18,11 +18,13 @@ last step of a `seq *`:
   rec 5 > @
 ```
 
-Every other shape runs as plain recursion, which is correct but deeper
-and slower, and the compiler says nothing about it. This lint says it,
-naming the reason it found. A self-call under an operation, for example,
-is not in a tail position, because the operation has work left to do
-after the call answers:
+A self-call outside of a tail position is turned into a loop too, but
+in two steps. First the compiler rewrites the formation into
+continuation-passing style: it gets one more void, the continuation,
+and the work left to do after the call answers moves into it, so every
+self-call becomes a tail call. Then the recursion runs inside `PhLoop`,
+as above. A self-call under an operation, or in an attribute that φ
+leads to, is handled this way:
 
 ```eo
 [] > app
@@ -34,8 +36,25 @@ after the call answers:
   rec 5 > @
 ```
 
-Rewrite such an object with an accumulator, the way `repeated` was
-rewritten by hand, and the recursion becomes a loop again.
+Every other shape runs as plain recursion, which is correct but deeper
+and slower, and the compiler says nothing about it. This lint says it,
+naming the reason it found. The rewrite skips, for example, a formation
+whose φ does not lead to the attribute holding the self-call, one that
+calls itself from inside a nested formation or from inside the arguments
+of another self-call, and one that reaches the self-call through an
+`if.` that may not belong to a `bool`:
+
+```eo
+[] > app
+  [n] > rec
+    ^.rec (n.minus 1) > cached
+    n.plus 1 > @
+  rec 5 > @
+```
+
+Here `cached` is never read by φ, so the rewrite cannot move it into
+the continuation. Make φ lead to every self-call, or drop the ones it
+does not need, and the recursion becomes a loop again.
 
 The compiler recognises the self-call solely when spelled through the receiver,
 `^.rec`. A self-call spelled with the bare name or with `$`, even in a
