@@ -4,7 +4,7 @@
 sheets:
   - /org/eolang/lints/misc/anemic-getter.xsl
 defects: 0
-xml-reason: "not yet converted to an EO input test"
+xml-reason: "only EO 0.58 emitted the xi🌵 attribute; legacy XMIR only"
 document: |
   <object author="tests">
     <o name="foo">

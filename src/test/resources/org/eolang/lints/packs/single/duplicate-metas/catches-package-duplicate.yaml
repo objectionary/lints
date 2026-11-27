@@ -6,7 +6,7 @@ sheets:
 defects:
   - severity: error
     line: 2
-xml-reason: "not yet converted to an EO input test"
+xml-reason: "the parser rejects a second +package at parse time"
 document: |
   <object author="tests">
     <metas>

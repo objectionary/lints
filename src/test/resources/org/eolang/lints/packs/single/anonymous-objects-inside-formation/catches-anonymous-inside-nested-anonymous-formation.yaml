@@ -8,7 +8,7 @@ defects:
     line: 1
   - severity: error
     line: 2
-xml-reason: "not yet converted to an EO input test"
+xml-reason: "parser rejects anonymous objects inside a formation"
 document: |
   <object author="tests">
     <o line="1" name="outer">

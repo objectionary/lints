@@ -5,7 +5,7 @@ sheets:
   - /org/eolang/lints/lines/error-line-out-of-listing.xsl
 defects:
   - severity: error
-xml-reason: "not yet converted to an EO input test"
+xml-reason: "parser errors always point inside the listing"
 document: |
   <object author="tests">
     <listing>first line

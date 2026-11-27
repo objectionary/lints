@@ -8,7 +8,7 @@ asserts:
   - /defects[count(defect[@severity='critical'])=1]
   - /defects/defect[@line='1']
   - /defects/defect[1][normalize-space()='Objects with parent @base equal to "Φ.bytes" must contain data, while "bar" object does not']
-xml-reason: "not yet converted to an EO input test"
+xml-reason: "parser always emits data inside Φ.bytes; unreachable"
 document: |
   <object author="tests">
     <o name="bar" base="Φ.bytes" line="1">
