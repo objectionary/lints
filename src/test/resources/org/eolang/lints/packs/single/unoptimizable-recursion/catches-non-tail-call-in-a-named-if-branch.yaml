@@ -1,0 +1,16 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/design/unoptimizable-recursion.xsl
+defects:
+  - severity: warning
+    line: 6
+input: |
+  [] > app
+    [n] > countdown
+      if. > @
+        n.lt 1
+        0:left
+        (n.plus (^.countdown (n.minus 1))):right
+    countdown 5 > @

@@ -9,16 +9,17 @@
   <xsl:import href="/org/eolang/funcs/escape.xsl"/>
   <xsl:import href="/org/eolang/funcs/defect-context.xsl"/>
   <xsl:import href="/org/eolang/funcs/test-name.xsl"/>
+  <xsl:import href="/org/eolang/funcs/void-name.xsl"/>
   <xsl:output encoding="UTF-8" method="xml"/>
   <!--
   Is the object in a tail position of the expression rooted at $root? It is
   when every step from $root down to it is one of two: a branch of an ".if",
-  which is the argument α0 or α1 and never the receiver, or the last element
+  which is an argument bound as α0/α1 or left/right, or the last element
   of the tuple a "seq" is applied to, which is the α1 of the "Φ.tuple"
   standing as the α0 of the "Φ.seq". Both answer exactly that element, so
   the value of the whole expression is the value of the object whenever the
-  object is forced. This is the same test the compiler runs in
-  "_recursion.xsl", where it decides what to turn into a loop.
+  object is forced. The compiler checks these positions in "_recursion.xsl"
+  when deciding what to turn into a loop.
   -->
   <xsl:function name="eo:tail" as="xs:boolean">
     <xsl:param name="o" as="element()"/>
@@ -31,7 +32,7 @@
       <xsl:when test="empty($parent)">
         <xsl:sequence select="false()"/>
       </xsl:when>
-      <xsl:when test="ends-with($parent/@base, '.if') and $o/@as = ('α0', 'α1')">
+      <xsl:when test="ends-with($parent/@base, '.if') and eo:void-title($o/@as) = ('α0', 'α1', 'left', 'right')">
         <xsl:sequence select="eo:tail($parent, $root)"/>
       </xsl:when>
       <xsl:when test="$parent/@base = 'Φ.tuple' and $parent/@as = 'α0' and $parent/parent::o/@base = 'Φ.seq' and $o/@as = 'α1'">
