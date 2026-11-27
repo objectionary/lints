@@ -21,5 +21,7 @@ Correct:
 [] > foo
 
   [] +> works-dummy
-    true > @
+    eq. > @
+      foo
+      foo
 ```
