@@ -1,0 +1,15 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/design/unoptimizable-recursion.xsl
+defects: 0
+input: |
+  [] > naturals
+    range > @
+      build 0
+      10
+    [^chain num] >> build
+      num > @
+      chain.build > next
+        1.plus num
