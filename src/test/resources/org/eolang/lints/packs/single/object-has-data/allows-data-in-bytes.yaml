@@ -4,10 +4,5 @@
 sheets:
   - /org/eolang/lints/critical/object-has-data.xsl
 defects: 0
-xml-reason: "not yet converted to an EO input test"
-document: |
-  <object author="tests">
-    <o name="foo" base="Φ.bytes">
-      <o>A1-B2-C3-D4-E5</o>
-    </o>
-  </object>
+input: |
+  A1-B2-C3-D4-E5 > foo

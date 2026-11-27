@@ -5,7 +5,7 @@ sheets:
   - /org/eolang/lints/names/unsorted-named-attributes.xsl
 defects: 0
 ignore-schema: true
-xml-reason: "not yet converted to an EO input test"
+xml-reason: "legacy '-' throwing-test marker; the parser now emits n🌵"
 document: |
   <object author="tests">
     <o line="2" name="app" pos="0">

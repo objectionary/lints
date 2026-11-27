@@ -5,7 +5,7 @@ sheets:
   - /org/eolang/lints/critical/incorrect-bytes-format.xsl
 asserts:
   - /defects[count(defect[@severity='critical'])=8]
-xml-reason: "not yet converted to an EO input test"
+xml-reason: "parser accepts only well-formed hex bytes; unreachable"
 document: |
   <object author="tests">
     <o name="app">

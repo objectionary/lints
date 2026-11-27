@@ -4,10 +4,8 @@
 sheets:
   - /org/eolang/lints/critical/name-outside-of-abstract-object.xsl
 defects: 0
-xml-reason: "not yet converted to an EO input test"
-document: |
-  <object author="tests">
-    <o>
-      <o name="bar"/>
-    </o>
-  </object>
+input: |
+  [] > foo
+    bar > @
+      []
+        42 > named

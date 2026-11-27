@@ -5,7 +5,7 @@ sheets:
   - /org/eolang/lints/critical/incorrect-bytes-format.xsl
 asserts:
   - /defects[count(defect[@context and @severity='critical'])=1]
-xml-reason: "not yet converted to an EO input test"
+xml-reason: "parser always emits @line; unreachable via valid parse"
 document: |
   <object author="tests">
     <o name="f">

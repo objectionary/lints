@@ -4,12 +4,8 @@
 sheets:
   - /org/eolang/lints/names/phi-is-not-first.xsl
 defects: 0
-ignore-schema: true
-xml-reason: "not yet converted to an EO input test"
-document: |
-  <object author="tests">
-    <o name="f">
-      <o base="Φ.x" name="a"/>
-      <o base="Φ.y" name="φ" pipe=""/>
-    </o>
-  </object>
+input: |
+  [] > f
+    [] > a
+      42 > x
+    | y > @

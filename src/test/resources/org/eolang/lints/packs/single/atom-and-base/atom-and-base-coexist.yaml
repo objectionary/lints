@@ -5,7 +5,7 @@ sheets:
   - /org/eolang/lints/atoms/atom-and-base.xsl
 asserts:
   - /defects[count(defect[@context and @severity='critical'])=1]
-xml-reason: "not yet converted to an EO input test"
+xml-reason: "an atom is a formation; atom with @base is unreachable"
 document: |
   <object author="tests">
     <o name="obj" base="Φ.foo">
