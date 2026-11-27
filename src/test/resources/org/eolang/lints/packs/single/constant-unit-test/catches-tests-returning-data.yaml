@@ -1,0 +1,26 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/tests/constant-unit-test.xsl
+defects:
+  - severity: warning
+    line: 7
+  - severity: warning
+    line: 10
+  - severity: warning
+    line: 13
+input: |
+  # Foo.
+
+  [] > foo
+    42 > @
+
+    [] +> returns-a-number
+      52 > @
+
+    [] +> returns-a-string
+      "hello" > @
+
+    [] +> returns-bytes
+      01-02 > @

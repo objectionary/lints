@@ -1,0 +1,17 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/tests/constant-unit-test.xsl
+asserts:
+  - /defects[count(defect[@context and @line='0'])=1]
+  - /defects/defect[contains(@context, 'returns-true')]
+xml-reason: "parser always emits @line; unreachable via valid parse"
+document: |
+  <object author="tests">
+    <o name="foo">
+      <o name="p🌵returns-true">
+        <o base="Φ.true" name="φ"/>
+      </o>
+    </o>
+  </object>

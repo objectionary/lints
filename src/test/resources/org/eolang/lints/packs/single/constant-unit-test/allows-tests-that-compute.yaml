@@ -1,0 +1,22 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/tests/constant-unit-test.xsl
+defects: 0
+input: |
+  # Foo.
+
+  [] > foo
+    42 > @
+
+    [] +> returns-forty-two
+      eq. > @
+        foo
+        42
+
+    [] +> adds-numbers
+      5.plus 1 > @
+
+    [] -> fails-on-division
+      foo.div 0 > @
