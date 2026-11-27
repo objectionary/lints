@@ -16,15 +16,19 @@
   -->
   <xsl:function name="eo:test-marker" as="xs:string">
     <xsl:param name="name"/>
-    <xsl:sequence select="(('p🌵', 'n🌵', '+', '-')[starts-with($name, .)], '')[1]"/>
+    <xsl:sequence select="if (starts-with($name, 'p🌵')) then 'p🌵' else if (starts-with($name, 'n🌵')) then 'n🌵' else if (starts-with($name, '+')) then '+' else if (starts-with($name, '-')) then '-' else ''"/>
   </xsl:function>
   <!--
   TRUE if the given attribute name belongs to a unit test, no matter
   whether it is a truthy one or a throwing one.
   -->
+  <!--
+  Called on every object by many lints, thus spelled with plain
+  "starts-with" checks, without building a sequence of markers each time.
+  -->
   <xsl:function name="eo:test-name" as="xs:boolean">
     <xsl:param name="name"/>
-    <xsl:sequence select="eo:test-marker($name) != ''"/>
+    <xsl:sequence select="starts-with($name, 'p🌵') or starts-with($name, 'n🌵') or starts-with($name, '+') or starts-with($name, '-')"/>
   </xsl:function>
   <!--
   The name of a unit test with its marker removed, e.g. `can-do-it` for
