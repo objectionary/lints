@@ -1,0 +1,23 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+# yamllint disable rule:line-length
+sheets:
+  - /org/eolang/lints/design/unoptimizable-recursion.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=3]
+  - /defects/defect[contains(., '"a" cannot be turned into a loop, it calls "b"')]
+  - /defects/defect[contains(., '"b" cannot be turned into a loop, it calls "c"')]
+  - /defects/defect[contains(., '"c" cannot be turned into a loop, it calls "a"')]
+input: |
+  [] > app
+    [n] > a
+      if. > @
+        n.eq 0
+        0
+        ^.b (n.minus 1)
+    [n] > b
+      ^.c n > @
+    [n] > c
+      ^.a n > @
+    a 9 > @

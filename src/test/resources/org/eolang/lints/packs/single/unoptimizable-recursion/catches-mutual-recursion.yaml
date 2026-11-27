@@ -1,0 +1,23 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+# yamllint disable rule:line-length
+sheets:
+  - /org/eolang/lints/design/unoptimizable-recursion.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=2]
+  - /defects/defect[@line='6' and normalize-space()='The recursion in "even" cannot be turned into a loop, it calls "odd", which calls it back, and only a self-call becomes a loop']
+  - /defects/defect[@line='11' and normalize-space()='The recursion in "odd" cannot be turned into a loop, it calls "even", which calls it back, and only a self-call becomes a loop']
+input: |
+  [] > app
+    [n] > even
+      if. > @
+        n.eq 0
+        true
+        ^.odd (n.minus 1)
+    [n] > odd
+      if. > @
+        n.eq 0
+        false
+        ^.even (n.minus 1)
+    even 10 > @
