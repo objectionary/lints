@@ -1,0 +1,11 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/lines/object-pos-out-of-line.xsl
+defects: 0
+xml-reason: "parser keeps @pos inside the line; unreachable via parse"
+document: |
+  <object author="tests">
+    <o line="1" pos="500" name="foo"/>
+  </object>
