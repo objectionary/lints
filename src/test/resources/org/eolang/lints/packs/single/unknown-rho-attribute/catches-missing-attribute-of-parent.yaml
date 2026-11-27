@@ -1,0 +1,12 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/critical/unknown-rho-attribute.xsl
+defects:
+  - severity: error
+    line: 3
+input: |
+  [] > foo
+    [] > bar
+      ^.hello > @

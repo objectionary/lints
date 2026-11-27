@@ -1,0 +1,13 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/critical/unknown-rho-attribute.xsl
+asserts:
+  - /defects[count(defect)=1]
+  - /defects/defect[contains(text(), "^.^.zzz") and contains(text(), "foo")]
+input: |
+  [] > foo
+    [] > bar
+      [] > baz
+        ^.^.zzz > @
