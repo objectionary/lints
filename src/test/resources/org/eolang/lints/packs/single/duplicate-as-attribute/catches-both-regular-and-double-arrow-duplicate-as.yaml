@@ -3,7 +3,6 @@
 ---
 sheets:
   - /org/eolang/lints/names/duplicate-as-attribute.xsl
-skip-errors: true
 asserts:
   - /defects[count(defect[@severity='warning'])=2]
   - >-
@@ -13,7 +12,17 @@ asserts:
     /defects/defect[2][normalize-space()=
     'The object "arrow" has duplicated @as attribute "b"']
   - /defects[count(defect[contains(text(), '🌵')])=0]
-input: |
-  [] > app
-    t f1:a f2:a > regular
-    t f1:b f2:b >> arrow
+xml-reason: "0.63.3 rejects duplicate argument bindings at parse time"
+document: |
+  <object author="tests">
+    <o line="1" name="app">
+      <o base="&#x3A6;.t" line="2" name="regular">
+        <o as="a" base="&#x3A6;.f1" line="2"/>
+        <o as="a" base="&#x3A6;.f2" line="2"/>
+      </o>
+      <o base="&#x3A6;.t" line="3" local="arrow" name="a🌵3-4">
+        <o as="b" base="&#x3A6;.f1" line="3"/>
+        <o as="b" base="&#x3A6;.f2" line="3"/>
+      </o>
+    </o>
+  </object>
