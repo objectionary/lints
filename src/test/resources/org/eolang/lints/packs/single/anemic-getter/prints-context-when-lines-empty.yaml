@@ -8,8 +8,8 @@ asserts:
 xml-reason: "not yet converted to an EO input test"
 document: |
   <object author="tests">
-    <o name="book">
-      <o base="∅" name="title"/>
-      <o base="ξ.title" name="t"/>
+    <o name="foo">
+      <o base="Φ.org.eolang.number" name="x"/>
+      <o base="ξ.x" name="y"/>
     </o>
   </object>

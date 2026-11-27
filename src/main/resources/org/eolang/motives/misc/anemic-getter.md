@@ -8,27 +8,6 @@ extra name added.
 Incorrect:
 
 ```eo
-# Book.
-
-[title] > book
-  title > t
-```
-
-Here, `t` is a getter that gives access to `title` and nothing else. It adds nothing and
-just introduces a second name for the same object.
-
-Correct:
-
-```eo
-# Book.
-
-[title] > book
-```
-
-Use `title` directly wherever `t` was needed. The same applies to any
-sibling attribute, void or not:
-
-```eo
 # Foo.
 
 [] > foo
@@ -36,7 +15,33 @@ sibling attribute, void or not:
   x > y
 ```
 
-Here `y` is an anemic getter for `x` and should be removed.
+Here, `y` is a getter that gives access to `x` and nothing else. It adds
+nothing and just introduces a second name for the same object.
+
+Correct:
+
+```eo
+# Foo.
+
+[] > foo
+  42 > x
+```
+
+Use `x` directly wherever `y` was needed.
+
+A void attribute is different, though.
+It can be filled from outside, but never read from there,
+so a getter is the only way to expose it:
+
+```eo
+# Book.
+
+[title] > book
+  title > t
+```
+
+Here `t` is not anemic, since `book.title` can't be written,
+while `book.t` can.
 
 The parent object and the formation itself are reachable by `^` and `$`, so
 renaming them is just as redundant:
