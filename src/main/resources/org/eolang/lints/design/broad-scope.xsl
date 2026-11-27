@@ -7,6 +7,7 @@
   <xsl:import href="/org/eolang/funcs/lineno.xsl"/>
   <xsl:import href="/org/eolang/funcs/escape.xsl"/>
   <xsl:import href="/org/eolang/funcs/defect-context.xsl"/>
+  <xsl:import href="/org/eolang/funcs/depth.xsl"/>
   <xsl:output encoding="UTF-8" method="xml"/>
   <xsl:key name="referenced-by-name" match="o[@base]" use="if (matches(@base, '^ξ(?:\.ρ)*\.')) then tokenize(replace(@base, '^ξ(?:\.ρ)*\.', ''), '\.')[1] else ''"/>
   <xsl:template match="/">
@@ -17,7 +18,13 @@
         <xsl:variable name="containers" select="$refs/ancestor::o[parent::o[generate-id() = generate-id($parent)]][1]"/>
         <xsl:variable name="outside" select="$parent/ancestor-or-self::o"/>
         <xsl:variable name="in-applied-formation" select="@base and (some $r in $refs satisfies exists(($r/ancestor::o except $outside)[not(@base) and o[@base='∅']]))"/>
-        <xsl:if test="not($in-applied-formation) and count($refs) &gt; 0 and (every $ref in $refs satisfies exists($ref/ancestor::o[parent::o[generate-id() = generate-id($parent)]][1])) and count(distinct-values($containers/generate-id())) = 1 and not(exists($containers[generate-id() = generate-id(current())])) and not(exists($containers[@base]))">
+        <!--
+        Moving the attribute into its reader nests its whole body one level
+        deeper; when that crosses the limit of "too-deep-object", the move
+        can't be made, so the defect is not reported (#1844).
+        -->
+        <xsl:variable name="too-deep" select="eo:deepest(.) + 1 &gt; 12"/>
+        <xsl:if test="not($in-applied-formation) and not($too-deep) and count($refs) &gt; 0 and (every $ref in $refs satisfies exists($ref/ancestor::o[parent::o[generate-id() = generate-id($parent)]][1])) and count(distinct-values($containers/generate-id())) = 1 and not(exists($containers[generate-id() = generate-id(current())])) and not(exists($containers[@base]))">
           <xsl:element name="defect">
             <xsl:variable name="line" select="eo:lineno(@line)"/>
             <xsl:attribute name="line">

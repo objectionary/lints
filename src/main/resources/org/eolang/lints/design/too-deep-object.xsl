@@ -3,31 +3,12 @@
 * SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
 * SPDX-License-Identifier: MIT
 -->
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:eo="https://www.eolang.org" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="2.0" id="too-deep-object">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:eo="https://www.eolang.org" version="2.0" id="too-deep-object">
   <xsl:import href="/org/eolang/funcs/lineno.xsl"/>
   <xsl:import href="/org/eolang/funcs/escape.xsl"/>
   <xsl:import href="/org/eolang/funcs/defect-context.xsl"/>
+  <xsl:import href="/org/eolang/funcs/depth.xsl"/>
   <xsl:output encoding="UTF-8" method="xml"/>
-  <!--
-  Depth of the object in its nesting chain, counting only the ancestors that
-  represent real nesting: the wrapper objects ("Φ.tuple", "Φ.bytes",
-  "Φ.number", "Φ.string") do not count. The selector and the message use the
-  same metric.
-  -->
-  <xsl:function name="eo:depth" as="xs:integer">
-    <xsl:param name="o" as="element()"/>
-    <xsl:sequence select="count($o/ancestor::o[not(@base='Φ.tuple') and not(@base='Φ.bytes') and not(@base='Φ.number') and not(@base='Φ.string')])"/>
-  </xsl:function>
-  <!--
-  TRUE when the node is a part of a literal rather than an object of the
-  source: the data inside a "Φ.bytes", or the "Φ.bytes" that holds the data
-  of a "Φ.number" or a "Φ.string". Since the wrappers do not count, such a
-  node is as deep as its literal, so the literal is reported instead of it.
-  -->
-  <xsl:function name="eo:literal-part" as="xs:boolean">
-    <xsl:param name="o" as="element()"/>
-    <xsl:sequence select="(empty($o/@base) and $o/parent::o/@base = 'Φ.bytes') or ($o/@base = 'Φ.bytes' and $o/parent::o/@base = ('Φ.number', 'Φ.string'))"/>
-  </xsl:function>
   <xsl:template match="/">
     <defects>
       <xsl:for-each select="//o[not(eo:literal-part(.)) and eo:depth(.) &gt; 12 and not(.//o[not(eo:literal-part(.)) and eo:depth(.) &gt; 12])]">
