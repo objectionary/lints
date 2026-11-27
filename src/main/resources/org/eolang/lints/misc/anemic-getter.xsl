@@ -6,17 +6,19 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:eo="https://www.eolang.org" id="anemic-getter" version="2.0">
   <xsl:import href="/org/eolang/funcs/lineno.xsl"/>
   <xsl:import href="/org/eolang/funcs/escape.xsl"/>
-  <xsl:import href="/org/eolang/funcs/void-name.xsl"/>
   <xsl:import href="/org/eolang/funcs/defect-context.xsl"/>
   <xsl:output encoding="UTF-8" method="xml"/>
   <!--
   A named object whose whole body is a reference to something the code can
   already reach, unchanged, right where the object sits is an "anemic getter".
-  Two shapes of body qualify: a sibling attribute of the same formation, as in
-  "title > t" inside a "[title] > book" formation, and a bare chain of "ξ" and
+  Two shapes of body qualify: a non-void sibling attribute of the same
+  formation, as in "x > y" next to "42 > x", and a bare chain of "ξ" and
   "ρ" hops, as in "^ > f" or "$ > f", which "^" and "$" already say. Such
   renaming is redundant, since the original may be used directly, so we
-  complain about it here. A reference that reaches past the hops for an
+  complain about it here. A void sibling is left alone: the parser hides
+  every void "x" as "v🌵x" (see "hide-voids" in "eo-parser"), so it can be
+  filled from outside but never read from there, and a getter like
+  "title > t" in a "[title] > book" formation is the only way to expose it. A reference that reaches past the hops for an
   attribute, such as "^.bar", names something other than the hop itself, so it
   is not a rename and stays out of scope.
   -->
@@ -34,9 +36,9 @@
             <xsl:when test="matches(@base, '^ξ(\.ρ)+$')">
               <xsl:value-of select="replace($ref, 'ρ', '^')"/>
             </xsl:when>
-            <!-- a sibling attribute of the same formation -->
-            <xsl:when test="matches(@base, '^ξ\.[^.]+$') and ../o[@name=$ref]">
-              <xsl:value-of select="eo:void-title((../o[@name=$ref]/@local, $ref)[1])"/>
+            <!-- a non-void sibling attribute of the same formation -->
+            <xsl:when test="matches(@base, '^ξ\.[^.]+$') and ../o[@name=$ref] and not(../o[@name=$ref][@base='∅']) and not(starts-with($ref, 'v🌵'))">
+              <xsl:value-of select="(../o[@name=$ref]/@local, $ref)[1]"/>
             </xsl:when>
           </xsl:choose>
         </xsl:variable>

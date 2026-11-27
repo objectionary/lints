@@ -3,9 +3,7 @@
 ---
 sheets:
   - /org/eolang/lints/misc/anemic-getter.xsl
-defects:
-  - severity: warning
-    line: 2
+defects: 0
 input: |
   [title] > book
     title > t
