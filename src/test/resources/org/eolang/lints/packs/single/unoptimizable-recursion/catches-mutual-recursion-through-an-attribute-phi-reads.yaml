@@ -1,0 +1,22 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+# yamllint disable rule:line-length
+sheets:
+  - /org/eolang/lints/design/unoptimizable-recursion.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=2]
+  - /defects/defect[@line='4' and normalize-space()='The recursion in "matched" cannot be turned into a loop, it calls "matched-from-index", which calls it back, and only a self-call becomes a loop']
+  - /defects/defect[@line='10' and normalize-space()='The recursion in "matched-from-index" cannot be turned into a loop, it calls "matched", which calls it back, and only a self-call becomes a loop']
+input: |
+  [] > app
+    [^hunt position] > matched
+      next.plus 1 > @
+      hunt.matched-from-index > next
+        position.plus 1
+    [^hunt position] > matched-from-index
+      if. > @
+        position.gt 10
+        0
+        hunt.matched position
+    matched-from-index 0 > @

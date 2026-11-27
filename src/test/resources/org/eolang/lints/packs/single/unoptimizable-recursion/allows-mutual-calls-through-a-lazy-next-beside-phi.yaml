@@ -1,0 +1,18 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/design/unoptimizable-recursion.xsl
+defects: 0
+input: |
+  [] > app
+    [^hunt position] > matched
+      position > @
+      hunt.matched-from-index > next
+        position.plus 1
+    [^hunt position] > matched-from-index
+      if. > @
+        position.gt 10
+        hunt.missing
+        hunt.matched position
+    matched-from-index 0 > @

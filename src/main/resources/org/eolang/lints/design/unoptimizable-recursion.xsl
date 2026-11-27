@@ -135,7 +135,10 @@
   self-call is a tail call and the recursion runs as a loop; or nothing,
   when it rewrites it. These are the shapes its header lists as skipped,
   except for a "λ" and a read of "φ", which the main template tells
-  before it gets here.
+  before it gets here, and except for a φ that leads to no self-call
+  outside of a tail position: the main template counts only the
+  self-calls φ leads to (see "eo:eager"), and a lazy successor kept
+  elsewhere is no recursion at all.
   -->
   <xsl:function name="eo:cps-obstacle" as="xs:string?">
     <xsl:param name="f" as="element()"/>
@@ -147,8 +150,8 @@
       <xsl:when test="empty($f/parent::o) or empty($phi)">
         <xsl:sequence select="'no self-call sits in a tail position'"/>
       </xsl:when>
-      <xsl:when test="empty(eo:reach($phi, $f, $calls)[not(eo:tail(., $phi))]) or (some $a in $tainted satisfies empty($a intersect eo:used($phi, $f, ())))">
-        <xsl:sequence select="'the self-call is kept in an attribute that φ does not lead to'"/>
+      <xsl:when test="some $a in $tainted satisfies empty($a intersect eo:used($phi, $f, ()))">
+        <xsl:sequence select="'another self-call is kept in an attribute that φ does not lead to'"/>
       </xsl:when>
       <xsl:when test="exists($phi/descendant-or-self::o[ends-with(@base, '.if') and not(eo:choice(.))][exists(eo:reach(., $f, $calls))])">
         <xsl:sequence select="'the self-call sits under a choice by an object that may not be a boolean'"/>
@@ -177,16 +180,30 @@
     </xsl:choose>
   </xsl:function>
   <!--
+  Every object φ of $f evaluates when it is forced: the ones inside φ and
+  inside the attributes of $f that φ refers to, directly or through other
+  attributes. An attribute φ does not lead to is evaluated only when some
+  other object reads it from outside, one step at a time, like the "next"
+  of an item of "range": a call kept there is a lazy successor, not
+  recursion, since no copy of $f waits on it.
+  -->
+  <xsl:function name="eo:eager" as="element()*">
+    <xsl:param name="f" as="element()"/>
+    <xsl:variable name="phi" select="$f/o[@name='φ']"/>
+    <xsl:sequence select="($phi, eo:used($phi, $f, ()))/descendant-or-self::o"/>
+  </xsl:function>
+  <!--
   The sibling formations the given formation calls through its receiver,
   as "^.G", which the parser resolves to "xi.rho.G"; a bare "G" naming a
   sibling is a parse error, so this is the only spelling. Only calls in
-  the formation's own body count, not those in its nested formations or
-  in its tests, and the formation itself is never its own callee here:
+  the formation's own body count, not those in its nested formations, in
+  its tests, or in the attributes φ does not lead to (see "eo:eager"), and
+  the formation itself is never its own callee here:
   a self-call is the business of the main template.
   -->
   <xsl:function name="eo:callees" as="element()*">
     <xsl:param name="f" as="element()"/>
-    <xsl:variable name="body" select="$f//o[@base and ancestor::o[eo:abstract(.)][1] is $f and not(ancestor-or-self::o[eo:test-name(@name)])]"/>
+    <xsl:variable name="body" select="eo:eager($f)[@base and ancestor::o[eo:abstract(.)][1] is $f and not(ancestor-or-self::o[eo:test-name(@name)])]"/>
     <xsl:sequence select="$f/../o[eo:abstract(.) and not(. is $f) and not(eo:test-name(@name)) and (some $n in (@name, @local)/string() satisfies $body[@base = concat('ξ.ρ.', $n) or starts-with(@base, concat('ξ.ρ.', $n, '.'))])]"/>
   </xsl:function>
   <!--
@@ -295,7 +312,7 @@
         <xsl:variable name="root" select="o[@name='φ']"/>
         <!-- A bare name can resolve to an attribute of the current formation. -->
         <xsl:variable name="shadowed" select="o[@name = $names]/@name"/>
-        <xsl:variable name="calls" select=".//o[(some $n in $names satisfies eo:is-self-call(string(@base), $n)) and not(starts-with(@base, 'ξ.') and tokenize(@base, '\.')[2] = $shadowed) and not(ancestor::o[eo:test-name(@name)]) and ancestor::o[eo:abstract(.)][1] is current()]"/>
+        <xsl:variable name="calls" select=".//o[(some $n in $names satisfies eo:is-self-call(string(@base), $n)) and not(starts-with(@base, 'ξ.') and tokenize(@base, '\.')[2] = $shadowed) and not(ancestor::o[eo:test-name(@name)]) and ancestor::o[eo:abstract(.)][1] is current()] intersect eo:eager(.)"/>
         <xsl:variable name="loops" select="($root | $root//o)[eo:is-self-tail(string(@base), $name) and eo:tail(., $root)]"/>
         <xsl:variable name="direct" select="$calls[(some $n in $names satisfies eo:is-self-direct(string(@base), $n)) and eo:tail(., $root)]"/>
         <xsl:variable name="elsewhere" select="$calls except ($root/descendant-or-self::o)"/>
@@ -309,7 +326,7 @@
         <xsl:variable name="self" select="$recursive and not($rewritable and empty($obstacle))"/>
         <xsl:variable name="partner" select="if ($self) then () else eo:mutual(.)"/>
         <xsl:variable name="partners" select="($partner/@name, $partner/@local)/string()"/>
-        <xsl:variable name="cross" select=".//o[ancestor::o[eo:abstract(.)][1] is current() and not(ancestor-or-self::o[eo:test-name(@name)]) and (some $n in $partners satisfies (@base = concat('ξ.ρ.', $n) or starts-with(@base, concat('ξ.ρ.', $n, '.'))))]"/>
+        <xsl:variable name="cross" select=".//o[ancestor::o[eo:abstract(.)][1] is current() and not(ancestor-or-self::o[eo:test-name(@name)]) and (some $n in $partners satisfies (@base = concat('ξ.ρ.', $n) or starts-with(@base, concat('ξ.ρ.', $n, '.'))))] intersect eo:eager(.)"/>
         <xsl:if test="$self or exists($partner)">
           <defect>
             <xsl:variable name="line" select="eo:lineno(($calls, $cross)[1]/@line)"/>

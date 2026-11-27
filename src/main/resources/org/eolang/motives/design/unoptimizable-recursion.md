@@ -39,22 +39,41 @@ leads to, is handled this way:
 Every other shape runs as plain recursion, which is correct but deeper
 and slower, and the compiler says nothing about it. This lint says it,
 naming the reason it found. The rewrite skips, for example, a formation
-whose φ does not lead to the attribute holding the self-call, one that
-calls itself from inside a nested formation or from inside the arguments
-of another self-call, and one that reaches the self-call through an
-`if.` that may not belong to a `bool`:
+that calls itself from inside a nested formation or from inside the
+arguments of another self-call, one that reaches the self-call through an
+`if.` that may not belong to a `bool`, and one that keeps another
+self-call in an attribute φ does not lead to:
 
 ```eo
 [] > app
   [n] > rec
-    ^.rec (n.minus 1) > cached
-    n.plus 1 > @
+    ^.rec (n.minus 2) > next
+    if. > @
+      n.lt 1
+      0
+      n.plus (^.rec (n.minus 1))
   rec 5 > @
 ```
 
-Here `cached` is never read by φ, so the rewrite cannot move it into
-the continuation. Make φ lead to every self-call, or drop the ones it
-does not need, and the recursion becomes a loop again.
+Here `next` is never read by φ, so the rewrite cannot move it into
+the continuation, and the self-call in φ stays plain recursion. Make φ
+lead to every self-call, or drop the ones it does not need, and the recursion
+becomes a loop again.
+
+A self-call kept only in an attribute φ does not lead to is no recursion
+at all, and the lint stays silent about it. Such an attribute is a lazy
+successor, like the `next` of an item of `range`. Some other object reads
+it from outside, one step at a time. No copy of the formation waits on
+the next one:
+
+```eo
+[^chain num] >> build
+  num > @
+  chain.build > next
+    1.plus num
+```
+
+The same holds for a sibling called back only from such an attribute.
 
 The compiler recognises the self-call solely when spelled through the receiver,
 `^.rec`. A self-call spelled with the bare name or with `$`, even in a
