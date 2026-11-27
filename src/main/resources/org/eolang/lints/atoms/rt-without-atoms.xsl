@@ -10,8 +10,13 @@
   <xsl:output encoding="UTF-8" method="xml"/>
   <xsl:template match="/">
     <defects>
-      <xsl:if test="not(//o[eo:atom(.)])">
-        <xsl:if test="/object/metas/meta[head='rt']">
+      <!--
+      The "+rt" meta is checked first, since it is cheap and most programs
+      have none, so the scan of the whole document for an atom, an object
+      with a "λ" inside, only runs when there is a "+rt" to complain about.
+      -->
+      <xsl:if test="/object/metas/meta[head='rt']">
+        <xsl:if test="not(//o/o[@name=$eo:lambda])">
           <xsl:element name="defect">
             <xsl:variable name="line" select="eo:lineno(/object/metas/meta[head='rt'][1]/@line)"/>
             <xsl:attribute name="line">
