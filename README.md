@@ -17,6 +17,8 @@ This Java package is a collection of "lints" (aka "checkers") for
 of code for successful compilation and execution, not about code
 formatting. A few lints also enforce naming conventions, since
 consistent naming is considered a best practice here too.
+The [full list of lints][lints-list], each with an explanation
+and examples, is published on every release.
 
 We use this package as a dependency in the
 [EO-to-Java compiler][EO]:
@@ -192,5 +194,6 @@ using [vale](https://vale.sh/docs/install),
 just install it and make sure it's in your `PATH`
 
 [XMIR]: https://news.eolang.org/2022-11-25-xmir-guide.html
+[lints-list]: https://www.objectionary.com/lints/
 [EO]: https://www.eolang.org
 [benchmark-gha]: https://github.com/objectionary/lints/actions/runs/45549921648

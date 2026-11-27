@@ -52,9 +52,8 @@ repo=objectionary/lints
 
 (
   head
-  printf '<p>Latest version of <a href="https://github.com/%s">%s</a>:' "${repo}" "${repo}"
+  printf '<p>Latest version of <a href="https://github.com/%s">%s</a>: ' "${repo}" "${repo}"
   printf '<a href="/lints/%s/index.html">%s</a></p>\n' "${tag}" "${tag}"
-  printf '<p>Latest version of <a href="https://github.com/objectionary/lints">objectionary/lints</a>: <a href="/lints/%s/index.html">%s</a></p>\n' "${tag}" "${tag}"
   printf '<p>List of lints in this version:<p>'
   list_them
   tail
