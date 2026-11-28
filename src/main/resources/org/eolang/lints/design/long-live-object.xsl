@@ -55,10 +55,12 @@
         attribute is hoisted by the parser to the formation, but the
         printer keeps it in place, at its first use, and does not sort
         it. Such an attribute stands on a line inside the lines of the
-        descendants of an earlier sibling, and is left out of the
-        order check.
+        descendants of an earlier sibling, or is referred to by the
+        base of such a sibling itself, when the parser folds a method
+        call on the handle into it, as in "ξ.a🌵3-4.as-number", and is
+        left out of the order check.
         -->
-        <xsl:variable name="printed" select="for $a in $attributes return $a[not(some $s in $formation/o satisfies (number(eo:lineno($s/@line)) &lt; number(eo:lineno($a/@line)) and max($s/descendant::o/number(eo:lineno(@line))) &gt;= number(eo:lineno($a/@line))))]"/>
+        <xsl:variable name="printed" select="for $a in $attributes return $a[not(some $s in $formation/o satisfies (number(eo:lineno($s/@line)) &lt; number(eo:lineno($a/@line)) and (max($s/descendant::o/number(eo:lineno(@line))) &gt;= number(eo:lineno($a/@line)) or (some $b in $s/descendant-or-self::o/@base satisfies ($b = concat('ξ.', $a/@name) or starts-with($b, concat('ξ.', $a/@name, '.')))))))]"/>
         <!--
         The printer sorts the attributes by the names they are written
         with, so an object bound with ">>" counts by its "@local" name,
