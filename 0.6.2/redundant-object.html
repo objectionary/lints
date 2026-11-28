@@ -1,0 +1,113 @@
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>lints</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="shortcut icon" href="https://www.yegor256.com/images/books/elegant-objects/cactus.png"/><link href="https://cdn.jsdelivr.net/npm/tacit-css@1.9.7/dist/tacit-css.min.css" rel="stylesheet" integrity="sha384-D/LLHCkqHnoJ7y04sSEBX95s7wMjBn45wtHneRfp03QBgt6+a6Pz2eLUC4N1CAI0" crossorigin="anonymous"/>
+</head>
+<body><section><article>
+<h1 id="redundant-object">Redundant object</h1>
+<p>If a named object gets used a single time, it counts as “redundant”
+and should be inlined.</p>
+<p>Incorrect:</p>
+<pre class="eo"><code># Foo.
+
+[] &gt; foo
+  [] &gt;&gt; bar
+    52 &gt; spb
+    spb.plus 2 &gt; @</code></pre>
+<p>Correct:</p>
+<pre class="eo"><code># Foo.
+
+[] &gt; foo
+  [] &gt;&gt; bar
+    52.plus 2 &gt; @</code></pre>
+<p>The lint also skips an object declared outside a formation with void
+attributes when its single reference occurs inside that formation. For
+example, a mapper may read a value from its enclosing scope for each
+item. Inlining the value into the mapper would rebuild it for every
+application. A reference within the declaration’s own formation does not
+cross that boundary.</p>
+<p>An object referenced a single time is <em>not</em> redundant when
+that lone reference sits inside a recursive formation. Syntactically the
+name is mentioned once, but at runtime each step of the recursion
+evaluates it anew, and the named attribute lets all those evaluations
+share a single node. Inlining it would give every level of the recursion
+its own copy of the subgraph, so the lint skips such objects:</p>
+<pre class="eo"><code># Series.
+
+[point] &gt; series
+  point.times point &gt; squared
+  poly 30 &gt; @
+  [n] &gt; poly
+    if. &gt; @
+      n.eq 0
+      0
+      ^.squared.plus (^.poly (n.minus 1))</code></pre>
+<p>A <code>$</code>-alias is also <em>not</em> redundant when its single
+reference reaches it from inside a nested formation. There,
+<code>$</code> refers to the nested formation itself, not to the object
+where the alias was declared. Inlining the alias into that reference
+would change what it points to:</p>
+<pre class="eo"><code># Jeff.
+
+[] &gt; jeff
+  $ &gt; self
+  [] &gt; say-hello
+    stdout ^.self &gt; @</code></pre>
+<p>An object that is never referenced in the program is <em>not</em>
+reported either, since there is nowhere to inline it. Such an object may
+be a part of the interface of its formation, read by other programs,
+which the lint can’t see:</p>
+<pre class="eo"><code># A point at three and four.
+
+[] &gt; point
+  3 &gt; x
+  4 &gt; y</code></pre>
+<p>An attribute of the top object is <em>not</em> reported either, even
+if its own file reads it a single time, often in its own test. Such an
+attribute is a part of the public interface of the object, and other
+programs may read it. Only an attribute bound with <code>&gt;&gt;</code>
+is private and may be inlined:</p>
+<pre class="eo"><code># Flags of the open system call.
+
+[] &gt; flags
+  64 &gt; create
+  8 &gt; append
+
+  (flags.create.plus flags.append).eq 72 ++&gt; combines-flags</code></pre>
+<p>The same holds for an attribute of a nested formation, when that
+formation and every formation around it, up to the top object, are
+named, are not bound with <code>&gt;&gt;</code>, and are not tests.
+Other programs read <code>net.address.padding</code> just as they read
+<code>net.address</code>, so <code>padding</code> is <em>not</em>
+reported:</p>
+<pre class="eo"><code># The C structure of an address.
+
+[] &gt; net
+  [host] &gt; address
+    00-00-00-00 &gt; padding
+    host.size.plus padding.size &gt; size</code></pre>
+<p>Once any formation on that path is bound with <code>&gt;&gt;</code>,
+or is anonymous, its attributes are private again and may be
+inlined.</p>
+<p>An attribute of a nested formation is <em>not</em> reported either,
+when its name is read through an object that is not a formation, such as
+<code>c.empty</code> below. The lint can’t tell which formation
+<code>c</code> stands for, so it assumes the reference may read any
+attribute named <code>empty</code>, unless it is bound with
+<code>&gt;&gt;</code>:</p>
+<pre class="eo"><code># A cell that knows whether it holds zero.
+
+[] &gt; app
+  [x] &gt;&gt; cell
+    x.eq 0 &gt; empty
+    empty.if &gt; shown
+      &quot;zero&quot;
+      &quot;other&quot;
+  cell 0 &gt; c
+  c.empty.if &gt; @
+    c.shown
+    &quot;?&quot;</code></pre>
+<p>Published on Sat Nov 28 06:43:39 UTC 2026.</p>
+</article></section></body></html>

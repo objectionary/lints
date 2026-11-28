@@ -1,0 +1,57 @@
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>lints</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="shortcut icon" href="https://www.yegor256.com/images/books/elegant-objects/cactus.png"/><link href="https://cdn.jsdelivr.net/npm/tacit-css@1.9.7/dist/tacit-css.min.css" rel="stylesheet" integrity="sha384-D/LLHCkqHnoJ7y04sSEBX95s7wMjBn45wtHneRfp03QBgt6+a6Pz2eLUC4N1CAI0" crossorigin="anonymous"/>
+</head>
+<body><section><article>
+<h1 id="incorrect-test-object-name">Incorrect test object name</h1>
+<p>Test object names must follow this regular expression:</p>
+<pre class="regexp"><code>^[a-z][a-z0-9]*(-[a-z0-9]+)*$</code></pre>
+<p>Incorrect:</p>
+<pre class="eo"><code># Foo.
+
+[] &gt; foo
+
+  [] +&gt; tEst
+    42 &gt; foo
+
+  [] +&gt; test--
+    42 &gt; foo
+
+  [] +&gt; test--test
+    42 &gt; foo
+
+  [] +&gt; test-test-
+    42 &gt; foo
+
+  [] +&gt; test-Test
+    42 &gt; foo
+
+  [] +&gt; test_abc
+    42 &gt; foo</code></pre>
+<p>Correct:</p>
+<pre class="eo"><code># Foo.
+
+[] &gt; foo
+
+  [] +&gt; runs
+    42 &gt; foo
+
+  [] +&gt; runs-something
+    42 &gt; fooB
+
+  [] +&gt; good-one
+    42 &gt; foo
+
+  [] +&gt; ok
+    42 &gt; foo
+
+  [] +&gt; t
+    42 &gt; foo
+
+  [] +&gt; runs-i32
+    42 &gt; foo</code></pre>
+<p>Published on Sat Nov 28 06:43:39 UTC 2026.</p>
+</article></section></body></html>

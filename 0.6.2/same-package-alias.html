@@ -1,0 +1,39 @@
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>lints</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="shortcut icon" href="https://www.yegor256.com/images/books/elegant-objects/cactus.png"/><link href="https://cdn.jsdelivr.net/npm/tacit-css@1.9.7/dist/tacit-css.min.css" rel="stylesheet" integrity="sha384-D/LLHCkqHnoJ7y04sSEBX95s7wMjBn45wtHneRfp03QBgt6+a6Pz2eLUC4N1CAI0" crossorigin="anonymous"/>
+</head>
+<body><section><article>
+<h1 id="same-package-alias">Same-package alias</h1>
+<p>An <code>+alias</code> meta that points to an object in the same
+package as the current file’s <code>+package</code> meta is redundant.
+The compiler resolves a bare reference to an object of the same package
+on its own, so such an alias adds nothing but noise.</p>
+<p>Incorrect:</p>
+<pre class="eo"><code># Foo.
+
++package org.eolang.txt
++alias org.eolang.txt.sprintf
+
+[x] &gt; foo
+  sprintf x &gt; @</code></pre>
+<p>Correct:</p>
+<pre class="eo"><code># Foo.
+
++package org.eolang.txt
+
+[x] &gt; foo
+  sprintf x &gt; @</code></pre>
+<p>An alias that points to a different package, or one that renames the
+object to a new local name, is not redundant and is left alone:</p>
+<pre class="eo"><code># Foo.
+
++package org.eolang.txt
++alias sp org.eolang.txt.sprintf
+
+[x] &gt; foo
+  sp x &gt; @</code></pre>
+<p>Published on Sat Nov 28 06:43:19 UTC 2026.</p>
+</article></section></body></html>

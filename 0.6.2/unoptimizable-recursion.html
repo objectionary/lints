@@ -1,0 +1,99 @@
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>lints</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="shortcut icon" href="https://www.yegor256.com/images/books/elegant-objects/cactus.png"/><link href="https://cdn.jsdelivr.net/npm/tacit-css@1.9.7/dist/tacit-css.min.css" rel="stylesheet" integrity="sha384-D/LLHCkqHnoJ7y04sSEBX95s7wMjBn45wtHneRfp03QBgt6+a6Pz2eLUC4N1CAI0" crossorigin="anonymous"/>
+</head>
+<body><section><article>
+<h1 id="unoptimizable-recursion">Unoptimizable recursion</h1>
+<p>A nested formation that calls itself in a tail position is turned
+into a Java loop at transpile time: the compiler wraps the copies into
+<code>PhLoop</code> and the calls into <code>PhAgain</code>, so a run
+takes one object per step instead of one Java stack block per step.</p>
+<p>The compiler recognises two tail positions, a branch of an
+<code>if.</code> and the last step of a <code>seq *</code>:</p>
+<pre class="eo"><code>[] &gt; app
+  [n] &gt; rec
+    if. &gt; @
+      n.lt 1
+      0
+      ^.rec (n.minus 1)
+  rec 5 &gt; @</code></pre>
+<p>A self-call outside of a tail position is turned into a loop too, but
+in two steps. First the compiler rewrites the formation into
+continuation-passing style. The formation gets an extra void, the
+continuation, and the work left to do after the call answers moves into
+it, so every self-call becomes a tail call. Then the recursion runs
+inside <code>PhLoop</code>, like the one in the previous example. A
+self-call under an operation, or in an attribute that φ leads to, is
+handled this way:</p>
+<pre class="eo"><code>[] &gt; app
+  [n] &gt; rec
+    if. &gt; @
+      n.lt 1
+      0
+      n.plus (^.rec (n.minus 1))
+  rec 5 &gt; @</code></pre>
+<p>Every other shape runs as plain recursion, which is correct but
+deeper and slower, and the compiler says nothing about it. This lint
+says it, naming the reason it found. The rewrite skips, for example, a
+formation that calls itself from inside a nested formation or from
+inside the arguments of another self-call, one that reaches the
+self-call through an <code>if.</code> that may not belong to a
+<code>bool</code>, and one that keeps another self-call in an attribute
+φ does not lead to:</p>
+<pre class="eo"><code>[] &gt; app
+  [n] &gt; rec
+    ^.rec (n.minus 2) &gt; next
+    if. &gt; @
+      n.lt 1
+      0
+      n.plus (^.rec (n.minus 1))
+  rec 5 &gt; @</code></pre>
+<p>Here <code>next</code> is never read by φ, so the rewrite cannot move
+it into the continuation, and the self-call in φ stays plain recursion.
+Make φ lead to every self-call, or drop the ones it does not need, and
+the recursion becomes a loop again.</p>
+<p>A self-call kept only in an attribute φ does not lead to is no
+recursion at all, and the lint stays silent about it. Such an attribute
+is a lazy successor, like the <code>next</code> of an item of
+<code>range</code>. Some other object reads it from outside, one step at
+a time. No copy of the formation waits on the next one:</p>
+<pre class="eo"><code>[^chain num] &gt;&gt; build
+  num &gt; @
+  chain.build &gt; next
+    1.plus num</code></pre>
+<p>The same holds for a sibling called back only from such an
+attribute.</p>
+<p>The compiler recognises the self-call solely when spelled through the
+receiver, <code>^.rec</code>. A self-call spelled with the bare name or
+with <code>$</code>, even in a tail position, is never turned into a
+loop, because the compiler looks for <code>xi.rho.&lt;name&gt;</code>
+and nothing else:</p>
+<pre class="eo"><code>[] &gt; calc
+  seq &gt; @
+    *
+      1
+      calc (n.minus 1)</code></pre>
+<p>Mutual recursion is never turned into a loop either, because the
+compiler handles only a formation calling itself. Here <code>even</code>
+calls <code>odd</code> and <code>odd</code> calls <code>even</code>
+back, so every step takes a Java stack block, and the lint warns about
+both formations:</p>
+<pre class="eo"><code>[] &gt; app
+  [n] &gt; even
+    if. &gt; @
+      n.eq 0
+      true
+      ^.odd (n.minus 1)
+  [n] &gt; odd
+    if. &gt; @
+      n.eq 0
+      false
+      ^.even (n.minus 1)
+  even 10 &gt; @</code></pre>
+<p>Merge such formations into one that calls itself, and the recursion
+becomes a loop.</p>
+<p>Published on Sat Nov 28 06:43:28 UTC 2026.</p>
+</article></section></body></html>
