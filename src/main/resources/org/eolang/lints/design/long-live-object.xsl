@@ -34,6 +34,17 @@
     <xsl:variable name="more" select="($seen, $next/@name)"/>
     <xsl:sequence select="max(($o/descendant-or-self::o/number(eo:lineno(@line)), for $n in $next return eo:ends($n, $formation, $declared, $more)))"/>
   </xsl:function>
+  <!--
+  The name the attribute "$a" is written with. An object bound with
+  ">>" carries it in "@local", while a constant one, "x >> y!", is
+  wrapped by the parser into ".as-bytes" of "Φ.dataized", which leaves
+  "@local" on the object inside. Every other attribute is written with
+  its "@name".
+  -->
+  <xsl:function name="eo:written" as="xs:string">
+    <xsl:param name="a" as="element()"/>
+    <xsl:sequence select="string(($a/@local, $a/o[@base='Φ.dataized']/o/@local, $a/@name)[1])"/>
+  </xsl:function>
   <xsl:template match="/">
     <defects>
       <xsl:for-each select="//o[eo:abstract(.)]">
@@ -53,7 +64,7 @@
         with, so an object bound with ">>" counts by its "@local" name,
         not by the synthetic "@name" the parser gives it.
         -->
-        <xsl:variable name="names" select="for $a in $printed return string(($a/@local, $a/@name)[1])"/>
+        <xsl:variable name="names" select="for $a in $printed return eo:written($a)"/>
         <xsl:variable name="sorted" select="every $i in 2 to count($names) satisfies $names[$i - 1] le $names[$i]"/>
         <xsl:for-each select="$attributes[not($sorted)]">
           <xsl:variable name="name" select="@name"/>
@@ -75,7 +86,7 @@
               </xsl:attribute>
               <xsl:attribute name="severity">warning</xsl:attribute>
               <xsl:text>The object </xsl:text>
-              <xsl:value-of select="eo:escape((@local, $name)[1])"/>
+              <xsl:value-of select="eo:escape(eo:written(.))"/>
               <xsl:text> is declared here, but is not used until line </xsl:text>
               <xsl:value-of select="$last"/>
               <xsl:text>, </xsl:text>
