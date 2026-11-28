@@ -51,6 +51,13 @@
         <xsl:variable name="formation" select="."/>
         <xsl:variable name="attributes" select="o[@name and @base and @base != '∅' and @name != 'φ' and not(eo:test-name(@name))]"/>
         <!--
+        A pipe application, such as "| x > name", carries an empty
+        "@pipe" and is printed right after the formation it applies,
+        not in sorted order, so it takes no part in the order check,
+        the same way "unsorted-named-attributes" skips it.
+        -->
+        <xsl:variable name="ordered" select="$attributes[not(@pipe)]"/>
+        <!--
         An object bound with ">>" inside the expression of another
         attribute is hoisted by the parser to the formation, but the
         printer keeps it in place, at its first use, and does not sort
@@ -60,7 +67,7 @@
         call on the handle into it, as in "ξ.a🌵3-4.as-number", and is
         left out of the order check.
         -->
-        <xsl:variable name="printed" select="for $a in $attributes return $a[not(some $s in $formation/o satisfies (number(eo:lineno($s/@line)) &lt; number(eo:lineno($a/@line)) and (max($s/descendant::o/number(eo:lineno(@line))) &gt;= number(eo:lineno($a/@line)) or (some $b in $s/descendant-or-self::o/@base satisfies ($b = concat('ξ.', $a/@name) or starts-with($b, concat('ξ.', $a/@name, '.')))))))]"/>
+        <xsl:variable name="printed" select="for $a in $ordered return $a[not(some $s in $formation/o satisfies (number(eo:lineno($s/@line)) &lt; number(eo:lineno($a/@line)) and (max($s/descendant::o/number(eo:lineno(@line))) &gt;= number(eo:lineno($a/@line)) or (some $b in $s/descendant-or-self::o/@base satisfies ($b = concat('ξ.', $a/@name) or starts-with($b, concat('ξ.', $a/@name, '.')))))))]"/>
         <!--
         The printer sorts the attributes by the names they are written
         with, so an object bound with ">>" counts by its "@local" name,
