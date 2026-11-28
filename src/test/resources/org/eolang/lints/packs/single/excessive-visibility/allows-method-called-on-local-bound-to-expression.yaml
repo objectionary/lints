@@ -1,0 +1,17 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/design/excessive-visibility.xsl
+defects: 0
+input: |
+  # A directory in the file system.
+
+  [path] > directory
+    path.try 3 > retried
+
+    ++> can-retry
+      mktemp.tmpfile.deleted.as-path.as-dir.made > parent
+      parent.retried
+        parent.path
+        42

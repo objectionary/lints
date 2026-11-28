@@ -58,23 +58,21 @@
             -->
             <xsl:variable name="used" select="$tests/descendant-or-self::o[@base and (matches(@base, '^(ξ(\.ρ)+\.|\.)') or (starts-with(@base, 'ξ.') and ancestor::o[eo:abstract(.)][1] is $object)) and (replace(@base, '^(ξ(\.ρ)*\.|\.)', '') = $attr or starts-with(replace(@base, '^(ξ(\.ρ)*\.|\.)', ''), concat($attr, '.')))]"/>
             <!--
-            A test may also reach the method through the name of the
-            object, e.g. "os.is-linux", which the parser resolves into the
-            absolute name of the object, the one it keeps in "@loc",
-            followed by the method: "Φ.os.is-linux", or
-            "Φ.com.example.os.is-linux" in a program with a package.
+            A test may also call the method on any other receiver: on the
+            name of the object, e.g. "os.is-linux", which the parser
+            resolves into "Φ.os.is-linux", on a name the test binds,
+            e.g. "c.next", resolved into "ξ.c.next", on a literal, e.g.
+            "true.or false", resolved into "Φ.true.or", or on a void or a
+            local bound to any other expression. The receiver is not
+            checked, just like the one of the postfix call above, because
+            the parser folds a call on a plain name into the base, while
+            a call on an expression stays postfix, and both are the same
+            call. So any segment of a base after its root and receiver
+            counts, whether it is the last one or the one before a
+            further dispatch, e.g. "ξ.c.next.eq".
             -->
-            <xsl:variable name="loc" select="../@loc"/>
-            <xsl:variable name="named" select="$tests//o[exists($loc) and (@base = concat($loc, '.', $attr) or starts-with(@base, concat($loc, '.', $attr, '.')))]"/>
-            <!--
-            A test may also bind the object to a name of its own, e.g.
-            "counter 5 > c", and call the method on that name, "c.next".
-            The parser resolves such a call into a reference to the
-            attribute of the test, "ξ.c.next", and gives that attribute
-            the absolute name of the object as its base.
-            -->
-            <xsl:variable name="bound" select="$tests/descendant-or-self::o[exists($loc) and matches(@base, '^ξ\.[^.]+\.') and (some $local in tokenize(@base, '\.')[2] satisfies (exists(ancestor::o[eo:abstract(.)][1]/o[@name = $local and @base = $loc]) and (substring-after(@base, concat('ξ.', $local, '.')) = $attr or starts-with(substring-after(@base, concat('ξ.', $local, '.')), concat($attr, '.')))))]"/>
-            <xsl:if test="empty($used) and empty($named) and empty($bound)">
+            <xsl:variable name="called" select="$tests/descendant-or-self::o[@base and (some $segment in subsequence(tokenize(@base, '\.'), 3) satisfies $segment = $attr)]"/>
+            <xsl:if test="empty($used) and empty($called)">
               <xsl:element name="defect">
                 <xsl:variable name="line" select="eo:lineno(@line)"/>
                 <xsl:attribute name="line">
