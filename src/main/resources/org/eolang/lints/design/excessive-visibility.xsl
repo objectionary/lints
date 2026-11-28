@@ -16,9 +16,11 @@
       The absolute names of the formations the atoms of the program declare
       as their types, e.g. "Φ.posix.dir-return" for "/Q.posix.dir-return":
       the return type sits on the "λ" of an atom, the type of a void on the
-      void itself, with a trailing "?" when the value may be absent.
+      void itself, with a trailing "?" when the value may be absent and
+      with the types of the record's fields in parentheses, as in
+      "Φ.posix.dir-return(Φ.number,Φ.string)", both of which are cut off.
       -->
-      <xsl:variable name="types" select="(//o/@atom, for $t in //o/@type return replace($t, '\?$', ''))"/>
+      <xsl:variable name="types" select="for $t in (//o/@atom, //o/@type) return replace($t, '\(.*$|\?$', '')"/>
       <xsl:for-each select="//o[eo:abstract(.) and @name]">
         <xsl:variable name="object" select="."/>
         <xsl:variable name="tests" select="o[eo:test-name(@name)]"/>
