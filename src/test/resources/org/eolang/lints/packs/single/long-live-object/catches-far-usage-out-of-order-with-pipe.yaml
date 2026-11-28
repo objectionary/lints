@@ -1,0 +1,22 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+# yamllint disable rule:line-length
+sheets:
+  - /org/eolang/lints/design/long-live-object.xsl
+asserts:
+  - /defects[count(defect[@severity='warning'])=1]
+  - /defects/defect[1][@line='4' and contains(normalize-space(), 'The object "m" is declared here, but is not used until line 12')]
+input: |
+  # App.
+
+  [x] > app
+    x.plus 1 > m
+    [t] > b
+      t.plus 1 > @
+    | x > z
+    2 > c
+    3 > d
+    4 > e
+    5 > f
+    m.plus c > g
