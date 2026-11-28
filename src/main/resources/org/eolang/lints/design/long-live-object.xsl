@@ -40,11 +40,20 @@
         <xsl:variable name="formation" select="."/>
         <xsl:variable name="attributes" select="o[@name and @base and @base != '∅' and @name != 'φ' and not(eo:test-name(@name))]"/>
         <!--
+        An object bound with ">>" inside the expression of another
+        attribute is hoisted by the parser to the formation, but the
+        printer keeps it in place, at its first use, and does not sort
+        it. Such an attribute stands on a line inside the lines of the
+        descendants of an earlier sibling, and is left out of the
+        order check.
+        -->
+        <xsl:variable name="printed" select="for $a in $attributes return $a[not(some $s in $formation/o satisfies (number(eo:lineno($s/@line)) &lt; number(eo:lineno($a/@line)) and max($s/descendant::o/number(eo:lineno(@line))) &gt;= number(eo:lineno($a/@line))))]"/>
+        <!--
         The printer sorts the attributes by the names they are written
         with, so an object bound with ">>" counts by its "@local" name,
         not by the synthetic "@name" the parser gives it.
         -->
-        <xsl:variable name="names" select="for $a in $attributes return string(($a/@local, $a/@name)[1])"/>
+        <xsl:variable name="names" select="for $a in $printed return string(($a/@local, $a/@name)[1])"/>
         <xsl:variable name="sorted" select="every $i in 2 to count($names) satisfies $names[$i - 1] le $names[$i]"/>
         <xsl:for-each select="$attributes[not($sorted)]">
           <xsl:variable name="name" select="@name"/>
