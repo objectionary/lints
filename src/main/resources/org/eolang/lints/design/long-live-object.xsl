@@ -15,6 +15,25 @@
   declaration and the last line, in the same formation, that uses it.
   -->
   <xsl:variable name="max" select="5" as="xs:integer"/>
+  <!--
+  The last line the declaration "$o" takes. An argument bound with ">>"
+  is not a descendant of the declaration: the parser hoists it into a
+  sibling attribute, such as "a🌵5-4", and leaves only a "ξ.a🌵5-4"
+  reference in its place. Every such reference is followed to the
+  hoisted sibling, recursively, unless that sibling sits on a line
+  before "$declared", being first used elsewhere.
+  -->
+  <xsl:function name="eo:ends" as="xs:double">
+    <xsl:param name="o" as="element()"/>
+    <xsl:param name="formation" as="element()"/>
+    <xsl:param name="declared" as="xs:double"/>
+    <xsl:param name="seen" as="xs:string*"/>
+    <xsl:variable name="hoisted" select="$formation/o[matches(@name, '^a🌵[0-9]+-[0-9]+$') and not(@name = $seen) and number(eo:lineno(@line)) &gt;= $declared]"/>
+    <xsl:variable name="bases" select="$o/descendant-or-self::o/@base"/>
+    <xsl:variable name="next" select="$hoisted[some $b in $bases satisfies ($b = concat('ξ.', @name) or starts-with($b, concat('ξ.', @name, '.')))]"/>
+    <xsl:variable name="more" select="($seen, $next/@name)"/>
+    <xsl:sequence select="max(($o/descendant-or-self::o/number(eo:lineno(@line)), for $n in $next return eo:ends($n, $formation, $declared, $more)))"/>
+  </xsl:function>
   <xsl:template match="/">
     <defects>
       <xsl:for-each select="//o[eo:abstract(.)]">
@@ -34,9 +53,10 @@
           The arguments of a vertical application sit on the lines below
           its name, and those lines are the declaration itself, not lines
           between the declaration and its usages: the distance is counted
-          from the last line the declaration takes.
+          from the last line the declaration takes, together with the
+          lines of the arguments it binds with ">>".
           -->
-          <xsl:variable name="ends" select="max(descendant-or-self::o/number(eo:lineno(@line)))"/>
+          <xsl:variable name="ends" select="eo:ends(., $formation, $declared, string(@name))"/>
           <xsl:variable name="usages" select="$formation//o[(@base = concat('ξ.', $name) or starts-with(@base, concat('ξ.', $name, '.'))) and not(ancestor::o[. &gt;&gt; $formation and eo:abstract(.)]) and not(ancestor-or-self::o[eo:test-name(@name)])]"/>
           <xsl:variable name="last" select="max($usages/number(eo:lineno(@line)))"/>
           <xsl:if test="$declared &gt; 0 and exists($usages) and $last - $ends &gt; $max">
