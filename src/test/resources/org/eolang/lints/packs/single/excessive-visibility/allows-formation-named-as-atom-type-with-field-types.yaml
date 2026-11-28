@@ -1,0 +1,17 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/design/excessive-visibility.xsl
+defects: 0
+input: |
+  # Unix calls, one atom per call.
+
+  [] > posix
+    [] > readdir /Q.posix.dir-return(Q.number,Q.string)
+    [cde nme] > dir-return
+      posix.dir-return > called
+        cde
+        nme
+
+    posix.readdir.cde.eq 0 ++> can-read-the-directory
