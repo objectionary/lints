@@ -1,0 +1,20 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/design/excessive-visibility.xsl
+defects: 0
+input: |
+  # A chunk of memory.
+
+  [id] > chunk
+    id.write > put
+    id.read > get
+
+    eq. ++> can-put-and-get
+      malloc.of
+        8
+        seq * > [c]
+          c.put 42
+          c.get
+      42.as-bytes

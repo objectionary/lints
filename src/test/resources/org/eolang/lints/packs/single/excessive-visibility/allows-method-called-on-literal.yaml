@@ -1,0 +1,17 @@
+# SPDX-FileCopyrightText: Copyright (c) 2016-2026 Objectionary.com
+# SPDX-License-Identifier: MIT
+---
+sheets:
+  - /org/eolang/lints/design/excessive-visibility.xsl
+defects: 0
+input: |
+  # A boolean value.
+
+  [] > bool
+    ^ > @
+    if. > or
+      ^
+      true
+      ^
+
+    true.or false ++> can-disjoin-true-with-false

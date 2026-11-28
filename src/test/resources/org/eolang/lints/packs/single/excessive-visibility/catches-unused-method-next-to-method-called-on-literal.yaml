@@ -5,8 +5,8 @@ sheets:
   - /org/eolang/lints/design/excessive-visibility.xsl
 asserts:
   - /defects[count(defect[@severity='warning'])=1]
-  - /defects/defect[@line='4']
-  - /defects/defect[contains(text(), 'next')]
+  - /defects/defect[@line='5']
+  - /defects/defect[contains(text(), 'previous')]
 input: |
   # A counter that steps from a given value.
 
@@ -14,10 +14,4 @@ input: |
     start.plus 1 > next
     start.minus 1 > previous
 
-    ++> can-move-to-the-next-value
-      c.next.eq 6 > @
-      ticker 5 > c
-
-    ++> can-move-to-the-previous-value
-      c.previous.eq 4 > @
-      counter 5 > c
+    42.next.eq 43 ++> can-move-to-the-next-value
